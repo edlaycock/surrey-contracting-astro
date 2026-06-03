@@ -1,0 +1,61 @@
+name: Build & deploy to VPS
+
+on:
+  push:
+    branches: [main]
+  # Sanity webhook -> repository_dispatch fires this so client publishes rebuild
+  repository_dispatch:
+    types: [sanity-publish]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+      - run: npm run build
+        env:
+          PUBLIC_SANITY_PROJECT_ID: mhqgpyb9
+          PUBLIC_SANITY_DATASET: production
+
+      # Ship the built app + the runtime files the Node server needs.
+      - name: Rsync release to VPS
+        uses: burnett01/rsync-deployments@7.0.2
+        with:
+          switches: -avzr --delete
+          path: ./
+          remote_path: ${{ secrets.DEPLOY_PATH }}/releases/${{ github.sha }}/
+          remote_host: ${{ secrets.SSH_HOST }}
+          remote_user: ${{ secrets.SSH_USER }}
+          remote_key: ${{ secrets.SSH_KEY }}
+          exclude: /.git, /node_modules, /studio
+
+      - name: Activate release, install runtime deps, reload PM2
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            set -e
+            BASE="${{ secrets.DEPLOY_PATH }}"
+            REL="$BASE/releases/${{ github.sha }}"
+            cd "$REL"
+            npm ci --omit=dev
+            ln -sfn "$REL" "$BASE/current"
+            cd "$BASE/current"
+            pm2 reload deploy/ecosystem.config.cjs --update-env || pm2 start deploy/ecosystem.config.cjs
+            pm2 save
+            # keep the last 5 releases
+            ls -dt "$BASE"/releases/*/ | tail -n +6 | xargs -r rm -rf

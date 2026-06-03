@@ -1,0 +1,117 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+<BaseLayout
+  title="Contact Us — Surrey Contracting Limited"
+  description="Contact Surrey Contracting Limited — request a quote for groundworks, earthworks or surfacing across Surrey. Call 01932 932650."
+  path="/contact"
+  active="contact"
+>
+
+<section class="page-hero">
+  <div class="page-hero-bg" aria-hidden="true">
+    <div class="page-hero-img" style="background-image:url('/assets/img/hard-landscaping.jpg')"></div>
+    <div class="page-hero-vignette"></div>
+  </div>
+  <div class="container page-hero-inner">
+    <nav class="crumbs" aria-label="Breadcrumb">
+      <a href="/index">Home</a>
+      <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 6l6 6-6 6"/></svg>
+      <span>Contact Us</span>
+    </nav>
+    <h1 class="page-title">Get in touch</h1>
+    <p class="page-lede">Tell us about your site and we'll be back inside one working day with a measured visit date.</p>
+  </div>
+</section>
+
+<section class="page-section">
+  <div class="container contact-grid">
+    <div class="contact-info">
+      <span class="eyebrow eyebrow-yellow">Talk to a contracts manager</span>
+      <h2 class="section-title">Not a call centre. A site lead, every time.</h2>
+      <p>From quote to defects — one person owns your job from end to end. No tickets, no escalations, no being passed around.</p>
+
+      <div class="contact-cards">
+        <div class="contact-card">
+          <div class="contact-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.86 19.86 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.86 19.86 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div>
+          <div>
+            <span class="contact-label">Call us</span>
+            <a class="contact-value" href="tel:01932932650">01932 932650</a>
+          </div>
+        </div>
+        <div class="contact-card">
+          <div class="contact-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4h16v16H4z"/><path d="M4 6l8 6 8-6"/></svg></div>
+          <div>
+            <span class="contact-label">Email</span>
+            <a class="contact-value" href="mailto:info@surreycontracting.co.uk">info@surreycontracting.co.uk</a>
+          </div>
+        </div>
+        <div class="contact-card">
+          <div class="contact-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 22s7-7 7-12a7 7 0 1 0-14 0c0 5 7 12 7 12z"/><circle cx="12" cy="10" r="2.5"/></svg></div>
+          <div>
+            <span class="contact-label">Yard</span>
+            <span class="contact-value">Surrey Hills Surfacing, Upper Leewood Farm Yard,<br>Effingham Common Road, Leatherhead, KT24 5JQ</span>
+          </div>
+        </div>
+        <div class="contact-card">
+          <div class="contact-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg></div>
+          <div>
+            <span class="contact-label">Hours</span>
+            <span class="contact-value">Mon–Fri 07:30–17:30<br>Out-of-hours: by arrangement</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <form class="quote-form contact-form" id="quoteForm" novalidate>
+      <div style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden;" aria-hidden="true">
+        <label>Company website<input type="text" name="_honeypot" tabindex="-1" autocomplete="off"></label>
+      </div>
+      <h3 class="form-title">Send us a message</h3>
+      <div class="qf-row">
+        <label><span>Name</span><input required name="name" type="text" placeholder="Your full name"></label>
+        <label><span>Phone</span><input required name="phone" type="tel" placeholder="01932 932650"></label>
+      </div>
+      <label><span>Email</span><input required name="email" type="email" placeholder="you@email.com"></label>
+      <label><span>Company / organisation</span><input name="company" type="text" placeholder="Optional"></label>
+      <fieldset class="qf-checks">
+        <legend>What do you need?</legend>
+        <label class="check"><input type="checkbox" name="svc" value="Groundworks"><span>Groundworks</span></label>
+        <label class="check"><input type="checkbox" name="svc" value="Bulk Earthworks"><span>Bulk Earthworks</span></label>
+        <label class="check"><input type="checkbox" name="svc" value="Commercial Surfacing"><span>Commercial Surfacing</span></label>
+        <label class="check"><input type="checkbox" name="svc" value="Driveways"><span>Driveways &amp; Paving</span></label>
+        <label class="check"><input type="checkbox" name="svc" value="Other"><span>Other</span></label>
+      </fieldset>
+      <label><span>Project postcode</span><input name="postcode" type="text" placeholder="GU1 1AA"></label>
+      <label><span>Tell us about the job</span><textarea name="message" rows="5" placeholder="Site type, scale, target start date…"></textarea></label>
+      <button type="submit" class="btn btn-yellow btn-block">Send enquiry</button>
+      <p class="qf-success" id="qfSuccess" hidden>Thanks — we've got it. A contracts manager will be in touch within one working day.</p>
+    </form>
+  </div>
+</section>
+
+<section class="page-section page-section-dark">
+  <div class="container areas-grid">
+    <div class="areas-copy">
+      <span class="eyebrow eyebrow-yellow">Where we work</span>
+      <h2 class="section-title light">Surrey, Sussex &amp; South London.</h2>
+      <p>Headquartered between Cobham and Leatherhead, we operate across Surrey and into neighbouring counties. If you're inside the M25 ring or along the A3 corridor, we're a short call out.</p>
+      <ul class="areas-list">
+        <li>Cobham</li><li>Leatherhead</li><li>Guildford</li><li>Esher</li>
+        <li>Woking</li><li>Reigate</li><li>Dorking</li><li>Epsom</li>
+        <li>Weybridge</li><li>Kingston</li><li>Redhill</li><li>Surbiton</li>
+      </ul>
+    </div>
+    <div class="areas-map" aria-hidden="true">
+      <div class="map-frame">
+        <img src="/assets/img/coverage-map.png" alt="Coverage map" class="map-img">
+        <div class="map-pin">
+          <span class="pin-dot"></span>
+          <span class="pin-ring"></span>
+          <span class="pin-label">HQ · Leatherhead</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+</BaseLayout>

@@ -1,0 +1,188 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+<BaseLayout
+  title="Our Projects — Surrey Contracting Limited"
+  description="Recent groundworks, earthworks and surfacing projects delivered across Surrey — commercial, residential and public sector."
+  path="/projects"
+  ogTitle="Projects — Surrey Contracting Limited"
+  active="projects"
+>
+
+<section class="page-hero">
+  <div class="page-hero-bg" aria-hidden="true">
+    <div class="page-hero-img" style="background-image:url('/assets/img/bulk-earthworks.jpg')"></div>
+    <div class="page-hero-vignette"></div>
+  </div>
+  <div class="container page-hero-inner">
+    <nav class="crumbs" aria-label="Breadcrumb">
+      <a href="/index">Home</a>
+      <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 6l6 6-6 6"/></svg>
+      <span>Projects</span>
+    </nav>
+    <h1 class="page-title">Our Projects</h1>
+    <p class="page-lede">A cross-section of recent work across Surrey and the Home Counties — commercial, residential, public-sector and everything in between.</p>
+  </div>
+</section>
+
+<section class="page-section">
+  <div class="container">
+    <div class="section-head split">
+      <div>
+        <span class="eyebrow">Recent work</span>
+        <h2 class="section-title">Projects from across the county.</h2>
+      </div>
+      <a href="/contact" class="btn btn-outline-dark">Discuss a project →</a>
+    </div>
+
+    <div class="filter-bar">
+      <div class="filter-group">
+        <span class="filter-label">Category</span>
+        <button class="chip is-active" data-filter="cat" data-value="All">All</button>
+        <button class="chip " data-filter="cat" data-value="Drainage">Drainage</button>
+        <button class="chip " data-filter="cat" data-value="Driveways">Driveways</button>
+        <button class="chip " data-filter="cat" data-value="Earthworks">Earthworks</button>
+        <button class="chip " data-filter="cat" data-value="Groundworks">Groundworks</button>
+        <button class="chip " data-filter="cat" data-value="Hard Landscaping">Hard Landscaping</button>
+        <button class="chip " data-filter="cat" data-value="Surfacing">Surfacing</button>
+      </div>
+    </div>
+
+    <div class="gallery-grid" id="galleryGrid">
+      <article class="gallery-card" data-cats="Driveways,Surfacing">
+        <a href="/project-tarmac-driveway" class="gallery-link">
+          <div class="gallery-photo" style="background-image:url('/assets/img/projects/tarmac-driveway.jpg')">
+            <span class="gallery-tag">Surfacing</span>
+          </div>
+          <div class="gallery-body">
+            <span class="gallery-meta">Driveways · Surfacing · West Humble, Dorking</span>
+            <h3>Tarmac Driveway</h3>
+            <span class="gallery-cta">View project →</span>
+          </div>
+        </a>
+      </article>
+      <article class="gallery-card" data-cats="Driveways,Surfacing">
+        <a href="/project-tarmac-driveway-fetcham" class="gallery-link">
+          <div class="gallery-photo" style="background-image:url('/assets/img/projects/tarmac-driveway-fetcham.jpg')">
+            <span class="gallery-tag">Surfacing</span>
+          </div>
+          <div class="gallery-body">
+            <span class="gallery-meta">Driveways · Surfacing · Fetcham, Surrey</span>
+            <h3>Tarmac Driveway, Fetcham, Surrey</h3>
+            <span class="gallery-cta">View project →</span>
+          </div>
+        </a>
+      </article>
+      <article class="gallery-card" data-cats="Surfacing">
+        <a href="/project-tarmac-repairs-sutton" class="gallery-link">
+          <div class="gallery-photo" style="background-image:url('/assets/img/projects/tarmac-repairs-sutton.jpg')">
+            <span class="gallery-tag">Surfacing</span>
+          </div>
+          <div class="gallery-body">
+            <span class="gallery-meta">Surfacing · Sutton, London</span>
+            <h3>Tarmac Repairs — Sutton High School</h3>
+            <span class="gallery-cta">View project →</span>
+          </div>
+        </a>
+      </article>
+      <article class="gallery-card" data-cats="Groundworks">
+        <a href="/project-southbank-centre" class="gallery-link">
+          <div class="gallery-photo" style="background-image:url('/assets/img/projects/southbank-centre.jpg')">
+            <span class="gallery-tag">Groundworks</span>
+          </div>
+          <div class="gallery-body">
+            <span class="gallery-meta">Groundworks · Southbank Centre, London</span>
+            <h3>Southbank Centre</h3>
+            <span class="gallery-cta">View project →</span>
+          </div>
+        </a>
+      </article>
+      <article class="gallery-card" data-cats="Earthworks,Groundworks">
+        <a href="/project-site-clearance-earthworks" class="gallery-link">
+          <div class="gallery-photo" style="background-image:url('/assets/img/projects/site-clearance-earthworks.jpg')">
+            <span class="gallery-tag">Earthworks</span>
+          </div>
+          <div class="gallery-body">
+            <span class="gallery-meta">Earthworks · Groundworks · Farnham, Surrey</span>
+            <h3>Site Clearance and Earthworks</h3>
+            <span class="gallery-cta">View project →</span>
+          </div>
+        </a>
+      </article>
+      <article class="gallery-card" data-cats="Earthworks,Groundworks">
+        <a href="/project-domestic-earthworks" class="gallery-link">
+          <div class="gallery-photo" style="background-image:url('/assets/img/projects/domestic-earthworks.jpg')">
+            <span class="gallery-tag">Earthworks</span>
+          </div>
+          <div class="gallery-body">
+            <span class="gallery-meta">Earthworks · Groundworks · Horsell, Woking</span>
+            <h3>Domestic Earthworks Project</h3>
+            <span class="gallery-cta">View project →</span>
+          </div>
+        </a>
+      </article>
+      <article class="gallery-card" data-cats="Drainage,Groundworks">
+        <a href="/project-drainage-ascot" class="gallery-link">
+          <div class="gallery-photo" style="background-image:url('/assets/img/projects/drainage-ascot.jpg')">
+            <span class="gallery-tag">Drainage</span>
+          </div>
+          <div class="gallery-body">
+            <span class="gallery-meta">Drainage · Groundworks · Ascot, Surrey</span>
+            <h3>Drainage Installation — Ascot</h3>
+            <span class="gallery-cta">View project →</span>
+          </div>
+        </a>
+      </article>
+      <article class="gallery-card" data-cats="Hard Landscaping">
+        <a href="/project-landscape-guildford" class="gallery-link">
+          <div class="gallery-photo" style="background-image:url('/assets/img/projects/landscape-guildford.jpg')">
+            <span class="gallery-tag">Hard Landscaping</span>
+          </div>
+          <div class="gallery-body">
+            <span class="gallery-meta">Hard Landscaping · Guildford, Surrey</span>
+            <h3>Residential Re-landscape, Guildford, Surrey</h3>
+            <span class="gallery-cta">View project →</span>
+          </div>
+        </a>
+      </article>
+      <article class="gallery-card" data-cats="Groundworks">
+        <a href="/project-concrete-base-cobham" class="gallery-link">
+          <div class="gallery-photo" style="background-image:url('/assets/img/projects/concrete-base-cobham.jpg')">
+            <span class="gallery-tag">Groundworks</span>
+          </div>
+          <div class="gallery-body">
+            <span class="gallery-meta">Groundworks · Cobham, Surrey</span>
+            <h3>Concrete Base Installation — Premier Inn Cobham</h3>
+            <span class="gallery-cta">View project →</span>
+          </div>
+        </a>
+      </article>
+      <article class="gallery-card" data-cats="Hard Landscaping">
+        <a href="/project-complete-landscape" class="gallery-link">
+          <div class="gallery-photo" style="background-image:url('/assets/img/projects/complete-landscape.jpg')">
+            <span class="gallery-tag">Hard Landscaping</span>
+          </div>
+          <div class="gallery-body">
+            <span class="gallery-meta">Hard Landscaping · Virginia Water, Surrey</span>
+            <h3>Complete Re-landscape</h3>
+            <span class="gallery-cta">View project →</span>
+          </div>
+        </a>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="cta-strip">
+  <div class="container cta-strip-row">
+    <div>
+      <h3>Want to be the next case study?</h3>
+      <p style="color: rgb(209, 209, 209); font-size: 16px">Free measured visit, itemised quote, then we get on with the job.</p>
+    </div>
+    <div class="cta-strip-ctas">
+      <a href="/contact" class="btn btn-yellow" style="background-color: rgb(60, 60, 60); color: rgb(255, 255, 255)">Request a quote</a>
+      <a href="tel:01932932650" class="btn btn-ghost-light">01932 932650</a>
+    </div>
+  </div>
+</section>
+</BaseLayout>

@@ -1,0 +1,107 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getProjects, getProject, urlFor } from '../../lib/sanity';
+import { toHTML } from '@portabletext/to-html';
+
+export async function getStaticPaths() {
+  const projects = await getProjects();
+  return projects.map((p) => ({ params: { slug: p.slug } }));
+}
+
+const { slug } = Astro.params;
+const project = await getProject(slug!);
+if (!project) return Astro.redirect('/projects');
+
+const hero = project.heroImage
+  ? urlFor(project.heroImage).width(1600).height(900).fit('crop').url()
+  : '/assets/img/groundworks.webp';
+const bodyHtml = project.body ? toHTML(project.body as never) : '';
+const gallery = (project.gallery ?? []).map((g) =>
+  urlFor(g).width(1200).height(800).fit('crop').url(),
+);
+---
+<BaseLayout
+  title={`${project.title} — Surrey Contracting Limited`}
+  description={project.summary || `${project.title} — a project delivered by Surrey Contracting Limited.`}
+  path={`/projects/${project.slug}`}
+  active="projects"
+>
+  <section class="page-hero">
+    <div class="page-hero-bg" aria-hidden="true">
+      <div class="page-hero-img" style={`background-image:url('${hero}')`}></div>
+      <div class="page-hero-vignette"></div>
+    </div>
+    <div class="container page-hero-inner">
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/">Home</a>
+        <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 6l6 6-6 6"/></svg>
+        <a href="/projects">Projects</a>
+        <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 6l6 6-6 6"/></svg>
+        <span>{project.title}</span>
+      </nav>
+      <h1 class="page-title">{project.title}</h1>
+      {project.summary && <p class="page-lede">{project.summary}</p>}
+    </div>
+  </section>
+
+  <section class="page-section">
+    <div class="container">
+      <div class="proj-detail-meta">
+        {project.category && <span><strong>Service</strong>{project.category}</span>}
+        {project.location && <span><strong>Location</strong>{project.location}</span>}
+        {project.client && <span><strong>Client</strong>{project.client}</span>}
+      </div>
+
+      {bodyHtml && <div class="rich-text" set:html={bodyHtml} />}
+
+      {gallery.length > 0 && (
+        <div class="proj-gallery">
+          {gallery.map((src) => <img src={src} alt={project.title} loading="lazy" width="1200" height="800" />)}
+        </div>
+      )}
+
+      <p class="proj-detail-back">
+        <a href="/projects" class="btn btn-outline-dark">← Back to projects</a>
+      </p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .proj-detail-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 32px;
+    padding-bottom: 28px;
+    margin-bottom: 32px;
+    border-bottom: 1px solid var(--border, #e5e5e5);
+  }
+  .proj-detail-meta span {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    font-size: 1.05rem;
+  }
+  .proj-detail-meta strong {
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--yellow, #e6a91a);
+  }
+  .rich-text :global(p) { margin: 0 0 1.1em; line-height: 1.7; }
+  .rich-text :global(h2) { margin: 1.6em 0 0.5em; }
+  .rich-text :global(ul) { margin: 0 0 1.1em 1.2em; }
+  .proj-gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+    margin: 36px 0;
+  }
+  .proj-gallery img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 12px;
+  }
+  .proj-detail-back { margin-top: 32px; }
+</style>

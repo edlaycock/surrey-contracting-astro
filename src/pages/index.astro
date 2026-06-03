@@ -1,0 +1,628 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  "name": "Surrey Contracting Limited",
+  "url": "https://surreycontracting.co.uk",
+  "telephone": "01932 932650",
+  "email": "info@surreycontracting.co.uk",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Upper Leewood Farm Yard, Effingham Common Road",
+    "addressLocality": "Leatherhead",
+    "postalCode": "KT24 5JQ",
+    "addressCountry": "GB"
+  },
+  "description": "Professional groundworks, bulk earthworks, commercial surfacing and residential driveways across Surrey.",
+  "areaServed": {
+    "@type": "GeoCircle",
+    "geoMidpoint": { "@type": "GeoCoordinates", "latitude": 51.296, "longitude": -0.331 },
+    "geoRadius": "40000"
+  },
+  "hasOfferCatalog": {
+    "@type": "OfferCatalog",
+    "name": "Services",
+    "itemListElement": [
+      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Groundworks" } },
+      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Bulk Earthworks" } },
+      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Commercial Surfacing" } },
+      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Residential Driveways & Paving" } }
+    ]
+  }
+};
+---
+<BaseLayout
+  title="Surrey Contracting Limited — Groundworks, Surfacing & Civils across Surrey"
+  description="Surrey Contracting Limited — professional site enabling works, groundworks, bulk earthworks and commercial surfacing across Surrey, London and the South East. 15+ years of trusted workmanship."
+  ogTitle="Surrey Contracting Limited — Groundworks, Surfacing & Civils across Surrey"
+  path="/"
+>
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify(jsonLd)} />
+
+<!-- ============ HERO ============ -->
+<section class="hero" id="top">
+  <div class="hero-bg" id="heroBg" aria-hidden="true">
+    <div class="hero-img hero-img-1"></div>
+    <div class="hero-img hero-img-2"></div>
+    <div class="hero-vignette" style="opacity: 0.5"></div>
+  </div>
+
+  <div class="container hero-inner">
+    <div class="hero-slides">
+      <article class="hero-slide is-active" data-slide="0">
+        <div class="hero-eyebrow">
+          <span class="dot"></span>
+          Established &amp; trusted across Surrey
+        </div>
+        <h1 class="hero-title">
+          Built on Experience.<br>
+          <span class="hero-accent">Driven by Quality.</span>
+        </h1>
+        <p class="hero-sub">
+          Professional site enabling works, groundworks, bulk earthworks and commercial surfacing across Surrey, London and the South East. 15+ years of reliable workmanship, on every site.
+        </p>
+        <div class="hero-ctas">
+          <a href="#quote" class="btn btn-yellow">Request a quote</a>
+          <a href="#services" class="btn btn-ghost-light">Our services →</a>
+        </div>
+      </article>
+
+      <article class="hero-slide" data-slide="1">
+        <div class="hero-eyebrow">
+          <span class="dot"></span>
+          One contractor, every discipline
+        </div>
+        <h1 class="hero-title">
+          A
+          <span class="word-rotator" aria-label="Groundworks, Bulk Earthworks, Commercial Surfacing">
+            <span class="word-track" id="wordTrack">
+              <span class="word">Groundworks</span>
+              <span class="word">Bulk Earthworks</span>
+              <span class="word">Commercial Surfacing</span>
+              <span class="word">Groundworks</span>
+            </span>
+          </span><br>
+          <span class="hero-tail">contractor for any site.</span>
+        </h1>
+        <p class="hero-sub">
+          From enabling works and site clearance through to completed surfacing and external works — one experienced team delivering across commercial, residential and developer projects throughout Surrey.
+        </p>
+        <div class="hero-ctas">
+          <a href="#quote" class="btn btn-yellow">Request a quote</a>
+          <a href="#services" class="btn btn-ghost-light">Our services →</a>
+        </div>
+      </article>
+    </div>
+
+    <div class="hero-trust">
+      <div class="trust-item"><strong>15+</strong><span>years on site</span></div>
+      <div class="trust-divider"></div>
+      <div class="trust-item"><strong>Surrey</strong><span>&amp; surrounding areas</span></div>
+      <div class="trust-divider"></div>
+      <div class="trust-item"><strong>CHAS</strong><span>accredited</span></div>
+      <div class="trust-divider"></div>
+      <div class="trust-item"><strong>5★</strong><span>client rating</span></div>
+    </div>
+
+    <div class="hero-dots" id="heroDots" aria-label="Hero slide selector">
+      <button class="dot-btn is-active" data-go="0" aria-label="Slide 1"></button>
+      <button class="dot-btn" data-go="1" aria-label="Slide 2"></button>
+    </div>
+  </div>
+
+  <a href="#services" class="hero-scroll" aria-label="Scroll to services">
+    <span>Scroll</span>
+    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+  </a>
+</section>
+
+<!-- ============ SERVICE TILES ============ -->
+<section class="services" id="services">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow">What we do</span>
+      <h2 class="section-title">A Groundworks, Earthworks &amp; Surfacing contractor for any site.</h2>
+      <p class="section-lede">Core commercial disciplines, self-delivered by one experienced team — from site enabling works and clearance through to the finished surface.</p>
+    </div>
+
+    <div class="svc-grid">
+      <a href="/demolition" class="svc-card" style="background-image:url(/assets/img/demolition.jpg)">
+        <div class="svc-overlay"></div>
+        <div class="svc-meta">
+          <h3>Demolition</h3>
+          <p>Commercial and residential demolition — site clearance, internal soft strip, concrete crushing and site hoarding, safely delivered.</p>
+          <span class="svc-arrow">Explore service →</span>
+        </div>
+      </a>
+
+      <a href="/groundworks" class="svc-card" style="background-image:url(/assets/img/groundworks.webp)">
+        <div class="svc-overlay"></div>
+        <div class="svc-meta">
+          <h3>Groundworks</h3>
+          <p>Site preparation, foundations, drainage, excavation and infrastructure works for commercial and residential developments.</p>
+          <span class="svc-arrow">Explore service →</span>
+        </div>
+      </a>
+
+      <a href="/earthworks" class="svc-card" style="background-image:url(/assets/img/bulk-earthworks.jpg)">
+        <div class="svc-overlay"></div>
+        <div class="svc-meta">
+          <h3>Bulk Earthworks</h3>
+          <p>Large-scale excavation, site levelling, land remediation and earthmoving — modern plant and machinery, expertly operated.</p>
+          <span class="svc-arrow">Explore service →</span>
+        </div>
+      </a>
+
+      <a href="/surfacing" class="svc-card" style="background-image:url(/assets/img/surfacing.jpg)">
+        <div class="svc-overlay"></div>
+        <div class="svc-meta">
+          <h3>Commercial Surfacing</h3>
+          <p>Surfacing for commercial premises, car parks, roads, industrial estates and access routes — high-quality tarmac and surfacing materials.</p>
+          <span class="svc-arrow">Explore service →</span>
+        </div>
+      </a>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============ VALUE PROP STRIP ============ -->
+<section class="values">
+  <div class="container values-grid">
+    <div class="value">
+      <div class="value-ico">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      </div>
+      <h4>Accredited &amp; insured</h4>
+      <p>CHAS, Constructionline Gold, SafeContractor and £10m PLI. Audited every job.</p>
+    </div>
+    <div class="value">
+      <div class="value-ico">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 12l3 3 6-6 6 6 3-3"/><path d="M3 18l3 3 6-6 6 6 3-3"/></svg>
+      </div>
+      <h4>One team, one programme</h4>
+      <p>Self-delivered disciplines — no daisy-chained subbies, no finger-pointing on hand-over.</p>
+    </div>
+    <div class="value">
+      <div class="value-ico">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+      </div>
+      <h4>Programme-first</h4>
+      <p>Logistics, plant and labour planned to a critical path you can hold us to.</p>
+    </div>
+    <div class="value">
+      <div class="value-ico">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4h16v12H5.5L4 18z"/><path d="M8 9h8M8 12h5"/></svg>
+      </div>
+      <h4>Talk to a contracts manager</h4>
+      <p>Not a call-centre. A site lead on the phone, every time, from quote to defects.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ABOUT / INTRO ============ -->
+<section class="about" id="about">
+  <div class="container about-grid">
+    <div class="about-copy">
+      <span class="eyebrow eyebrow-yellow">About Surrey Contracting</span>
+      <h2 class="section-title light">Built on Experience. Driven by Quality.</h2>
+      <p class="lede">Surrey Contracting Limited is a trusted contractor specialising in site enabling works, groundworks, bulk earthworks and commercial surfacing solutions across Surrey, London and the South East.</p>
+      <p>Built on over 15 years of industry experience, we provide turnkey external works solutions for commercial clients, developers, main contractors, local businesses and private homeowners — supporting both small and large-scale projects with professionalism, reliability and precision.</p>
+      <p>From initial site clearance and enabling works through to the groundworks phase and finishing works, we manage every stage with careful planning and attention to detail — using modern machinery, trusted materials and experienced contractors.</p>
+
+      <ul class="bullet-list">
+        <li><span>15+ years of experience across Surrey, London &amp; the South East</span></li>
+        <li><span>Self-delivery of site enabling works, groundworks, earthworks &amp; surfacing</span></li>
+        <li><span>Turnkey external works for commercial &amp; developer projects</span></li>
+        <li><span>Reliable workmanship, audit-grade paperwork</span></li>
+      </ul>
+
+      <div class="about-ctas">
+        <a href="#projects" class="btn btn-yellow">See recent projects</a>
+        <a href="/about" class="btn btn-outline-dark">About Us</a>
+      </div>
+    </div>
+
+    <div class="about-visual">
+      <div class="about-photo about-photo-1" style="background-image:url('/assets/img/brickwork.jpeg')">
+        <div class="ph-label">Foundations · Surrey</div>
+      </div>
+      <div class="about-photo about-photo-2" style="background-image:url('/assets/img/bulk-earthworks.jpg')">
+        <div class="ph-label">Bulk earthworks</div>
+      </div>
+      <div class="about-badge">
+        <div class="bg-num">15+</div>
+        <div class="bg-lbl">Years<br>delivering<br>across Surrey</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FEATURED SERVICE (alt) ============ -->
+<section class="feature feature-dark">
+  <div class="container feature-grid">
+    <div class="feature-media">
+      <div class="feature-photo" style="background-image:url('/assets/img/surfacing.jpg')">
+      </div>
+      <div class="feature-tag">Commercial surfacing</div>
+    </div>
+    <div class="feature-copy">
+      <span class="eyebrow eyebrow-yellow">Commercial Surfacing</span>
+      <h2 class="section-title light">High-performance surfacing for commercial sites.</h2>
+      <p>Surfacing for commercial premises, car parks, private roads, industrial estates, access routes and external hardstanding. Tarmac and asphalt — base, binder and surface course — laid by experienced contractors over a properly-prepared sub-base. The finish is only ever as good as what's beneath it.</p>
+      <div class="feature-stats">
+        <div><strong>Car parks</strong><span>&amp; access roads</span></div>
+        <div><strong>Tarmac</strong><span>&amp; asphalt</span></div>
+        <div><strong>Industrial</strong><span>estates &amp; yards</span></div>
+      </div>
+      <a href="/surfacing" class="btn btn-yellow">Explore commercial surfacing →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PROCESS ============ -->
+<section class="process">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow">How we work</span>
+      <h2 class="section-title">A four-step delivery you can plan to.</h2>
+    </div>
+    <ol class="process-row">
+      <li>
+        <div class="proc-num">01</div>
+        <h4>Site visit &amp; survey</h4>
+        <p>Free measured visit within 5 working days. Levels, access, services and constraints captured.</p>
+      </li>
+      <li>
+        <div class="proc-num">02</div>
+        <h4>Fixed-price quote</h4>
+        <p>Itemised proposal — materials, plant, prelims, programme. No surprises later in the job.</p>
+      </li>
+      <li>
+        <div class="proc-num">03</div>
+        <h4>Mobilise &amp; deliver</h4>
+        <p>RAMS issued, plant booked, team allocated. Weekly progress reports straight to your inbox.</p>
+      </li>
+      <li>
+        <div class="proc-num">04</div>
+        <h4>Sign-off &amp; defects</h4>
+        <p>Snag-walk, O&amp;M pack handed over and a 12-month defects window we actually return for.</p>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<!-- ============ STATS BAND ============ -->
+<section class="stats">
+  <div class="container stats-row">
+    <div class="stat">
+      <div class="stat-num">100s</div>
+      <div class="stat-lbl">Projects delivered</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num" data-target="15" data-suffix="+">0</div>
+      <div class="stat-lbl">Years of experience</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num" data-target="90" data-suffix="%">0</div>
+      <div class="stat-lbl">Repeat-client rate</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num" data-target="100" data-suffix="%">0</div>
+      <div class="stat-lbl">Surrey-based team</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PROJECTS GALLERY ============ -->
+<section class="projects" id="projects">
+  <div class="container">
+    <div class="section-head split">
+      <div>
+        <span class="eyebrow">Recent work</span>
+        <h2 class="section-title">Projects from across the county.</h2>
+      </div>
+      <a href="/projects" class="btn btn-outline-dark">View full gallery →</a>
+    </div>
+
+    <div class="proj-grid">
+      <article class="proj proj-lg">
+        <div class="proj-photo" style="background-image:url('/assets/img/bulk-earthworks.jpg')"></div>
+        <div class="proj-meta">
+          <span class="proj-tag">Bulk Earthworks</span>
+          <h3>Commercial site cut &amp; fill</h3>
+          <p>Large-scale excavation and site levelling using modern tracked plant for a phased commercial development.</p>
+        </div>
+      </article>
+
+      <article class="proj">
+        <div class="proj-photo" style="background-image:url('/assets/img/hard-landscaping.jpg')"></div>
+        <div class="proj-meta">
+          <span class="proj-tag">Hard Landscaping</span>
+          <h3>Porcelain patio &amp; gabion</h3>
+          <p>Large-format porcelain laid over a SUDS-friendly base with bespoke gabion retaining wall.</p>
+        </div>
+      </article>
+
+      <article class="proj">
+        <div class="proj-photo" style="background-image:url('/assets/img/groundworks.webp')"></div>
+        <div class="proj-meta">
+          <span class="proj-tag">Groundworks</span>
+          <h3>Surface-water drainage</h3>
+          <p>Excavation, twin-wall pipework and reinstatement for a private estate drainage scheme.</p>
+        </div>
+      </article>
+
+      <article class="proj">
+        <div class="proj-photo" style="background-image:url('/assets/img/surfacing.jpg')"></div>
+        <div class="proj-meta">
+          <span class="proj-tag">Surfacing</span>
+          <h3>Kerbing &amp; access road</h3>
+          <p>Precast kerbing and tarmac access road for a commercial yard, delivered over two phased weekends.</p>
+        </div>
+      </article>
+
+      <article class="proj">
+        <div class="proj-photo" style="background-image:url('/assets/img/block-paving.jpeg')"></div>
+        <div class="proj-meta">
+          <span class="proj-tag">Block Paving</span>
+          <h3>Block-paved driveway</h3>
+          <p>Bespoke residential block paving with edge restraints and full base preparation.</p>
+        </div>
+      </article>
+
+      <article class="proj">
+        <div class="proj-photo" style="background-image:url('/assets/img/brickwork.jpeg')"></div>
+        <div class="proj-meta">
+          <span class="proj-tag">Groundworks</span>
+          <h3>Substructure &amp; foundations</h3>
+          <p>Strip foundations, drainage and oversite to a residential extension scheme — taken from site clearance to slab.</p>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ AREAS WE COVER ============ -->
+<section class="areas" id="areas">
+  <div class="container areas-grid">
+    <div class="areas-copy">
+      <span class="eyebrow eyebrow-yellow">Areas we cover</span>
+      <h2 class="section-title light">Local roots. County-wide reach.</h2>
+      <p>Headquartered between Cobham and Leatherhead, we operate across Surrey and into neighbouring counties. If you're inside the M25 ring or along the A3 corridor, we're a short call out.</p>
+      <ul class="areas-list">
+        <li>Cobham</li><li>Leatherhead</li><li>Guildford</li><li>Esher</li>
+        <li>Woking</li><li>Reigate</li><li>Dorking</li><li>Epsom</li>
+        <li>Weybridge</li><li>Kingston</li><li>Redhill</li><li>Surbiton</li>
+      </ul>
+    </div>
+    <div class="areas-map" aria-hidden="true">
+      <div class="map-frame">
+        <img src="/assets/img/coverage-map.png" alt="Surrey Contracting coverage area covering Surrey and surrounding regions including Guildford, Woking, Cobham, Leatherhead, Epsom, Kingston upon Thames, Walton-on-Thames, Weybridge, Godalming and Cranleigh." class="map-img">
+        <div class="map-pin" aria-hidden="true">
+          <span class="pin-dot"></span>
+          <span class="pin-ring"></span>
+          <span class="pin-label">HQ · Leatherhead</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TESTIMONIAL ============ -->
+<section class="testimonial">
+  <div class="container">
+    <svg class="quote-mark" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M7 7h4v4H7c0 4 2 6 4 6v3c-5 0-8-3-8-9V7zm10 0h4v4h-4c0 4 2 6 4 6v3c-5 0-8-3-8-9V7z"/></svg>
+    <div class="t-slider" id="tSlider">
+      <div class="t-track" id="tTrack">
+        <article class="t-card">
+          <blockquote>
+            Surrey Contracting picked up a job another firm had walked away from. They re-priced honestly, hit every milestone and handed over a paperwork pack that sailed through our auditor. They're our first call for anything below 600mm.
+          </blockquote>
+          <div class="t-attrib">
+            <div class="t-avatar">JM</div>
+            <div>
+              <strong>James M.</strong>
+              <span>Senior PM · Tier-1 housebuilder</span>
+            </div>
+          </div>
+        </article>
+        <article class="t-card">
+          <blockquote>
+            We needed our main car park resurfaced inside a six-week summer window with zero slippage. They hit the date with two days to spare and the finish has held up beautifully through two winters of school-run traffic.
+          </blockquote>
+          <div class="t-attrib">
+            <div class="t-avatar">SK</div>
+            <div>
+              <strong>Sarah K.</strong>
+              <span>Estates Manager · Independent school, Surrey</span>
+            </div>
+          </div>
+        </article>
+        <article class="t-card">
+          <blockquote>
+            Quoted on the Monday, mobilised the following week, finished in three days and tidied up properly before they left. The drive looks better than I'd dared hope — and the price was exactly what they said it would be.
+          </blockquote>
+          <div class="t-attrib">
+            <div class="t-avatar">MT</div>
+            <div>
+              <strong>Mark T.</strong>
+              <span>Homeowner · Cobham</span>
+            </div>
+          </div>
+        </article>
+        <article class="t-card">
+          <blockquote>
+            Site clearance and bulk earthworks on a constrained urban plot — they handled the muck-away, the levels and the neighbour management without us having to chase a thing. Genuine, capable contractors.
+          </blockquote>
+          <div class="t-attrib">
+            <div class="t-avatar">DR</div>
+            <div>
+              <strong>David R.</strong>
+              <span>Contracts Manager · Commercial developer</span>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+    <div class="t-dots" id="tDots" role="tablist" aria-label="Testimonials">
+      <button type="button" class="is-active" aria-label="Show testimonial 1"></button>
+      <button type="button" aria-label="Show testimonial 2"></button>
+      <button type="button" aria-label="Show testimonial 3"></button>
+      <button type="button" aria-label="Show testimonial 4"></button>
+    </div>
+  </div>
+</section>
+
+<!-- ============ QUOTE FORM ============ -->
+<section class="quote" id="quote">
+  <div class="container quote-grid">
+    <div class="quote-copy">
+      <span class="eyebrow eyebrow-yellow">Get in touch</span>
+      <h2 class="section-title light">Request a quote.</h2>
+      <p>Tell us about your site and we'll be back inside one working day with a measured site-visit date.</p>
+      <div class="quote-direct">
+        <div>
+          <span class="qd-lbl">Call us</span>
+          <a href="tel:01932932650" class="qd-val">01932 932650</a>
+        </div>
+        <div>
+          <span class="qd-lbl">Email</span>
+          <a href="mailto:info@surreycontracting.co.uk" class="qd-val">info@surreycontracting.co.uk</a>
+        </div>
+        <div>
+          <span class="qd-lbl">Yard</span>
+          <span class="qd-val">Upper Leewood Farm Yard, Effingham Common Road, Leatherhead, KT24 5JQ</span>
+        </div>
+      </div>
+    </div>
+
+    <form class="quote-form" id="quoteForm" novalidate>
+      <div style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden;" aria-hidden="true">
+        <label>Company website<input type="text" name="_honeypot" tabindex="-1" autocomplete="off"></label>
+      </div>
+      <div class="qf-row">
+        <label>
+          <span>Name</span>
+          <input required name="name" type="text" placeholder="Your full name">
+        </label>
+        <label>
+          <span>Phone</span>
+          <input required name="phone" type="tel" placeholder="01932 932650">
+        </label>
+      </div>
+      <label>
+        <span>Email</span>
+        <input required name="email" type="email" placeholder="you@email.com">
+      </label>
+      <fieldset class="qf-checks">
+        <legend>What do you need?</legend>
+        <label class="check"><input type="checkbox" name="svc" value="Groundworks"><span>Groundworks</span></label>
+        <label class="check"><input type="checkbox" name="svc" value="Bulk Earthworks"><span>Bulk Earthworks</span></label>
+        <label class="check"><input type="checkbox" name="svc" value="Commercial Surfacing"><span>Commercial Surfacing</span></label>
+        <label class="check"><input type="checkbox" name="svc" value="Driveways"><span>Driveways &amp; Paving</span></label>
+        <label class="check"><input type="checkbox" name="svc" value="Other"><span>Other</span></label>
+      </fieldset>
+      <label>
+        <span>Project postcode</span>
+        <input name="postcode" type="text" placeholder="GU1 1AA">
+      </label>
+      <label>
+        <span>Tell us about the job</span>
+        <textarea name="message" rows="4" placeholder="Site type, scale, target start date…"></textarea>
+      </label>
+      <label class="qf-hear">
+        <span>Where did you hear about us?</span>
+        <select name="source">
+          <option>Google</option>
+          <option>Referral / client</option>
+          <option>LinkedIn</option>
+          <option>Site signage</option>
+          <option>Other</option>
+        </select>
+      </label>
+      <button type="submit" class="btn btn-yellow btn-block">Send enquiry</button>
+      <p class="qf-success" id="qfSuccess" hidden>Thanks — we've got it. A contracts manager will be in touch within one working day.</p>
+    </form>
+  </div>
+</section>
+
+<!-- ============ PREVIOUS CLIENTS ============ -->
+<section class="clients" id="clients">
+  <div class="container">
+    <div class="clients-head">
+      <span class="eyebrow">Trusted by</span>
+      <h2 class="section-title">A few of the clients we've worked with.</h2>
+    </div>
+  </div>
+
+  <div class="acc-marquee clients-marquee" aria-label="Previous client logos">
+    <div class="acc-track clients-track">
+      <div class="acc-set">
+        <div class="acc-badge client-badge"><img src="/assets/clients/dhl.webp" alt="DHL"></div>
+        <div class="acc-badge client-badge"><img src="/assets/clients/southbank.webp" alt="Southbank Centre"></div>
+        <div class="acc-badge client-badge"><img src="/assets/clients/environment-agency.webp" alt="Environment Agency — Registered Waste Carrier"></div>
+        <div class="acc-badge client-badge"><img src="/assets/clients/gratte-brothers.webp" alt="Gratte Brothers"></div>
+        <div class="acc-badge client-badge"><img src="/assets/clients/coinstreet.webp" alt="Coin Street"></div>
+        <div class="acc-badge client-badge"><img src="/assets/clients/hunter-hyland.webp" alt="Hunter &amp; Hyland"></div>
+        <div class="acc-badge client-badge"><img src="/assets/clients/penningtons.webp" alt="Pennington's Electrical Contractors"></div>
+        <div class="acc-badge client-badge"><img src="/assets/clients/easigrass.webp" alt="Easigrass — the artificial grass company"></div>
+        <div class="acc-badge client-badge"><img src="/assets/clients/ocb.webp" alt="OCB Construction"></div>
+        <div class="acc-badge client-badge"><img src="/assets/clients/denville.webp" alt="Denville Interiors"></div>
+        <div class="acc-badge client-badge"><img src="/assets/clients/property-mgmt-hampshire.webp" alt="Property Management Hampshire"></div>
+      </div>
+      <div class="acc-set" aria-hidden="true">
+        <div class="acc-badge client-badge"><img src="/assets/clients/dhl.webp" alt=""></div>
+        <div class="acc-badge client-badge"><img src="/assets/clients/southbank.webp" alt=""></div>
+        <div class="acc-badge client-badge"><img src="/assets/clients/environment-agency.webp" alt=""></div>
+        <div class="acc-badge client-badge"><img src="/assets/clients/gratte-brothers.webp" alt=""></div>
+        <div class="acc-badge client-badge"><img src="/assets/clients/coinstreet.webp" alt=""></div>
+        <div class="acc-badge client-badge"><img src="/assets/clients/hunter-hyland.webp" alt=""></div>
+        <div class="acc-badge client-badge"><img src="/assets/clients/penningtons.webp" alt=""></div>
+        <div class="acc-badge client-badge"><img src="/assets/clients/easigrass.webp" alt=""></div>
+        <div class="acc-badge client-badge"><img src="/assets/clients/ocb.webp" alt=""></div>
+        <div class="acc-badge client-badge"><img src="/assets/clients/denville.webp" alt=""></div>
+        <div class="acc-badge client-badge"><img src="/assets/clients/property-mgmt-hampshire.webp" alt=""></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ACCREDITATIONS ============ -->
+<section class="accs" id="accreditations">
+  <div class="container">
+    <div class="accs-head">
+      <span class="eyebrow">Accreditations &amp; memberships</span>
+      <h2 class="section-title">Audited. Verified. On the record.</h2>
+    </div>
+  </div>
+
+  <div class="acc-marquee" aria-label="Accreditation logos">
+    <div class="acc-track">
+      <!-- two copies of the same set for seamless infinite scroll -->
+      <div class="acc-set">
+        <div class="acc-badge"><img src="/assets/acc/chas.webp" alt="CHAS Accredited Contractor"></div>
+        <div class="acc-badge"><img src="/assets/acc/safe-contractor.webp" alt="SafeContractor by Alcumus"></div>
+        <div class="acc-badge"><img src="/assets/acc/ssip.webp" alt="SSIP — Safety Schemes in Procurement"></div>
+        <div class="acc-badge"><img src="/assets/acc/smas.webp" alt="SMAS Worksafe"></div>
+        <div class="acc-badge"><img src="/assets/acc/citb.webp" alt="CITB Registered"></div>
+        <div class="acc-badge"><img src="/assets/acc/cscs.webp" alt="CSCS — Construction Skills Certification Scheme"></div>
+        <div class="acc-badge"><img src="/assets/acc/npors.webp" alt="NPORS Registered"></div>
+        <div class="acc-badge"><img src="/assets/acc/ipaf.webp" alt="IPAF"></div>
+      </div>
+      <div class="acc-set" aria-hidden="true">
+        <div class="acc-badge"><img src="/assets/acc/chas.webp" alt=""></div>
+        <div class="acc-badge"><img src="/assets/acc/safe-contractor.webp" alt=""></div>
+        <div class="acc-badge"><img src="/assets/acc/ssip.webp" alt=""></div>
+        <div class="acc-badge"><img src="/assets/acc/smas.webp" alt=""></div>
+        <div class="acc-badge"><img src="/assets/acc/citb.webp" alt=""></div>
+        <div class="acc-badge"><img src="/assets/acc/cscs.webp" alt=""></div>
+        <div class="acc-badge"><img src="/assets/acc/npors.webp" alt=""></div>
+        <div class="acc-badge"><img src="/assets/acc/ipaf.webp" alt=""></div>
+      </div>
+    </div>
+  </div>
+</section>
+</BaseLayout>

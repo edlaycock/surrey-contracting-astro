@@ -1,0 +1,151 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ServiceSchema from '../components/ServiceSchema.astro';
+---
+<BaseLayout
+  title="Groundworks Services — Surrey Contracting Limited"
+  description="Professional groundworks contractor in Surrey — foundations, drainage, excavation, site preparation and concrete works."
+  path="/groundworks"
+  active="services"
+>
+  <ServiceSchema slot="head" name="Groundworks" slug="groundworks" description="Professional groundworks contractor in Surrey — foundations, drainage, excavation, site preparation and concrete works." />
+
+<section class="page-hero">
+  <div class="page-hero-bg" aria-hidden="true">
+    <div class="page-hero-img" style="background-image:url('/assets/img/groundworks.webp')"></div>
+    <div class="page-hero-vignette"></div>
+  </div>
+  <div class="container page-hero-inner">
+    <nav class="crumbs" aria-label="Breadcrumb">
+      <a href="/index">Home</a>
+      <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 6l6 6-6 6"/></svg>
+      <a href="/services">Services</a>
+      <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 6l6 6-6 6"/></svg>
+      <span>Groundworks</span>
+    </nav>
+    <h1 class="page-title">Groundworks Services</h1>
+    <p class="page-lede">Professional groundworks contractor in Surrey — foundations, drainage, excavation, site preparation and concrete works.</p>
+  </div>
+</section>
+
+<section class="page-section">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow">Groundworks</span>
+      <h2 class="section-title">Expert groundworks from foundations to drainage.</h2>
+      <p class="section-lede">Surrey Contracting offers a full range of groundworks services to commercial and domestic clients across Surrey and the South East. With our highly skilled team of operatives and over 15 years of industry experience, you can be sure your project will be delivered safely, on time and on budget. Our helpful, friendly and experienced team can assist, advise and guide you on your project no matter how small or complex. At Surrey Contracting, health and safety is central to everything we do — with project-specific risk assessments and method statements that are continuously monitored and updated.</p>
+    </div>
+  </div>
+</section>
+
+<section class="svc-detail">
+  <div class="container svc-detail-grid">
+    <div class="svc-detail-media">
+      <div class="svc-detail-photo" style="background-image:url('/assets/img/services/groundworks-foundations.webp')"></div>
+    </div>
+    <div class="svc-detail-copy">
+      <h2 class="section-title">Foundations</h2>
+      <p class="lede-dark">Our team handles various types of foundations, from simple concrete slabs to strip foundations on a domestic extension to more complex engineered foundations for large commercial structures. We work to engineer's specifications and can advise on the most suitable foundation solution for your ground conditions. Whether you need trench fill, strip foundations, piled caps or raft foundations, our experienced team delivers accurate, level foundations that form the solid base your project needs. We also carry out all associated works including formwork, steel fixing and concrete placement.</p>
+      <ul class="feature-list">
+        <li>Strip foundations</li>
+        <li>Trench fill foundations</li>
+        <li>Piled caps</li>
+        <li>Raft foundations</li>
+        <li>Concrete slabs</li>
+        <li>Formwork &amp; steel fixing</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="svc-detail svc-detail-alt">
+  <div class="container svc-detail-grid svc-detail-reverse">
+    <div class="svc-detail-media">
+      <div class="svc-detail-photo" style="background-image:url('/assets/img/services/groundworks-trench.jpg')"></div>
+    </div>
+    <div class="svc-detail-copy">
+      <h2 class="section-title">Trench Works &amp; Drainage</h2>
+      <p class="lede-dark">Surrey Contracting coordinates and carries out trenching works for new utilities across Surrey and the South East. From foul and surface water drainage to gas, water and electrical service ducting, we handle the full scope of below-ground infrastructure. Our drainage installation services include soakaway construction, manhole and inspection chamber installation, and connection to existing mains drainage. We work closely with utility companies and building control to ensure all installations meet current regulations and are signed off first time.</p>
+      <ul class="feature-list">
+        <li>Foul &amp; surface water drainage</li>
+        <li>Soakaway construction</li>
+        <li>Manhole &amp; chamber installation</li>
+        <li>Service ducting (gas, water, electric)</li>
+        <li>Utility connections</li>
+        <li>Building control compliance</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="svc-detail">
+  <div class="container svc-detail-grid">
+    <div class="svc-detail-media">
+      <div class="svc-detail-photo" style="background-image:url('/assets/img/services/groundworks-siteprep.jpg')"></div>
+    </div>
+    <div class="svc-detail-copy">
+      <h2 class="section-title">Site Preparation</h2>
+      <p class="lede-dark">We offer comprehensive site preparation services using the latest equipment and machinery, ensuring your site is ready for the next phase of construction. This includes stripping topsoil and stockpiling for reuse, establishing site levels, installing temporary access roads and hardstanding areas, and carrying out any necessary ground stabilisation. Our site preparation works are planned carefully to minimise waste and maximise the reuse of materials on site wherever possible.</p>
+      <ul class="feature-list">
+        <li>Topsoil strip &amp; stockpiling</li>
+        <li>Site levelling</li>
+        <li>Temporary access roads</li>
+        <li>Ground stabilisation</li>
+        <li>Muck-away &amp; disposal</li>
+        <li>Material reuse</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="svc-detail svc-detail-alt">
+  <div class="container svc-detail-grid svc-detail-reverse">
+    <div class="svc-detail-media">
+      <div class="svc-detail-photo" style="background-image:url('/assets/img/services/groundworks-excavation.jpg')"></div>
+    </div>
+    <div class="svc-detail-copy">
+      <h2 class="section-title">Excavations</h2>
+      <p class="lede-dark">With over a decade of operational success meeting the demands of our clients, our excavation services cover everything from small residential digs to large commercial schemes. We operate a range of excavators from 1.5-tonne micro diggers for restricted access work through to 22-tonne machines for major earthmoving operations. All our operators are fully trained, qualified and insured, ensuring safe and efficient operation on every site.</p>
+      <ul class="feature-list">
+        <li>Residential excavations</li>
+        <li>Commercial excavations</li>
+        <li>Restricted-access micro diggers</li>
+        <li>Bulk earthmoving</li>
+        <li>Qualified &amp; insured operators</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="svc-detail">
+  <div class="container svc-detail-grid">
+    <div class="svc-detail-media">
+      <div class="svc-detail-photo" style="background-image:url('/assets/img/services/groundworks-agricultural.jpg')"></div>
+    </div>
+    <div class="svc-detail-copy">
+      <h2 class="section-title">Agricultural Groundworks</h2>
+      <p class="lede-dark">Surrey Contracting provides specialist agricultural groundworks services including new access track installation, surface water drainage systems, fencing and gates, yard concreting and land improvement works. We understand the unique requirements of agricultural clients and work around seasonal schedules to minimise disruption to farming operations.</p>
+      <ul class="feature-list">
+        <li>Access track installation</li>
+        <li>Surface water drainage</li>
+        <li>Fencing &amp; gates</li>
+        <li>Yard concreting</li>
+        <li>Land improvement</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="cta-strip">
+  <div class="container cta-strip-row">
+    <div>
+      <h3>Got a groundworks project to discuss?</h3>
+      <p>Free measured visit within 5 working days, itemised proposal soon after.</p>
+    </div>
+    <div class="cta-strip-ctas">
+      <a href="/contact" class="btn btn-yellow">Request a quote</a>
+      <a href="tel:01932932650" class="btn btn-ghost-light">01932 932650</a>
+    </div>
+  </div>
+</section>
+</BaseLayout>

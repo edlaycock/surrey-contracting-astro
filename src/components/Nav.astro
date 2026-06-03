@@ -1,0 +1,66 @@
+---
+interface Props {
+  active?: string;
+}
+const { active } = Astro.props;
+const cur = (key: string) => (active === key ? 'page' : undefined);
+---
+<header class="nav" id="nav">
+  <div class="container nav-row">
+    <a href="/" class="brand" aria-label="Surrey Contracting home">
+      <img src="/assets/logo-transparent.png" alt="Surrey Contracting Limited" class="brand-logo">
+    </a>
+
+    <nav class="nav-links" aria-label="Primary">
+      <div class="nav-item has-dropdown">
+        <a href="/services" class="nav-link nav-link-toggle" aria-current={cur('services')}>
+          Services
+          <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" class="nav-caret" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+        </a>
+        <div class="nav-dropdown" role="menu">
+          <a href="/demolition" role="menuitem">Demolition</a>
+          <a href="/groundworks" role="menuitem">Groundworks</a>
+          <a href="/earthworks" role="menuitem">Bulk Earthworks</a>
+          <a href="/surfacing" role="menuitem">Commercial Surfacing</a>
+        </div>
+      </div>
+      <a href="/health-safety" class="nav-link" aria-current={cur('health-safety')}>Health &amp; Safety</a>
+      <a href="/sectors" class="nav-link" aria-current={cur('sectors')}>Sectors</a>
+      <a href="/projects" class="nav-link" aria-current={cur('projects')}>Projects</a>
+      <a href="/about" class="nav-link" aria-current={cur('about')}>About Us</a>
+      <a href="/contact" class="nav-link" aria-current={cur('contact')}>Contact Us</a>
+    </nav>
+
+    <div class="nav-cta">
+      <a href="/contact" class="btn btn-yellow">Request Quote</a>
+    </div>
+
+    <a href="tel:01932932650" class="nav-mobile-icon" aria-label="Call us"><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg></a>
+    <a href="/contact" class="nav-mobile-icon" aria-label="Contact us"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg></a>
+    <button class="nav-toggle" aria-label="Open menu" id="navToggle">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+
+  <!-- Mobile drawer -->
+  <div class="nav-drawer" id="navDrawer" hidden>
+    <div class="drawer-group">
+      <button class="drawer-toggle" type="button" data-drawer-toggle aria-expanded="false">
+        Services
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+      </button>
+      <div class="drawer-sub" hidden>
+        <a href="/demolition">Demolition</a>
+        <a href="/groundworks">Groundworks</a>
+        <a href="/earthworks">Bulk Earthworks</a>
+        <a href="/surfacing">Commercial Surfacing</a>
+      </div>
+    </div>
+    <a href="/health-safety">Health &amp; Safety</a>
+    <a href="/sectors">Sectors</a>
+    <a href="/projects">Projects</a>
+    <a href="/about">About Us</a>
+    <a href="/contact">Contact Us</a>
+    <a href="/contact" class="btn btn-yellow mobile-cta">Request Quote</a>
+  </div>
+</header>
