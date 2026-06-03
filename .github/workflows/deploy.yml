@@ -30,18 +30,20 @@ jobs:
           PUBLIC_SANITY_DATASET: production
 
       # Ship the built app + the runtime files the Node server needs.
+      # Skips automatically until the VPS secrets are configured.
       - name: Rsync release to VPS
+        if: ${{ secrets.SSH_HOST != '' }}
         uses: burnett01/rsync-deployments@7.0.2
         with:
-          switches: -avzr --delete
+          switches: -avzr --delete --exclude=.git --exclude=node_modules --exclude=studio --exclude=.astro
           path: ./
           remote_path: ${{ secrets.DEPLOY_PATH }}/releases/${{ github.sha }}/
           remote_host: ${{ secrets.SSH_HOST }}
           remote_user: ${{ secrets.SSH_USER }}
           remote_key: ${{ secrets.SSH_KEY }}
-          exclude: /.git, /node_modules, /studio
 
       - name: Activate release, install runtime deps, reload PM2
+        if: ${{ secrets.SSH_HOST != '' }}
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.SSH_HOST }}
