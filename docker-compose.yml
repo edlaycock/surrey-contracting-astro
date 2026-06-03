@@ -1,0 +1,16 @@
+# Surrey Contracting — isolated app container.
+# Binds ONLY to 127.0.0.1:4321 (nginx proxies the public domain to it).
+# Does not join any shared network, does not touch 80/443, no shared volumes.
+services:
+  surrey-contracting:
+    build: .
+    container_name: surrey-contracting
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:4321:4321"
+    env_file:
+      - .env
+    environment:
+      HOST: "0.0.0.0"
+      PORT: "4321"
+      NODE_ENV: "production"

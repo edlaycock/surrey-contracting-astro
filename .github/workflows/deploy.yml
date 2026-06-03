@@ -33,20 +33,20 @@ jobs:
           PUBLIC_SANITY_PROJECT_ID: mhqgpyb9
           PUBLIC_SANITY_DATASET: production
 
-      # Ship the built app + the runtime files the Node server needs.
-      # Skips automatically until the VPS secrets are configured.
-      - name: Rsync release to VPS
+      # Ship source to the VPS; the Docker image is built there.
+      # --exclude=.env protects the server-only secrets file from --delete.
+      - name: Rsync source to VPS
         if: ${{ env.SSH_HOST != '' }}
         uses: burnett01/rsync-deployments@7.0.2
         with:
-          switches: -avzr --delete --exclude=.git --exclude=node_modules --exclude=studio --exclude=.astro
+          switches: -avzr --delete --exclude=.git --exclude=node_modules --exclude=dist --exclude=.astro --exclude=studio --exclude=.env
           path: ./
-          remote_path: ${{ secrets.DEPLOY_PATH }}/releases/${{ github.sha }}/
+          remote_path: ${{ secrets.DEPLOY_PATH }}/
           remote_host: ${{ secrets.SSH_HOST }}
           remote_user: ${{ secrets.SSH_USER }}
           remote_key: ${{ secrets.SSH_KEY }}
 
-      - name: Activate release, install runtime deps, reload PM2
+      - name: Build & (re)start the isolated container
         if: ${{ env.SSH_HOST != '' }}
         uses: appleboy/ssh-action@v1.0.3
         with:
@@ -55,13 +55,6 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           script: |
             set -e
-            BASE="${{ secrets.DEPLOY_PATH }}"
-            REL="$BASE/releases/${{ github.sha }}"
-            cd "$REL"
-            npm ci --omit=dev
-            ln -sfn "$REL" "$BASE/current"
-            cd "$BASE/current"
-            pm2 reload deploy/ecosystem.config.cjs --update-env || pm2 start deploy/ecosystem.config.cjs
-            pm2 save
-            # keep the last 5 releases
-            ls -dt "$BASE"/releases/*/ | tail -n +6 | xargs -r rm -rf
+            cd "${{ secrets.DEPLOY_PATH }}"
+            docker compose up -d --build
+            docker compose ps
