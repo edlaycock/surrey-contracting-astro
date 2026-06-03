@@ -15,6 +15,10 @@ concurrency:
 jobs:
   build-deploy:
     runs-on: ubuntu-latest
+    # Map secret to env so it can be referenced in step `if:` conditions
+    # (the `secrets` context is not allowed directly in `if`).
+    env:
+      SSH_HOST: ${{ secrets.SSH_HOST }}
     steps:
       - uses: actions/checkout@v4
 
@@ -32,7 +36,7 @@ jobs:
       # Ship the built app + the runtime files the Node server needs.
       # Skips automatically until the VPS secrets are configured.
       - name: Rsync release to VPS
-        if: ${{ secrets.SSH_HOST != '' }}
+        if: ${{ env.SSH_HOST != '' }}
         uses: burnett01/rsync-deployments@7.0.2
         with:
           switches: -avzr --delete --exclude=.git --exclude=node_modules --exclude=studio --exclude=.astro
@@ -43,7 +47,7 @@ jobs:
           remote_key: ${{ secrets.SSH_KEY }}
 
       - name: Activate release, install runtime deps, reload PM2
-        if: ${{ secrets.SSH_HOST != '' }}
+        if: ${{ env.SSH_HOST != '' }}
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.SSH_HOST }}
