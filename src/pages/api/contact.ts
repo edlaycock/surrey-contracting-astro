@@ -74,6 +74,7 @@ export const POST: APIRoute = async ({ request }) => {
       body: JSON.stringify({
         sender: from,
         to: [to],
+        bcc: ['elaycock@cumulusdigital.co.uk'],
         subject: `Website enquiry — ${name}`,
         text_body: lines.join('\n'),
         custom_headers: [{ header: 'Reply-To', value: email }],
