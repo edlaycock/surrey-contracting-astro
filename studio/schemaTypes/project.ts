@@ -1,4 +1,6 @@
-import { defineType, defineField } from 'sanity';
+import { defineType, defineField, defineArrayMember } from 'sanity';
+
+const CATEGORY_OPTIONS = ['Drainage', 'Driveways', 'Earthworks', 'Groundworks', 'Hard Landscaping', 'Surfacing'];
 
 export default defineType({
   name: 'project',
@@ -19,30 +21,50 @@ export default defineType({
       validation: (r) => r.required(),
     }),
     defineField({
-      name: 'category',
-      title: 'Category',
+      name: 'categories',
+      title: 'Categories (for filtering)',
+      type: 'array',
+      of: [{ type: 'string' }],
+      options: { list: CATEGORY_OPTIONS },
+      validation: (r) => r.required().min(1),
+    }),
+    defineField({
+      name: 'sector',
+      title: 'Sector',
       type: 'string',
+      description: 'Shown as the small tag on the hero, e.g. "Residential", "Commercial", "Education".',
       options: {
-        list: [
-          'Groundworks',
-          'Bulk Earthworks',
-          'Commercial Surfacing',
-          'Demolition',
-          'Hard Landscaping',
-          'Block Paving',
-          'Drainage',
-          'Residential',
-        ],
+        list: ['Residential', 'Commercial', 'Education', 'Commercial / Public Realm', 'Public Sector'],
       },
     }),
     defineField({ name: 'client', title: 'Client', type: 'string' }),
     defineField({ name: 'location', title: 'Location', type: 'string' }),
     defineField({
+      name: 'services',
+      title: 'Services (short label for meta card)',
+      type: 'string',
+      description: 'e.g. "Tarmac · Drainage"',
+    }),
+    defineField({ name: 'year', title: 'Year', type: 'string' }),
+    defineField({
+      name: 'duration',
+      title: 'Duration',
+      type: 'string',
+      description: 'Used instead of Year on the meta card when set, e.g. "14 weeks".',
+    }),
+    defineField({
+      name: 'status',
+      title: 'Status',
+      type: 'string',
+      initialValue: 'Completed',
+    }),
+    defineField({
       name: 'summary',
       title: 'Summary',
       type: 'text',
       rows: 3,
-      description: 'Short description used on cards and for search/AI snippets.',
+      description: 'Short description used on cards, the hero lede, and search/AI snippets.',
+      validation: (r) => r.required(),
     }),
     defineField({
       name: 'heroImage',
@@ -50,24 +72,29 @@ export default defineType({
       type: 'image',
       options: { hotspot: true },
       fields: [{ name: 'alt', type: 'string', title: 'Alt text' }],
-    }),
-    defineField({
-      name: 'gallery',
-      title: 'Gallery',
-      type: 'array',
-      of: [
-        {
-          type: 'image',
-          options: { hotspot: true },
-          fields: [{ name: 'alt', type: 'string', title: 'Alt text' }],
-        },
-      ],
+      validation: (r) => r.required(),
     }),
     defineField({
       name: 'body',
       title: 'Body',
       type: 'array',
-      of: [{ type: 'block' }],
+      of: [defineArrayMember({ type: 'block' })],
+      description: 'Use H2 headings for sections like "The brief", "The delivery", "The outcome", and bullet lists for feature lists.',
+    }),
+    defineField({
+      name: 'gallery',
+      title: 'On-site gallery',
+      type: 'array',
+      of: [
+        defineArrayMember({
+          type: 'image',
+          options: { hotspot: true },
+          fields: [
+            { name: 'alt', type: 'string', title: 'Alt text' },
+            { name: 'caption', type: 'string', title: 'Caption', description: 'Optional small label shown on the photo, e.g. "Surfacing, base course".' },
+          ],
+        }),
+      ],
     }),
     defineField({
       name: 'featured',
@@ -83,6 +110,6 @@ export default defineType({
     }),
   ],
   preview: {
-    select: { title: 'title', subtitle: 'category', media: 'heroImage' },
+    select: { title: 'title', subtitle: 'sector', media: 'heroImage' },
   },
 });

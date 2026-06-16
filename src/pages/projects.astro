@@ -1,5 +1,9 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { getProjects, urlFor } from '../lib/sanity';
+
+const projects = await getProjects();
+const categories = [...new Set(projects.flatMap((p) => p.categories ?? []))].sort();
 ---
 <BaseLayout
   title="Our Projects | Surrey Contracting Limited"
@@ -39,136 +43,30 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       <div class="filter-group">
         <span class="filter-label">Category</span>
         <button class="chip is-active" data-filter="cat" data-value="All">All</button>
-        <button class="chip " data-filter="cat" data-value="Drainage">Drainage</button>
-        <button class="chip " data-filter="cat" data-value="Driveways">Driveways</button>
-        <button class="chip " data-filter="cat" data-value="Earthworks">Earthworks</button>
-        <button class="chip " data-filter="cat" data-value="Groundworks">Groundworks</button>
-        <button class="chip " data-filter="cat" data-value="Hard Landscaping">Hard Landscaping</button>
-        <button class="chip " data-filter="cat" data-value="Surfacing">Surfacing</button>
+        {categories.map((cat) => (
+          <button class="chip" data-filter="cat" data-value={cat}>{cat}</button>
+        ))}
       </div>
     </div>
 
     <div class="gallery-grid" id="galleryGrid">
-      <article class="gallery-card" data-cats="Driveways,Surfacing">
-        <a href="/project-tarmac-driveway" class="gallery-link">
-          <div class="gallery-photo" style="background-image:url('/assets/img/projects/tarmac-driveway.jpg')">
-            <span class="gallery-tag">Surfacing</span>
-          </div>
-          <div class="gallery-body">
-            <span class="gallery-meta">Driveways · Surfacing · West Humble, Dorking</span>
-            <h3>Tarmac Driveway</h3>
-            <span class="gallery-cta">View project →</span>
-          </div>
-        </a>
-      </article>
-      <article class="gallery-card" data-cats="Driveways,Surfacing">
-        <a href="/project-tarmac-driveway-fetcham" class="gallery-link">
-          <div class="gallery-photo" style="background-image:url('/assets/img/projects/tarmac-driveway-fetcham.jpg')">
-            <span class="gallery-tag">Surfacing</span>
-          </div>
-          <div class="gallery-body">
-            <span class="gallery-meta">Driveways · Surfacing · Fetcham, Surrey</span>
-            <h3>Tarmac Driveway, Fetcham, Surrey</h3>
-            <span class="gallery-cta">View project →</span>
-          </div>
-        </a>
-      </article>
-      <article class="gallery-card" data-cats="Surfacing">
-        <a href="/project-tarmac-repairs-sutton" class="gallery-link">
-          <div class="gallery-photo" style="background-image:url('/assets/img/projects/tarmac-repairs-sutton.jpg')">
-            <span class="gallery-tag">Surfacing</span>
-          </div>
-          <div class="gallery-body">
-            <span class="gallery-meta">Surfacing · Sutton, London</span>
-            <h3>Tarmac Repairs, Sutton High School</h3>
-            <span class="gallery-cta">View project →</span>
-          </div>
-        </a>
-      </article>
-      <article class="gallery-card" data-cats="Groundworks">
-        <a href="/project-southbank-centre" class="gallery-link">
-          <div class="gallery-photo" style="background-image:url('/assets/img/projects/southbank-centre.jpg')">
-            <span class="gallery-tag">Groundworks</span>
-          </div>
-          <div class="gallery-body">
-            <span class="gallery-meta">Groundworks · Southbank Centre, London</span>
-            <h3>Southbank Centre</h3>
-            <span class="gallery-cta">View project →</span>
-          </div>
-        </a>
-      </article>
-      <article class="gallery-card" data-cats="Earthworks,Groundworks">
-        <a href="/project-site-clearance-earthworks" class="gallery-link">
-          <div class="gallery-photo" style="background-image:url('/assets/img/projects/site-clearance-earthworks.jpg')">
-            <span class="gallery-tag">Earthworks</span>
-          </div>
-          <div class="gallery-body">
-            <span class="gallery-meta">Earthworks · Groundworks · Farnham, Surrey</span>
-            <h3>Site Clearance and Earthworks</h3>
-            <span class="gallery-cta">View project →</span>
-          </div>
-        </a>
-      </article>
-      <article class="gallery-card" data-cats="Earthworks,Groundworks">
-        <a href="/project-domestic-earthworks" class="gallery-link">
-          <div class="gallery-photo" style="background-image:url('/assets/img/projects/domestic-earthworks.jpg')">
-            <span class="gallery-tag">Earthworks</span>
-          </div>
-          <div class="gallery-body">
-            <span class="gallery-meta">Earthworks · Groundworks · Horsell, Woking</span>
-            <h3>Domestic Earthworks Project</h3>
-            <span class="gallery-cta">View project →</span>
-          </div>
-        </a>
-      </article>
-      <article class="gallery-card" data-cats="Drainage,Groundworks">
-        <a href="/project-drainage-ascot" class="gallery-link">
-          <div class="gallery-photo" style="background-image:url('/assets/img/projects/drainage-ascot.jpg')">
-            <span class="gallery-tag">Drainage</span>
-          </div>
-          <div class="gallery-body">
-            <span class="gallery-meta">Drainage · Groundworks · Ascot, Surrey</span>
-            <h3>Drainage Installation, Ascot</h3>
-            <span class="gallery-cta">View project →</span>
-          </div>
-        </a>
-      </article>
-      <article class="gallery-card" data-cats="Hard Landscaping">
-        <a href="/project-landscape-guildford" class="gallery-link">
-          <div class="gallery-photo" style="background-image:url('/assets/img/projects/landscape-guildford.jpg')">
-            <span class="gallery-tag">Hard Landscaping</span>
-          </div>
-          <div class="gallery-body">
-            <span class="gallery-meta">Hard Landscaping · Guildford, Surrey</span>
-            <h3>Residential Re-landscape, Guildford, Surrey</h3>
-            <span class="gallery-cta">View project →</span>
-          </div>
-        </a>
-      </article>
-      <article class="gallery-card" data-cats="Groundworks">
-        <a href="/project-concrete-base-cobham" class="gallery-link">
-          <div class="gallery-photo" style="background-image:url('/assets/img/projects/concrete-base-cobham.jpg')">
-            <span class="gallery-tag">Groundworks</span>
-          </div>
-          <div class="gallery-body">
-            <span class="gallery-meta">Groundworks · Cobham, Surrey</span>
-            <h3>Concrete Base Installation, Premier Inn Cobham</h3>
-            <span class="gallery-cta">View project →</span>
-          </div>
-        </a>
-      </article>
-      <article class="gallery-card" data-cats="Hard Landscaping">
-        <a href="/project-complete-landscape" class="gallery-link">
-          <div class="gallery-photo" style="background-image:url('/assets/img/projects/complete-landscape.jpg')">
-            <span class="gallery-tag">Hard Landscaping</span>
-          </div>
-          <div class="gallery-body">
-            <span class="gallery-meta">Hard Landscaping · Virginia Water, Surrey</span>
-            <h3>Complete Re-landscape</h3>
-            <span class="gallery-cta">View project →</span>
-          </div>
-        </a>
-      </article>
+      {projects.map((p) => (
+        <article class="gallery-card" data-cats={(p.categories ?? []).join(',')}>
+          <a href={`/projects/${p.slug}`} class="gallery-link">
+            <div
+              class="gallery-photo"
+              style={`background-image:url('${p.heroImage ? urlFor(p.heroImage).width(700).height(500).fit('crop').url() : ''}')`}
+            >
+              {p.categories?.[0] && <span class="gallery-tag">{p.categories[0]}</span>}
+            </div>
+            <div class="gallery-body">
+              <span class="gallery-meta">{[...(p.categories ?? []), p.location].filter(Boolean).join(' · ')}</span>
+              <h3>{p.title}</h3>
+              <span class="gallery-cta">View project →</span>
+            </div>
+          </a>
+        </article>
+      ))}
     </div>
   </div>
 </section>
@@ -185,4 +83,5 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     </div>
   </div>
 </section>
+
 </BaseLayout>

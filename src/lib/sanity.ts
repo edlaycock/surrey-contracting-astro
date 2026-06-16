@@ -16,23 +16,34 @@ export const sanity: SanityClient = createClient({
 const builder = imageUrlBuilder(sanity);
 export const urlFor = (source: unknown) => builder.image(source as never);
 
+export type GalleryImage = {
+  asset: unknown;
+  alt?: string;
+  caption?: string;
+};
+
 export type Project = {
   _id: string;
   title: string;
   slug: string;
-  category?: string;
-  location?: string;
+  categories?: string[];
+  sector?: string;
   client?: string;
+  location?: string;
+  services?: string;
+  year?: string;
+  duration?: string;
+  status?: string;
   summary?: string;
   heroImage?: unknown;
-  gallery?: unknown[];
+  gallery?: GalleryImage[];
   body?: unknown;
   featured?: boolean;
 };
 
 const PROJECT_FIELDS = `
-  _id, title, "slug": slug.current, category, location, client, summary,
-  heroImage, featured
+  _id, title, "slug": slug.current, categories, sector, client, location,
+  services, year, duration, status, summary, heroImage, featured
 `;
 
 // Fail-fast timeout so a hanging/blocked network never stalls the build.

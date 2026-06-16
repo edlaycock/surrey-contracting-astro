@@ -12,82 +12,131 @@ const { slug } = Astro.params;
 const project = await getProject(slug!);
 if (!project) return Astro.redirect('/projects');
 
+const allProjects = await getProjects();
+
 const hero = project.heroImage
   ? urlFor(project.heroImage).width(1600).height(900).fit('crop').url()
   : '/assets/img/groundworks.webp';
 const bodyHtml = project.body ? toHTML(project.body as never) : '';
-const gallery = (project.gallery ?? []).map((g) =>
-  urlFor(g).width(1200).height(800).fit('crop').url(),
-);
+const gallery = (project.gallery ?? []).map((g) => ({
+  src: urlFor(g.asset).width(900).height(700).fit('crop').url(),
+  caption: g.caption,
+}));
+
+const heroTag = [project.sector, project.categories?.[0]].filter(Boolean).join(' · ');
+
+const related = allProjects.filter((p) => p.slug !== project.slug).slice(0, 3);
 ---
 <BaseLayout
   title={`${project.title} | Surrey Contracting Limited`}
   description={project.summary || `${project.title}, a project delivered by Surrey Contracting Limited.`}
   path={`/projects/${project.slug}`}
+  ogTitle={`${project.title} | Surrey Contracting Limited`}
   active="projects"
 >
-  <section class="page-hero">
-    <div class="page-hero-bg" aria-hidden="true">
-      <div class="page-hero-img" style={`background-image:url('${hero}')`}></div>
-      <div class="page-hero-vignette"></div>
+
+<section class="proj-hero">
+  <div class="page-hero-bg" aria-hidden="true">
+    <div class="page-hero-img" style={`background-image:url('${hero}')`}></div>
+    <div class="page-hero-vignette"></div>
+  </div>
+  <div class="container proj-hero-inner">
+    <nav class="crumbs" aria-label="Breadcrumb">
+      <a href="/">Home</a>
+      <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 6l6 6-6 6"/></svg>
+      <a href="/projects">Projects</a>
+      <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 6l6 6-6 6"/></svg>
+      <span>{project.title}</span>
+    </nav>
+    {heroTag && <span class="proj-hero-tag">{heroTag}</span>}
+    <h1 class="page-title">{project.title}</h1>
+    {project.summary && <p class="page-lede">{project.summary}</p>}
+  </div>
+</section>
+
+<section class="page-section">
+  <div class="container proj-detail-grid">
+    <aside class="proj-meta-card">
+      <h4>Project info</h4>
+      <dl class="proj-meta-list">
+        {project.client && <div><dt>Client</dt><dd>{project.client}</dd></div>}
+        {project.location && <div><dt>Location</dt><dd>{project.location}</dd></div>}
+        {project.sector && <div><dt>Sector</dt><dd>{project.sector}</dd></div>}
+        {project.services && <div><dt>Services</dt><dd>{project.services}</dd></div>}
+        {project.duration
+          ? <div><dt>Duration</dt><dd>{project.duration}</dd></div>
+          : project.year && <div><dt>Year</dt><dd>{project.year}</dd></div>}
+        {project.status && <div><dt>Status</dt><dd><span class="proj-status">{project.status}</span></dd></div>}
+      </dl>
+      <a href="/contact" class="btn btn-yellow btn-block">Discuss a similar project →</a>
+    </aside>
+
+    <div class="proj-body">
+      {bodyHtml && <div class="rich-text" set:html={bodyHtml} />}
     </div>
-    <div class="container page-hero-inner">
-      <nav class="crumbs" aria-label="Breadcrumb">
-        <a href="/">Home</a>
-        <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 6l6 6-6 6"/></svg>
-        <a href="/projects">Projects</a>
-        <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 6l6 6-6 6"/></svg>
-        <span>{project.title}</span>
-      </nav>
-      <h1 class="page-title">{project.title}</h1>
-      {project.summary && <p class="page-lede">{project.summary}</p>}
+  </div>
+</section>
+
+{gallery.length > 0 && (
+  <section class="page-section page-section-grey">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">On site</span>
+        <h2 class="section-title">In progress &amp; on completion.</h2>
+      </div>
+      <div class="proj-gallery">
+        {gallery.map((g, i) => (
+          <div class={`proj-thumb ${i === 0 ? 'proj-thumb-lg' : ''}`} style={`background-image:url('${g.src}')`}>
+            {g.caption && <span class="ph-label">{g.caption}</span>}
+          </div>
+        ))}
+      </div>
     </div>
   </section>
+)}
 
+{related.length > 0 && (
   <section class="page-section">
     <div class="container">
-      <div class="proj-detail-meta">
-        {project.category && <span><strong>Service</strong>{project.category}</span>}
-        {project.location && <span><strong>Location</strong>{project.location}</span>}
-        {project.client && <span><strong>Client</strong>{project.client}</span>}
-      </div>
-
-      {bodyHtml && <div class="rich-text" set:html={bodyHtml} />}
-
-      {gallery.length > 0 && (
-        <div class="proj-gallery">
-          {gallery.map((src) => <img src={src} alt={project.title} loading="lazy" width="1200" height="800" />)}
+      <div class="section-head split">
+        <div>
+          <span class="eyebrow">More projects</span>
+          <h2 class="section-title">See another case study.</h2>
         </div>
-      )}
-
-      <p class="proj-detail-back">
-        <a href="/projects" class="btn btn-outline-dark">← Back to projects</a>
-      </p>
+        <a href="/projects" class="btn btn-outline-dark">All projects →</a>
+      </div>
+      <div class="gallery-grid">
+        {related.map((p) => (
+          <article class="gallery-card">
+            <a href={`/projects/${p.slug}`} class="gallery-link">
+              <div class="gallery-photo" style={`background-image:url('${p.heroImage ? urlFor(p.heroImage).width(600).height(450).fit('crop').url() : ''}')`}>
+                {p.categories?.[0] && <span class="gallery-tag">{p.categories[0]}</span>}
+              </div>
+              <div class="gallery-body">
+                <span class="gallery-meta">{[p.sector, p.location].filter(Boolean).join(' · ')}</span>
+                <h3>{p.title}</h3>
+                <span class="gallery-cta">View project →</span>
+              </div>
+            </a>
+          </article>
+        ))}
+      </div>
     </div>
   </section>
+)}
 </BaseLayout>
 
 <style>
-  .proj-detail-meta {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 32px;
-    padding-bottom: 28px;
-    margin-bottom: 32px;
-    border-bottom: 1px solid var(--border, #e5e5e5);
-  }
-  .proj-detail-meta span {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    font-size: 1.05rem;
-  }
-  .proj-detail-meta strong {
+  .proj-detail-meta,
+  .proj-meta-list { display: flex; flex-direction: column; gap: 14px; }
+  .proj-meta-list div { display: flex; flex-direction: column; gap: 2px; }
+  .proj-meta-list dt {
     font-size: 0.78rem;
     text-transform: uppercase;
     letter-spacing: 0.06em;
     color: var(--yellow, #e6a91a);
   }
+  .proj-meta-list dd { font-size: 1.05rem; margin: 0; }
   .rich-text :global(p) { margin: 0 0 1.1em; line-height: 1.7; }
   .rich-text :global(h2) { margin: 1.6em 0 0.5em; }
   .rich-text :global(ul) { margin: 0 0 1.1em 1.2em; }
@@ -97,11 +146,22 @@ const gallery = (project.gallery ?? []).map((g) =>
     gap: 16px;
     margin: 36px 0;
   }
-  .proj-gallery img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+  .proj-thumb {
+    position: relative;
+    aspect-ratio: 4/3;
+    background-size: cover;
+    background-position: center;
     border-radius: 12px;
   }
-  .proj-detail-back { margin-top: 32px; }
+  .proj-thumb-lg { grid-column: span 2; aspect-ratio: 16/9; }
+  .ph-label {
+    position: absolute;
+    left: 12px;
+    bottom: 12px;
+    background: rgba(0,0,0,0.65);
+    color: #fff;
+    font-size: 0.8rem;
+    padding: 4px 10px;
+    border-radius: 6px;
+  }
 </style>
