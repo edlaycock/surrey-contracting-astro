@@ -32,23 +32,29 @@ const client = createClient({
   useCdn: false,
 });
 
-const block = (children) => ({
+let keyCounter = 0;
+const nextKey = () => `k${(keyCounter++).toString(36)}${Math.random().toString(36).slice(2, 8)}`;
+
+const block = (text) => ({
   _type: 'block',
+  _key: nextKey(),
   style: 'normal',
-  children: [{ _type: 'span', text: children, marks: [] }],
+  children: [{ _type: 'span', _key: nextKey(), text, marks: [] }],
 });
 const heading = (text) => ({
   _type: 'block',
+  _key: nextKey(),
   style: 'h2',
-  children: [{ _type: 'span', text, marks: [] }],
+  children: [{ _type: 'span', _key: nextKey(), text, marks: [] }],
 });
 const bulletList = (items) =>
   items.map((text) => ({
     _type: 'block',
+    _key: nextKey(),
     style: 'normal',
     listItem: 'bullet',
     level: 1,
-    children: [{ _type: 'span', text, marks: [] }],
+    children: [{ _type: 'span', _key: nextKey(), text, marks: [] }],
   }));
 
 const projects = [
