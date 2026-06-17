@@ -10,12 +10,12 @@
 
 ## Key Pages
 - Homepage: https://surreycontracting.co.uk/
-- Services: https://surreycontracting.co.uk/services.html
-- Sectors: https://surreycontracting.co.uk/sectors.html
-- Projects: https://surreycontracting.co.uk/projects.html
-- About: https://surreycontracting.co.uk/about.html
-- Health & Safety: https://surreycontracting.co.uk/health-safety.html
-- Contact: https://surreycontracting.co.uk/contact.html
+- Services: https://surreycontracting.co.uk/services
+- Sectors: https://surreycontracting.co.uk/sectors
+- Projects: https://surreycontracting.co.uk/projects
+- About: https://surreycontracting.co.uk/about
+- Health & Safety: https://surreycontracting.co.uk/health-safety
+- Contact: https://surreycontracting.co.uk/contact
 
 ## Contact
 - Phone: 01932 932650
