@@ -2765,3 +2765,16 @@ a.contact-value:hover { color: var(--yellow-700); }
 @media (max-width: 640px) {
   .cookie-table th, .cookie-table td { padding: 8px 8px; font-size: 13px; }
 }
+
+/* ── AI answer block ── */
+.intro-answer { padding: 20px 0; background: var(--bg, #f7f7f5); border-bottom: 1px solid var(--border, #e5e5e5); }
+.intro-answer p { max-width: 860px; font-size: 0.97rem; line-height: 1.7; color: var(--mid, #444); margin: 0; }
+
+/* ── FAQ accordion ── */
+.faq-list { display: flex; flex-direction: column; gap: 12px; margin-top: 32px; }
+.faq-item { border: 1px solid var(--border, #e5e5e5); border-radius: 8px; overflow: hidden; background: #fff; }
+.faq-item summary { font-weight: 600; font-size: 1rem; padding: 16px 20px; cursor: pointer; list-style: none; display: flex; justify-content: space-between; align-items: center; }
+.faq-item summary::-webkit-details-marker { display: none; }
+.faq-item summary::after { content: '+'; font-size: 1.3rem; color: var(--yellow, #e6a91a); flex-shrink: 0; margin-left: 12px; }
+.faq-item[open] summary::after { content: '−'; }
+.faq-item p { padding: 0 20px 16px; margin: 0; color: var(--mid, #444); line-height: 1.7; font-size: 0.95rem; }

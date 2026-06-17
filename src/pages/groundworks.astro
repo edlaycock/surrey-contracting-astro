@@ -1,6 +1,38 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import ServiceSchema from '../components/ServiceSchema.astro';
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What groundworks services does Surrey Contracting provide?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Surrey Contracting provides a full range of groundworks services including strip, trench fill, raft and block-and-beam foundations, build to DPC, foul and surface water drainage, soakaway construction, manhole and chamber installation, service ducting, utility connections, site preparation, topsoil stripping, excavation and agricultural groundworks." }
+    },
+    {
+      "@type": "Question",
+      "name": "Can Surrey Contracting handle drainage and utility trenching?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Yes. Surrey Contracting delivers foul and surface water drainage, soakaway construction, manhole and inspection chamber installation, pipework, service ducting and connections to existing drainage systems for residential, commercial and developer projects." }
+    },
+    {
+      "@type": "Question",
+      "name": "Does Surrey Contracting do foundations for residential extensions?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Yes. Surrey Contracting carries out foundations for domestic extensions, new-build homes and commercial developments, including excavation, concrete placement, brickwork and blockwork to damp proof course level, working to approved drawings and engineer specifications." }
+    },
+    {
+      "@type": "Question",
+      "name": "Are Surrey Contracting's groundworks operatives CSCS qualified?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Yes. All groundworks operatives are fully trained and hold CSCS qualifications. Surrey Contracting also holds CHAS, SafeContractor and SSIP accreditation and provides up-to-date health and safety training to all staff." }
+    },
+    {
+      "@type": "Question",
+      "name": "What areas does Surrey Contracting cover for groundworks?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Surrey Contracting covers Surrey, London and the South East for groundworks, operating from its base near Leatherhead. Areas include Cobham, Guildford, Woking, Esher, Epsom, Weybridge, Reigate, Dorking, Kingston and the wider M25 corridor." }
+    }
+  ]
+};
 ---
 <BaseLayout
   title="Groundworks Services | Surrey Contracting Limited"
@@ -9,6 +41,7 @@ import ServiceSchema from '../components/ServiceSchema.astro';
   active="services"
 >
   <ServiceSchema slot="head" name="Groundworks" slug="groundworks" description="Professional groundworks contractor in Surrey, foundations, drainage, excavation, site preparation and concrete works." />
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify(faqSchema)} />
 
 <section class="page-hero">
   <div class="page-hero-bg" aria-hidden="true">
@@ -133,6 +166,37 @@ import ServiceSchema from '../components/ServiceSchema.astro';
         <li>Yard concreting</li>
         <li>Land improvement</li>
       </ul>
+    </div>
+  </div>
+</section>
+
+<section class="page-section page-section-grey">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow">Common questions</span>
+      <h2 class="section-title">Groundworks FAQs</h2>
+    </div>
+    <div class="faq-list">
+      <details class="faq-item">
+        <summary>What groundworks services does Surrey Contracting provide?</summary>
+        <p>Surrey Contracting provides a full range of groundworks services including strip, trench fill, raft and block-and-beam foundations, build to DPC, foul and surface water drainage, soakaway construction, manhole and chamber installation, service ducting, utility connections, site preparation, topsoil stripping, excavation and agricultural groundworks.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Can Surrey Contracting handle drainage and utility trenching?</summary>
+        <p>Yes. Surrey Contracting delivers foul and surface water drainage, soakaway construction, manhole and inspection chamber installation, pipework, service ducting and connections to existing drainage systems for residential, commercial and developer projects.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Does Surrey Contracting do foundations for residential extensions?</summary>
+        <p>Yes. Surrey Contracting carries out foundations for domestic extensions, new-build homes and commercial developments, including excavation, concrete placement, brickwork and blockwork to damp proof course level, working to approved drawings and engineer specifications.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Are Surrey Contracting's groundworks operatives CSCS qualified?</summary>
+        <p>Yes. All groundworks operatives are fully trained and hold CSCS qualifications. Surrey Contracting also holds CHAS, SafeContractor and SSIP accreditation and provides up-to-date health and safety training to all staff.</p>
+      </details>
+      <details class="faq-item">
+        <summary>What areas does Surrey Contracting cover for groundworks?</summary>
+        <p>Surrey Contracting covers Surrey, London and the South East for groundworks, operating from its base near Leatherhead. Areas include Cobham, Guildford, Woking, Esher, Epsom, Weybridge, Reigate, Dorking, Kingston and the wider M25 corridor.</p>
+      </details>
     </div>
   </div>
 </section>

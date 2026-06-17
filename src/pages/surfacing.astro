@@ -1,6 +1,38 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import ServiceSchema from '../components/ServiceSchema.astro';
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What commercial surfacing services does Surrey Contracting offer?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Surrey Contracting provides tarmac, resin-bound, block paving and concrete surfaces for car parks, access roads, industrial estates, distribution yards, schools, playgrounds and public spaces. Services also include reinstatement and repair, edging and kerbing, line marking, speed bumps and drainage." }
+    },
+    {
+      "@type": "Question",
+      "name": "Can Surrey Contracting resurface car parks and access roads in Surrey?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Yes. Surrey Contracting handles new-build car park construction and overlay or resurfacing of existing car parks. The team installs tarmac, resin-bound, block paving and concrete surfaces, along with line marking, speed bumps, bollards and drainage." }
+    },
+    {
+      "@type": "Question",
+      "name": "Do you carry out emergency surfacing repairs?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Yes. Surrey Contracting's reactive surfacing team carries permanent and temporary repair materials and responds quickly to urgent requirements including utility reinstatement, surface patch repairs and emergency resurfacing." }
+    },
+    {
+      "@type": "Question",
+      "name": "Can Surrey Contracting work at weekends or nights to minimise disruption?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Yes. Surrey Contracting offers phased delivery, weekend working and night-shift surfacing to minimise disruption to business operations, schools and public spaces." }
+    },
+    {
+      "@type": "Question",
+      "name": "What areas does Surrey Contracting cover for commercial surfacing?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Surrey Contracting covers Surrey, London and the South East for commercial surfacing, operating from its base between Cobham and Leatherhead. Areas include Guildford, Woking, Esher, Epsom, Weybridge, Reigate, Dorking, Kingston and the wider M25 corridor." }
+    }
+  ]
+};
 ---
 <BaseLayout
   title="Commercial Surfacing | Surrey Contracting Limited"
@@ -9,6 +41,7 @@ import ServiceSchema from '../components/ServiceSchema.astro';
   active="services"
 >
   <ServiceSchema slot="head" name="Commercial Surfacing" slug="surfacing" description="Specialist commercial surfacing across Surrey, London &amp; South East, residential, commercial, car parks, roadways, schools, industrial estates, reinstatement and kerbing." />
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify(faqSchema)} />
 
 <section class="page-hero">
   <div class="page-hero-bg" aria-hidden="true">
@@ -131,6 +164,37 @@ import ServiceSchema from '../components/ServiceSchema.astro';
         <li>Block edging</li>
         <li>Edge restraint systems</li>
       </ul>
+    </div>
+  </div>
+</section>
+
+<section class="page-section page-section-grey">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow">Common questions</span>
+      <h2 class="section-title">Commercial Surfacing FAQs</h2>
+    </div>
+    <div class="faq-list">
+      <details class="faq-item">
+        <summary>What commercial surfacing services does Surrey Contracting offer?</summary>
+        <p>Surrey Contracting provides tarmac, resin-bound, block paving and concrete surfaces for car parks, access roads, industrial estates, distribution yards, schools, playgrounds and public spaces. Services also include reinstatement and repair, edging and kerbing, line marking, speed bumps and drainage.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Can Surrey Contracting resurface car parks and access roads in Surrey?</summary>
+        <p>Yes. Surrey Contracting handles new-build car park construction and overlay or resurfacing of existing car parks. The team installs tarmac, resin-bound, block paving and concrete surfaces, along with line marking, speed bumps, bollards and drainage.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Do you carry out emergency surfacing repairs?</summary>
+        <p>Yes. Surrey Contracting's reactive surfacing team carries permanent and temporary repair materials and responds quickly to urgent requirements including utility reinstatement, surface patch repairs and emergency resurfacing.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Can Surrey Contracting work at weekends or nights to minimise disruption?</summary>
+        <p>Yes. Surrey Contracting offers phased delivery, weekend working and night-shift surfacing to minimise disruption to business operations, schools and public spaces.</p>
+      </details>
+      <details class="faq-item">
+        <summary>What areas does Surrey Contracting cover for commercial surfacing?</summary>
+        <p>Surrey Contracting covers Surrey, London and the South East for commercial surfacing, operating from its base between Cobham and Leatherhead. Areas include Guildford, Woking, Esher, Epsom, Weybridge, Reigate, Dorking, Kingston and the wider M25 corridor.</p>
+      </details>
     </div>
   </div>
 </section>

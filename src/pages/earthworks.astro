@@ -1,6 +1,38 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import ServiceSchema from '../components/ServiceSchema.astro';
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is bulk earthworks and what does it involve?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Bulk earthworks, often called cut and fill, involves the excavation, movement and placement of large volumes of soil, stone or rock to prepare land for construction. Surrey Contracting delivers bulk excavation, site levelling, topsoil management, ground remediation and muck-away for residential and commercial projects across Surrey, London and the South East." }
+    },
+    {
+      "@type": "Question",
+      "name": "Does Surrey Contracting carry out cut and fill on development sites?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Yes. Surrey Contracting delivers cut and fill earthworks for residential developments, commercial plots and private residential sites, working to approved drawings, site levels and programme requirements." }
+    },
+    {
+      "@type": "Question",
+      "name": "Can Surrey Contracting handle muck-away and waste disposal?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Yes. Surrey Contracting manages surplus materials including excavated soil and demolition arisings, ensuring responsible disposal and recycling in line with current environmental and safety regulations. On-site concrete crushing is also available to reduce haulage and landfill costs." }
+    },
+    {
+      "@type": "Question",
+      "name": "What plant does Surrey Contracting use for bulk earthworks?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Surrey Contracting operates a fleet of excavators and dumpers suitable for any scale of earthworks, from small domestic projects requiring 1.5-tonne mini diggers through to large commercial schemes requiring 30-tonne machines. All operators are fully trained, qualified and insured." }
+    },
+    {
+      "@type": "Question",
+      "name": "What areas does Surrey Contracting cover for bulk earthworks?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Surrey Contracting covers Surrey, London and the South East for bulk earthworks, operating from its base between Cobham and Leatherhead. Areas include Guildford, Woking, Esher, Epsom, Weybridge, Reigate, Dorking, Kingston and the wider M25 corridor." }
+    }
+  ]
+};
 ---
 <BaseLayout
   title="Bulk Earthworks | Surrey Contracting Limited"
@@ -9,6 +41,7 @@ import ServiceSchema from '../components/ServiceSchema.astro';
   active="services"
 >
   <ServiceSchema slot="head" name="Bulk Earthworks" slug="earthworks" description="Bulk earthworks and excavation across Surrey, large-scale excavation, site levelling, land clearance and land remediation." />
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify(faqSchema)} />
 
 <section class="page-hero">
   <div class="page-hero-bg" aria-hidden="true">
@@ -110,6 +143,37 @@ import ServiceSchema from '../components/ServiceSchema.astro';
         <li>Surveying &amp; engineering</li>
         <li>Agricultural levelling</li>
       </ul>
+    </div>
+  </div>
+</section>
+
+<section class="page-section page-section-grey">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow">Common questions</span>
+      <h2 class="section-title">Bulk Earthworks FAQs</h2>
+    </div>
+    <div class="faq-list">
+      <details class="faq-item">
+        <summary>What is bulk earthworks and what does it involve?</summary>
+        <p>Bulk earthworks, often called cut and fill, involves the excavation, movement and placement of large volumes of soil, stone or rock to prepare land for construction. Surrey Contracting delivers bulk excavation, site levelling, topsoil management, ground remediation and muck-away for residential and commercial projects across Surrey, London and the South East.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Does Surrey Contracting carry out cut and fill on development sites?</summary>
+        <p>Yes. Surrey Contracting delivers cut and fill earthworks for residential developments, commercial plots and private residential sites, working to approved drawings, site levels and programme requirements.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Can Surrey Contracting handle muck-away and waste disposal?</summary>
+        <p>Yes. Surrey Contracting manages surplus materials including excavated soil and demolition arisings, ensuring responsible disposal and recycling in line with current environmental and safety regulations. On-site concrete crushing is also available to reduce haulage and landfill costs.</p>
+      </details>
+      <details class="faq-item">
+        <summary>What plant does Surrey Contracting use for bulk earthworks?</summary>
+        <p>Surrey Contracting operates a fleet of excavators and dumpers suitable for any scale of earthworks, from small domestic projects requiring 1.5-tonne mini diggers through to large commercial schemes requiring 30-tonne machines. All operators are fully trained, qualified and insured.</p>
+      </details>
+      <details class="faq-item">
+        <summary>What areas does Surrey Contracting cover for bulk earthworks?</summary>
+        <p>Surrey Contracting covers Surrey, London and the South East for bulk earthworks, operating from its base between Cobham and Leatherhead. Areas include Guildford, Woking, Esher, Epsom, Weybridge, Reigate, Dorking, Kingston and the wider M25 corridor.</p>
+      </details>
     </div>
   </div>
 </section>

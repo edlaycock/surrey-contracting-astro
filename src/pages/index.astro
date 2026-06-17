@@ -25,12 +25,29 @@ const jsonLd = {
     "@type": "OfferCatalog",
     "name": "Services",
     "itemListElement": [
-      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Groundworks" } },
-      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Bulk Earthworks" } },
-      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Commercial Surfacing" } },
-      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Residential Driveways & Paving" } }
+      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Demolition", "url": "https://surreycontracting.co.uk/demolition" } },
+      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Groundworks", "url": "https://surreycontracting.co.uk/groundworks" } },
+      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Bulk Earthworks", "url": "https://surreycontracting.co.uk/earthworks" } },
+      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Commercial Surfacing", "url": "https://surreycontracting.co.uk/surfacing" } }
     ]
-  }
+  },
+  "description": "Demolition, groundworks, bulk earthworks and commercial surfacing contractor based in Leatherhead, Surrey. Serving residential, commercial and developer clients across Surrey, London and the South East.",
+  "logo": "https://surreycontracting.co.uk/assets/img/logo.svg",
+  "addressRegion": "Surrey",
+  "areaServed": [
+    { "@type": "Place", "name": "Surrey" },
+    { "@type": "Place", "name": "London" },
+    { "@type": "Place", "name": "Cobham" },
+    { "@type": "Place", "name": "Leatherhead" },
+    { "@type": "Place", "name": "Guildford" },
+    { "@type": "Place", "name": "Esher" },
+    { "@type": "Place", "name": "Woking" },
+    { "@type": "Place", "name": "Reigate" },
+    { "@type": "Place", "name": "Epsom" },
+    { "@type": "Place", "name": "Weybridge" },
+    { "@type": "Place", "name": "Kingston upon Thames" }
+  ],
+  "sameAs": ["https://www.linkedin.com/company/surrey-contracting/"]
 };
 ---
 <BaseLayout
@@ -117,6 +134,13 @@ const jsonLd = {
     <span>Scroll</span>
     <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
   </a>
+</section>
+
+<!-- ============ AI ANSWER BLOCK ============ -->
+<section class="intro-answer" aria-label="About Surrey Contracting">
+  <div class="container">
+    <p><strong>Surrey Contracting Limited</strong> is a demolition, groundworks, bulk earthworks and commercial surfacing contractor based in Leatherhead, Surrey. The company delivers enabling works, site clearance, drainage, foundations, excavation, tarmac surfacing and external works for residential, commercial and developer clients. Surrey Contracting is CHAS accredited, SafeContractor approved and SSIP certified, and operates across Surrey, London and the South East — including Cobham, Guildford, Woking, Epsom, Weybridge, Reigate and Kingston upon Thames.</p>
+  </div>
 </section>
 
 <!-- ============ SERVICE TILES ============ -->
