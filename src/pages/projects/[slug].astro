@@ -26,6 +26,26 @@ const gallery = (project.gallery ?? []).map((g) => ({
 const heroTag = [project.sector, project.categories?.[0]].filter(Boolean).join(' · ');
 
 const related = allProjects.filter((p) => p.slug !== project.slug).slice(0, 3);
+
+const projectSchema = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "name": project.title,
+  "description": project.summary ?? undefined,
+  "url": `https://surreycontracting.co.uk/projects/${project.slug}`,
+  ...(project.location ? { "contentLocation": { "@type": "Place", "name": project.location } } : {}),
+  ...(project.year ? { "datePublished": project.year } : {}),
+  "author": {
+    "@type": "LocalBusiness",
+    "name": "Surrey Contracting Limited",
+    "url": "https://surreycontracting.co.uk"
+  },
+  "publisher": {
+    "@type": "LocalBusiness",
+    "name": "Surrey Contracting Limited",
+    "url": "https://surreycontracting.co.uk"
+  }
+};
 ---
 <BaseLayout
   title={`${project.title} | Surrey Contracting Limited`}
@@ -34,6 +54,7 @@ const related = allProjects.filter((p) => p.slug !== project.slug).slice(0, 3);
   ogTitle={`${project.title} | Surrey Contracting Limited`}
   active="projects"
 >
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify(projectSchema)} />
 
 <section class="proj-hero">
   <div class="page-hero-bg" aria-hidden="true">
