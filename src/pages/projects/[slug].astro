@@ -30,20 +30,38 @@ const related = allProjects.filter((p) => p.slug !== project.slug).slice(0, 3);
 const projectSchema = {
   "@context": "https://schema.org",
   "@type": "Article",
+  "headline": project.title,
   "name": project.title,
   "description": project.summary ?? undefined,
   "url": `https://surreycontracting.co.uk/projects/${project.slug}`,
+  "mainEntityOfPage": `https://surreycontracting.co.uk/projects/${project.slug}`,
+  "image": hero.startsWith('http') ? hero : `https://surreycontracting.co.uk${hero}`,
   ...(project.location ? { "contentLocation": { "@type": "Place", "name": project.location } } : {}),
   ...(project.year ? { "datePublished": project.year } : {}),
+  ...(project.sector ? { "articleSection": project.sector } : {}),
+  ...(project.services ? { "about": project.services.split(',').map((service) => ({ "@type": "Thing", "name": service.trim() })) } : {}),
   "author": {
     "@type": "LocalBusiness",
     "name": "Surrey Contracting Limited",
-    "url": "https://surreycontracting.co.uk"
+    "url": "https://surreycontracting.co.uk",
+    "telephone": "01932 932650",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Upper Leewood Farm Yard, Effingham Common Road",
+      "addressLocality": "Leatherhead",
+      "addressRegion": "Surrey",
+      "postalCode": "KT24 5JQ",
+      "addressCountry": "GB"
+    }
   },
   "publisher": {
     "@type": "LocalBusiness",
     "name": "Surrey Contracting Limited",
-    "url": "https://surreycontracting.co.uk"
+    "url": "https://surreycontracting.co.uk",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://surreycontracting.co.uk/assets/logo-color.png"
+    }
   }
 };
 ---
