@@ -177,6 +177,13 @@ if (form) {
         success.style.color = '';
         success.textContent = "Thanks — we've got it. A contracts manager will be in touch within one working day.";
       }
+      if (typeof gtag === 'function') {
+        gtag('event', 'generate_lead', {
+          event_category: 'form',
+          event_label: 'quote_enquiry',
+          form_id: form.id || 'quoteForm',
+        });
+      }
       btn.textContent = 'Sent ✓';
       form.reset();
     } catch (err) {
