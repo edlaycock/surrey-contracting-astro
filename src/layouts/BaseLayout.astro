@@ -31,6 +31,14 @@ const canonical = path === '/' ? SITE : SITE + path;
 <!doctype html>
 <html lang="en">
 <head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-VNBJHFDZRM"></script>
+  <script is:inline>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-VNBJHFDZRM');
+  </script>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="theme-color" content="#E6A91A" />
@@ -56,6 +64,33 @@ const canonical = path === '/' ? SITE : SITE + path;
   <Footer />
   <script>
     import '../scripts/app.js';
+  </script>
+  <!-- YourTradeQuotes Enquiry Connector -->
+  <script is:inline>
+  (function() {
+    var API_KEY = 'ytq_live_demo_key_12345';
+    var ENDPOINT = 'https://europe-west2-yourtradequotes.cloudfunctions.net/submitEnquiry';
+    function extractFields(f) {
+      var d = {}, cb = {};
+      var els = f.querySelectorAll('input,textarea,select');
+      for (var i = 0; i < els.length; i++) {
+        var el = els[i], k = (el.name||el.id||'').trim();
+        if (!k||el.type==='hidden'||el.type==='submit'||el.type==='button'||el.type==='reset') continue;
+        if (el.type==='checkbox') { if (el.checked) cb[k] = cb[k] ? cb[k]+', '+(el.value||k) : (el.value||k); }
+        else if (el.type==='radio') { if (el.checked) d[k] = el.value; }
+        else d[k] = el.value||'';
+      }
+      for (var c in cb) d[c] = cb[c];
+      return d;
+    }
+    var existing = document.querySelector('form[data-ytq-form]');
+    if (!existing) return;
+    existing.addEventListener('submit', function() {
+      var p = JSON.stringify(Object.assign(extractFields(existing), {apiKey:API_KEY, source:'Website'}));
+      if (navigator.sendBeacon) { navigator.sendBeacon(ENDPOINT, new Blob([p],{type:'application/json'})); }
+      else { fetch(ENDPOINT,{method:'POST',headers:{'Content-Type':'application/json'},body:p}); }
+    });
+  })();
   </script>
 </body>
 </html>
