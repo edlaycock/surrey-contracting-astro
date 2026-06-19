@@ -1,0 +1,47 @@
+<div id="cookieBanner" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:9999;background:#1a1a1a;color:#fff;padding:16px 24px;box-shadow:0 -2px 12px rgba(0,0,0,0.4);">
+  <div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
+    <p style="margin:0;flex:1;min-width:260px;font-size:0.88rem;line-height:1.5;color:#ccc;">
+      We use cookies to understand how visitors use our site (Google Analytics). You can accept or decline — your choice is saved locally.
+      <a href="/cookies" style="color:#e6a91a;text-decoration:underline;white-space:nowrap;">Cookie policy</a>
+    </p>
+    <div style="display:flex;gap:10px;flex-shrink:0;">
+      <button id="cookieDecline" style="background:transparent;color:#ccc;border:1px solid #555;border-radius:6px;padding:8px 18px;font-size:0.88rem;cursor:pointer;">Decline</button>
+      <button id="cookieAccept" style="background:#e6a91a;color:#1a1a1a;border:none;border-radius:6px;padding:8px 20px;font-size:0.88rem;font-weight:700;cursor:pointer;">Accept</button>
+    </div>
+  </div>
+</div>
+
+<script is:inline>
+(function () {
+  var banner = document.getElementById('cookieBanner');
+  var stored = localStorage.getItem('sc_consent');
+
+  function applyConsent(val) {
+    if (typeof gtag === 'function') {
+      gtag('consent', 'update', {
+        analytics_storage: val === 'granted' ? 'granted' : 'denied',
+        ad_storage: val === 'granted' ? 'granted' : 'denied',
+      });
+    }
+  }
+
+  if (stored === 'granted' || stored === 'denied') {
+    applyConsent(stored);
+    return;
+  }
+
+  // First visit — show banner
+  banner.style.display = 'block';
+
+  document.getElementById('cookieAccept').addEventListener('click', function () {
+    localStorage.setItem('sc_consent', 'granted');
+    applyConsent('granted');
+    banner.style.display = 'none';
+  });
+
+  document.getElementById('cookieDecline').addEventListener('click', function () {
+    localStorage.setItem('sc_consent', 'denied');
+    banner.style.display = 'none';
+  });
+})();
+</script>
