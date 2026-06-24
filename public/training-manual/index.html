@@ -1,0 +1,981 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Content Management Training Manual — Surrey Contracting Limited</title>
+<style>
+  /* ── Reset & base ── */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --yellow: #e6a91a;
+    --yellow-light: #fdf6e3;
+    --dark: #1a1a1a;
+    --mid: #444;
+    --muted: #666;
+    --border: #ddd;
+    --bg: #f7f7f5;
+    --white: #ffffff;
+    --green: #2a7a4f;
+    --green-light: #eaf5ee;
+    --red: #b93333;
+    --red-light: #fdf0f0;
+    --blue: #1a4fa0;
+    --blue-light: #eef3fc;
+    --radius: 8px;
+    --font: 'Segoe UI', Arial, sans-serif;
+  }
+
+  body {
+    font-family: var(--font);
+    font-size: 13.5px;
+    line-height: 1.65;
+    color: var(--dark);
+    background: var(--white);
+  }
+
+  /* ── Cover page ── */
+  .cover {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+    padding: 80px 72px;
+    background: var(--dark);
+    color: var(--white);
+    page-break-after: always;
+  }
+  .cover-logo {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--yellow);
+    margin-bottom: 60px;
+    font-weight: 600;
+  }
+  .cover h1 {
+    font-size: 42px;
+    font-weight: 700;
+    line-height: 1.15;
+    margin-bottom: 16px;
+    max-width: 600px;
+  }
+  .cover-sub {
+    font-size: 18px;
+    color: #aaa;
+    margin-bottom: 64px;
+  }
+  .cover-rule {
+    width: 60px;
+    height: 4px;
+    background: var(--yellow);
+    margin-bottom: 40px;
+  }
+  .cover-meta {
+    font-size: 12px;
+    color: #888;
+    line-height: 2;
+  }
+  .cover-meta strong { color: #ccc; }
+
+  /* ── Page wrapper ── */
+  .page {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 56px 72px;
+  }
+
+  /* ── TOC ── */
+  .toc-page {
+    page-break-after: always;
+  }
+  .toc h2 {
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 28px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid var(--yellow);
+  }
+  .toc ol {
+    list-style: none;
+    counter-reset: toc;
+  }
+  .toc > ol > li {
+    counter-increment: toc;
+    margin-bottom: 6px;
+  }
+  .toc > ol > li > a {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    text-decoration: none;
+    color: var(--dark);
+    font-weight: 600;
+    font-size: 14px;
+    padding: 6px 0;
+  }
+  .toc > ol > li > a::before {
+    content: counter(toc) ".";
+    color: var(--yellow);
+    font-weight: 700;
+    min-width: 20px;
+  }
+  .toc-sub {
+    list-style: none;
+    padding-left: 32px;
+    margin-top: 4px;
+    margin-bottom: 8px;
+  }
+  .toc-sub li { margin-bottom: 3px; }
+  .toc-sub a {
+    text-decoration: none;
+    color: var(--muted);
+    font-size: 12.5px;
+  }
+  .toc-sub a:hover { color: var(--yellow); }
+
+  /* ── Section headings ── */
+  .section-page { page-break-before: always; }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 32px;
+    padding-bottom: 16px;
+    border-bottom: 3px solid var(--yellow);
+  }
+  .section-num {
+    background: var(--yellow);
+    color: var(--dark);
+    font-size: 22px;
+    font-weight: 800;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .section-title-text h2 {
+    font-size: 22px;
+    font-weight: 700;
+  }
+  .section-title-text p {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+
+  h3 {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--dark);
+    margin: 32px 0 12px;
+  }
+  h4 {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--mid);
+    margin: 20px 0 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+  p { margin-bottom: 12px; }
+  p:last-child { margin-bottom: 0; }
+
+  /* ── Steps ── */
+  .steps { list-style: none; counter-reset: steps; margin: 16px 0 24px; }
+  .steps li {
+    counter-increment: steps;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    margin-bottom: 12px;
+    padding: 12px 16px;
+    background: var(--bg);
+    border-radius: var(--radius);
+    border-left: 3px solid var(--yellow);
+  }
+  .steps li::before {
+    content: counter(steps);
+    background: var(--yellow);
+    color: var(--dark);
+    font-weight: 800;
+    font-size: 12px;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  /* ── Field reference table ── */
+  .field-table { width: 100%; border-collapse: collapse; margin: 20px 0 28px; font-size: 12.5px; }
+  .field-table thead { background: var(--dark); color: var(--white); }
+  .field-table thead th { padding: 10px 14px; text-align: left; font-weight: 600; }
+  .field-table tbody tr:nth-child(even) { background: var(--bg); }
+  .field-table tbody tr:hover { background: var(--yellow-light); }
+  .field-table td { padding: 10px 14px; vertical-align: top; border-bottom: 1px solid var(--border); }
+  .field-table td:first-child { font-weight: 600; font-size: 12px; white-space: nowrap; }
+
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 20px;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+  }
+  .badge-required { background: var(--red-light); color: var(--red); }
+  .badge-optional { background: #f0f0f0; color: var(--muted); }
+
+  /* ── Callout boxes ── */
+  .tip, .warn, .info {
+    display: flex;
+    gap: 14px;
+    padding: 14px 16px;
+    border-radius: var(--radius);
+    margin: 16px 0;
+    font-size: 12.5px;
+  }
+  .tip { background: var(--green-light); border-left: 4px solid var(--green); }
+  .warn { background: var(--red-light); border-left: 4px solid var(--red); }
+  .info { background: var(--blue-light); border-left: 4px solid var(--blue); }
+  .tip-icon, .warn-icon, .info-icon {
+    font-size: 16px;
+    flex-shrink: 0;
+    line-height: 1.4;
+  }
+  .tip strong { color: var(--green); }
+  .warn strong { color: var(--red); }
+  .info strong { color: var(--blue); }
+
+  /* ── Screenshot placeholder ── */
+  .screenshot-placeholder {
+    border: 2px dashed var(--border);
+    border-radius: var(--radius);
+    background: var(--bg);
+    padding: 32px 24px;
+    text-align: center;
+    margin: 20px 0;
+    color: var(--muted);
+  }
+  .screenshot-placeholder .ph-icon { font-size: 32px; margin-bottom: 8px; }
+  .screenshot-placeholder .ph-label { font-size: 12px; font-weight: 600; color: var(--mid); }
+  .screenshot-placeholder .ph-desc { font-size: 11px; margin-top: 4px; }
+  .screenshot { width: 100%; border-radius: var(--radius); border: 1px solid var(--border); margin: 20px 0; display: block; }
+
+  /* ── Inline code ── */
+  code {
+    background: #f0f0ed;
+    padding: 1px 6px;
+    border-radius: 4px;
+    font-family: 'Courier New', monospace;
+    font-size: 11.5px;
+    color: #c0392b;
+  }
+
+  /* ── Horizontal rule ── */
+  hr { border: none; border-top: 1px solid var(--border); margin: 28px 0; }
+
+  /* ── Print ── */
+  @media print {
+    body { font-size: 12px; }
+    .cover { min-height: 100vh; }
+    .section-page { page-break-before: always; }
+    .toc-page { page-break-after: always; }
+    a { color: inherit; text-decoration: none; }
+    .screenshot-placeholder { border: 1.5px dashed #bbb; }
+  }
+
+  /* ── Footer ── */
+  .manual-footer {
+    margin-top: 60px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+    font-size: 11px;
+    color: var(--muted);
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════
+     COVER PAGE
+═══════════════════════════════════════════════ -->
+<div class="cover">
+  <div class="cover-logo">Surrey Contracting Limited</div>
+  <div class="cover-rule"></div>
+  <h1>Content Management<br>Training Manual</h1>
+  <p class="cover-sub">Sanity CMS — surreycontracting.co.uk</p>
+  <div class="cover-meta">
+    <div><strong>Studio URL</strong> &nbsp;https://surreycontracting.sanity.studio</div>
+    <div><strong>Website</strong> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;https://surreycontracting.co.uk</div>
+    <div><strong>Version</strong> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;June 2026</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     TABLE OF CONTENTS
+═══════════════════════════════════════════════ -->
+<div class="page toc-page">
+  <div class="toc">
+    <h2>Table of Contents</h2>
+    <ol>
+      <li>
+        <a href="#section-1">Getting Started</a>
+        <ul class="toc-sub">
+          <li><a href="#s1-login">1.1 Logging In</a></li>
+          <li><a href="#s1-sidebar">1.2 The Sidebar</a></li>
+          <li><a href="#s1-drafts">1.3 Drafts vs Published</a></li>
+        </ul>
+      </li>
+      <li>
+        <a href="#section-2">Projects / Case Studies</a>
+        <ul class="toc-sub">
+          <li><a href="#s2-create">2.1 Creating a New Project</a></li>
+          <li><a href="#s2-fields">2.2 Field Reference</a></li>
+          <li><a href="#s2-edit">2.3 Editing an Existing Project</a></li>
+          <li><a href="#s2-warnings">2.4 Warnings</a></li>
+        </ul>
+      </li>
+      <li>
+        <a href="#section-3">Publishing, Drafts &amp; Unpublishing</a>
+        <ul class="toc-sub">
+          <li><a href="#s3-publish">3.1 Publishing a Document</a></li>
+          <li><a href="#s3-draft">3.2 Saving a Draft</a></li>
+          <li><a href="#s3-edit-live">3.3 Editing a Published Document</a></li>
+          <li><a href="#s3-unpublish">3.4 Unpublishing</a></li>
+          <li><a href="#s3-discard">3.5 Discarding Draft Changes</a></li>
+        </ul>
+      </li>
+      <li>
+        <a href="#section-4">Writing Style Guide</a>
+        <ul class="toc-sub">
+          <li><a href="#s4-tone">4.1 Tone</a></li>
+          <li><a href="#s4-caps">4.2 Capitalisation</a></li>
+          <li><a href="#s4-numbers">4.3 Numbers &amp; Measurements</a></li>
+          <li><a href="#s4-summaries">4.4 Summaries</a></li>
+          <li><a href="#s4-images">4.5 Images</a></li>
+          <li><a href="#s4-categories">4.6 Categories</a></li>
+        </ul>
+      </li>
+    </ol>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     SECTION 1 — GETTING STARTED
+═══════════════════════════════════════════════ -->
+<div class="page section-page" id="section-1">
+  <div class="section-header">
+    <div class="section-num">1</div>
+    <div class="section-title-text">
+      <h2>Getting Started</h2>
+      <p>Logging in, navigating the interface, and understanding how publishing works</p>
+    </div>
+  </div>
+
+  <h3 id="s1-login">1.1 Logging In</h3>
+
+  <ol class="steps">
+    <li>Open your browser and go to <strong>https://surreycontracting.sanity.studio</strong></li>
+    <li>Click <strong>Log in</strong> and sign in with the email address you were invited with.</li>
+    <li>You will land on the <strong>Desk</strong> — the main editing interface showing the content sidebar on the left.</li>
+  </ol>
+
+  <img src="Screenshots/Screenshot 2026-06-24 at 13.05.10.png" alt="Sanity Studio login screen" class="screenshot">
+
+  <div class="info">
+    <div class="info-icon">ℹ️</div>
+    <div><strong>First time?</strong> Check your email for an invitation from Sanity (sender: no-reply@sanity.io). Click <em>Accept invitation</em> before trying to log in. If you don't see it, check your spam folder.</div>
+  </div>
+
+  <img src="Screenshots/Screenshot 2026-06-24 at 13.05.19.png" alt="Sanity Studio Desk after logging in" class="screenshot">
+
+  <hr>
+
+  <h3 id="s1-sidebar">1.2 The Sidebar</h3>
+
+  <p>The left sidebar shows all content sections you can manage. Currently the site has one content type:</p>
+
+  <table class="field-table">
+    <thead>
+      <tr>
+        <th>Sidebar item</th>
+        <th>What it contains</th>
+        <th>Where it appears on the website</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Project / Case study</td>
+        <td>All project pages and case studies</td>
+        <td>/projects and individual /projects/[name] pages</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="tip">
+    <div class="tip-icon">💡</div>
+    <div><strong>Tip:</strong> Click the section name in the sidebar to see a list of all documents of that type. Click any document in the list to open and edit it.</div>
+  </div>
+
+  <hr>
+
+  <h3 id="s1-drafts">1.3 Drafts vs Published</h3>
+
+  <p>Sanity uses a <strong>draft / publish</strong> workflow. This means you can work on changes privately before they go live on the website.</p>
+
+  <table class="field-table">
+    <thead>
+      <tr>
+        <th>State</th>
+        <th>What it means</th>
+        <th>Visible on website?</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Draft</td>
+        <td>Changes saved in Sanity but not yet published</td>
+        <td>No</td>
+      </tr>
+      <tr>
+        <td>Published</td>
+        <td>The version visitors see on surreycontracting.co.uk</td>
+        <td>Yes</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="info">
+    <div class="info-icon">ℹ️</div>
+    <div><strong>Key point:</strong> The live website always shows the last <em>published</em> version. Editing a document does not change the live site until you click <strong>Publish</strong>.</div>
+  </div>
+
+  <img src="Screenshots/Screenshot 2026-06-24 at 13.05.38.png" alt="Document showing Published and Draft badges with Publish button" class="screenshot">
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     SECTION 2 — PROJECTS
+═══════════════════════════════════════════════ -->
+<div class="page section-page" id="section-2">
+  <div class="section-header">
+    <div class="section-num">2</div>
+    <div class="section-title-text">
+      <h2>Projects / Case Studies</h2>
+      <p>Creating, editing, and managing project pages on the website</p>
+    </div>
+  </div>
+
+  <p>Each project in Sanity becomes a dedicated page at <strong>surreycontracting.co.uk/projects/[slug]</strong>, and also appears as a card on the main projects listing page at <strong>/projects</strong>.</p>
+
+  <img src="Screenshots/Screenshot 2026-06-24 at 13.05.29.png" alt="Project list in Sanity Studio" class="screenshot">
+
+  <hr>
+
+  <h3 id="s2-create">2.1 Creating a New Project</h3>
+
+  <ol class="steps">
+    <li>In the left sidebar, click <strong>Project / Case study</strong>.</li>
+    <li>Click the <strong>compose / pencil icon</strong> at the top right of the list panel, or click <strong>+ New document</strong>.</li>
+    <li>A blank document opens on the right. Work through each field from top to bottom — see the field reference in section 2.2.</li>
+    <li>When you are ready for the project to appear on the website, click the blue <strong>Publish</strong> button (top right). The site updates within a few minutes.</li>
+  </ol>
+
+  <img src="Screenshots/image-1782303771017.png" alt="Blank new project document with all empty fields" class="screenshot">
+
+  <div class="tip">
+    <div class="tip-icon">💡</div>
+    <div><strong>Tip:</strong> You don't need to fill every field before saving. Sanity saves automatically as you type. Come back and complete it before publishing.</div>
+  </div>
+
+  <hr>
+
+  <h3 id="s2-fields">2.2 Field Reference</h3>
+
+  <h4>Basic Information</h4>
+
+  <table class="field-table">
+    <thead>
+      <tr>
+        <th>Field</th>
+        <th>Required?</th>
+        <th>Description</th>
+        <th>Example</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Title</td>
+        <td><span class="badge badge-required">Required</span></td>
+        <td>The project name. Shown as the page heading, card title, and in Google search results.</td>
+        <td><code>Tarmac Driveway, Fetcham, Surrey</code></td>
+      </tr>
+      <tr>
+        <td>Slug (URL)</td>
+        <td><span class="badge badge-required">Required</span></td>
+        <td>The web address. Click <strong>Generate</strong> to create from the Title. Use lowercase letters, numbers, and hyphens only — no spaces.</td>
+        <td><code>tarmac-driveway-fetcham</code></td>
+      </tr>
+      <tr>
+        <td>Summary</td>
+        <td><span class="badge badge-required">Required</span></td>
+        <td>A 1–2 sentence description. Used on cards, the hero lede, and Google search snippets. Be specific: include service type, location, and a key fact.</td>
+        <td><code>100sqm tarmac driveway in Fetcham, Surrey, with base course and SMA wearing course.</code></td>
+      </tr>
+      <tr>
+        <td>Hero Image</td>
+        <td><span class="badge badge-required">Required</span></td>
+        <td>The large banner image for the project page and card photo. Best size: landscape, 1600×900px or larger. Always fill in the Alt text after uploading.</td>
+        <td>—</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h4>Categorisation</h4>
+
+  <table class="field-table">
+    <thead>
+      <tr>
+        <th>Field</th>
+        <th>Required?</th>
+        <th>Description</th>
+        <th>Options</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Categories</td>
+        <td><span class="badge badge-required">Required</span></td>
+        <td>Service categories for this project. Used for the filter buttons on the projects page. Select all that genuinely apply.</td>
+        <td>Drainage · Driveways · Earthworks · Groundworks · Hard Landscaping · Surfacing</td>
+      </tr>
+      <tr>
+        <td>Sector</td>
+        <td><span class="badge badge-optional">Optional</span></td>
+        <td>The market sector. Shown as a small tag on the project hero image.</td>
+        <td>Residential · Commercial · Education · Commercial / Public Realm · Public Sector</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h4>Project Info Card</h4>
+
+  <p>These fields populate the <em>"Project info"</em> sidebar shown on each project page alongside the body text.</p>
+
+  <table class="field-table">
+    <thead>
+      <tr>
+        <th>Field</th>
+        <th>Required?</th>
+        <th>Description</th>
+        <th>Example</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Client</td>
+        <td><span class="badge badge-optional">Optional</span></td>
+        <td>The client name as shown in the project info card.</td>
+        <td><code>Private residential</code> or <code>Sutton High School</code></td>
+      </tr>
+      <tr>
+        <td>Location</td>
+        <td><span class="badge badge-optional">Optional</span></td>
+        <td>Where the project took place.</td>
+        <td><code>Fetcham, Surrey</code></td>
+      </tr>
+      <tr>
+        <td>Services</td>
+        <td><span class="badge badge-optional">Optional</span></td>
+        <td>A brief label for the services used. Separate multiple services with a middle dot ·</td>
+        <td><code>Tarmac · Drainage</code></td>
+      </tr>
+      <tr>
+        <td>Year</td>
+        <td><span class="badge badge-optional">Optional</span></td>
+        <td>Year the project was completed. Hidden if Duration is set.</td>
+        <td><code>2024</code></td>
+      </tr>
+      <tr>
+        <td>Duration</td>
+        <td><span class="badge badge-optional">Optional</span></td>
+        <td>Used instead of Year for longer projects with a notable programme length.</td>
+        <td><code>14 weeks</code></td>
+      </tr>
+      <tr>
+        <td>Status</td>
+        <td><span class="badge badge-optional">Optional</span></td>
+        <td>Shown as a badge in the info card. Defaults to "Completed".</td>
+        <td><code>Completed</code></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <img src="Screenshots/image-1782303746399.webp" alt="Live website project page showing the Project Info sidebar" class="screenshot">
+
+  <h4>Body Content</h4>
+
+  <table class="field-table">
+    <thead>
+      <tr>
+        <th>Field</th>
+        <th>Required?</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Body</td>
+        <td><span class="badge badge-optional">Optional</span></td>
+        <td>The main written content of the project page. Supports paragraphs, H2 headings, bullet lists, bold, and italic. Use H2 headings for named sections (see tip below).</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="tip">
+    <div class="tip-icon">💡</div>
+    <div>
+      <strong>Recommended body structure:</strong><br>
+      <strong>H2: The project</strong> — One or two paragraphs describing what was done.<br>
+      <strong>H2: The delivery</strong> — A bullet list of key quantities and scope items.<br>
+      <strong>H2: The outcome</strong> — A closing sentence on the result.
+    </div>
+  </div>
+
+  <img src="Screenshots/Screenshot 2026-06-24 at 13.06.51.png" alt="Body field in Sanity with formatting toolbar" class="screenshot">
+
+  <h4>Gallery &amp; Settings</h4>
+
+  <table class="field-table">
+    <thead>
+      <tr>
+        <th>Field</th>
+        <th>Required?</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>On-site Gallery</td>
+        <td><span class="badge badge-optional">Optional</span></td>
+        <td>Additional photos shown in a grid below the body text. Click <strong>Add item</strong> to upload each image. The first image is shown larger. Each image has an optional Caption (short label shown on the photo, e.g. <code>Surfacing, base course</code>).</td>
+      </tr>
+      <tr>
+        <td>Featured on Homepage</td>
+        <td><span class="badge badge-optional">Optional</span></td>
+        <td>Tick this to flag the project for featured display on the homepage.</td>
+      </tr>
+      <tr>
+        <td>Sort Order</td>
+        <td><span class="badge badge-optional">Optional</span></td>
+        <td>Controls the order projects appear in the listing. Lower numbers appear first. Projects without a sort order appear last, sorted by date added.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <img src="Screenshots/image-1782303761399.webp" alt="On-site gallery field with images added" class="screenshot">
+
+  <hr>
+
+  <h3 id="s2-edit">2.3 Editing an Existing Project</h3>
+
+  <ol class="steps">
+    <li>Click <strong>Project / Case study</strong> in the sidebar.</li>
+    <li>Click the project you want to edit from the list.</li>
+    <li>Make your changes — Sanity saves automatically as you work.</li>
+    <li>Click <strong>Publish</strong> to push changes live. Until you publish, the live website shows the previous published version.</li>
+  </ol>
+
+  <div class="info">
+    <div class="info-icon">ℹ️</div>
+    <div><strong>Editing a live project is safe.</strong> Your changes are saved as a draft and the live website is unchanged until you click Publish. You can take as long as you need.</div>
+  </div>
+
+  <hr>
+
+  <h3 id="s2-warnings">2.4 Warnings</h3>
+
+  <div class="warn">
+    <div class="warn-icon">⚠️</div>
+    <div><strong>Do not change the Slug</strong> of a project that is already live on the website. Changing the slug changes the URL, which breaks any existing links or bookmarks to that page. If you must rename a project, contact your web developer to set up a redirect first.</div>
+  </div>
+
+  <div class="warn">
+    <div class="warn-icon">⚠️</div>
+    <div><strong>Hero Image and Categories are required.</strong> You will not be able to publish a project without them. If the Publish button doesn't work, check these fields are filled in.</div>
+  </div>
+  <img src="Screenshots/Screenshot 2026-06-24 at 13.08.35.png" alt="Validation panel showing required field errors" class="screenshot">
+
+  <div class="warn">
+    <div class="warn-icon">⚠️</div>
+    <div><strong>Deleting a project is permanent.</strong> Deleting removes the page from the live website immediately. There is no recycle bin. If you want to temporarily hide a project, use <em>Unpublish</em> instead (see Section 3.4).</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     SECTION 3 — PUBLISHING
+═══════════════════════════════════════════════ -->
+<div class="page section-page" id="section-3">
+  <div class="section-header">
+    <div class="section-num">3</div>
+    <div class="section-title-text">
+      <h2>Publishing, Drafts &amp; Unpublishing</h2>
+      <p>Controlling what appears on the live website</p>
+    </div>
+  </div>
+
+  <h3 id="s3-publish">3.1 Publishing a Document</h3>
+
+  <ol class="steps">
+    <li>Open the document you want to publish.</li>
+    <li>Check your content looks correct.</li>
+    <li>Click the blue <strong>Publish</strong> button in the top right corner.</li>
+    <li>The document is now live. The website updates within a few minutes.</li>
+  </ol>
+
+  <img src="Screenshots/Screenshot 2026-06-24 at 13.05.59.png" alt="Sanity document with Publish button visible" class="screenshot">
+
+  <hr>
+
+  <h3 id="s3-draft">3.2 Saving a Draft Without Publishing</h3>
+
+  <p>Sanity saves your work automatically as you type. Simply close the document or navigate away and your draft is stored safely. The live website is unchanged.</p>
+
+  <p>You can also click the <strong>dropdown arrow</strong> next to the Publish button and choose <strong>Save as draft</strong> to explicitly confirm the save without publishing.</p>
+
+  <div class="tip">
+    <div class="tip-icon">💡</div>
+    <div><strong>Tip:</strong> Documents with unsaved/unpublished changes show an <em>"Edited"</em> indicator. Documents that are published and up to date show <em>"Published"</em>.</div>
+  </div>
+
+  <hr>
+
+  <h3 id="s3-edit-live">3.3 Editing a Published Document</h3>
+
+  <p>You can edit a published document at any time without taking it offline. Sanity creates a new draft automatically — the live website continues to show the last published version until you click Publish again.</p>
+
+  <ol class="steps">
+    <li>Open the published document.</li>
+    <li>Make your changes — an <em>"Edited"</em> badge appears showing there are unpublished changes.</li>
+    <li>When ready, click <strong>Publish</strong> to update the live site.</li>
+  </ol>
+
+  <hr>
+
+  <h3 id="s3-unpublish">3.4 Unpublishing a Document</h3>
+
+  <p>Unpublishing removes a document from the live website but keeps it in Sanity so you can re-publish it later. Use this instead of deleting when you want to temporarily hide content.</p>
+
+  <ol class="steps">
+    <li>Open the document you want to hide.</li>
+    <li>Click the <strong>dropdown arrow</strong> (▾) next to the Publish button.</li>
+    <li>Choose <strong>Unpublish</strong>.</li>
+    <li>The document is removed from the live site immediately but remains in Sanity as a draft.</li>
+  </ol>
+
+  <div class="screenshot-placeholder">
+    <div class="ph-icon">📸</div>
+    <div class="ph-label">Screenshot: Publish button dropdown menu</div>
+    <div class="ph-desc">Show the dropdown menu opened from the arrow next to the Publish button, with "Unpublish" and "Discard changes" options visible</div>
+  </div>
+
+  <hr>
+
+  <h3 id="s3-discard">3.5 Discarding Draft Changes</h3>
+
+  <p>If you've made changes you don't want to keep, you can revert to the last published version.</p>
+
+  <ol class="steps">
+    <li>Click the <strong>dropdown arrow</strong> (▾) next to the Publish button.</li>
+    <li>Choose <strong>Discard changes</strong>.</li>
+    <li>The draft is deleted and the document reverts to its last published state.</li>
+  </ol>
+
+  <div class="warn">
+    <div class="warn-icon">⚠️</div>
+    <div><strong>This cannot be undone.</strong> Discarding changes permanently removes your draft edits. Make sure you don't need them before confirming.</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     SECTION 4 — STYLE GUIDE
+═══════════════════════════════════════════════ -->
+<div class="page section-page" id="section-4">
+  <div class="section-header">
+    <div class="section-num">4</div>
+    <div class="section-title-text">
+      <h2>Writing Style Guide</h2>
+      <p>Brand rules for consistent, professional content across the website</p>
+    </div>
+  </div>
+
+  <h3 id="s4-tone">4.1 Tone</h3>
+
+  <table class="field-table">
+    <thead>
+      <tr><th>Do</th><th>Don't</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Professional, clear, and straightforward</td>
+        <td>Over-formal or overly casual</td>
+      </tr>
+      <tr>
+        <td>Use technical terms where relevant — the audience understands <em>tarmac</em>, <em>macadam</em>, <em>SMA</em></td>
+        <td>Avoid jargon with no explanation when writing for a broad audience</td>
+      </tr>
+      <tr>
+        <td>Third person for project descriptions: <em>"Surrey Contracting carried out..."</em></td>
+        <td>First person: <em>"We carried out..."</em></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <hr>
+
+  <h3 id="s4-caps">4.2 Capitalisation</h3>
+
+  <table class="field-table">
+    <thead>
+      <tr><th>Rule</th><th>Example</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Always write the full company name — never abbreviate</td>
+        <td><code>Surrey Contracting</code> — not <code>SC</code> or <code>Surrey C</code></td>
+      </tr>
+      <tr>
+        <td>Capitalise proper nouns: client names, place names, product names</td>
+        <td><code>Premier Inn</code>, <code>Sutton High School</code>, <code>Virginia Water</code></td>
+      </tr>
+      <tr>
+        <td>Service types are lowercase unless starting a sentence</td>
+        <td><code>tarmac</code>, <code>drainage</code>, <code>earthworks</code></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <hr>
+
+  <h3 id="s4-numbers">4.3 Numbers &amp; Measurements</h3>
+
+  <table class="field-table">
+    <thead>
+      <tr><th>Rule</th><th>Example</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Use numerals for quantities</td>
+        <td><code>120 tonnes</code>, <code>30sqm</code>, <code>14 weeks</code></td>
+      </tr>
+      <tr>
+        <td>Spell out numbers at the start of a sentence</td>
+        <td><em>One hundred and twenty tonnes of material was removed...</em></td>
+      </tr>
+      <tr>
+        <td>Use a middle dot (·) to separate services in the Services field</td>
+        <td><code>Tarmac · Drainage</code></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <hr>
+
+  <h3 id="s4-summaries">4.4 Summaries</h3>
+
+  <p>The Summary field appears on project cards, the project page hero, and Google search snippets. It should be concise but specific.</p>
+
+  <table class="field-table">
+    <thead>
+      <tr><th>Rule</th><th>Example</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Maximum 1–2 sentences</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td>Include: service type + location + one key fact</td>
+        <td><code>Emergency tarmac footpath repairs at Sutton High School, completed over a weekend to minimise disruption.</code></td>
+      </tr>
+      <tr>
+        <td>Mention size or scale where relevant</td>
+        <td><code>100sqm tarmac driveway installation with base course and SMA wearing course in Fetcham, Surrey.</code></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <hr>
+
+  <h3 id="s4-images">4.5 Images</h3>
+  <img src="Screenshots/Screenshot 2026-06-24 at 13.06.43.png" alt="Edit hotspot and crop dialog in Sanity" class="screenshot">
+
+  <table class="field-table">
+    <thead>
+      <tr><th>Rule</th><th>Detail</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Always fill in Alt text</td>
+        <td>Describe the photo factually. <code>Completed tarmac driveway with granite sett edging, West Humble</code> — not <code>photo1</code></td>
+      </tr>
+      <tr>
+        <td>Landscape orientation only</td>
+        <td>Portrait photos will be cropped unexpectedly. Aim for 16:9 or 4:3 ratio.</td>
+      </tr>
+      <tr>
+        <td>Minimum size for hero image</td>
+        <td>1600 × 900 px</td>
+      </tr>
+      <tr>
+        <td>Prefer finished work for hero images</td>
+        <td>"After" photos make better hero images than mid-construction shots where possible.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <hr>
+
+  <h3 id="s4-categories">4.6 Categories</h3>
+
+  <table class="field-table">
+    <thead>
+      <tr><th>Rule</th><th>Detail</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Choose the most specific category</td>
+        <td>If primarily a driveway, select <code>Driveways</code> even if surfacing was involved.</td>
+      </tr>
+      <tr>
+        <td>Use multiple categories sparingly</td>
+        <td>Only if the project genuinely covered both service areas substantially — not just because a service was mentioned.</td>
+      </tr>
+      <tr>
+        <td>Categories drive the filter buttons</td>
+        <td>The filters on the /projects page are built directly from whatever categories your projects use. Keep them consistent.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="manual-footer">
+    Surrey Contracting Limited — Content Management Training Manual &nbsp;|&nbsp; June 2026<br>
+    For support contact your web developer. Studio: https://surreycontracting.sanity.studio
+  </div>
+</div>
+
+</body>
+</html>
