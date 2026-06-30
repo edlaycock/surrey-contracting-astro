@@ -71,7 +71,6 @@ const canonical = path === '/' ? SITE : SITE + path;
   <meta property="og:url" content={canonical} />
   {ogImage && <meta property="og:image" content={SITE + ogImage} />}
   <title>{title}</title>
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <link rel="icon" type="image/x-icon" href="/favicon.ico" />
   <link rel="stylesheet" href="/styles.css" />
   <slot name="head" />
