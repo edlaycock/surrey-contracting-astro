@@ -43,7 +43,7 @@ export const POST: APIRoute = async ({ request }) => {
   const source = get('source');
 
   const apiKey = env('SMTP2GO_API_KEY');
-  const to = env('CONTACT_TO') || 'info@surreycontracting.co.uk';
+  const to = env('CONTACT_TO') || 'info@surreycontractinggroup.co.uk';
   const from = env('CONTACT_FROM') || 'Surrey Contracting Website <website@surreycontracting.co.uk>';
   if (!apiKey) {
     return json({ ok: false, error: 'Email is not configured yet.' }, 503);
