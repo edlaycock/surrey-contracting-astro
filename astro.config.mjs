@@ -10,6 +10,7 @@ export default defineConfig({
   integrations: [sitemap({ filter: (page) => !page.includes('/training-manual') })],
   // Static by default; only routes that opt out (api/contact) run server-side.
   adapter: node({ mode: 'standalone' }),
+  security: { checkOrigin: false },
   redirects: {
     '/project-tarmac-driveway': '/projects/tarmac-driveway',
     '/project-tarmac-driveway-fetcham': '/projects/tarmac-driveway-fetcham',
