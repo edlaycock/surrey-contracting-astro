@@ -200,6 +200,18 @@ if (form) {
   });
 }
 
+// ---------- Phone & email click tracking ----------
+document.addEventListener('click', (e) => {
+  const a = e.target.closest('a[href]');
+  if (!a || typeof gtag !== 'function') return;
+  const href = a.getAttribute('href') || '';
+  if (href.startsWith('tel:')) {
+    gtag('event', 'phone_click', { event_category: 'contact', event_label: href.replace('tel:', '') });
+  } else if (href.startsWith('mailto:')) {
+    gtag('event', 'email_click', { event_category: 'contact', event_label: href.replace('mailto:', '') });
+  }
+});
+
 // ---------- Nav shadow is now baked in via CSS ----------
 
 // ---------- Projects gallery filter ----------
