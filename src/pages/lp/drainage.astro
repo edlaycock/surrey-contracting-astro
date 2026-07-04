@@ -1,0 +1,199 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ServiceSchema from '../../components/ServiceSchema.astro';
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What drainage services does Surrey Contracting install?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Surrey Contracting designs and installs surface water drainage, soakaways, SuDS and attenuation systems, French drains, channel and linear drainage, land and field drainage, and connections to existing surface water networks across Surrey, London and the South East." }
+    },
+    {
+      "@type": "Question",
+      "name": "Do you carry out SuDS and attenuation to current regulations?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Yes. We install sustainable drainage systems (SuDS), attenuation crates and soakaways sized to the site and designed to meet current planning and building control requirements, with percolation testing where required." }
+    },
+    {
+      "@type": "Question",
+      "name": "Can you fix standing water and flooding on my land or yard?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Yes. We investigate the cause of standing water and install land drainage, French drains, swales and outfalls to move water away from buildings, yards, paddocks and access roads, protecting your site through wet weather." }
+    },
+    {
+      "@type": "Question",
+      "name": "What areas do you cover for drainage work?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Surrey Contracting covers Surrey, London and the South East from its base between Cobham and Leatherhead, including Guildford, Woking, Esher, Epsom, Weybridge, Reigate, Dorking, Kingston and the wider M25 corridor." }
+    }
+  ]
+};
+---
+<BaseLayout
+  title="Drainage Contractors Surrey | Surface Water & Land Drainage"
+  description="Surface water drainage, soakaways, SuDS, attenuation, French drains and land drainage installed across Surrey, London and the South East. Free site visit, call 01932 932650."
+  path="/lp/drainage"
+>
+  <meta name="robots" content="noindex,follow" slot="head" />
+  <ServiceSchema slot="head" name="Drainage" slug="lp/drainage" description="Surface water drainage, soakaways, SuDS, attenuation, French drains and land drainage installed across Surrey, London and the South East." />
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify(faqSchema)} />
+
+<section class="page-hero">
+  <div class="page-hero-bg" aria-hidden="true">
+    <div class="page-hero-img" style="background-image:url('/assets/img/Surface water drainage.jpg')"></div>
+    <div class="page-hero-vignette"></div>
+  </div>
+  <div class="container page-hero-inner">
+    <span class="eyebrow eyebrow-yellow">Drainage contractors · Surrey &amp; the South East</span>
+    <h1 class="page-title">Surface water &amp; land drainage, designed and installed.</h1>
+    <p class="page-lede">Soakaways, SuDS, attenuation, French drains and field drainage that move water away from your site for good. Free site visit, one working day response.</p>
+    <div class="hero-ctas">
+      <a href="#quoteForm" class="btn btn-yellow">Get a free quote</a>
+      <a href="tel:01932932650" class="btn btn-ghost-light">Call 01932 932650</a>
+    </div>
+    <div class="hero-trust">
+      <div class="trust-item"><strong>15+</strong><span>years of experience</span></div>
+      <div class="trust-divider"></div>
+      <div class="trust-item"><strong>CHAS</strong><span>&amp; SafeContractor</span></div>
+      <div class="trust-divider"></div>
+      <div class="trust-item"><strong>Surrey</strong><span>&amp; the South East</span></div>
+      <div class="trust-divider"></div>
+      <div class="trust-item"><strong>1 day</strong><span>response to enquiries</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="page-section">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow">Drainage</span>
+      <h2 class="section-title">The right drainage system for your site, first time.</h2>
+      <p class="section-lede">Standing water, saturated ground and blocked surface water runs damage buildings, hardstanding and access. Surrey Contracting surveys the cause, sizes the solution and installs it properly, from a single soakaway to a full SuDS and attenuation scheme, so your site stays dry through every season.</p>
+    </div>
+  </div>
+</section>
+
+<section class="svc-detail">
+  <div class="container svc-detail-grid">
+    <div class="svc-detail-media">
+      <div class="svc-detail-photo" style="background-image:url('/assets/img/Surface water drainage.jpg')"></div>
+    </div>
+    <div class="svc-detail-copy">
+      <h2 class="section-title">Surface Water Drainage &amp; SuDS</h2>
+      <p class="lede-dark">We install surface water drainage, soakaways, attenuation crates and sustainable drainage systems (SuDS) sized to your site and designed to meet current planning and building control requirements. From new developments and car parks to yards and driveways, we manage runoff at source, protect neighbouring land and connect safely into existing networks or discharge points.</p>
+      <ul class="feature-list">
+        <li>Soakaways &amp; percolation testing</li>
+        <li>Attenuation crates &amp; storage</li>
+        <li>SuDS to planning conditions</li>
+        <li>Channel &amp; linear drainage</li>
+        <li>Connections to existing networks</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="svc-detail svc-detail-alt">
+  <div class="container svc-detail-grid svc-detail-reverse">
+    <div class="svc-detail-media">
+      <div class="svc-detail-photo" style="background-image:url('/assets/img/services/groundworks-trench.jpg')"></div>
+    </div>
+    <div class="svc-detail-copy">
+      <h2 class="section-title">Land &amp; Field Drainage</h2>
+      <p class="lede-dark">Where ground stays wet, we install land drainage, French drains, swales and outfalls to carry water away from buildings, yards, paddocks, sports pitches and access roads. We investigate the cause first, then design a gravity-fed system that keeps working long after the diggers leave, reducing flooding, mud and standing water on your land.</p>
+      <ul class="feature-list">
+        <li>French drains &amp; herringbone systems</li>
+        <li>Land &amp; agricultural drainage</li>
+        <li>Swales, ditches &amp; outfalls</li>
+        <li>Yard &amp; access road drainage</li>
+        <li>Flooding &amp; standing water solutions</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="page-section page-section-grey">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow">Common questions</span>
+      <h2 class="section-title">Drainage FAQs</h2>
+    </div>
+    <div class="faq-list">
+      <details class="faq-item">
+        <summary>What drainage services does Surrey Contracting install?</summary>
+        <p>Surface water drainage, soakaways, SuDS and attenuation systems, French drains, channel and linear drainage, land and field drainage, and connections to existing surface water networks across Surrey, London and the South East.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Do you carry out SuDS and attenuation to current regulations?</summary>
+        <p>Yes. We install sustainable drainage systems, attenuation crates and soakaways sized to the site and designed to meet current planning and building control requirements, with percolation testing where required.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Can you fix standing water and flooding on my land or yard?</summary>
+        <p>Yes. We investigate the cause of standing water and install land drainage, French drains, swales and outfalls to move water away from buildings, yards, paddocks and access roads.</p>
+      </details>
+      <details class="faq-item">
+        <summary>What areas do you cover for drainage work?</summary>
+        <p>Surrey, London and the South East from our base between Cobham and Leatherhead, including Guildford, Woking, Esher, Epsom, Weybridge, Reigate, Dorking, Kingston and the wider M25 corridor.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<section class="page-section">
+  <div class="container contact-grid">
+    <div class="contact-info">
+      <span class="eyebrow eyebrow-yellow">Get your drainage quote</span>
+      <h2 class="section-title">Tell us about your site.</h2>
+      <p>Send us the details and a contracts manager will be in touch within one working day to arrange a free site visit. One point of contact from quote to handover.</p>
+      <div class="contact-cards">
+        <div class="contact-card">
+          <div class="contact-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.86 19.86 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.86 19.86 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div>
+          <div>
+            <span class="contact-label">Call us</span>
+            <a class="contact-value" href="tel:01932932650">01932 932650</a>
+          </div>
+        </div>
+        <div class="contact-card">
+          <div class="contact-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg></div>
+          <div>
+            <span class="contact-label">Response</span>
+            <span class="contact-value">Within one working day</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <form class="quote-form contact-form" id="quoteForm" data-ytq-form data-lead-source="lp_drainage" novalidate>
+      <div style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden;" aria-hidden="true">
+        <label>Company website<input type="text" name="_honeypot" tabindex="-1" autocomplete="off"></label>
+      </div>
+      <h3 class="form-title">Get a free drainage quote</h3>
+      <div class="qf-row">
+        <label><span>Name</span><input required name="name" type="text" placeholder="Your full name"></label>
+        <label><span>Phone</span><input required name="phone" type="tel" placeholder="01932 932650"></label>
+      </div>
+      <label><span>Email</span><input required name="email" type="email" placeholder="you@email.com"></label>
+      <label><span>Company / organisation</span><input name="company" type="text" placeholder="Optional"></label>
+      <fieldset class="qf-checks">
+        <legend>What do you need?</legend>
+        <label class="check"><input type="checkbox" name="svc" value="Demolition"><span>Demolition</span></label>
+        <label class="check"><input type="checkbox" name="svc" value="Groundworks"><span>Groundworks</span></label>
+        <label class="check"><input type="checkbox" name="svc" value="Bulk Earthworks"><span>Bulk Earthworks</span></label>
+        <label class="check"><input type="checkbox" name="svc" value="Commercial Surfacing"><span>Commercial Surfacing</span></label>
+        <label class="check"><input type="checkbox" name="svc" value="Other"><span>Other</span></label>
+      </fieldset>
+      <label><span>Project postcode</span><input name="postcode" type="text" placeholder="GU1 1AA"></label>
+      <label><span>Tell us about the job</span><textarea name="message" rows="5" placeholder="Site type, scale, target start date…"></textarea></label>
+      <button type="submit" class="btn btn-yellow btn-block">Send enquiry</button>
+      <p class="qf-success" id="qfSuccess" hidden>Thanks, we've got it. A contracts manager will be in touch within one working day.</p>
+    </form>
+  </div>
+</section>
+
+<div class="lp-sticky-cta">
+  <div class="container lp-sticky-cta-row">
+    <p class="lp-sticky-cta-text">Surface water or land drainage?<span>Free site visit, one working day response.</span></p>
+    <a href="tel:01932932650" class="btn btn-ghost-light">Call 01932 932650</a>
+    <a href="#quoteForm" class="btn btn-yellow">Get a quote</a>
+  </div>
+</div>
+</BaseLayout>

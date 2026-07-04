@@ -1,0 +1,218 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ServiceSchema from '../../components/ServiceSchema.astro';
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What agricultural groundworks does Surrey Contracting carry out?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Surrey Contracting installs farm roads and stone hardstanding, concrete yards and cattle pads, agricultural and dirty-water drainage, ponds and reservoirs, and provides muck-away, site clearance and machinery access works for farms, estates and rural properties across Surrey, London and the South East." }
+    },
+    {
+      "@type": "Question",
+      "name": "Can you build a concrete yard or cattle pad that stands up to livestock and machinery?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Yes. We lay reinforced concrete yards, cattle pads, feed and silage areas to the right falls and thickness for slurry, tractors and heavy stock traffic, with drainage designed in so surface and dirty water is kept separate and managed properly." }
+    },
+    {
+      "@type": "Question",
+      "name": "Do you install agricultural drainage and dirty-water systems?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Yes. We install field and land drainage, French drains, ditches and outfalls to dry out wet ground, plus clean and dirty-water separation, yard drainage and dig ponds and reservoirs, keeping your land workable and your yard compliant through wet weather." }
+    },
+    {
+      "@type": "Question",
+      "name": "What areas do you cover for farm and estate work?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Surrey Contracting covers Surrey, London and the South East from its base between Cobham and Leatherhead, including Guildford, Woking, Esher, Epsom, Weybridge, Reigate, Dorking, Kingston and the wider rural belt around the M25 corridor." }
+    }
+  ]
+};
+---
+<BaseLayout
+  title="Agricultural Groundworks Surrey | Farm Roads, Yards & Drainage"
+  description="Farm roads, concrete yards and cattle pads, agricultural drainage, ponds and muck-away for farms and estates across Surrey and the South East. Call 01932 932650."
+  path="/lp/agricultural"
+>
+  <meta name="robots" content="noindex,follow" slot="head" />
+  <ServiceSchema slot="head" name="Agricultural Groundworks" slug="lp/agricultural" description="Farm roads and hardstanding, concrete yards and cattle pads, agricultural drainage, ponds and reservoirs, muck-away and site clearance for farms and estates across Surrey, London and the South East." />
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify(faqSchema)} />
+
+<section class="page-hero">
+  <div class="page-hero-bg" aria-hidden="true">
+    <div class="page-hero-img" style="background-image:url('/assets/img/services/groundworks-agricultural.jpg')"></div>
+    <div class="page-hero-vignette"></div>
+  </div>
+  <div class="container page-hero-inner">
+    <span class="eyebrow eyebrow-yellow">Agricultural groundworks · Surrey &amp; the South East</span>
+    <h1 class="page-title">Farm roads, concrete yards &amp; drainage built to last.</h1>
+    <p class="page-lede">Stone farm tracks, reinforced cattle pads, agricultural and dirty-water drainage, ponds, muck-away and machinery access for farms and estates. Free site visit, one working day response.</p>
+    <div class="hero-ctas">
+      <a href="#quoteForm" class="btn btn-yellow">Get a free quote</a>
+      <a href="tel:01932932650" class="btn btn-ghost-light">Call 01932 932650</a>
+    </div>
+    <div class="hero-trust">
+      <div class="trust-item"><strong>15+</strong><span>years of experience</span></div>
+      <div class="trust-divider"></div>
+      <div class="trust-item"><strong>CHAS</strong><span>&amp; SafeContractor</span></div>
+      <div class="trust-divider"></div>
+      <div class="trust-item"><strong>Surrey</strong><span>&amp; the South East</span></div>
+      <div class="trust-divider"></div>
+      <div class="trust-item"><strong>1 day</strong><span>response to enquiries</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="page-section">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow">Agricultural groundworks</span>
+      <h2 class="section-title">Rural groundworks that keep your farm working.</h2>
+      <p class="section-lede">Poached gateways, potholed tracks, standing water and worn-out yards slow the whole farm down and cost you in fuel, time and stock. Surrey Contracting builds the hardstanding, drainage and access your ground actually needs, from a single stone track or cattle pad to a full concrete yard and dirty-water scheme, working around your seasons to keep disruption to a minimum.</p>
+    </div>
+  </div>
+</section>
+
+<section class="svc-detail">
+  <div class="container svc-detail-grid">
+    <div class="svc-detail-media">
+      <div class="svc-detail-photo" style="background-image:url('/assets/img/Groundworks_Surrey_Contracting.jpg')"></div>
+    </div>
+    <div class="svc-detail-copy">
+      <h2 class="section-title">Farm Roads &amp; Hardstanding</h2>
+      <p class="lede-dark">We build all-weather farm roads, stone tracks and hardstanding that carry tractors, telehandlers, milk tankers and artics without rutting or falling apart. From reprofiling a poached gateway to laying a new access track the length of the holding, we dig out, install a proper stone construction with the right falls and drainage, and finish to a surface that stays passable through the wettest months. Better access means less downtime, cleaner stock and machinery that reaches every corner of the farm.</p>
+      <ul class="feature-list">
+        <li>All-weather stone farm tracks</li>
+        <li>Gateways &amp; field entrances</li>
+        <li>Grain store &amp; barn hardstanding</li>
+        <li>Machinery &amp; tanker access</li>
+        <li>Ground stabilisation &amp; geotextiles</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="svc-detail svc-detail-alt">
+  <div class="container svc-detail-grid svc-detail-reverse">
+    <div class="svc-detail-media">
+      <div class="svc-detail-photo" style="background-image:url('/assets/img/services/groundworks-siteprep.jpg')"></div>
+    </div>
+    <div class="svc-detail-copy">
+      <h2 class="section-title">Concrete Yards &amp; Cattle Pads</h2>
+      <p class="lede-dark">We lay reinforced concrete yards, cattle pads, feed and silage areas built for slurry, heavy stock and constant machinery traffic. Every slab is laid to the correct thickness and falls, with clean and dirty water designed in from the start so runoff is channelled and separated properly. From a single feed pad to a full collecting yard, we handle the excavation, sub-base, formwork, reinforcement and finish, giving you hardwearing surfaces that are easy to scrape, easy to keep clean and built to meet farm assurance requirements.</p>
+      <ul class="feature-list">
+        <li>Reinforced concrete cattle yards</li>
+        <li>Feed &amp; cattle pads</li>
+        <li>Silage clamps &amp; slab bases</li>
+        <li>Correct falls &amp; drainage channels</li>
+        <li>Clean &amp; dirty-water separation</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="svc-detail">
+  <div class="container svc-detail-grid">
+    <div class="svc-detail-media">
+      <div class="svc-detail-photo" style="background-image:url('/assets/img/pond.jpg')"></div>
+    </div>
+    <div class="svc-detail-copy">
+      <h2 class="section-title">Agricultural Drainage &amp; Ponds</h2>
+      <p class="lede-dark">Where ground stays wet and yards flood, we install field and land drainage, French drains, ditches and outfalls to dry out heavy land and keep it workable earlier in the season. We separate and manage dirty water from yards and collecting areas, and dig, line and shape ponds, reservoirs and irrigation stores to hold water where you want it. We find the cause first, then install a gravity-fed system that keeps working long after the diggers have gone, cutting flooding, mud and standing water across the holding.</p>
+      <ul class="feature-list">
+        <li>Field &amp; land drainage</li>
+        <li>French drains &amp; herringbone systems</li>
+        <li>Dirty-water &amp; yard drainage</li>
+        <li>Ditches, outfalls &amp; culverts</li>
+        <li>Ponds, reservoirs &amp; irrigation stores</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="page-section page-section-grey">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow">Common questions</span>
+      <h2 class="section-title">Agricultural groundworks FAQs</h2>
+    </div>
+    <div class="faq-list">
+      <details class="faq-item">
+        <summary>What agricultural groundworks does Surrey Contracting carry out?</summary>
+        <p>Farm roads and stone hardstanding, concrete yards and cattle pads, agricultural and dirty-water drainage, ponds and reservoirs, plus muck-away, site clearance and machinery access works for farms, estates and rural properties across Surrey, London and the South East.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Can you build a concrete yard or cattle pad that stands up to livestock and machinery?</summary>
+        <p>Yes. We lay reinforced concrete yards, cattle pads, feed and silage areas to the right falls and thickness for slurry, tractors and heavy stock traffic, with drainage designed in so surface and dirty water is kept separate and managed properly.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Do you install agricultural drainage and dirty-water systems?</summary>
+        <p>Yes. We install field and land drainage, French drains, ditches and outfalls to dry out wet ground, plus clean and dirty-water separation, yard drainage and dig ponds and reservoirs, keeping your land workable and your yard compliant through wet weather.</p>
+      </details>
+      <details class="faq-item">
+        <summary>What areas do you cover for farm and estate work?</summary>
+        <p>Surrey, London and the South East from our base between Cobham and Leatherhead, including Guildford, Woking, Esher, Epsom, Weybridge, Reigate, Dorking, Kingston and the wider rural belt around the M25 corridor.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<section class="page-section">
+  <div class="container contact-grid">
+    <div class="contact-info">
+      <span class="eyebrow eyebrow-yellow">Get your agricultural quote</span>
+      <h2 class="section-title">Tell us about your farm or estate.</h2>
+      <p>Send us the details and a contracts manager will be in touch within one working day to arrange a free site visit. One point of contact from quote to handover, working around your seasons.</p>
+      <div class="contact-cards">
+        <div class="contact-card">
+          <div class="contact-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.86 19.86 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.86 19.86 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div>
+          <div>
+            <span class="contact-label">Call us</span>
+            <a class="contact-value" href="tel:01932932650">01932 932650</a>
+          </div>
+        </div>
+        <div class="contact-card">
+          <div class="contact-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg></div>
+          <div>
+            <span class="contact-label">Response</span>
+            <span class="contact-value">Within one working day</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <form class="quote-form contact-form" id="quoteForm" data-ytq-form data-lead-source="lp_agricultural" novalidate>
+      <div style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden;" aria-hidden="true">
+        <label>Company website<input type="text" name="_honeypot" tabindex="-1" autocomplete="off"></label>
+      </div>
+      <h3 class="form-title">Get a free agricultural groundworks quote</h3>
+      <div class="qf-row">
+        <label><span>Name</span><input required name="name" type="text" placeholder="Your full name"></label>
+        <label><span>Phone</span><input required name="phone" type="tel" placeholder="01932 932650"></label>
+      </div>
+      <label><span>Email</span><input required name="email" type="email" placeholder="you@email.com"></label>
+      <label><span>Company / organisation</span><input name="company" type="text" placeholder="Optional"></label>
+      <fieldset class="qf-checks">
+        <legend>What do you need?</legend>
+        <label class="check"><input type="checkbox" name="svc" value="Demolition"><span>Demolition</span></label>
+        <label class="check"><input type="checkbox" name="svc" value="Groundworks"><span>Groundworks</span></label>
+        <label class="check"><input type="checkbox" name="svc" value="Bulk Earthworks"><span>Bulk Earthworks</span></label>
+        <label class="check"><input type="checkbox" name="svc" value="Commercial Surfacing"><span>Commercial Surfacing</span></label>
+        <label class="check"><input type="checkbox" name="svc" value="Other"><span>Other</span></label>
+      </fieldset>
+      <label><span>Project postcode</span><input name="postcode" type="text" placeholder="GU1 1AA"></label>
+      <label><span>Tell us about the job</span><textarea name="message" rows="5" placeholder="Site type, scale, target start date…"></textarea></label>
+      <button type="submit" class="btn btn-yellow btn-block">Send enquiry</button>
+      <p class="qf-success" id="qfSuccess" hidden>Thanks, we've got it. A contracts manager will be in touch within one working day.</p>
+    </form>
+  </div>
+</section>
+
+<div class="lp-sticky-cta">
+  <div class="container lp-sticky-cta-row">
+    <p class="lp-sticky-cta-text">Farm roads, yards or drainage?<span>Free site visit, one working day response.</span></p>
+    <a href="tel:01932932650" class="btn btn-ghost-light">Call 01932 932650</a>
+    <a href="#quoteForm" class="btn btn-yellow">Get a quote</a>
+  </div>
+</div>
+</BaseLayout>

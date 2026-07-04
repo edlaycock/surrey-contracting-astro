@@ -7,7 +7,7 @@ import node from '@astrojs/node';
 export default defineConfig({
   site: 'https://surreycontracting.co.uk',
   trailingSlash: 'never',
-  integrations: [sitemap({ filter: (page) => !page.includes('/training-manual') })],
+  integrations: [sitemap({ filter: (page) => !page.includes('/training-manual') && !page.includes('/lp/') })],
   // Static by default; only routes that opt out (api/contact) run server-side.
   adapter: node({ mode: 'standalone' }),
   security: { checkOrigin: false },

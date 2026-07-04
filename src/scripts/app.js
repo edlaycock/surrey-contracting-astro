@@ -180,7 +180,7 @@ if (form) {
       if (typeof gtag === 'function') {
         gtag('event', 'generate_lead', {
           event_category: 'form',
-          event_label: 'quote_enquiry',
+          event_label: form.dataset.leadSource || 'quote_enquiry',
           form_id: form.id || 'quoteForm',
         });
       }
@@ -211,6 +211,24 @@ document.addEventListener('click', (e) => {
     gtag('event', 'email_click', { event_category: 'contact', event_label: href.replace('mailto:', '') });
   }
 });
+
+// ---------- Landing page sticky CTA ----------
+const stickyCta = document.querySelector('.lp-sticky-cta');
+if (stickyCta) {
+  const formEl = document.getElementById('quoteForm');
+  let formVisible = false;
+  const update = () => {
+    stickyCta.classList.toggle('is-visible', window.scrollY > 320 && !formVisible);
+  };
+  if (formEl) {
+    new IntersectionObserver((entries) => {
+      formVisible = entries[0].isIntersecting;
+      update();
+    }, { threshold: 0.15 }).observe(formEl);
+  }
+  window.addEventListener('scroll', update, { passive: true });
+  update();
+}
 
 // ---------- Nav shadow is now baked in via CSS ----------
 

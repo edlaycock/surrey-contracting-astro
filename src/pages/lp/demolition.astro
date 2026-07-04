@@ -1,0 +1,218 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ServiceSchema from '../../components/ServiceSchema.astro';
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What demolition services does Surrey Contracting offer?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Surrey Contracting provides full structural demolition, partial demolition for renovation, soft strip-out, site clearance and concrete crushing for residential and commercial clients across Surrey, London and the South East, with full risk assessments and method statements on every project." }
+    },
+    {
+      "@type": "Question",
+      "name": "Are Surrey Contracting's demolition operatives qualified?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Yes. All operatives hold CSCS and CCDO qualifications. Surrey Contracting produces full risk assessments and method statements for every demolition project and holds CHAS, SafeContractor and SSIP accreditation." }
+    },
+    {
+      "@type": "Question",
+      "name": "Can you crush concrete on site to reduce costs?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Yes. We offer on-site mobile crushing and off-site processing to turn demolition arisings into reusable aggregate. On-site crushing reduces muck-away and haulage costs and produces sub-base, general fill and drainage aggregate for the next phase of works." }
+    },
+    {
+      "@type": "Question",
+      "name": "What areas does Surrey Contracting cover for demolition?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Surrey Contracting covers Surrey, London and the South East from its base between Cobham and Leatherhead, including Guildford, Woking, Esher, Epsom, Weybridge, Reigate, Dorking, Kingston and the wider M25 corridor." }
+    }
+  ]
+};
+---
+<BaseLayout
+  title="Demolition Contractors Surrey | Structural & Soft Strip Demolition"
+  description="Structural demolition, soft strip-out, site clearance and concrete crushing across Surrey, London and the South East. CSCS & CCDO qualified. Free site visit, call 01932 932650."
+  path="/lp/demolition"
+>
+  <meta name="robots" content="noindex,follow" slot="head" />
+  <ServiceSchema slot="head" name="Demolition" slug="lp/demolition" description="Structural demolition, soft strip-out, site clearance and concrete crushing across Surrey, London and the South East." />
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify(faqSchema)} />
+
+<section class="page-hero">
+  <div class="page-hero-bg" aria-hidden="true">
+    <div class="page-hero-img" style="background-image:url('/assets/img/services/demolition-hero.jpg')"></div>
+    <div class="page-hero-vignette"></div>
+  </div>
+  <div class="container page-hero-inner">
+    <span class="eyebrow eyebrow-yellow">Demolition contractors · Surrey &amp; the South East</span>
+    <h1 class="page-title">Structural &amp; soft strip demolition, safely delivered.</h1>
+    <p class="page-lede">Full structural demolition, soft strip-out, site clearance and concrete crushing, meticulously planned and executed. Free site visit, one working day response.</p>
+    <div class="hero-ctas">
+      <a href="#quoteForm" class="btn btn-yellow">Get a free quote</a>
+      <a href="tel:01932932650" class="btn btn-ghost-light">Call 01932 932650</a>
+    </div>
+    <div class="hero-trust">
+      <div class="trust-item"><strong>15+</strong><span>years of experience</span></div>
+      <div class="trust-divider"></div>
+      <div class="trust-item"><strong>CHAS</strong><span>&amp; SafeContractor</span></div>
+      <div class="trust-divider"></div>
+      <div class="trust-item"><strong>CSCS</strong><span>&amp; CCDO qualified</span></div>
+      <div class="trust-divider"></div>
+      <div class="trust-item"><strong>1 day</strong><span>response to enquiries</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="page-section">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow">Demolition</span>
+      <h2 class="section-title">Comprehensive demolition, planned and executed with precision.</h2>
+      <p class="section-lede">Standing structures, redundant buildings and cluttered sites hold up your programme and add risk. Surrey Contracting manages every stage, from site survey and method statements through to final clearance, delivering structural and soft strip demolition safely and on schedule so your site is ready for the next phase of works.</p>
+    </div>
+  </div>
+</section>
+
+<section class="svc-detail">
+  <div class="container svc-detail-grid">
+    <div class="svc-detail-media">
+      <div class="svc-detail-photo" style="background-image:url('/assets/img/services/demolition-hero.jpg')"></div>
+    </div>
+    <div class="svc-detail-copy">
+      <h2 class="section-title">Structural &amp; Partial Demolition</h2>
+      <p class="lede-dark">We deliver complete structural demolition and partial demolition for renovation across commercial and self-build residential projects of every size. Whether it is a full structural take-down, selective demolition to preserve retained elements, or making way for an extension, our skilled operatives work safely and efficiently. We carry out full risk assessments and method statements for every project, and all operatives hold CSCS and CCDO qualifications.</p>
+      <ul class="feature-list">
+        <li>Full structural demolition</li>
+        <li>Partial demolition for renovation</li>
+        <li>Residential &amp; commercial projects</li>
+        <li>Risk assessments &amp; method statements</li>
+        <li>CSCS &amp; CCDO qualified operatives</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="svc-detail svc-detail-alt">
+  <div class="container svc-detail-grid svc-detail-reverse">
+    <div class="svc-detail-media">
+      <div class="svc-detail-photo" style="background-image:url('/assets/img/services/demolition-softstrip.webp')"></div>
+    </div>
+    <div class="svc-detail-copy">
+      <h2 class="section-title">Soft Strip-Out</h2>
+      <p class="lede-dark">Our soft strip demolition removes all non-structural elements from a building, including fixtures, fittings, suspended ceilings, partition walls, mechanical and electrical installations and floor coverings, while maintaining the structural framework throughout. This is often the first phase of a refurbishment or fit-out, and our operatives are experienced in working within occupied buildings and live environments where noise, dust and disruption must be carefully managed.</p>
+      <ul class="feature-list">
+        <li>Fixtures &amp; fittings removal</li>
+        <li>Suspended ceiling strip</li>
+        <li>M&amp;E removal</li>
+        <li>Floor covering removal</li>
+        <li>Working in occupied buildings</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="svc-detail">
+  <div class="container svc-detail-grid">
+    <div class="svc-detail-media">
+      <div class="svc-detail-photo" style="background-image:url('/assets/img/services/demolition-clearance.webp')"></div>
+    </div>
+    <div class="svc-detail-copy">
+      <h2 class="section-title">Site Clearance &amp; Concrete Crushing</h2>
+      <p class="lede-dark">From completion of demolition through to preparation for the next phase, we clear all debris, vegetation, redundant structures and waste, leaving your site clean and ready for development, with waste disposed of responsibly. Where suitable, on-site mobile crushing turns demolition arisings into reusable aggregate, cutting muck-away costs and reducing the need to import new material. Processed material is reused as sub-base, general fill or drainage aggregate.</p>
+      <ul class="feature-list">
+        <li>Post-demolition site clearance</li>
+        <li>On-site mobile crushing</li>
+        <li>Off-site processing &amp; aggregate recycling</li>
+        <li>Sub-base &amp; fill production</li>
+        <li>Reduced landfill &amp; transport costs</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="page-section page-section-grey">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow">Common questions</span>
+      <h2 class="section-title">Demolition FAQs</h2>
+    </div>
+    <div class="faq-list">
+      <details class="faq-item">
+        <summary>What demolition services does Surrey Contracting offer?</summary>
+        <p>Full structural demolition, partial demolition for renovation, soft strip-out, site clearance and concrete crushing for residential and commercial clients across Surrey, London and the South East, with full risk assessments and method statements on every project.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Are Surrey Contracting's demolition operatives qualified?</summary>
+        <p>Yes. All operatives hold CSCS and CCDO qualifications. We produce full risk assessments and method statements for every demolition project and hold CHAS, SafeContractor and SSIP accreditation.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Can you crush concrete on site to reduce costs?</summary>
+        <p>Yes. We offer on-site mobile crushing and off-site processing to turn demolition arisings into reusable aggregate. On-site crushing reduces muck-away and haulage costs and produces sub-base, general fill and drainage aggregate for the next phase of works.</p>
+      </details>
+      <details class="faq-item">
+        <summary>What areas does Surrey Contracting cover for demolition?</summary>
+        <p>Surrey, London and the South East from our base between Cobham and Leatherhead, including Guildford, Woking, Esher, Epsom, Weybridge, Reigate, Dorking, Kingston and the wider M25 corridor.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<section class="page-section">
+  <div class="container contact-grid">
+    <div class="contact-info">
+      <span class="eyebrow eyebrow-yellow">Get your demolition quote</span>
+      <h2 class="section-title">Tell us about your site.</h2>
+      <p>Send us the details and a contracts manager will be in touch within one working day to arrange a free site visit. One point of contact from quote to handover.</p>
+      <div class="contact-cards">
+        <div class="contact-card">
+          <div class="contact-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.86 19.86 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.86 19.86 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div>
+          <div>
+            <span class="contact-label">Call us</span>
+            <a class="contact-value" href="tel:01932932650">01932 932650</a>
+          </div>
+        </div>
+        <div class="contact-card">
+          <div class="contact-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg></div>
+          <div>
+            <span class="contact-label">Response</span>
+            <span class="contact-value">Within one working day</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <form class="quote-form contact-form" id="quoteForm" data-ytq-form data-lead-source="lp_demolition" novalidate>
+      <div style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden;" aria-hidden="true">
+        <label>Company website<input type="text" name="_honeypot" tabindex="-1" autocomplete="off"></label>
+      </div>
+      <h3 class="form-title">Get a free demolition quote</h3>
+      <div class="qf-row">
+        <label><span>Name</span><input required name="name" type="text" placeholder="Your full name"></label>
+        <label><span>Phone</span><input required name="phone" type="tel" placeholder="01932 932650"></label>
+      </div>
+      <label><span>Email</span><input required name="email" type="email" placeholder="you@email.com"></label>
+      <label><span>Company / organisation</span><input name="company" type="text" placeholder="Optional"></label>
+      <fieldset class="qf-checks">
+        <legend>What do you need?</legend>
+        <label class="check"><input type="checkbox" name="svc" value="Demolition"><span>Demolition</span></label>
+        <label class="check"><input type="checkbox" name="svc" value="Groundworks"><span>Groundworks</span></label>
+        <label class="check"><input type="checkbox" name="svc" value="Bulk Earthworks"><span>Bulk Earthworks</span></label>
+        <label class="check"><input type="checkbox" name="svc" value="Commercial Surfacing"><span>Commercial Surfacing</span></label>
+        <label class="check"><input type="checkbox" name="svc" value="Other"><span>Other</span></label>
+      </fieldset>
+      <label><span>Project postcode</span><input name="postcode" type="text" placeholder="GU1 1AA"></label>
+      <label><span>Tell us about the job</span><textarea name="message" rows="5" placeholder="Site type, scale, target start date…"></textarea></label>
+      <button type="submit" class="btn btn-yellow btn-block">Send enquiry</button>
+      <p class="qf-success" id="qfSuccess" hidden>Thanks, we've got it. A contracts manager will be in touch within one working day.</p>
+    </form>
+  </div>
+</section>
+
+<div class="lp-sticky-cta">
+  <div class="container lp-sticky-cta-row">
+    <p class="lp-sticky-cta-text">Structural or soft strip demolition?<span>Free site visit, one working day response.</span></p>
+    <a href="tel:01932932650" class="btn btn-ghost-light">Call 01932 932650</a>
+    <a href="#quoteForm" class="btn btn-yellow">Get a quote</a>
+  </div>
+</div>
+</BaseLayout>

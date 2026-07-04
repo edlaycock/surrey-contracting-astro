@@ -1,0 +1,218 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ServiceSchema from '../../components/ServiceSchema.astro';
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What groundworks services does Surrey Contracting provide?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Surrey Contracting provides strip, trench fill, raft and block-and-beam foundations, build to DPC, concrete works, foul and surface water drainage, service ducting and utility connections, site preparation, topsoil stripping and excavation across Surrey, London and the South East." }
+    },
+    {
+      "@type": "Question",
+      "name": "Do you do foundations for residential extensions and new builds?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Yes. We carry out foundations for domestic extensions, new-build homes and commercial developments, including excavation, concrete placement, brickwork and blockwork to damp proof course level, working to approved drawings and engineer specifications." }
+    },
+    {
+      "@type": "Question",
+      "name": "Are your groundworks operatives qualified and accredited?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Yes. All groundworks operatives are fully trained and hold CSCS qualifications. Surrey Contracting also holds CHAS, SafeContractor and SSIP accreditation and provides up-to-date health and safety training to all staff." }
+    },
+    {
+      "@type": "Question",
+      "name": "What areas do you cover for groundworks?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Surrey Contracting covers Surrey, London and the South East from its base between Cobham and Leatherhead, including Guildford, Woking, Esher, Epsom, Weybridge, Reigate, Dorking, Kingston and the wider M25 corridor." }
+    }
+  ]
+};
+---
+<BaseLayout
+  title="Groundworks Contractors Surrey | Foundations, Drainage & Site Prep"
+  description="Foundations, concrete works, drainage, utility trenching, site preparation and excavation delivered across Surrey, London and the South East. Free site visit, call 01932 932650."
+  path="/lp/groundworks"
+>
+  <meta name="robots" content="noindex,follow" slot="head" />
+  <ServiceSchema slot="head" name="Groundworks" slug="lp/groundworks" description="Foundations, concrete works, drainage, utility trenching, site preparation and excavation delivered across Surrey, London and the South East." />
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify(faqSchema)} />
+
+<section class="page-hero">
+  <div class="page-hero-bg" aria-hidden="true">
+    <div class="page-hero-img" style="background-image:url('/assets/img/services/groundworks-hero.jpg')"></div>
+    <div class="page-hero-vignette"></div>
+  </div>
+  <div class="container page-hero-inner">
+    <span class="eyebrow eyebrow-yellow">Groundworks contractors · Surrey &amp; the South East</span>
+    <h1 class="page-title">Groundworks done right, from foundations to finished site.</h1>
+    <p class="page-lede">Strip and trench fill foundations, concrete works, drainage, utility trenching, site preparation and excavation, delivered on programme and to spec. Free site visit, one working day response.</p>
+    <div class="hero-ctas">
+      <a href="#quoteForm" class="btn btn-yellow">Get a free quote</a>
+      <a href="tel:01932932650" class="btn btn-ghost-light">Call 01932 932650</a>
+    </div>
+    <div class="hero-trust">
+      <div class="trust-item"><strong>15+</strong><span>years of experience</span></div>
+      <div class="trust-divider"></div>
+      <div class="trust-item"><strong>CHAS</strong><span>&amp; SafeContractor</span></div>
+      <div class="trust-divider"></div>
+      <div class="trust-item"><strong>Surrey</strong><span>&amp; the South East</span></div>
+      <div class="trust-divider"></div>
+      <div class="trust-item"><strong>1 day</strong><span>response to enquiries</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="page-section">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow">Groundworks</span>
+      <h2 class="section-title">One team from dig to damp proof course.</h2>
+      <p class="section-lede">Surrey Contracting delivers a full groundworks package for residential, commercial and developer-led projects across Surrey, London and the South East. With over 15 years of experience and CSCS-qualified operatives, we handle foundations, concrete, drainage, service trenches and site preparation under one contract, working to your drawings, your programme and a single point of contact from quote to handover.</p>
+    </div>
+  </div>
+</section>
+
+<section class="svc-detail">
+  <div class="container svc-detail-grid">
+    <div class="svc-detail-media">
+      <div class="svc-detail-photo" style="background-image:url('/assets/img/services/groundworks-foundations.webp')"></div>
+    </div>
+    <div class="svc-detail-copy">
+      <h2 class="section-title">Foundations &amp; Concrete</h2>
+      <p class="lede-dark">We provide complete foundation and build-to-DPC packages for extensions, new-build homes, commercial units and larger development schemes. Our works cover excavation, foundation construction, concrete placement, formwork, steel fixing, brickwork and blockwork up to damp proof course level. We work to approved drawings and engineer specifications so every plot or structure is built accurately and ready for the next phase of construction.</p>
+      <ul class="feature-list">
+        <li>Strip &amp; trench fill foundations</li>
+        <li>Raft foundations &amp; concrete slabs</li>
+        <li>Block and beam floors</li>
+        <li>Formwork &amp; steel fixing</li>
+        <li>Build to DPC</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="svc-detail svc-detail-alt">
+  <div class="container svc-detail-grid svc-detail-reverse">
+    <div class="svc-detail-media">
+      <div class="svc-detail-photo" style="background-image:url('/assets/img/services/groundworks-trench.jpg')"></div>
+    </div>
+    <div class="svc-detail-copy">
+      <h2 class="section-title">Drainage &amp; Utility Trenching</h2>
+      <p class="lede-dark">We install foul and surface water drainage, soakaways, manholes and inspection chambers, and connect safely into existing systems. Alongside drainage we cut and backfill service trenches and ducting routes for water, electric and gas, delivering the below-ground infrastructure your site needs, all to building control standards and ready for the utility providers.</p>
+      <ul class="feature-list">
+        <li>Foul &amp; surface water drainage</li>
+        <li>Soakaway construction</li>
+        <li>Manhole &amp; chamber installation</li>
+        <li>Service ducting (gas, water, electric)</li>
+        <li>Utility connections to building control</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="svc-detail">
+  <div class="container svc-detail-grid">
+    <div class="svc-detail-media">
+      <div class="svc-detail-photo" style="background-image:url('/assets/img/services/groundworks-siteprep.jpg')"></div>
+    </div>
+    <div class="svc-detail-copy">
+      <h2 class="section-title">Site Preparation &amp; Excavation</h2>
+      <p class="lede-dark">We get sites ready for construction using modern plant and qualified operators. From topsoil stripping and stockpiling to site levelling, temporary access roads, ground stabilisation and muck-away, we plan the works to minimise waste and reuse material on site. Our excavation service runs from 1.5-tonne mini diggers for restricted access through to 30-tonne machines for major earthmoving.</p>
+      <ul class="feature-list">
+        <li>Topsoil strip &amp; stockpiling</li>
+        <li>Site levelling &amp; setting out</li>
+        <li>Temporary access roads &amp; hardstanding</li>
+        <li>Ground stabilisation</li>
+        <li>Excavation &amp; muck-away</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="page-section page-section-grey">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow">Common questions</span>
+      <h2 class="section-title">Groundworks FAQs</h2>
+    </div>
+    <div class="faq-list">
+      <details class="faq-item">
+        <summary>What groundworks services does Surrey Contracting provide?</summary>
+        <p>Strip, trench fill, raft and block-and-beam foundations, build to DPC, concrete works, foul and surface water drainage, service ducting and utility connections, site preparation, topsoil stripping and excavation across Surrey, London and the South East.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Do you do foundations for residential extensions and new builds?</summary>
+        <p>Yes. We carry out foundations for domestic extensions, new-build homes and commercial developments, including excavation, concrete placement, brickwork and blockwork to damp proof course level, working to approved drawings and engineer specifications.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Are your groundworks operatives qualified and accredited?</summary>
+        <p>Yes. All groundworks operatives are fully trained and hold CSCS qualifications. Surrey Contracting also holds CHAS, SafeContractor and SSIP accreditation and provides up-to-date health and safety training to all staff.</p>
+      </details>
+      <details class="faq-item">
+        <summary>What areas do you cover for groundworks?</summary>
+        <p>Surrey, London and the South East from our base between Cobham and Leatherhead, including Guildford, Woking, Esher, Epsom, Weybridge, Reigate, Dorking, Kingston and the wider M25 corridor.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<section class="page-section">
+  <div class="container contact-grid">
+    <div class="contact-info">
+      <span class="eyebrow eyebrow-yellow">Get your groundworks quote</span>
+      <h2 class="section-title">Tell us about your site.</h2>
+      <p>Send us the details and a contracts manager will be in touch within one working day to arrange a free site visit. One point of contact from quote to handover.</p>
+      <div class="contact-cards">
+        <div class="contact-card">
+          <div class="contact-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.86 19.86 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.86 19.86 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div>
+          <div>
+            <span class="contact-label">Call us</span>
+            <a class="contact-value" href="tel:01932932650">01932 932650</a>
+          </div>
+        </div>
+        <div class="contact-card">
+          <div class="contact-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg></div>
+          <div>
+            <span class="contact-label">Response</span>
+            <span class="contact-value">Within one working day</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <form class="quote-form contact-form" id="quoteForm" data-ytq-form data-lead-source="lp_groundworks" novalidate>
+      <div style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden;" aria-hidden="true">
+        <label>Company website<input type="text" name="_honeypot" tabindex="-1" autocomplete="off"></label>
+      </div>
+      <h3 class="form-title">Get a free groundworks quote</h3>
+      <div class="qf-row">
+        <label><span>Name</span><input required name="name" type="text" placeholder="Your full name"></label>
+        <label><span>Phone</span><input required name="phone" type="tel" placeholder="01932 932650"></label>
+      </div>
+      <label><span>Email</span><input required name="email" type="email" placeholder="you@email.com"></label>
+      <label><span>Company / organisation</span><input name="company" type="text" placeholder="Optional"></label>
+      <fieldset class="qf-checks">
+        <legend>What do you need?</legend>
+        <label class="check"><input type="checkbox" name="svc" value="Demolition"><span>Demolition</span></label>
+        <label class="check"><input type="checkbox" name="svc" value="Groundworks"><span>Groundworks</span></label>
+        <label class="check"><input type="checkbox" name="svc" value="Bulk Earthworks"><span>Bulk Earthworks</span></label>
+        <label class="check"><input type="checkbox" name="svc" value="Commercial Surfacing"><span>Commercial Surfacing</span></label>
+        <label class="check"><input type="checkbox" name="svc" value="Other"><span>Other</span></label>
+      </fieldset>
+      <label><span>Project postcode</span><input name="postcode" type="text" placeholder="GU1 1AA"></label>
+      <label><span>Tell us about the job</span><textarea name="message" rows="5" placeholder="Site type, scale, target start date…"></textarea></label>
+      <button type="submit" class="btn btn-yellow btn-block">Send enquiry</button>
+      <p class="qf-success" id="qfSuccess" hidden>Thanks, we've got it. A contracts manager will be in touch within one working day.</p>
+    </form>
+  </div>
+</section>
+
+<div class="lp-sticky-cta">
+  <div class="container lp-sticky-cta-row">
+    <p class="lp-sticky-cta-text">Foundations, drainage or site prep?<span>Free site visit, one working day response.</span></p>
+    <a href="tel:01932932650" class="btn btn-ghost-light">Call 01932 932650</a>
+    <a href="#quoteForm" class="btn btn-yellow">Get a quote</a>
+  </div>
+</div>
+</BaseLayout>

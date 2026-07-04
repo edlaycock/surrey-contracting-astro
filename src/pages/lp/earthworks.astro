@@ -1,0 +1,218 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ServiceSchema from '../../components/ServiceSchema.astro';
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is bulk earthworks and what does it involve?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Bulk earthworks, often called cut and fill, involves the excavation, movement and placement of large volumes of soil, stone or rock to prepare land for construction. Surrey Contracting delivers bulk excavation, site levelling, muck away, ground remediation and site clearance for residential and commercial projects across Surrey, London and the South East." }
+    },
+    {
+      "@type": "Question",
+      "name": "Does Surrey Contracting carry out cut and fill on development sites?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Yes. Surrey Contracting delivers cut and fill and site levelling for residential developments, commercial plots and private sites, working to approved drawings, site levels and programme requirements so the platform is right first time." }
+    },
+    {
+      "@type": "Question",
+      "name": "Can Surrey Contracting handle muck away and waste disposal?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Yes. We manage surplus materials including excavated soil and demolition arisings, arranging responsible muck away, recycling and disposal in line with current environmental and safety regulations. On-site crushing is available to reduce haulage and landfill costs." }
+    },
+    {
+      "@type": "Question",
+      "name": "What areas does Surrey Contracting cover for bulk earthworks?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Surrey Contracting covers Surrey, London and the South East from its base between Cobham and Leatherhead, including Guildford, Woking, Esher, Epsom, Weybridge, Reigate, Dorking, Kingston and the wider M25 corridor." }
+    }
+  ]
+};
+---
+<BaseLayout
+  title="Bulk Earthworks Contractors Surrey | Cut & Fill, Muck Away"
+  description="Cut and fill, site levelling, muck away, excavation and site clearance across Surrey, London and the South East. Free site visit, call 01932 932650."
+  path="/lp/earthworks"
+>
+  <meta name="robots" content="noindex,follow" slot="head" />
+  <ServiceSchema slot="head" name="Bulk Earthworks" slug="lp/earthworks" description="Cut and fill, site levelling, muck away, excavation and site clearance delivered across Surrey, London and the South East." />
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify(faqSchema)} />
+
+<section class="page-hero">
+  <div class="page-hero-bg" aria-hidden="true">
+    <div class="page-hero-img" style="background-image:url('/assets/img/services/earthworks-hero.jpg')"></div>
+    <div class="page-hero-vignette"></div>
+  </div>
+  <div class="container page-hero-inner">
+    <span class="eyebrow eyebrow-yellow">Bulk earthworks contractors · Surrey &amp; the South East</span>
+    <h1 class="page-title">Cut &amp; fill, site levelling and muck away, done right.</h1>
+    <p class="page-lede">Bulk excavation, level reduction, muck away and site clearance that get your plot to formation on programme. Free site visit, one working day response.</p>
+    <div class="hero-ctas">
+      <a href="#quoteForm" class="btn btn-yellow">Get a free quote</a>
+      <a href="tel:01932932650" class="btn btn-ghost-light">Call 01932 932650</a>
+    </div>
+    <div class="hero-trust">
+      <div class="trust-item"><strong>15+</strong><span>years of experience</span></div>
+      <div class="trust-divider"></div>
+      <div class="trust-item"><strong>CHAS</strong><span>&amp; SafeContractor</span></div>
+      <div class="trust-divider"></div>
+      <div class="trust-item"><strong>1.5-30t</strong><span>excavator fleet</span></div>
+      <div class="trust-divider"></div>
+      <div class="trust-item"><strong>1 day</strong><span>response to enquiries</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="page-section">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow">Bulk Earthworks</span>
+      <h2 class="section-title">The right earthworks package to get your site to formation.</h2>
+      <p class="section-lede">Sloping ground, surplus spoil and out-of-tolerance levels stall a build before it starts. Surrey Contracting delivers cut and fill, level reduction, muck away and site clearance with modern plant and skilled operators, working to your drawings and levels so the platform is accurate, compacted and ready for the next phase, from a single reduced dig to a full multi-phase earthworks scheme.</p>
+    </div>
+  </div>
+</section>
+
+<section class="svc-detail">
+  <div class="container svc-detail-grid">
+    <div class="svc-detail-media">
+      <div class="svc-detail-photo" style="background-image:url('/assets/img/bulk-earthworks.jpg')"></div>
+    </div>
+    <div class="svc-detail-copy">
+      <h2 class="section-title">Cut &amp; Fill and Site Levelling</h2>
+      <p class="lede-dark">Bulk earthworks, often referred to as cut and fill, involve the excavation, movement and placement of large volumes of soil, stone or rock to prepare land for construction. We work to approved drawings and site levels, using advanced surveying and accurate level control to flatten slopes and undulations into a level, compacted platform. From garden re-grading to large development platforms, we prepare your site safely and efficiently for the next stage of works.</p>
+      <ul class="feature-list">
+        <li>Cut &amp; fill to approved levels</li>
+        <li>Level reduction &amp; development platforms</li>
+        <li>Slope adjustment &amp; re-grading</li>
+        <li>Surveying &amp; accurate level control</li>
+        <li>Topsoil management &amp; stockpiling</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="svc-detail svc-detail-alt">
+  <div class="container svc-detail-grid svc-detail-reverse">
+    <div class="svc-detail-media">
+      <div class="svc-detail-photo" style="background-image:url('/assets/img/services/earthworks-excavations.jpg')"></div>
+    </div>
+    <div class="svc-detail-copy">
+      <h2 class="section-title">Muck Away &amp; Excavation</h2>
+      <p class="lede-dark">We operate a fleet of excavators and dumpers suitable for any scale of excavation, from 1.5-tonne mini diggers for tight domestic gardens through to 30-tonne machines on large multi-phase developments. Surplus soil and demolition arisings are managed, recycled or removed by muck away in line with current environmental and safety regulations, with on-site crushing available to cut haulage and landfill costs. Our skilled operators work safely, accurately and on schedule.</p>
+      <ul class="feature-list">
+        <li>Bulk &amp; large-scale excavation</li>
+        <li>Muck away &amp; responsible disposal</li>
+        <li>On-site crushing &amp; recycling</li>
+        <li>Fleet of excavators &amp; dumpers</li>
+        <li>Environmental compliance</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="svc-detail">
+  <div class="container svc-detail-grid">
+    <div class="svc-detail-media">
+      <div class="svc-detail-photo" style="background-image:url('/assets/img/services/earthworks-clearance.jpg')"></div>
+    </div>
+    <div class="svc-detail-copy">
+      <h2 class="section-title">Site Clearance &amp; Reduced Dig</h2>
+      <p class="lede-dark">Surrey Contracting provides professional site clearance and reduced dig services for commercial, residential development and construction sites across Surrey, London and the South East. We remove vegetation, debris, waste materials and redundant structures, then carry out the reduced dig to prepare the area for the next stage of works. Our experienced team manages projects of varying sizes, from smaller enabling works through to larger development sites.</p>
+      <ul class="feature-list">
+        <li>Site clearance &amp; enabling works</li>
+        <li>Vegetation &amp; debris removal</li>
+        <li>Structure removal</li>
+        <li>Reduced dig to formation</li>
+        <li>Waste segregation &amp; responsible disposal</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="page-section page-section-grey">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow">Common questions</span>
+      <h2 class="section-title">Bulk Earthworks FAQs</h2>
+    </div>
+    <div class="faq-list">
+      <details class="faq-item">
+        <summary>What is bulk earthworks and what does it involve?</summary>
+        <p>Bulk earthworks, often called cut and fill, involves the excavation, movement and placement of large volumes of soil, stone or rock to prepare land for construction. Surrey Contracting delivers bulk excavation, site levelling, muck away, ground remediation and site clearance for residential and commercial projects across Surrey, London and the South East.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Does Surrey Contracting carry out cut and fill on development sites?</summary>
+        <p>Yes. Surrey Contracting delivers cut and fill and site levelling for residential developments, commercial plots and private sites, working to approved drawings, site levels and programme requirements so the platform is right first time.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Can Surrey Contracting handle muck away and waste disposal?</summary>
+        <p>Yes. We manage surplus materials including excavated soil and demolition arisings, arranging responsible muck away, recycling and disposal in line with current environmental and safety regulations. On-site crushing is available to reduce haulage and landfill costs.</p>
+      </details>
+      <details class="faq-item">
+        <summary>What areas does Surrey Contracting cover for bulk earthworks?</summary>
+        <p>Surrey, London and the South East from our base between Cobham and Leatherhead, including Guildford, Woking, Esher, Epsom, Weybridge, Reigate, Dorking, Kingston and the wider M25 corridor.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<section class="page-section">
+  <div class="container contact-grid">
+    <div class="contact-info">
+      <span class="eyebrow eyebrow-yellow">Get your earthworks quote</span>
+      <h2 class="section-title">Tell us about your site.</h2>
+      <p>Send us the details and a contracts manager will be in touch within one working day to arrange a free site visit. One point of contact from quote to handover.</p>
+      <div class="contact-cards">
+        <div class="contact-card">
+          <div class="contact-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.86 19.86 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.86 19.86 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div>
+          <div>
+            <span class="contact-label">Call us</span>
+            <a class="contact-value" href="tel:01932932650">01932 932650</a>
+          </div>
+        </div>
+        <div class="contact-card">
+          <div class="contact-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg></div>
+          <div>
+            <span class="contact-label">Response</span>
+            <span class="contact-value">Within one working day</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <form class="quote-form contact-form" id="quoteForm" data-ytq-form data-lead-source="lp_earthworks" novalidate>
+      <div style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden;" aria-hidden="true">
+        <label>Company website<input type="text" name="_honeypot" tabindex="-1" autocomplete="off"></label>
+      </div>
+      <h3 class="form-title">Get a free earthworks quote</h3>
+      <div class="qf-row">
+        <label><span>Name</span><input required name="name" type="text" placeholder="Your full name"></label>
+        <label><span>Phone</span><input required name="phone" type="tel" placeholder="01932 932650"></label>
+      </div>
+      <label><span>Email</span><input required name="email" type="email" placeholder="you@email.com"></label>
+      <label><span>Company / organisation</span><input name="company" type="text" placeholder="Optional"></label>
+      <fieldset class="qf-checks">
+        <legend>What do you need?</legend>
+        <label class="check"><input type="checkbox" name="svc" value="Demolition"><span>Demolition</span></label>
+        <label class="check"><input type="checkbox" name="svc" value="Groundworks"><span>Groundworks</span></label>
+        <label class="check"><input type="checkbox" name="svc" value="Bulk Earthworks"><span>Bulk Earthworks</span></label>
+        <label class="check"><input type="checkbox" name="svc" value="Commercial Surfacing"><span>Commercial Surfacing</span></label>
+        <label class="check"><input type="checkbox" name="svc" value="Other"><span>Other</span></label>
+      </fieldset>
+      <label><span>Project postcode</span><input name="postcode" type="text" placeholder="GU1 1AA"></label>
+      <label><span>Tell us about the job</span><textarea name="message" rows="5" placeholder="Site type, scale, target start date…"></textarea></label>
+      <button type="submit" class="btn btn-yellow btn-block">Send enquiry</button>
+      <p class="qf-success" id="qfSuccess" hidden>Thanks, we've got it. A contracts manager will be in touch within one working day.</p>
+    </form>
+  </div>
+</section>
+
+<div class="lp-sticky-cta">
+  <div class="container lp-sticky-cta-row">
+    <p class="lp-sticky-cta-text">Cut &amp; fill or muck away?<span>Free site visit, one working day response.</span></p>
+    <a href="tel:01932932650" class="btn btn-ghost-light">Call 01932 932650</a>
+    <a href="#quoteForm" class="btn btn-yellow">Get a quote</a>
+  </div>
+</div>
+</BaseLayout>
