@@ -1,0 +1,218 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ServiceSchema from '../../components/ServiceSchema.astro';
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What commercial surfacing does Surrey Contracting install?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Surrey Contracting installs tarmac, resin-bound, block paving and concrete surfaces for car parks, access roads, industrial estates, distribution yards, schools and public spaces, plus line marking, kerbing, drainage and reinstatement, across Surrey, London and the South East." }
+    },
+    {
+      "@type": "Question",
+      "name": "Can you resurface car parks and access roads in Surrey?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Yes. We handle new-build car park construction and overlay or resurfacing of existing car parks and access roads, with tarmac, resin-bound, block paving and concrete surfaces, plus line marking, speed bumps, bollards and drainage." }
+    },
+    {
+      "@type": "Question",
+      "name": "Do you carry out emergency surfacing repairs and reinstatement?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Yes. Our reactive surfacing team carries permanent and temporary repair materials and responds quickly to urgent works including utility reinstatement, surface patch repairs and emergency resurfacing." }
+    },
+    {
+      "@type": "Question",
+      "name": "Can you work at weekends or nights to minimise disruption?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Yes. We offer phased delivery, weekend working and night-shift surfacing to keep car parks, businesses, schools and public spaces open while the work is carried out." }
+    }
+  ]
+};
+---
+<BaseLayout
+  title="Commercial Surfacing Contractors Surrey | Tarmac & Car Parks"
+  description="Tarmac, resin-bound, block paving and concrete surfacing for car parks, roads and yards across Surrey, London and the South East. Free site visit, call 01932 932650."
+  path="/lp/surfacing"
+>
+  <meta name="robots" content="noindex,follow" slot="head" />
+  <ServiceSchema slot="head" name="Commercial Surfacing" slug="lp/surfacing" description="Tarmac, resin-bound, block paving and concrete surfacing for car parks, roads and yards across Surrey, London and the South East." />
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify(faqSchema)} />
+
+<section class="page-hero">
+  <div class="page-hero-bg" aria-hidden="true">
+    <div class="page-hero-img" style="background-image:url('/assets/img/surfacing.jpg')"></div>
+    <div class="page-hero-vignette"></div>
+  </div>
+  <div class="container page-hero-inner">
+    <span class="eyebrow eyebrow-yellow">Commercial surfacing · Surrey &amp; the South East</span>
+    <h1 class="page-title">Commercial surfacing, car parks and roads, laid to last.</h1>
+    <p class="page-lede">Tarmac, resin-bound, block paving and concrete surfacing for car parks, access roads, yards and public spaces. Free site visit, one working day response.</p>
+    <div class="hero-ctas">
+      <a href="#quoteForm" class="btn btn-yellow">Get a free quote</a>
+      <a href="tel:01932932650" class="btn btn-ghost-light">Call 01932 932650</a>
+    </div>
+    <div class="hero-trust">
+      <div class="trust-item"><strong>15+</strong><span>years of experience</span></div>
+      <div class="trust-divider"></div>
+      <div class="trust-item"><strong>CHAS</strong><span>&amp; SafeContractor</span></div>
+      <div class="trust-divider"></div>
+      <div class="trust-item"><strong>Surrey</strong><span>&amp; the South East</span></div>
+      <div class="trust-divider"></div>
+      <div class="trust-item"><strong>1 day</strong><span>response to enquiries</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="page-section">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow">Commercial surfacing</span>
+      <h2 class="section-title">Durable surfacing that stands up to heavy use.</h2>
+      <p class="section-lede">From car parks and access roads to industrial yards, schools and public spaces, Surrey Contracting installs tarmac, resin-bound, block paving and concrete surfaces built to take constant traffic and weather. We plan every job to minimise disruption, with phased delivery, weekend and night working where you need it, and finish with a smooth, safe, long-lasting surface.</p>
+    </div>
+  </div>
+</section>
+
+<section class="svc-detail">
+  <div class="container svc-detail-grid">
+    <div class="svc-detail-media">
+      <div class="svc-detail-photo" style="background-image:url('/assets/img/services/surfacing-hero.jpg')"></div>
+    </div>
+    <div class="svc-detail-copy">
+      <h2 class="section-title">Tarmac &amp; Commercial Surfacing</h2>
+      <p class="lede-dark">We install new tarmac, resin-bound, block paving and concrete surfaces for commercial premises, access roads, industrial estates and distribution yards. Every project is planned around your operations with phased delivery and weekend working available, and laid by experienced teams using high-quality materials from trusted suppliers for a smooth, durable finish.</p>
+      <ul class="feature-list">
+        <li>Tarmac &amp; asphalt surfacing</li>
+        <li>Resin-bound surfaces</li>
+        <li>Block paving</li>
+        <li>Concrete surfacing</li>
+        <li>Phased, weekend &amp; night working</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="svc-detail svc-detail-alt">
+  <div class="container svc-detail-grid svc-detail-reverse">
+    <div class="svc-detail-media">
+      <div class="svc-detail-photo" style="background-image:url('/assets/img/CAommercial 2.jpg')"></div>
+    </div>
+    <div class="svc-detail-copy">
+      <h2 class="section-title">Car Park Surfacing &amp; Resurfacing</h2>
+      <p class="lede-dark">Car parks take constant traffic, heavy loads and weather. Our tarmac, resin-bound, block paving and concrete solutions keep them safe, functional and looking sharp for years with minimal maintenance. We handle everything from new-build car park construction to overlay and resurfacing of existing car parks, and complete the job with line marking, speed bumps, bollards and drainage.</p>
+      <ul class="feature-list">
+        <li>New-build car parks</li>
+        <li>Overlay &amp; resurfacing</li>
+        <li>Line marking</li>
+        <li>Speed bumps &amp; bollards</li>
+        <li>Commercial &amp; industrial yards</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="svc-detail">
+  <div class="container svc-detail-grid">
+    <div class="svc-detail-media">
+      <div class="svc-detail-photo" style="background-image:url('/assets/img/services/surfacing-reinstatement.jpg')"></div>
+    </div>
+    <div class="svc-detail-copy">
+      <h2 class="section-title">Reinstatement, Repair &amp; Kerbing</h2>
+      <p class="lede-dark">Our reactive surfacing team restores damaged surfaces quickly and safely, from utility reinstatement and surface patch repairs to full resurfacing, carrying permanent and temporary materials to respond fast to urgent works. We also install precast concrete kerbs, granite setts, conservation kerbing and block edging to give every surface a neat, defined finish and proper edge restraint.</p>
+      <ul class="feature-list">
+        <li>Utility reinstatement</li>
+        <li>Surface patch repairs</li>
+        <li>Emergency resurfacing</li>
+        <li>Kerbing &amp; edging</li>
+        <li>Edge restraint systems</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="page-section page-section-grey">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow">Common questions</span>
+      <h2 class="section-title">Commercial Surfacing FAQs</h2>
+    </div>
+    <div class="faq-list">
+      <details class="faq-item">
+        <summary>What commercial surfacing does Surrey Contracting install?</summary>
+        <p>Tarmac, resin-bound, block paving and concrete surfaces for car parks, access roads, industrial estates, distribution yards, schools and public spaces, plus line marking, kerbing, drainage and reinstatement, across Surrey, London and the South East.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Can you resurface car parks and access roads in Surrey?</summary>
+        <p>Yes. We handle new-build car park construction and overlay or resurfacing of existing car parks and access roads, with tarmac, resin-bound, block paving and concrete surfaces, plus line marking, speed bumps, bollards and drainage.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Do you carry out emergency surfacing repairs and reinstatement?</summary>
+        <p>Yes. Our reactive surfacing team carries permanent and temporary repair materials and responds quickly to urgent works including utility reinstatement, surface patch repairs and emergency resurfacing.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Can you work at weekends or nights to minimise disruption?</summary>
+        <p>Yes. We offer phased delivery, weekend working and night-shift surfacing to keep car parks, businesses, schools and public spaces open while the work is carried out.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<section class="page-section">
+  <div class="container contact-grid">
+    <div class="contact-info">
+      <span class="eyebrow eyebrow-yellow">Get your surfacing quote</span>
+      <h2 class="section-title">Tell us about your site.</h2>
+      <p>Send us the details and a contracts manager will be in touch within one working day to arrange a free site visit. One point of contact from quote to handover.</p>
+      <div class="contact-cards">
+        <div class="contact-card">
+          <div class="contact-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.86 19.86 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.86 19.86 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div>
+          <div>
+            <span class="contact-label">Call us</span>
+            <a class="contact-value" href="tel:01932932650">01932 932650</a>
+          </div>
+        </div>
+        <div class="contact-card">
+          <div class="contact-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg></div>
+          <div>
+            <span class="contact-label">Response</span>
+            <span class="contact-value">Within one working day</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <form class="quote-form contact-form" id="quoteForm" data-ytq-form data-lead-source="lp_surfacing" novalidate>
+      <div style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden;" aria-hidden="true">
+        <label>Company website<input type="text" name="_honeypot" tabindex="-1" autocomplete="off"></label>
+      </div>
+      <h3 class="form-title">Get a free surfacing quote</h3>
+      <div class="qf-row">
+        <label><span>Name</span><input required name="name" type="text" placeholder="Your full name"></label>
+        <label><span>Phone</span><input required name="phone" type="tel" placeholder="01932 932650"></label>
+      </div>
+      <label><span>Email</span><input required name="email" type="email" placeholder="you@email.com"></label>
+      <label><span>Company / organisation</span><input name="company" type="text" placeholder="Optional"></label>
+      <fieldset class="qf-checks">
+        <legend>What do you need?</legend>
+        <label class="check"><input type="checkbox" name="svc" value="Demolition"><span>Demolition</span></label>
+        <label class="check"><input type="checkbox" name="svc" value="Groundworks"><span>Groundworks</span></label>
+        <label class="check"><input type="checkbox" name="svc" value="Bulk Earthworks"><span>Bulk Earthworks</span></label>
+        <label class="check"><input type="checkbox" name="svc" value="Commercial Surfacing"><span>Commercial Surfacing</span></label>
+        <label class="check"><input type="checkbox" name="svc" value="Other"><span>Other</span></label>
+      </fieldset>
+      <label><span>Project postcode</span><input name="postcode" type="text" placeholder="GU1 1AA"></label>
+      <label><span>Tell us about the job</span><textarea name="message" rows="5" placeholder="Site type, scale, target start date…"></textarea></label>
+      <button type="submit" class="btn btn-yellow btn-block">Send enquiry</button>
+      <p class="qf-success" id="qfSuccess" hidden>Thanks, we've got it. A contracts manager will be in touch within one working day.</p>
+    </form>
+  </div>
+</section>
+
+<div class="lp-sticky-cta">
+  <div class="container lp-sticky-cta-row">
+    <p class="lp-sticky-cta-text">Car park or commercial surfacing?<span>Free site visit, one working day response.</span></p>
+    <a href="tel:01932932650" class="btn btn-ghost-light">Call 01932 932650</a>
+    <a href="#quoteForm" class="btn btn-yellow">Get a quote</a>
+  </div>
+</div>
+</BaseLayout>
