@@ -2,7 +2,6 @@
 import UtilityBar from '../components/UtilityBar.astro';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
-import CookieBanner from '../components/CookieBanner.astro';
 
 const SITE = 'https://surreycontracting.co.uk';
 
@@ -32,7 +31,8 @@ const canonical = path === '/' ? SITE : SITE + path;
 <!doctype html>
 <html lang="en">
 <head>
-  <!-- Google Consent Mode v2 — deny by default until user accepts -->
+  <!-- Google Consent Mode v2 — deny by default. The CookieYes CMP (loaded via
+       GTM-TR97QJZB) updates consent to granted when the visitor accepts. -->
   <script is:inline>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
@@ -43,18 +43,6 @@ const canonical = path === '/' ? SITE : SITE + path;
       ad_personalization: 'denied',
       wait_for_update: 500,
     });
-    // Returning visitor: apply stored consent before GA fires
-    (function(){
-      var s = localStorage.getItem('sc_consent');
-      if (s === 'granted' || s === 'denied') {
-        gtag('consent', 'update', {
-          analytics_storage: s === 'granted' ? 'granted' : 'denied',
-          ad_storage: s === 'granted' ? 'granted' : 'denied',
-          ad_user_data: s === 'granted' ? 'granted' : 'denied',
-          ad_personalization: s === 'granted' ? 'granted' : 'denied',
-        });
-      }
-    })();
   </script>
   <!-- Google Tag Manager -->
   <script is:inline>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -92,7 +80,6 @@ const canonical = path === '/' ? SITE : SITE + path;
   <script>
     import '../scripts/app.js';
   </script>
-  <CookieBanner />
   <!-- YourTradeQuotes Enquiry Connector -->
   <script is:inline>
   (function() {
