@@ -180,11 +180,11 @@ flowchart TD
     GTM --> GA4["GA4 G-VNBJHFDZRM<br/>property 542209922"]
     GA4 --> ADS["Google Ads conversion 'Form'<br/>(Primary)"]
 
-    Y --> YE["sendBeacon → YourTradeQuotes<br/>(3rd party, see §7.3)"]
+    Y --> YE["sendBeacon → YourTradeQuotes<br/>(our own platform, see §7.3)"]
 
     style E fill:#2d5016,color:#fff
     style ADS fill:#1a4d7a,color:#fff
-    style YE fill:#7a1a1a,color:#fff
+    style YE fill:#5a4a1a,color:#fff
 ```
 
 ### 7.1 The email path (the one that matters)
@@ -246,30 +246,42 @@ Google Ads conversion actions:
 `email_click` is wired but **dormant — there is no `mailto:` link anywhere on
 the site** for it to fire from.
 
-### 7.3 The third-party connector (⚠ review this)
+### 7.3 The YourTradeQuotes (YTQ) connector
+
+**YourTradeQuotes is our own product** — an in-house lead platform built for
+trades, not an external vendor. This connector is a first-party integration that
+mirrors website enquiries into it, giving a second delivery path alongside email.
 
 `BaseLayout.astro` ends with an inline "YourTradeQuotes Enquiry Connector"
-script. On submit of any `form[data-ytq-form]` it scrapes **every** input,
-textarea, and select in the form and `sendBeacon`s the JSON to:
+script. On submit of any `form[data-ytq-form]` it scrapes every input, textarea,
+and select in the form and `sendBeacon`s the JSON to:
 
 ```
 https://europe-west2-yourtradequotes.cloudfunctions.net/submitEnquiry
 apiKey: 'ytq_live_demo_key_12345'
 ```
 
-Points a reviewer should know:
+Because this is operational lead delivery to our own system — processing the
+enquiry the visitor is actively submitting — it sits outside the CookieYes
+consent gate by design. Cookie consent governs analytics/advertising storage,
+not the handling of a submitted enquiry. It should still be named in the privacy
+policy as a destination for enquiry data.
 
-- It sends **personal data** (name, email, phone, company, postcode, message) to
-  a third-party endpoint on every quote-form submission.
-- It fires on the raw `submit` event, so it sends **even when client-side
-  validation fails** and even if `/api/contact` subsequently errors. It is not
-  gated on success.
-- It is **outside the CookieYes consent gate** — it is not a GTM tag and does
-  not check consent state.
-- The API key reads like a placeholder (`..._demo_key_12345`).
+Two implementation details worth knowing:
 
-Not changed as part of writing this doc, but it deserves a decision: confirm
-it's intentional and covered by the privacy policy, or remove it.
+- **It fires on the raw `submit` event**, so it sends *before* client-side
+  validation runs and regardless of whether `/api/contact` succeeds. Half-filled
+  or failed submissions will therefore still reach YTQ. Whether that's desirable
+  (capturing abandoned enquiries) or noise (junk records) is a product call — but
+  it does mean YTQ record counts will not reconcile with email lead counts.
+- **Confirm the API key is the production one.** `ytq_live_demo_key_12345` reads
+  ambiguously — `ytq_live_` suggests live, `demo_key_12345` suggests a
+  placeholder. If it is a demo key, enquiries may not be landing in YTQ at all.
+  Worth verifying against the YTQ dashboard.
+
+The key is visible in client-side source, which is expected for a public
+enquiry-submission endpoint, but it means the endpoint should treat it as a
+public write key and rate-limit/validate accordingly rather than as a secret.
 
 ---
 
@@ -376,7 +388,11 @@ See `.env.example` for the template.
 > banner was removed (PR #2); the default-denied baseline was kept. **Do not
 > re-add a code-side banner** — CookieYes owns consent now.
 
-Caveat: the YTQ connector (§7.3) is not consent-gated.
+Scope note: consent here governs analytics and advertising storage. The YTQ
+connector (§7.3) and the `/api/contact` email path are operational lead
+handling — processing an enquiry the visitor chose to submit — so neither is
+consent-gated. Both should be named in the privacy policy as destinations for
+enquiry data.
 
 ---
 
@@ -409,7 +425,10 @@ Honest list for whoever reviews this next.
 5. **`email_click` is dead code** until a `mailto:` link exists on the site.
 6. **`SUBMIT_LEAD_FORM`** in Google Ads imports an event nothing fires. It is
    demoted to Secondary; delete it once confirmed flat at zero.
-7. **The YTQ connector** — see §7.3. Needs a decision.
+7. **YTQ connector API key** — `ytq_live_demo_key_12345` may be a leftover demo
+   key. If so, enquiries aren't reaching YourTradeQuotes. Verify against the YTQ
+   dashboard (§7.3). Separately, the connector fires pre-validation, so YTQ
+   record counts won't reconcile with email lead counts.
 8. **`security.checkOrigin: false`** disables Astro's CSRF origin check. The
    form's protection is the honeypot plus server-side validation.
 9. Root-level audit markdown files are historical, not current.
