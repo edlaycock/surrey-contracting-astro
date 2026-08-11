@@ -26,7 +26,7 @@ Nav/footer entries either point there or are removed.
 
 | Asset | Do this | Why |
 |---|---|---|
-| `/surfacing` (service page) | **Option B — repurpose as a referral page** | It's indexed and has SEO equity. Surfacing enquiries will keep arriving from organic search for months regardless of what we do. A referral page converts that into goodwill (and a warm lead for SHS) instead of a dead end. |
+| `/surfacing` (service page) | **Option B — repurpose as a referral page** | Costs ~2 hrs rather than a day, leaves the strapline/homepage/case studies untouched, and is reversible with a wording change if surfacing ever returns to SC. Any surfacing enquiry that does arrive becomes a warm handoff to SHS instead of a dead end. |
 | `/lp/surfacing` (ad page) | **Option A — delete** | We're paying for these clicks. No reason to keep buying traffic for work we don't do. |
 | Nav / footer / CTAs | Remove the links | Surfacing shouldn't be presented as a service we sell. |
 
@@ -190,7 +190,13 @@ quote form, plus some cross-copy:
 
 ## 5. Redirects & SEO
 
-`/surfacing` and `/lp/surfacing` are indexed. Neither should be allowed to 404.
+Neither `/surfacing` nor `/lp/surfacing` should be allowed to 404.
+
+> **Correction (11 Aug 2026):** an earlier draft of this plan assumed `/surfacing`
+> was indexed and carried SEO equity. Search Console shows it is **not indexed**,
+> so there is no existing search presence to protect. That removes one argument
+> for keeping the page but changes neither the recommendation nor the redirect
+> requirement — a 404 on a known URL is still worth avoiding.
 
 | From | To (Option A) | To (Option B) |
 |---|---|---|
