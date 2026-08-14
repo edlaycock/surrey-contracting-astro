@@ -14,8 +14,9 @@
 }
 
 :root {
-  --yellow: #E6A91A;
-  --yellow-700: #C4900E;
+  --yellow: #E6A91A;        /* accent on dark surfaces only — 2.1:1 on white */
+  --yellow-700: #8A6408;    /* gold for text on light surfaces — clears WCAG AA
+                               (5.4:1 on white, 4.9:1 on --yellow-soft/--grey-50) */
   --yellow-soft: #FFF3D6;
 
   --ink: #111827;          /* body text / standard black */
@@ -84,6 +85,11 @@ h1, h2, h3, h4, h5 {
   margin-bottom: 14px;
 }
 .eyebrow-yellow { color: var(--yellow); }
+/* --yellow is only 2.1:1 on white, so on light sections the eyebrow switches to
+   the AA-compliant gold. Dark sections and image-backed heroes keep the accent. */
+.page-section:not(.page-section-dark) .eyebrow-yellow,
+.page-section-grey .eyebrow-yellow,
+.svc-detail .eyebrow-yellow { color: var(--yellow-700); }
 
 .section-title {
   font-size: clamp(28px, 3.4vw, 46px);

@@ -430,12 +430,10 @@ const evidence = EVIDENCE.map((e) => ({ ...e, project: bySlug.get(e.slug) })).fi
   .gw-intro,
   .gw-prose { max-width: 76ch; }
   .gw-intro .lede-dark { margin-bottom: 14px; }
-  /* In-prose links only — never the .btn CTAs, which keep their own colours.
-     --gw-link is a darkened brand gold that clears WCAG AA (5.4:1 on white);
-     var(--yellow-700) is only 2.7:1 and would fail for body-size text. */
+  /* In-prose links only — never the .btn CTAs, which keep their own colours. */
   .gw-intro p a:not(.btn),
   .gw-prose p a:not(.btn),
-  .gw-steps a:not(.btn) { color: #8A6408; text-decoration: underline; }
+  .gw-steps a:not(.btn) { color: var(--yellow-700); text-decoration: underline; }
   .gw-intro p a:not(.btn):hover,
   .gw-prose p a:not(.btn):hover,
   .gw-steps a:not(.btn):hover { color: var(--ink); }
@@ -521,7 +519,7 @@ const evidence = EVIDENCE.map((e) => ({ ...e, project: bySlug.get(e.slug) })).fi
     line-height: 1.7;
     color: var(--text-mute);
   }
-  .gw-evidence-lede a { color: #8A6408; text-decoration: underline; }
+  .gw-evidence-lede a { color: var(--yellow-700); text-decoration: underline; }
   .gw-evidence-lede a:hover { color: var(--ink); }
 
   .gw-evidence-photo {
@@ -538,12 +536,8 @@ const evidence = EVIDENCE.map((e) => ({ ...e, project: bySlug.get(e.slug) })).fi
     text-transform: uppercase;
     letter-spacing: 0.06em;
     font-weight: 700;
-    color: #8A6408;
+    color: var(--yellow-700);
   }
-  /* Page-scoped only: the shared .gallery-cta gold is 2.9:1 on white, below AA
-     for 13px text. Overridden here rather than in the global stylesheet so no
-     other page is affected. */
-  .gw-evidence .gallery-cta { color: #8A6408; }
   .gw-evidence-list dd {
     margin: 0;
     font-size: 14px;
