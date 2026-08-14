@@ -126,6 +126,45 @@ const evidence = EVIDENCE.map((e) => ({ ...e, project: bySlug.get(e.slug) })).fi
   </div>
 </section>
 
+<!-- Accreditation trust band, as on the homepage. The homepage's "Audited.
+     Verified. Compliant." H2 is deliberately left off: an H2 here would sit
+     between the H1 and the required opening paragraph, nesting the page's
+     introduction under a heading about accreditations. The eyebrow label and
+     the logos carry the same trust signal without disturbing the outline. -->
+<section class="accs gw-accs" aria-label="Accreditations and memberships">
+  <div class="container">
+    <div class="accs-head">
+      <span class="eyebrow">Accreditations &amp; memberships</span>
+    </div>
+  </div>
+
+  <div class="acc-marquee" aria-label="Accreditation logos">
+    <div class="acc-track">
+      <!-- two copies of the same set for seamless infinite scroll -->
+      <div class="acc-set">
+        <div class="acc-badge"><img src="/assets/acc/chas.webp" alt="CHAS Accredited Contractor"></div>
+        <div class="acc-badge"><img src="/assets/acc/safe-contractor.webp" alt="SafeContractor by Alcumus"></div>
+        <div class="acc-badge"><img src="/assets/acc/ssip.webp" alt="SSIP, Safety Schemes in Procurement"></div>
+        <div class="acc-badge"><img src="/assets/acc/smas.webp" alt="SMAS Worksafe"></div>
+        <div class="acc-badge"><img src="/assets/acc/citb.webp" alt="CITB Registered"></div>
+        <div class="acc-badge"><img src="/assets/acc/cscs.webp" alt="CSCS, Construction Skills Certification Scheme"></div>
+        <div class="acc-badge"><img src="/assets/acc/npors.webp" alt="NPORS Registered"></div>
+        <div class="acc-badge"><img src="/assets/acc/ipaf.webp" alt="IPAF"></div>
+      </div>
+      <div class="acc-set" aria-hidden="true">
+        <div class="acc-badge"><img src="/assets/acc/chas.webp" alt=""></div>
+        <div class="acc-badge"><img src="/assets/acc/safe-contractor.webp" alt=""></div>
+        <div class="acc-badge"><img src="/assets/acc/ssip.webp" alt=""></div>
+        <div class="acc-badge"><img src="/assets/acc/smas.webp" alt=""></div>
+        <div class="acc-badge"><img src="/assets/acc/citb.webp" alt=""></div>
+        <div class="acc-badge"><img src="/assets/acc/cscs.webp" alt=""></div>
+        <div class="acc-badge"><img src="/assets/acc/npors.webp" alt=""></div>
+        <div class="acc-badge"><img src="/assets/acc/ipaf.webp" alt=""></div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- Introduction + primary CTA -->
 <section class="page-section">
   <div class="container">
@@ -437,6 +476,13 @@ const evidence = EVIDENCE.map((e) => ({ ...e, project: bySlug.get(e.slug) })).fi
   .gw-intro p a:not(.btn):hover,
   .gw-prose p a:not(.btn):hover,
   .gw-steps a:not(.btn):hover { color: var(--ink); }
+
+  /* The shared .accs section is spaced for an eyebrow plus a full section
+     heading. With the heading dropped it reads as a compact trust band, so the
+     vertical rhythm is tightened to suit a strip sitting under the hero. */
+  .gw-accs { padding: clamp(26px, 3.5vw, 40px) 0; border-bottom: 1px solid var(--border); }
+  .gw-accs .accs-head { margin-bottom: 20px; }
+  .gw-accs .eyebrow { margin-bottom: 0; }
 
   .gw-reviewed {
     font-size: 13px;
