@@ -129,12 +129,25 @@ const evidence = EVIDENCE.map((e) => ({ ...e, project: bySlug.get(e.slug) })).fi
 <!-- Introduction + primary CTA -->
 <section class="page-section">
   <div class="container">
-    <div class="gw-intro">
-      <p class="lede-dark">Finding the right <strong>groundworks contractor in Surrey</strong> means choosing a team that can prepare the site, construct accurate foundations and coordinate drainage, utilities and excavation around the wider building programme. Surrey Contracting delivers residential, commercial and developer-led groundworks across Surrey, London and the South East. Our services include foundations and build to DPC, foul and surface water drainage, utility trenching, site preparation, excavation and agricultural groundworks. To discuss drawings, access, timescales or site conditions, call <a href="tel:01932932650">01932 932650</a> or <a href="/contact">request a project quotation</a>.</p>
-      <p class="gw-reviewed">Reviewed and updated: <time datetime="2026-08-14">{REVIEWED}</time></p>
-      <div class="gw-ctas">
-        <a href="/contact" class="btn btn-yellow">Request a Groundworks Quote</a>
-        <a href="tel:01932932650" class="btn btn-outline-dark">Call 01932 932650</a>
+    <div class="gw-split">
+      <div class="gw-intro">
+        <p class="lede-dark">Finding the right <strong>groundworks contractor in Surrey</strong> means choosing a team that can prepare the site, construct accurate foundations and coordinate drainage, utilities and excavation around the wider building programme. Surrey Contracting delivers residential, commercial and developer-led groundworks across Surrey, London and the South East. Our services include foundations and build to DPC, foul and surface water drainage, utility trenching, site preparation, excavation and agricultural groundworks. To discuss drawings, access, timescales or site conditions, call <a href="tel:01932932650">01932 932650</a> or <a href="/contact">request a project quotation</a>.</p>
+        <p class="gw-reviewed">Reviewed and updated: <time datetime="2026-08-14">{REVIEWED}</time></p>
+        <div class="gw-ctas">
+          <a href="/contact" class="btn btn-yellow">Request a Groundworks Quote</a>
+          <a href="tel:01932932650" class="btn btn-outline-dark">Call 01932 932650</a>
+        </div>
+      </div>
+      <div class="gw-split-media">
+        <img
+          class="gw-photo"
+          src="/assets/img/services/groundworks-excavation.jpg"
+          width="1000"
+          height="667"
+          loading="lazy"
+          decoding="async"
+          alt="Tracked excavator and site dumper stripping and levelling ground on an open groundworks site in Surrey"
+        />
       </div>
     </div>
   </div>
@@ -150,6 +163,19 @@ const evidence = EVIDENCE.map((e) => ({ ...e, project: bySlug.get(e.slug) })).fi
       <p>Groundworks sit at the front of the construction programme. Nothing above ground starts until the site is cleared, formation levels are correct and the substructure is in place, so the groundworks contractor is usually the first main trade on site and sets the timetable for everyone who follows.</p>
 
       <p>The work is governed by paperwork rather than judgement on the day. Drawings define the footprint, the engineer specifies the foundation type and reinforcement, and agreed datum and formation levels control the depth of every dig. Building control signs off the below-ground elements before they are covered up, so a contractor who works from approved drawings and records what was built is far easier to coordinate with.</p>
+
+      <figure class="gw-figure">
+        <img
+          class="gw-photo gw-photo-wide"
+          src="/assets/img/services/groundworks-trench.jpg"
+          width="1000"
+          height="667"
+          loading="lazy"
+          decoding="async"
+          alt="Mini excavator digging a narrow foundation trench alongside an existing house on a restricted-access site"
+        />
+        <figcaption>Trench excavation alongside an existing building, where the available access dictates the size of machine that can be used.</figcaption>
+      </figure>
 
       <p>It also helps to be clear where groundworks stop and other disciplines begin. <a href="/demolition">Demolition and site clearance</a> removes existing structures and makes the site safe to work on. <a href="/earthworks">Bulk excavation and earthworks</a> moves large volumes of material to reshape a site or form platforms. Groundworks is the constructed below-ground package between those two and the building itself, and <a href="/surfacing">commercial surfacing</a> is the finished running surface laid once it is complete.</p>
 
@@ -340,9 +366,9 @@ const evidence = EVIDENCE.map((e) => ({ ...e, project: bySlug.get(e.slug) })).fi
               {e.project.heroImage && (
                 <img
                   class="gw-evidence-photo"
-                  src={urlFor(e.project.heroImage).width(700).height(500).fit('crop').url()}
-                  width="700"
-                  height="500"
+                  src={urlFor(e.project.heroImage).width(900).height(506).fit('crop').url()}
+                  width="900"
+                  height="506"
                   loading="lazy"
                   decoding="async"
                   alt={`${e.project.title} — groundworks project by Surrey Contracting`}
@@ -446,6 +472,17 @@ const evidence = EVIDENCE.map((e) => ({ ...e, project: bySlug.get(e.slug) })).fi
 
   .gw-ctas { display: flex; gap: 12px; flex-wrap: wrap; }
 
+  /* Intro copy beside a supporting photo, so the opening section is not a
+     block of text against empty space. */
+  .gw-split {
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+    gap: clamp(32px, 5vw, 64px);
+    align-items: center;
+  }
+  .gw-split .gw-intro { max-width: none; }
+  .gw-split-media { min-width: 0; }
+
   .gw-prose h2 { margin-bottom: 16px; }
   .gw-prose > p {
     font-size: 15.5px;
@@ -503,6 +540,16 @@ const evidence = EVIDENCE.map((e) => ({ ...e, project: bySlug.get(e.slug) })).fi
     border: 1px solid var(--border);
   }
 
+  /* In-prose photo — breaks up the long explainer section. */
+  .gw-figure { margin: 26px 0 24px; }
+  .gw-photo-wide { aspect-ratio: 16 / 9; }
+  .gw-figure figcaption {
+    margin-top: 10px;
+    font-size: 13.5px;
+    line-height: 1.6;
+    color: var(--grey-500);
+  }
+
   .svc-detail-copy h3 { margin-bottom: 14px; }
   .svc-detail-copy > p:last-child {
     font-size: 15px;
@@ -522,10 +569,15 @@ const evidence = EVIDENCE.map((e) => ({ ...e, project: bySlug.get(e.slug) })).fi
   .gw-evidence-lede a { color: var(--yellow-700); text-decoration: underline; }
   .gw-evidence-lede a:hover { color: var(--ink); }
 
+  /* Four case studies read better as a 2 x 2 block than as a row of three
+     with an orphan underneath. Out-specifies the global .gallery-grid rules,
+     so the responsive steps are restated here. */
+  .gw-evidence { grid-template-columns: repeat(2, 1fr); }
+
   .gw-evidence-photo {
     width: 100%;
     height: auto;
-    aspect-ratio: 7 / 5;
+    aspect-ratio: 16 / 9;
     object-fit: cover;
     background-color: var(--grey-200);
   }
@@ -594,7 +646,12 @@ const evidence = EVIDENCE.map((e) => ({ ...e, project: bySlug.get(e.slug) })).fi
     color: var(--grey-200);
   }
 
+  @media (max-width: 880px) {
+    .gw-split { grid-template-columns: 1fr; gap: 28px; }
+  }
+
   @media (max-width: 640px) {
     .gw-final-list { grid-template-columns: 1fr; }
+    .gw-evidence { grid-template-columns: 1fr; }
   }
 </style>
