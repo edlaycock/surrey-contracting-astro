@@ -1,0 +1,600 @@
+---
+/**
+ * TEMPORARY REVIEW ROUTE — /groundworks-review
+ *
+ * This is a review copy of the replacement content for /groundworks. It is
+ * noindex,nofollow, excluded from the sitemap (see astro.config.mjs) and is not
+ * linked from the nav, footer or any public service link.
+ *
+ * Canonical intentionally points at the live /groundworks URL.
+ *
+ * DELETE THIS FILE once the approved content has been transferred to
+ * src/pages/groundworks.astro (and remove the sitemap exclusion).
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ServiceSchema from '../components/ServiceSchema.astro';
+import { getProjects, urlFor } from '../lib/sanity';
+
+const REVIEWED = '14 August 2026';
+
+/* ── Direct answers ───────────────────────────────────────────────────────────
+   Single source of truth: each string is rendered once as the visible answer
+   paragraph and once inside the FAQPage JSON-LD, so the two can never drift. */
+const A_WHAT =
+  'A groundworks contractor prepares a site and constructs the below-ground elements required before the main building or surfacing work begins. This can include site clearance, excavation, foundations, concrete slabs, drainage, utility trenches, ground stabilisation and build-to-DPC work for residential, commercial and developer-led projects.';
+
+const A_SERVICES =
+  'Surrey Contracting provides foundation and build-to-DPC packages, foul and surface water drainage, soakaway construction, utility trenching, site preparation, excavation and agricultural groundworks. The company works on domestic, commercial and developer-led projects across Surrey, London and the South East.';
+
+const A_CHOOSE =
+  'Choose a Surrey groundworks contractor by checking relevant project experience, health and safety credentials, plant capability, insurance, written scope and the ability to work from approved drawings. The quotation should define excavation, drainage, foundations, waste removal, exclusions and responsibility for coordinating with engineers, building control and other trades.';
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: [
+    {
+      '@type': 'Question',
+      name: 'What does a groundworks contractor in Surrey do?',
+      acceptedAnswer: { '@type': 'Answer', text: A_WHAT },
+    },
+    {
+      '@type': 'Question',
+      name: 'Which groundworks services does Surrey Contracting provide?',
+      acceptedAnswer: { '@type': 'Answer', text: A_SERVICES },
+    },
+    {
+      '@type': 'Question',
+      name: 'How should you choose a groundworks contractor in Surrey?',
+      acceptedAnswer: { '@type': 'Answer', text: A_CHOOSE },
+    },
+  ],
+};
+
+/* ── Groundworks stages table ── */
+const STAGES = [
+  ['Site preparation', 'Clearance, topsoil stripping and access preparation', 'A safe, workable site'],
+  ['Excavation', 'Reduced-level digs, trenches and spoil removal', 'Correct formation levels'],
+  ['Substructure', 'Foundations, concrete and build to DPC', 'Structure ready for the next trade'],
+  ['Drainage and services', 'Pipework, chambers, soakaways and ducting', 'Coordinated below-ground infrastructure'],
+  ['Reinstatement', 'Backfilling, compaction and surface preparation', 'Site ready for surfacing or landscaping'],
+];
+
+/* ── Project evidence ─────────────────────────────────────────────────────────
+   Every field below is taken from the published Sanity case study for that
+   project (title, location, client, sector and body copy). Nothing here is
+   invented: no quantities, dates, durations or results beyond what the case
+   study itself states. Projects are only rendered if the CMS returns them. */
+const EVIDENCE = [
+  {
+    slug: 'concrete-base-cobham',
+    work: 'Excavation and installation of new base works with 150mm of reinforced concrete for a new water tank.',
+    constraint: 'Urgent instruction after the client’s original contractor withdrew at short notice.',
+    outcome: 'Works carried out and completed within 3 days of the initial site visit.',
+  },
+  {
+    slug: 'drainage-ascot',
+    work: 'New foul drainage installed and connected ready for a downstairs bathroom to be fitted by the client’s builder.',
+    constraint: 'Connection into an existing foul system, with core drilling through the building to make the connections.',
+    outcome: 'All entry points sealed and work areas made good, ready for the follow-on trade.',
+  },
+  {
+    slug: 'site-clearance-earthworks',
+    work: 'Clearance and earthworks to a sizeable section of overgrown land, with soil reused on site and new topsoil levelled into fresh slopes and gradients.',
+    constraint: 'Overgrown ground left behind by a completed building programme, requiring clearance before usable levels could be formed.',
+    outcome: 'Around 80 tonnes of green waste removed and around 100 tonnes of new topsoil imported, giving the client usable land with a second phase planned.',
+  },
+  {
+    slug: 'southbank-centre',
+    work: 'Phased external works including surface-water drainage upgrades, full-depth reconstruction to two service yards and reinstatement of footways and crossings.',
+    constraint: 'Delivered around live programming at one of the UK’s busiest cultural venues, with public access maintained.',
+    outcome: 'Handover achieved on programme with no impact on ticketed performances; follow-on works commissioned.',
+  },
+];
+
+const projects = await getProjects();
+const bySlug = new Map(projects.map((p) => [p.slug, p]));
+const evidence = EVIDENCE.map((e) => ({ ...e, project: bySlug.get(e.slug) })).filter(
+  (e): e is typeof e & { project: NonNullable<typeof e.project> } => Boolean(e.project),
+);
+---
+<BaseLayout
+  title="Groundworks Contractor Surrey | Surrey Contracting"
+  description="Need a groundworks contractor in Surrey? We deliver foundations, drainage, excavation and site preparation. Request a clear project quotation."
+  path="/groundworks"
+  active="services"
+>
+  <meta name="robots" content="noindex, nofollow" slot="head" />
+  <ServiceSchema slot="head" name="Groundworks" slug="groundworks" description="Groundworks contractor in Surrey delivering foundations and build to DPC, drainage, utility trenching, excavation and site preparation." />
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify(faqSchema)} />
+
+<section class="page-hero">
+  <div class="page-hero-bg" aria-hidden="true">
+    <div class="page-hero-img" style="background-image:url('/assets/img/groundworks.webp')"></div>
+    <div class="page-hero-vignette"></div>
+  </div>
+  <div class="container page-hero-inner">
+    <nav class="crumbs" aria-label="Breadcrumb">
+      <a href="/">Home</a>
+      <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 6l6 6-6 6"/></svg>
+      <a href="/services">Services</a>
+      <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 6l6 6-6 6"/></svg>
+      <span>Groundworks</span>
+    </nav>
+    <h1 class="page-title">Groundworks Contractor in Surrey</h1>
+    <p class="page-lede">Foundations, drainage, excavation and site preparation across Surrey, London and the South East.</p>
+  </div>
+</section>
+
+<!-- Introduction + primary CTA -->
+<section class="page-section">
+  <div class="container">
+    <div class="gw-intro">
+      <p class="lede-dark">Finding the right <strong>groundworks contractor in Surrey</strong> means choosing a team that can prepare the site, construct accurate foundations and coordinate drainage, utilities and excavation around the wider building programme. Surrey Contracting delivers residential, commercial and developer-led groundworks across Surrey, London and the South East. Our services include foundations and build to DPC, foul and surface water drainage, utility trenching, site preparation, excavation and agricultural groundworks. To discuss drawings, access, timescales or site conditions, call <a href="tel:01932932650">01932 932650</a> or <a href="/contact">request a project quotation</a>.</p>
+      <p class="gw-reviewed">Reviewed and updated: <time datetime="2026-08-14">{REVIEWED}</time></p>
+      <div class="gw-ctas">
+        <a href="/contact" class="btn btn-yellow">Request a Groundworks Quote</a>
+        <a href="tel:01932932650" class="btn btn-outline-dark">Call 01932 932650</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── H2 1 ─────────────────────────────────────────────────────────────── -->
+<section class="page-section page-section-grey">
+  <div class="container">
+    <div class="gw-prose">
+      <h2 class="section-title">What does a groundworks contractor in Surrey do?</h2>
+      <p class="gw-answer">{A_WHAT}</p>
+
+      <p>Groundworks sit at the front of the construction programme. Nothing above ground starts until the site is cleared, formation levels are correct and the substructure is in place, so the groundworks contractor is usually the first main trade on site and sets the timetable for everyone who follows.</p>
+
+      <p>The work is governed by paperwork rather than judgement on the day. Drawings define the footprint, the engineer specifies the foundation type and reinforcement, and agreed datum and formation levels control the depth of every dig. Building control signs off the below-ground elements before they are covered up, so a contractor who works from approved drawings and records what was built is far easier to coordinate with.</p>
+
+      <p>It also helps to be clear where groundworks stop and other disciplines begin. <a href="/demolition">Demolition and site clearance</a> removes existing structures and makes the site safe to work on. <a href="/earthworks">Bulk excavation and earthworks</a> moves large volumes of material to reshape a site or form platforms. Groundworks is the constructed below-ground package between those two and the building itself, and <a href="/surfacing">commercial surfacing</a> is the finished running surface laid once it is complete.</p>
+
+      <p>Sequencing matters most where foundations, drainage runs and service routes cross. Agreeing where the drainage falls, the soakaway, the chambers and the incoming water, electricity and gas ducts go before excavation starts is far cheaper than breaking out concrete later. The package should then end in a defined condition: trenches backfilled and compacted, covers protected, formation levels clean and a record of what is buried where, so the next trade starts without remedial work.</p>
+
+      <div class="gw-table-scroll" role="region" aria-labelledby="stagesCaption" tabindex="0">
+        <table class="cookie-table gw-table">
+          <caption id="stagesCaption" class="gw-table-caption">Typical groundworks stages and what each one delivers</caption>
+          <thead>
+            <tr>
+              <th scope="col">Groundworks stage</th>
+              <th scope="col">Typical work</th>
+              <th scope="col">Project outcome</th>
+            </tr>
+          </thead>
+          <tbody>
+            {STAGES.map(([stage, work, outcome]) => (
+              <tr>
+                <th scope="row">{stage}</th>
+                <td>{work}</td>
+                <td>{outcome}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── H2 2 ─────────────────────────────────────────────────────────────── -->
+<section class="page-section svc-intro">
+  <div class="container">
+    <div class="gw-prose">
+      <h2 class="section-title">Which groundworks services does Surrey Contracting provide?</h2>
+      <p class="gw-answer">{A_SERVICES}</p>
+    </div>
+  </div>
+</section>
+
+<section class="svc-detail">
+  <div class="container svc-detail-grid">
+    <div class="svc-detail-media">
+      <img
+        class="gw-photo"
+        src="/assets/img/services/groundworks-foundations.webp"
+        width="800"
+        height="400"
+        loading="lazy"
+        decoding="async"
+        alt="Excavator digging a foundation trench on a groundworks site in Surrey"
+      />
+    </div>
+    <div class="svc-detail-copy">
+      <h3 class="section-title">Foundations and build to DPC</h3>
+      <p class="lede-dark">Our foundation packages take a plot from excavation through to damp proof course, so the bricklayer or frame contractor inherits an accurate, dimensionally correct substructure. We excavate, place concrete, fix formwork and steel, and build brickwork and blockwork up to DPC on extensions, new-build homes and larger development schemes.</p>
+      <ul class="feature-list">
+        <li>Strip foundations</li>
+        <li>Trench-fill foundations</li>
+        <li>Raft foundations</li>
+        <li>Block-and-beam floors</li>
+        <li>Concrete slabs</li>
+        <li>Formwork and steel fixing</li>
+        <li>Brickwork and blockwork to DPC</li>
+      </ul>
+      <p>Foundation type and dimensions are not decided on site. They are governed by the approved drawings, the engineer's specification and the ground conditions found at formation level. Where conditions differ from the design, we stop, record it and refer it back to the engineer and building control.</p>
+    </div>
+  </div>
+</section>
+
+<section class="svc-detail svc-detail-alt">
+  <div class="container svc-detail-grid svc-detail-reverse">
+    <div class="svc-detail-media">
+      <img
+        class="gw-photo"
+        src="/assets/img/Surface water drainage.jpg"
+        width="768"
+        height="576"
+        loading="lazy"
+        decoding="async"
+        alt="Surface water drainage trench with a perforated land drain bedded in gravel and wrapped in geotextile membrane"
+      />
+    </div>
+    <div class="svc-detail-copy">
+      <h3 class="section-title">Drainage and utility trenching</h3>
+      <p class="lede-dark">Below-ground infrastructure is where most groundworks programmes are won or lost. We install foul and surface water systems, form soakaways where ground conditions and design allow, build manholes and inspection chambers, and cut and backfill the service trenches and ducting routes the utility providers need.</p>
+      <ul class="feature-list">
+        <li>Foul and surface water drainage</li>
+        <li>Soakaways</li>
+        <li>Manholes and inspection chambers</li>
+        <li>Water, electricity and gas ducting</li>
+        <li>Connections to existing drainage</li>
+        <li>Coordination with foundations and levels</li>
+      </ul>
+      <p>The outcome is a system that falls correctly, connects cleanly into the existing network and still works once the site is finished. That means agreeing invert levels, drainage runs and duct routes against the foundation layout and finished levels before the first trench is opened.</p>
+    </div>
+  </div>
+</section>
+
+<section class="svc-detail">
+  <div class="container svc-detail-grid">
+    <div class="svc-detail-media">
+      <img
+        class="gw-photo"
+        src="/assets/img/services/groundworks-siteprep.jpg"
+        width="1000"
+        height="667"
+        loading="lazy"
+        decoding="async"
+        alt="Tracked excavator clearing spoil and debris on a wet open site during site preparation"
+      />
+    </div>
+    <div class="svc-detail-copy">
+      <h3 class="section-title">Site preparation and excavation</h3>
+      <p class="lede-dark">Site preparation turns an awkward plot into somewhere a construction programme can run. We strip and stockpile topsoil, form levels, install temporary access and hardstanding, stabilise poor ground and remove surplus material.</p>
+      <ul class="feature-list">
+        <li>Topsoil stripping</li>
+        <li>Site levelling</li>
+        <li>Temporary access</li>
+        <li>Ground stabilisation</li>
+        <li>Muck-away and disposal</li>
+        <li>Material reuse on site</li>
+      </ul>
+      <p>Plant is matched to the site, not the other way round. Restricted-access excavation behind an occupied house needs small tracked machines and a plan for getting material out; larger commercial excavation needs bigger machines and dumpers on an organised haul route. Reusing suitable material on site cuts lorry movements and disposal cost.</p>
+    </div>
+  </div>
+</section>
+
+<section class="svc-detail svc-detail-alt">
+  <div class="container svc-detail-grid svc-detail-reverse">
+    <div class="svc-detail-media">
+      <img
+        class="gw-photo"
+        src="/assets/img/services/groundworks-agricultural.jpg"
+        width="1000"
+        height="667"
+        loading="lazy"
+        decoding="async"
+        alt="Excavator with a grading beam forming a new stone access track between paddocks at a Surrey farm"
+      />
+    </div>
+    <div class="svc-detail-copy">
+      <h3 class="section-title">Agricultural groundworks</h3>
+      <p class="lede-dark">Farms and equestrian sites need groundworks that stand up to heavy vehicles and wet winters. We build access tracks, manage surface water, concrete yards, install fencing and gates and carry out land improvement works.</p>
+      <ul class="feature-list">
+        <li>Access tracks</li>
+        <li>Surface water management</li>
+        <li>Yard concreting</li>
+        <li>Fencing and gates</li>
+        <li>Land improvement</li>
+      </ul>
+      <p>The outcome clients want is year-round usability: a track that does not rut, a yard that drains instead of ponding, and land that can be worked or grazed. Because the work has to fit around seasonal operations and livestock movements, we programme it to keep the holding running.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Secondary CTA — after the services section -->
+<section class="cta-strip">
+  <div class="container cta-strip-row">
+    <div>
+      <h3>Got drawings or a site to price?</h3>
+      <p>Send us the plans and postcode and we'll come back with a written groundworks quotation.</p>
+    </div>
+    <div class="cta-strip-ctas">
+      <a href="/contact" class="btn btn-yellow">Request a Groundworks Quote</a>
+      <a href="tel:01932932650" class="btn btn-ghost-light">Call 01932 932650</a>
+    </div>
+  </div>
+</section>
+
+<!-- ── Project evidence ─────────────────────────────────────────────────── -->
+<section class="page-section">
+  <div class="container">
+    <div class="section-head split">
+      <div>
+        <span class="eyebrow">Project evidence</span>
+        <h2 class="section-title">Groundworks we have delivered.</h2>
+        <p class="gw-evidence-lede">Four <a href="/projects">completed groundworks projects</a>, with the site constraint and the outcome in each case.</p>
+      </div>
+      <a href="/projects" class="btn btn-outline-dark">All projects →</a>
+    </div>
+
+    {evidence.length > 0 ? (
+      <div class="gallery-grid gw-evidence">
+        {evidence.map((e) => (
+          <article class="gallery-card">
+            <a href={`/projects/${e.project.slug}`} class="gallery-link">
+              {e.project.heroImage && (
+                <img
+                  class="gw-evidence-photo"
+                  src={urlFor(e.project.heroImage).width(700).height(500).fit('crop').url()}
+                  width="700"
+                  height="500"
+                  loading="lazy"
+                  decoding="async"
+                  alt={`${e.project.title} — groundworks project by Surrey Contracting`}
+                />
+              )}
+              <div class="gallery-body">
+                <span class="gallery-meta">{[e.project.location, e.project.sector].filter(Boolean).join(' · ')}</span>
+                <h3>{e.project.title}</h3>
+                <dl class="gw-evidence-list">
+                  <div><dt>Work completed</dt><dd>{e.work}</dd></div>
+                  <div><dt>Site constraint</dt><dd>{e.constraint}</dd></div>
+                  <div><dt>Outcome</dt><dd>{e.outcome}</dd></div>
+                </dl>
+                <span class="gallery-cta">View project →</span>
+              </div>
+            </a>
+          </article>
+        ))}
+      </div>
+    ) : (
+      <p class="gw-placeholder"><strong>Content placeholder — project evidence unavailable.</strong> The case studies that support this section could not be loaded from the CMS at build time. Do not approve this page for release until the project examples render.</p>
+    )}
+  </div>
+</section>
+
+<!-- ── H2 3 ─────────────────────────────────────────────────────────────── -->
+<section class="page-section page-section-grey">
+  <div class="container">
+    <div class="gw-prose">
+      <h2 class="section-title">How should you choose a groundworks contractor in Surrey?</h2>
+      <p class="gw-answer">{A_CHOOSE}</p>
+
+      <ol class="gw-steps">
+        <li>
+          <strong>Check comparable projects.</strong> Ask for completed work that matches the project type, scale and site conditions. Restricted-access domestic foundations and a phased commercial substructure are not the same job.
+        </li>
+        <li>
+          <strong>Confirm the proposed scope.</strong> Establish whether excavation, drainage, foundations, service trenches, muck-away and reinstatement are included. Disposal is a common gap between two quotations that otherwise look comparable.
+        </li>
+        <li>
+          <strong>Verify safety and competence.</strong> Ask for current accreditations and operator qualifications and check them rather than taking a logo at face value. Surrey Contracting holds CHAS, SafeContractor, SSIP, SMAS, CITB, CSCS, NPORS and IPAF accreditations and memberships, works to project-specific risk assessments and method statements, and runs ongoing training including First Aid at Work, CSCS, CPCS / NPORS, asbestos awareness and SMSTS. See our <a href="/health-safety">health and safety standards</a>.
+        </li>
+        <li>
+          <strong>Review access and plant requirements.</strong> Machinery should be matched to access width, excavation depth, material volume and neighbouring properties. A machine too big for the entrance costs days; one too small for the dig costs weeks.
+        </li>
+        <li>
+          <strong>Confirm technical responsibility.</strong> The quotation should establish who supplies drawings, who sets levels, who approves changes and who communicates with the structural engineer and building control.
+        </li>
+        <li>
+          <strong>Request a written quotation.</strong> It should identify inclusions, exclusions, assumptions, programme dependencies and the information required before work can begin, so you compare scope rather than headline price.
+        </li>
+      </ol>
+
+      <p class="gw-close"><a href="/contact">Send Surrey Contracting your drawings, project postcode, access information and proposed start date for an informed groundworks quotation.</a></p>
+    </div>
+  </div>
+</section>
+
+<!-- Bottom CTA -->
+<section class="page-section page-section-dark gw-final">
+  <div class="container">
+    <div class="gw-prose">
+      <span class="eyebrow eyebrow-yellow">Request a quotation</span>
+      <h2 class="section-title light">Talk to a groundworks contractor in Surrey.</h2>
+      <p class="gw-final-copy">To get an informed price rather than a guess, send us as much of the following as you have:</p>
+      <ul class="gw-final-list">
+        <li>Project postcode</li>
+        <li>Drawings or plans</li>
+        <li>Required services</li>
+        <li>Site access information</li>
+        <li>Desired start date</li>
+        <li>Photographs, surveys or engineering information</li>
+      </ul>
+      <div class="gw-ctas">
+        <a href="/contact" class="btn btn-yellow">Request a Groundworks Quote</a>
+        <a href="tel:01932932650" class="btn btn-ghost-light">Call 01932 932650</a>
+      </div>
+    </div>
+  </div>
+</section>
+</BaseLayout>
+
+<style>
+  /* Page-scoped only — no global stylesheet changes. */
+  .gw-intro,
+  .gw-prose { max-width: 76ch; }
+  .gw-intro .lede-dark { margin-bottom: 14px; }
+  /* In-prose links only — never the .btn CTAs, which keep their own colours. */
+  .gw-intro p a:not(.btn),
+  .gw-prose p a:not(.btn),
+  .gw-steps a:not(.btn) { color: var(--yellow-700); text-decoration: underline; }
+  .gw-intro p a:not(.btn):hover,
+  .gw-prose p a:not(.btn):hover,
+  .gw-steps a:not(.btn):hover { color: var(--ink); }
+
+  .gw-reviewed {
+    font-size: 13px;
+    color: var(--grey-500);
+    margin: 0 0 22px;
+  }
+
+  .gw-ctas { display: flex; gap: 12px; flex-wrap: wrap; }
+
+  .gw-prose h2 { margin-bottom: 16px; }
+  .gw-prose > p {
+    font-size: 15.5px;
+    line-height: 1.7;
+    color: var(--text-mute);
+    margin: 0 0 16px;
+  }
+
+  /* Direct answer block — first paragraph after each H2. */
+  .gw-answer {
+    background: var(--white);
+    border-left: 4px solid var(--yellow);
+    border-radius: 0 var(--radius) var(--radius) 0;
+    padding: 16px 20px;
+    margin: 0 0 26px !important;
+    font-size: 16px !important;
+    line-height: 1.7;
+    color: var(--ink) !important;
+  }
+
+  /* Responsive wrapper so the stages table never forces page overflow. */
+  .gw-table-scroll {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin: 28px 0 0;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--white);
+  }
+  .gw-table-scroll:focus-visible { outline: 2px solid var(--yellow); outline-offset: 2px; }
+  .gw-table { min-width: 620px; margin: 0; }
+  .gw-table-caption {
+    text-align: left;
+    padding: 12px 12px 0;
+    font-size: 13px;
+    color: var(--grey-500);
+  }
+  .gw-table tbody th {
+    background: transparent;
+    text-transform: none;
+    font-size: 14px;
+    letter-spacing: 0;
+    white-space: nowrap;
+  }
+
+  /* Service photos — real <img> so alt text and intrinsic size are available,
+     styled to match the existing .svc-detail-photo treatment. */
+  .gw-photo {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    border-radius: var(--radius-lg);
+    background-color: var(--grey-200);
+    border: 1px solid var(--border);
+  }
+
+  .svc-detail-copy h3 { margin-bottom: 14px; }
+  .svc-detail-copy > p:last-child {
+    font-size: 15px;
+    line-height: 1.7;
+    color: var(--text-mute);
+    margin: 0;
+  }
+
+  /* Project evidence cards */
+  .gw-evidence-lede {
+    max-width: 60ch;
+    margin: 14px 0 0;
+    font-size: 15.5px;
+    line-height: 1.7;
+    color: var(--text-mute);
+  }
+  .gw-evidence-lede a { color: var(--yellow-700); text-decoration: underline; }
+  .gw-evidence-lede a:hover { color: var(--ink); }
+
+  .gw-evidence-photo {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 7 / 5;
+    object-fit: cover;
+    background-color: var(--grey-200);
+  }
+  .gw-evidence-list { margin: 14px 0 16px; display: grid; gap: 10px; }
+  .gw-evidence-list div { display: grid; gap: 2px; }
+  .gw-evidence-list dt {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-weight: 700;
+    color: var(--yellow-700);
+  }
+  .gw-evidence-list dd {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--text-mute);
+  }
+
+  .gw-placeholder {
+    border: 2px dashed var(--yellow);
+    background: var(--yellow-soft);
+    border-radius: var(--radius);
+    padding: 18px 22px;
+    font-size: 15px;
+    line-height: 1.7;
+    color: var(--ink);
+  }
+
+  /* Numbered "how to choose" list */
+  .gw-steps {
+    margin: 26px 0 22px;
+    padding-left: 22px;
+    display: grid;
+    gap: 14px;
+  }
+  .gw-steps li {
+    font-size: 15.5px;
+    line-height: 1.7;
+    color: var(--text-mute);
+  }
+  .gw-steps li::marker { color: var(--yellow-700); font-weight: 700; }
+  .gw-steps strong { color: var(--ink); }
+
+  .gw-close { font-size: 16px !important; color: var(--ink) !important; }
+
+  /* Bottom CTA */
+  .gw-final .gw-prose { color: var(--grey-200); }
+  .gw-final .section-title { margin: 10px 0 16px; }
+  /* Needs to out-specify `.gw-prose > p`, which would otherwise apply
+     --text-mute (#4B5563) on the dark background. */
+  .gw-final .gw-prose > p.gw-final-copy {
+    font-size: 15.5px;
+    line-height: 1.7;
+    color: var(--grey-200);
+    margin: 0 0 14px;
+  }
+  .gw-final-list {
+    margin: 0 0 24px;
+    padding-left: 20px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px 24px;
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--grey-200);
+  }
+
+  @media (max-width: 640px) {
+    .gw-final-list { grid-template-columns: 1fr; }
+  }
+</style>

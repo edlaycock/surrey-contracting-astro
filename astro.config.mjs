@@ -7,7 +7,16 @@ import node from '@astrojs/node';
 export default defineConfig({
   site: 'https://surreycontracting.co.uk',
   trailingSlash: 'never',
-  integrations: [sitemap({ filter: (page) => !page.includes('/training-manual') && !page.includes('/lp/') })],
+  integrations: [
+    sitemap({
+      filter: (page) =>
+        !page.includes('/training-manual') &&
+        !page.includes('/lp/') &&
+        // Temporary noindex review copy of /groundworks — remove this exclusion
+        // when src/pages/groundworks-review.astro is deleted after approval.
+        !page.includes('/groundworks-review'),
+    }),
+  ],
   // Static by default; only routes that opt out (api/contact) run server-side.
   adapter: node({ mode: 'standalone' }),
   security: { checkOrigin: false },
