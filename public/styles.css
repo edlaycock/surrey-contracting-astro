@@ -1911,10 +1911,17 @@ a.qd-val:hover { color: var(--yellow); }
   color: var(--yellow);
   border-color: var(--grey-900);
 }
-/* On a yellow background the default yellow-700 hover blends in — switch to dark */
-.cta-strip .btn-yellow:hover {
+/* The strip is itself yellow, so a yellow button has no edge against it and
+   reads as plain text. Dark at rest — which is what the hover state already
+   was — and darker still on hover, matching .btn-dark. */
+.cta-strip .btn-yellow {
   background: var(--grey-900);
   border-color: var(--grey-900);
+  color: var(--white);
+}
+.cta-strip .btn-yellow:hover {
+  background: #000;
+  border-color: #000;
   color: var(--white);
 }
 
