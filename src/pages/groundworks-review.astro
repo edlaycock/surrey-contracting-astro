@@ -166,8 +166,9 @@ const evidence = EVIDENCE.map((e) => ({ ...e, project: bySlug.get(e.slug) })).fi
 </section>
 
 <!-- Introduction + primary CTA -->
-<section class="page-section">
+<section class="page-section gw-intro-section">
   <div class="container">
+   <div class="gw-intro-grid">
     <div class="gw-intro">
       <p class="lede-dark">Finding the right <strong>groundworks contractor in Surrey</strong> means choosing a team that can prepare the site, construct accurate foundations and coordinate drainage, utilities and excavation around the wider building programme. Surrey Contracting delivers residential, commercial and developer-led groundworks across Surrey, London and the South East. Our services include foundations and build to DPC, foul and surface water drainage, utility trenching, site preparation, excavation and agricultural groundworks. To discuss drawings, access, timescales or site conditions, call <a href="tel:01932932650">01932 932650</a> or <a href="/contact">request a project quotation</a>.</p>
       <p class="gw-reviewed">Reviewed and updated: <time datetime="2026-08-14">{REVIEWED}</time></p>
@@ -176,6 +177,20 @@ const evidence = EVIDENCE.map((e) => ({ ...e, project: bySlug.get(e.slug) })).fi
         <a href="tel:01932932650" class="btn btn-outline-dark">Call 01932 932650</a>
       </div>
     </div>
+
+    <div class="gw-intro-media">
+      <img
+        class="gw-intro-photo"
+        src="/assets/img/services/groundworks-trench.jpg"
+        width="1000"
+        height="667"
+        loading="eager"
+        fetchpriority="high"
+        decoding="async"
+        alt="Groundworks contractor excavating a foundation trench beside a brick building on a Surrey site"
+      />
+    </div>
+   </div>
   </div>
 </section>
 
@@ -466,6 +481,32 @@ const evidence = EVIDENCE.map((e) => ({ ...e, project: bySlug.get(e.slug) })).fi
 
 <style>
   /* Page-scoped only — no global stylesheet changes. */
+  /* The shared .page-section pads to 120px top and bottom, which leaves too big
+     a gap between the accreditation band and the opening paragraph. Trimmed at
+     the top only; the gap below the CTAs still separates this from the first H2. */
+  .gw-intro-section { padding: clamp(34px, 4vw, 52px) 0 clamp(56px, 7vw, 88px); }
+
+  .gw-intro-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+    gap: clamp(30px, 5vw, 60px);
+    align-items: center;
+  }
+  .gw-intro-photo {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    border-radius: var(--radius-lg);
+    background-color: var(--grey-200);
+    border: 1px solid var(--border);
+  }
+  /* Text stays first on narrow screens so the opening paragraph still follows
+     straight on from the H1. */
+  @media (max-width: 880px) {
+    .gw-intro-grid { grid-template-columns: 1fr; }
+  }
+
   .gw-intro,
   .gw-prose { max-width: 76ch; }
   .gw-intro .lede-dark { margin-bottom: 14px; }
