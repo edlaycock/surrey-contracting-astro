@@ -56,5 +56,9 @@ jobs:
           script: |
             set -e
             cd "${{ secrets.DEPLOY_PATH }}"
+            # Passed through to the Dockerfile's BUILD_ID arg so the Astro build layer
+            # is never served from cache — otherwise a deploy with no source change
+            # rebuilds the container from a stale dist and CMS edits never appear.
+            export BUILD_ID="${{ github.sha }}"
             docker compose up -d --build
             docker compose ps

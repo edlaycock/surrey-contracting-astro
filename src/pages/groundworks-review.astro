@@ -522,6 +522,14 @@ const evidence = EVIDENCE.map((e) => ({ ...e, project: bySlug.get(e.slug) })).fi
   .gw-evidence-lede a { color: var(--yellow-700); text-decoration: underline; }
   .gw-evidence-lede a:hover { color: var(--ink); }
 
+  /* Four cards in the shared three-column grid leave one orphaned on a second
+     row. Two columns makes a balanced 2x2. The scoped selector out-specifies the
+     stylesheet's own breakpoints, so the single-column case is restated here. */
+  .gw-evidence { grid-template-columns: repeat(2, 1fr); }
+  @media (max-width: 600px) {
+    .gw-evidence { grid-template-columns: 1fr; }
+  }
+
   .gw-evidence-photo {
     width: 100%;
     height: auto;

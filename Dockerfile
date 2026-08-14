@@ -7,8 +7,13 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm ci
 COPY . .
-# Astro fetches Sanity at build time (projectId defaults to mhqgpyb9 in lib/sanity.ts)
-RUN npm run build
+# Astro fetches Sanity at build time (projectId defaults to mhqgpyb9 in lib/sanity.ts).
+# BUILD_ID busts the cache for this layer only. Without it an unchanged source tree
+# reuses the cached dist, so a deploy reports success while silently serving whatever
+# CMS content was baked in last time — a publish or delete in Sanity never lands.
+# npm ci above stays cached, so only the Astro build re-runs.
+ARG BUILD_ID=dev
+RUN echo "build id: ${BUILD_ID}" && npm run build
 
 # --- runtime stage ---
 FROM node:22-slim AS runtime
