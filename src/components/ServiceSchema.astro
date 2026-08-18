@@ -14,12 +14,8 @@ const service = {
   serviceType: name,
   description,
   url: `${site}/${slug}`,
-  provider: {
-    '@type': 'LocalBusiness',
-    name: 'Surrey Contracting Limited',
-    url: site,
-    telephone: '01932 932650',
-  },
+  // Reference the LocalBusiness node emitted site-wide by BaseLayout.
+  provider: { '@id': `${site}/#business` },
   areaServed: {
     '@type': 'AdministrativeArea',
     name: 'Surrey, London & the South East',

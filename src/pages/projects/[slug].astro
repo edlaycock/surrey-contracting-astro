@@ -25,6 +25,12 @@ const gallery = (project.gallery ?? []).map((g) => ({
 
 const heroTag = [project.sector, project.categories?.[0]].filter(Boolean).join(' · ');
 
+// Meta descriptions must stay under 155 characters; CMS summaries can run long.
+const metaDescription = (() => {
+  const text = project.summary || `${project.title}, a project delivered by Surrey Contracting Limited.`;
+  return text.length < 155 ? text : `${text.slice(0, 151).replace(/\s+\S*$/, '')}…`;
+})();
+
 const related = allProjects.filter((p) => p.slug !== project.slug).slice(0, 3);
 
 const projectSchema = {
@@ -67,7 +73,7 @@ const projectSchema = {
 ---
 <BaseLayout
   title={`${project.title} | Surrey Contracting Limited`}
-  description={project.summary || `${project.title}, a project delivered by Surrey Contracting Limited.`}
+  description={metaDescription}
   path={`/projects/${project.slug}`}
   ogTitle={`${project.title} | Surrey Contracting Limited`}
   active="projects"
