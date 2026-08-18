@@ -1804,13 +1804,19 @@ a.qd-val:hover { color: var(--yellow); }
 
 /* ============ Service detail (alternating image+copy) ============ */
 .svc-detail {
-  padding: clamp(56px, 7vw, 96px) 0;
+  padding: clamp(40px, 5vw, 64px) 0;
   background: var(--white);
 }
 /* Intro section-head sits directly above the first service block — drop its
-   bottom padding so the first .svc-detail's own top padding sets the gap. */
+   bottom padding so the first .svc-detail's own top padding sets the gap,
+   and trim the top padding + heading margin so the hero, heading and first
+   service sit closer together. */
 .svc-intro {
+  padding-top: clamp(48px, 5.5vw, 72px);
   padding-bottom: 0;
+}
+.svc-intro .section-head {
+  margin-bottom: 0;
 }
 .svc-detail-alt {
   background: var(--grey-50);
