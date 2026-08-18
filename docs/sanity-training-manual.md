@@ -60,11 +60,11 @@ Projects are the case study pages shown at **surreycontracting.co.uk/projects** 
 #### Title `[Required]`
 The project name shown as the page heading and in cards on the projects listing.
 
-- Example: `Tarmac Driveway, Fetcham, Surrey`
+- Example: `Drainage Installation, Ascot`
 - Keep it descriptive but concise — it appears in Google search results.
 
 #### Slug (URL) `[Required]`
-The web address for this project page, e.g. `/projects/tarmac-driveway-fetcham`.
+The web address for this project page, e.g. `/projects/drainage-ascot`.
 
 - Click **Generate** to auto-create from the Title.
 - Use only lowercase letters, numbers, and hyphens. No spaces.
@@ -75,11 +75,10 @@ One or more service categories that describe this project. Used for the filter b
 
 Select all that apply from:
 - Drainage
-- Driveways
 - Earthworks
 - Groundworks
 - Hard Landscaping
-- Surfacing
+- Demolition
 
 At least one category is required.
 
@@ -99,7 +98,7 @@ Where the project took place.
 #### Services (short label) `[Optional]`
 A brief summary of services used, shown in the project info card.
 - Use a middle dot (·) to separate multiple services.
-- Example: `Tarmac · Drainage`
+- Example: `Groundworks · Drainage`
 
 #### Year `[Optional]`
 The year the project was completed, e.g. `2023`. Shown in the project info card.
@@ -154,7 +153,7 @@ Additional photos shown in the photo grid below the main body on the project pag
 
 - Click **Add item** to upload each photo.
 - The first photo is shown larger than the rest.
-- Each photo has an optional **Caption** — a short label shown on the photo, e.g. `Surfacing, base course`.
+- Each photo has an optional **Caption** — a short label shown on the photo, e.g. `Drainage run, pea-shingle bed`.
 - Alt text is also available per image.
 
 #### Featured on Homepage `[Optional]`
@@ -224,12 +223,12 @@ Follow these guidelines when writing content in Sanity to keep the website consi
 
 ### Tone
 - Professional, clear, and straightforward.
-- Avoid jargon where possible, but technical terms (tarmac, macadam, SMA, etc.) are fine when relevant — the audience understands them.
+- Avoid jargon where possible, but technical terms (formation level, DPC, SuDS, etc.) are fine when relevant — the audience understands them.
 - Write in third person for project descriptions: "Surrey Contracting carried out..." not "We carried out..."
 
 ### Capitalisation
 - Capitalise proper nouns: client names, place names, product names.
-- Service types are lowercase unless starting a sentence: `tarmac`, `drainage`, `earthworks`.
+- Service types are lowercase unless starting a sentence: `groundworks`, `drainage`, `earthworks`.
 - "Surrey Contracting" always in full — not "SC" or "Surrey C".
 
 ### Numbers and Measurements
@@ -239,15 +238,15 @@ Follow these guidelines when writing content in Sanity to keep the website consi
 ### Summaries
 - One to two sentences maximum.
 - Include: service type + location + one key fact (size, client, urgency, etc.).
-- Example: `Emergency tarmac footpath repairs at Sutton High School, completed over a weekend to minimise disruption.`
+- Example: `Emergency drainage repairs for a Surrey school, completed over a weekend to minimise disruption.`
 
 ### Hero Images
-- Always fill in Alt text. Describe the photo factually: `Completed tarmac driveway with granite sett edging, West Humble` not `photo1`.
+- Always fill in Alt text. Describe the photo factually: `Completed drainage run with new inspection chambers, West Humble` not `photo1`.
 - Landscape orientation only.
 - Show the finished work where possible — "after" photos make better hero images than "during" shots.
 
 ### Categories
-- Always select the most specific category — if the project is primarily a driveway, select `Driveways` even if surfacing was involved.
+- Always select the most specific category that fits the work delivered.
 - Select multiple categories only if the project genuinely covered both service areas substantially.
 
 ---

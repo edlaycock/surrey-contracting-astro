@@ -1,88 +1,54 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 
-const jsonLd = {
-  "@context": "https://schema.org",
-  "@type": "LocalBusiness",
-  "name": "Surrey Contracting Limited",
-  "url": "https://surreycontracting.co.uk",
-  "logo": "https://surreycontracting.co.uk/assets/logo-color.png",
-  "image": "https://surreycontracting.co.uk/assets/logo-transparent.png",
-  "telephone": "01932 932650",
-  "email": "info@surreycontractinggroup.co.uk",
-  "address": {
-    "@type": "PostalAddress",
-    "streetAddress": "Upper Leewood Farm Yard, Effingham Common Road",
-    "addressLocality": "Leatherhead",
-    "addressRegion": "Surrey",
-    "postalCode": "KT24 5JQ",
-    "addressCountry": "GB"
-  },
-  "description": "Demolition, groundworks, bulk earthworks and commercial surfacing contractor based in Leatherhead, Surrey. Serving residential, commercial and developer clients across Surrey, London and the South East.",
-  "geo": {
-    "@type": "GeoCoordinates",
-    "latitude": 51.296,
-    "longitude": -0.331
-  },
-  "openingHoursSpecification": [
+// Service schema: exactly three services (Groundworks, Bulk Earthworks &
+// Excavation, Demolition), each referencing the LocalBusiness emitted
+// site-wide by BaseLayout via its @id.
+const BUSINESS_ID = 'https://surreycontracting.co.uk/#business';
+const AREA_SERVED = [
+  'Cobham', 'Leatherhead', 'Guildford', 'Esher', 'Woking', 'Reigate',
+  'Dorking', 'Epsom', 'Weybridge', 'Kingston upon Thames', 'Redhill', 'Surbiton',
+].map((name) => ({ '@type': 'Place', name }));
+const servicesJsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
     {
-      "@type": "OpeningHoursSpecification",
-      "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
-      "opens": "07:30",
-      "closes": "17:30"
-    }
-  ],
-  "areaServed": [
-    { "@type": "Place", "name": "Surrey" },
-    { "@type": "Place", "name": "London" },
-    { "@type": "Place", "name": "South East England" },
-    { "@type": "Place", "name": "Cobham" },
-    { "@type": "Place", "name": "Leatherhead" },
-    { "@type": "Place", "name": "Guildford" },
-    { "@type": "Place", "name": "Esher" },
-    { "@type": "Place", "name": "Woking" },
-    { "@type": "Place", "name": "Reigate" },
-    { "@type": "Place", "name": "Epsom" },
-    { "@type": "Place", "name": "Weybridge" },
-    { "@type": "Place", "name": "Walton-On-Thames" },
-    { "@type": "Place", "name": "Kingston upon Thames" }
-  ],
-  "sameAs": [
-    "https://www.linkedin.com/company/surrey-contracting/",
-    "https://www.instagram.com/surreycontracting",
-    "https://www.facebook.com/surreycontracting"
-  ],
-  "identifier": [
-    {
-      "@type": "PropertyValue",
-      "propertyID": "Companies House",
-      "value": "15454300"
+      '@type': 'Service',
+      name: 'Groundworks',
+      serviceType: 'Groundworks',
+      description: 'Foundations, drainage, site preparation and groundworks across Surrey and the Home Counties, self-delivered by our own teams.',
+      url: 'https://surreycontracting.co.uk/groundworks',
+      provider: { '@id': BUSINESS_ID },
+      areaServed: AREA_SERVED,
     },
     {
-      "@type": "PropertyValue",
-      "propertyID": "VAT",
-      "value": "415 8380 91"
-    }
+      '@type': 'Service',
+      name: 'Bulk Earthworks & Excavation',
+      serviceType: 'Bulk Earthworks & Excavation',
+      description: 'Bulk excavation, cut and fill, muck away and site levelling across Surrey, London and the South East with self-delivered plant and operators.',
+      url: 'https://surreycontracting.co.uk/earthworks',
+      provider: { '@id': BUSINESS_ID },
+      areaServed: AREA_SERVED,
+    },
+    {
+      '@type': 'Service',
+      name: 'Demolition',
+      serviceType: 'Demolition',
+      description: 'Soft strip out, structural demolition, site clearance, on-site crushing and asbestos removal across Surrey and the Home Counties.',
+      url: 'https://surreycontracting.co.uk/demolition',
+      provider: { '@id': BUSINESS_ID },
+      areaServed: AREA_SERVED,
+    },
   ],
-  "hasOfferCatalog": {
-    "@type": "OfferCatalog",
-    "name": "Services",
-    "itemListElement": [
-      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Demolition", "url": "https://surreycontracting.co.uk/demolition" } },
-      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Groundworks", "url": "https://surreycontracting.co.uk/groundworks" } },
-      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Bulk Earthworks", "url": "https://surreycontracting.co.uk/earthworks" } },
-      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Commercial Surfacing", "url": "https://surreycontracting.co.uk/surfacing" } }
-    ]
-  }
 };
 ---
 <BaseLayout
-  title="Surrey Contracting Limited | Groundworks, Surfacing & Civils across Surrey"
-  description="Groundworks, bulk earthworks and commercial surfacing across Surrey, London and the South East. Surrey Contracting Limited has 15+ years on site and self-delivers every job."
-  ogTitle="Surrey Contracting Limited | Groundworks, Surfacing & Civils across Surrey"
+  title="Groundworks & Earthworks Contractor Surrey | Demolition"
+  description="Self-delivered groundworks, bulk earthworks and demolition across Surrey and the Home Counties. CHAS and SSIP accredited. Free measured site visit."
+  ogTitle="Groundworks & Earthworks Contractor Surrey | Demolition"
   path="/"
 >
-  <script type="application/ld+json" slot="head" set:html={JSON.stringify(jsonLd)} />
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify(servicesJsonLd)} />
 
 <!-- ============ HERO ============ -->
 <section class="hero" id="top">
@@ -99,13 +65,13 @@ const jsonLd = {
           <span class="dot"></span>
           Established across Surrey &amp; London
         </div>
-        <h1 class="hero-title">
+        <p class="hero-title">
           Built on Experience.<br>
           <span class="hero-accent">Driven by Quality.</span>
-        </h1>
-        <p class="hero-sub">
-          Demolition, groundworks, bulk earthworks and commercial surfacing across Surrey, London and the South East. One team, 15+ years on site, and work that's right first time.
         </p>
+        <h1 class="hero-sub">
+          Groundworks, Earthworks &amp; Demolition Contractor, Surrey &amp; the Home Counties
+        </h1>
         <div class="hero-ctas">
           <a href="#quote" class="btn btn-yellow">Request a quote</a>
           <a href="#services" class="btn btn-ghost-light">Our services →</a>
@@ -117,21 +83,20 @@ const jsonLd = {
           <span class="dot"></span>
           One contractor, every discipline
         </div>
-        <h1 class="hero-title">
+        <p class="hero-title">
           A
-          <span class="word-rotator" aria-label="Demolition, Groundworks, Bulk Earthworks, Commercial Surfacing">
+          <span class="word-rotator" aria-label="Demolition, Groundworks, Bulk Earthworks">
             <span class="word-track" id="wordTrack">
               <span class="word">Demolition</span>
               <span class="word">Groundworks</span>
               <span class="word">Bulk Earthworks</span>
-              <span class="word">Commercial Surfacing</span>
               <span class="word">Demolition</span>
             </span>
           </span><br>
           <span class="hero-tail">contractor for any site.</span>
-        </h1>
+        </p>
         <p class="hero-sub">
-          From enabling works and site clearance through to completed surfacing and external works, one experienced team delivering across commercial, residential and developer projects throughout Surrey.
+          From enabling works and site clearance through to finished groundworks and external works, one experienced team delivering across commercial, residential and developer projects throughout Surrey.
         </p>
         <div class="hero-ctas">
           <a href="#quote" class="btn btn-yellow">Request a quote</a>
@@ -165,7 +130,7 @@ const jsonLd = {
 <!-- ============ AI ANSWER BLOCK ============ -->
 <section class="intro-answer" aria-label="About Surrey Contracting">
   <div class="container">
-    <p><strong>Surrey Contracting Limited</strong> is a demolition, groundworks, bulk earthworks and commercial surfacing contractor based in Leatherhead, Surrey. The company delivers enabling works, site clearance, drainage, foundations, excavation, tarmac surfacing and external works for residential, commercial and developer clients. Surrey Contracting is CHAS accredited, SafeContractor approved and SSIP certified, and operates across Surrey, London and the South East — including Cobham, Guildford, Woking, Epsom, Weybridge, Reigate and Kingston upon Thames.</p>
+    <p><strong>Surrey Contracting Limited</strong> is a groundworks, bulk earthworks and demolition contractor based in Leatherhead, Surrey. The company delivers enabling works, site clearance, drainage, foundations, bulk excavation and demolition for residential, commercial and developer clients. Surrey Contracting is CHAS accredited, SafeContractor approved and SSIP certified, and operates across Surrey, London and the South East — including Cobham, Guildford, Woking, Epsom, Weybridge, Reigate and Kingston upon Thames.</p>
   </div>
 </section>
 
@@ -174,8 +139,8 @@ const jsonLd = {
   <div class="container">
     <div class="section-head">
       <span class="eyebrow">What we do</span>
-      <h2 class="section-title">A Demolition, Groundworks, Earthworks &amp; Surfacing contractor for any site.</h2>
-      <p class="section-lede">Four core disciplines, delivered in-house by our specialist team. We take your project from its initial stages right through to the finished surface, with no chain of subbies and different contracts to chase, just one point of contact for complete simplicity.</p>
+      <h2 class="section-title">A Groundworks, Earthworks &amp; Demolition contractor for any site.</h2>
+      <p class="section-lede">Three core disciplines, delivered in-house by our specialist team. We take your project from its initial stages right through to completion, with no chain of subbies and different contracts to chase, just one point of contact for complete simplicity.</p>
     </div>
 
     <div class="svc-grid">
@@ -202,15 +167,6 @@ const jsonLd = {
         <div class="svc-meta">
           <h3>Bulk Earthworks</h3>
           <p>From small-scale residential site levelling through to large-scale commercial sites, we specialise in bulk earthworks, excavations and site levelling.</p>
-          <span class="svc-arrow">Explore service →</span>
-        </div>
-      </a>
-
-      <a href="/surfacing" class="svc-card" style="background-image:url(/assets/img/surfacing.jpg)">
-        <div class="svc-overlay"></div>
-        <div class="svc-meta">
-          <h3>Commercial Surfacing</h3>
-          <p>Complete commercial surfacing, from schools to car parks, industrial yards and access roads, in tarmac, resin-bound, block paving and paving.</p>
           <span class="svc-arrow">Explore service →</span>
         </div>
       </a>
@@ -259,13 +215,13 @@ const jsonLd = {
     <div class="about-copy">
       <span class="eyebrow eyebrow-yellow">About Surrey Contracting</span>
       <h2 class="section-title light">Built on Experience. Driven by Quality.</h2>
-      <p class="lede">Surrey Contracting Limited is a site enabling, demolition, groundworks, earthworks and surfacing contractor based near Leatherhead, working across Surrey, London and the South East.</p>
+      <p class="lede">Surrey Contracting Limited is a site enabling, groundworks, earthworks and demolition contractor based near Leatherhead, working across Surrey, London and the South East.</p>
       <p>We have been successfully delivering residential and commercial external works projects for over 15 years, providing turnkey solutions for developers, main contractors, homeowners, self-builders, local businesses and established organisations. No project is too small or too large. Every project receives the same level of expertise, care and professional service from start to finish.</p>
-      <p>We manage every stage of the project in-house, from site clearance through to the finished surface. With our experienced team and structured approach, you can be confident your project will be delivered on time, to a high standard, and with quality maintained right through to handover.</p>
+      <p>We manage every stage of the project in-house, from site clearance through to handover. With our experienced team and structured approach, you can be confident your project will be delivered on time, to a high standard, and with quality maintained right through to handover.</p>
 
       <ul class="bullet-list">
         <li><span>15+ years of experience across Surrey, London &amp; the South East</span></li>
-        <li><span>Self-delivery of site enabling works, groundworks, earthworks &amp; surfacing</span></li>
+        <li><span>Self-delivery of site enabling works, groundworks, earthworks &amp; demolition</span></li>
         <li><span>Turnkey solutions for projects of all sizes and complexities, providing reliable services for residential, commercial and contractor-led works.</span></li>
         <li><span>Reliable workmanship, audit-grade paperwork</span></li>
       </ul>
@@ -287,28 +243,6 @@ const jsonLd = {
         <div class="bg-num">15+</div>
         <div class="bg-lbl">Years delivering<br>projects across<br>Surrey &amp; London</div>
       </div>
-    </div>
-  </div>
-</section>
-
-<!-- ============ FEATURED SERVICE (alt) ============ -->
-<section class="feature feature-dark">
-  <div class="container feature-grid">
-    <div class="feature-media">
-      <div class="feature-photo" style="background-image:url('/assets/img/surfacing.jpg')">
-      </div>
-      <div class="feature-tag">Commercial surfacing</div>
-    </div>
-    <div class="feature-copy">
-      <span class="eyebrow eyebrow-yellow">Commercial Surfacing</span>
-      <h2 class="section-title light">Hard-wearing surfacing for commercial sites.</h2>
-      <p>Surfacing for car parks, private roads, industrial estates, access routes and hardstanding. We lay tarmac and asphalt (base, binder and surface course) over a properly prepared sub-base, because the finish is only ever as good as what's underneath.</p>
-      <div class="feature-stats">
-        <div><strong>Car parks</strong><span>&amp; access roads</span></div>
-        <div><strong>Tarmac</strong><span>&amp; asphalt</span></div>
-        <div><strong>Industrial</strong><span>estates &amp; yards</span></div>
-      </div>
-      <a href="/surfacing" class="btn btn-yellow">Explore commercial surfacing →</a>
     </div>
   </div>
 </section>
@@ -353,15 +287,15 @@ const jsonLd = {
       <div class="stat-lbl">Projects delivered</div>
     </div>
     <div class="stat">
-      <div class="stat-num" data-target="15" data-suffix="+">0</div>
+      <div class="stat-num" data-target="15" data-suffix="+">15+</div>
       <div class="stat-lbl">Years of experience</div>
     </div>
     <div class="stat">
-      <div class="stat-num" data-target="90" data-suffix="%">0</div>
+      <div class="stat-num" data-target="90" data-suffix="%+">90%+</div>
       <div class="stat-lbl">Repeat-client rate</div>
     </div>
     <div class="stat">
-      <div class="stat-num" data-target="100" data-suffix="%">0</div>
+      <div class="stat-num" data-target="100" data-suffix="%">100%</div>
       <div class="stat-lbl">Surrey-based team</div>
     </div>
   </div>
@@ -407,11 +341,11 @@ const jsonLd = {
       </article>
 
       <article class="proj">
-        <div class="proj-photo" style="background-image:url('/assets/img/surfacing.jpg')"></div>
+        <div class="proj-photo" style="background-image:url('/assets/img/Demolition2.webp')"></div>
         <div class="proj-meta">
-          <span class="proj-tag">Surfacing</span>
-          <h3>Kerbing &amp; access road</h3>
-          <p>Precast kerbing and tarmac access road for a commercial yard, delivered over two phased weekends.</p>
+          <span class="proj-tag">Demolition</span>
+          <h3>Soft strip &amp; structural demolition</h3>
+          <p>Soft strip-out, structural demolition and on-site crushing for a commercial site, cleared and handed over ready for rebuild.</p>
         </div>
       </article>
 
@@ -482,18 +416,6 @@ const jsonLd = {
         </article>
         <article class="t-card">
           <blockquote>
-            We needed our main car park resurfaced inside a six-week summer window with zero slippage. They hit the date with two days to spare and the finish has held up beautifully through two winters of school-run traffic.
-          </blockquote>
-          <div class="t-attrib">
-            <div class="t-avatar">SK</div>
-            <div>
-              <strong>Sarah K.</strong>
-              <span>Estates Manager · Independent school, Surrey</span>
-            </div>
-          </div>
-        </article>
-        <article class="t-card">
-          <blockquote>
             Quoted on the Monday, mobilised the following week, finished in three days and tidied up properly before they left. The drive looks better than I'd dared hope, and the price was exactly what they said it would be.
           </blockquote>
           <div class="t-attrib">
@@ -522,7 +444,6 @@ const jsonLd = {
       <button type="button" class="is-active" aria-label="Show testimonial 1"></button>
       <button type="button" aria-label="Show testimonial 2"></button>
       <button type="button" aria-label="Show testimonial 3"></button>
-      <button type="button" aria-label="Show testimonial 4"></button>
     </div>
   </div>
 </section>
@@ -538,6 +459,14 @@ const jsonLd = {
         <div>
           <span class="qd-lbl">Call us</span>
           <a href="tel:01932932650" class="qd-val">01932 932650</a>
+        </div>
+        <div>
+          <span class="qd-lbl">Email us</span>
+          <a href="mailto:info@surreycontracting.co.uk" class="qd-val">info@surreycontracting.co.uk</a>
+        </div>
+        <div>
+          <span class="qd-lbl">Our promise</span>
+          <span class="qd-val">We respond to every enquiry within one working day, with a free measured site visit within 5 working days.</span>
         </div>
         <div>
           <span class="qd-lbl">Yard</span>
@@ -569,7 +498,6 @@ const jsonLd = {
         <label class="check"><input type="checkbox" name="svc" value="Demolition"><span>Demolition</span></label>
         <label class="check"><input type="checkbox" name="svc" value="Groundworks"><span>Groundworks</span></label>
         <label class="check"><input type="checkbox" name="svc" value="Bulk Earthworks"><span>Bulk Earthworks</span></label>
-        <label class="check"><input type="checkbox" name="svc" value="Commercial Surfacing"><span>Commercial Surfacing</span></label>
         <label class="check"><input type="checkbox" name="svc" value="Other"><span>Other</span></label>
       </fieldset>
       <label>

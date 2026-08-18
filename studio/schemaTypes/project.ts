@@ -1,6 +1,6 @@
 import { defineType, defineField, defineArrayMember } from 'sanity';
 
-const CATEGORY_OPTIONS = ['Drainage', 'Driveways', 'Earthworks', 'Groundworks', 'Hard Landscaping', 'Surfacing'];
+const CATEGORY_OPTIONS = ['Drainage', 'Earthworks', 'Groundworks', 'Hard Landscaping', 'Demolition'];
 
 export default defineType({
   name: 'project',
@@ -43,7 +43,7 @@ export default defineType({
       name: 'services',
       title: 'Services (short label for meta card)',
       type: 'string',
-      description: 'e.g. "Tarmac · Drainage"',
+      description: 'e.g. "Groundworks · Drainage"',
     }),
     defineField({ name: 'year', title: 'Year', type: 'string' }),
     defineField({
@@ -91,7 +91,7 @@ export default defineType({
           options: { hotspot: true },
           fields: [
             { name: 'alt', type: 'string', title: 'Alt text' },
-            { name: 'caption', type: 'string', title: 'Caption', description: 'Optional small label shown on the photo, e.g. "Surfacing, base course".' },
+            { name: 'caption', type: 'string', title: 'Caption', description: 'Optional small label shown on the photo, e.g. "Drainage run, pea-shingle bed".' },
           ],
         }),
       ],

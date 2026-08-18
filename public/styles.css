@@ -546,6 +546,11 @@ h1, h2, h3, h4, h5 {
 }
 
 .hero-title {
+  /* Also applied to non-heading elements (the visible tagline is a <p> so the
+     page keeps exactly one H1) — restate the heading font stack + reset. */
+  font-family: 'Montserrat', sans-serif;
+  margin: 0;
+  color: var(--white);
   font-size: clamp(42px, 6.5vw, 88px);
   font-weight: 800;
   line-height: 1.02;
@@ -559,8 +564,12 @@ h1, h2, h3, h4, h5 {
 }
 
 .hero-sub {
+  /* Also used on the homepage <h1> — normalise heading defaults so the line
+     renders identically whether it is a <p> or the page's single <h1>. */
   margin-top: 24px;
   font-size: clamp(15px, 1.5vw, 18px);
+  font-weight: 400;
+  letter-spacing: normal;
   line-height: 1.6;
   color: var(--grey-200);
   max-width: 64ch;
@@ -636,7 +645,7 @@ h1, h2, h3, h4, h5 {
 }
 .svc-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 18px;
 }
 .svc-card {
@@ -1681,8 +1690,11 @@ a.qd-val:hover { color: var(--yellow); }
 /* What we do cards */
 .wwd-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 24px;
+}
+@media (max-width: 900px) {
+  .wwd-grid { grid-template-columns: 1fr; }
 }
 .wwd-card {
   background: var(--white);

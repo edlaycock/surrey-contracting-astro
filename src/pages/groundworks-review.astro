@@ -21,7 +21,7 @@ const REVIEWED = '14 August 2026';
    Single source of truth: each string is rendered once as the visible answer
    paragraph and once inside the FAQPage JSON-LD, so the two can never drift. */
 const A_WHAT =
-  'A groundworks contractor prepares a site and constructs the below-ground elements required before the main building or surfacing work begins. This can include site clearance, excavation, foundations, concrete slabs, drainage, utility trenches, ground stabilisation and build-to-DPC work for residential, commercial and developer-led projects.';
+  'A groundworks contractor prepares a site and constructs the below-ground elements required before the main building work begins. This can include site clearance, excavation, foundations, concrete slabs, drainage, utility trenches, ground stabilisation and build-to-DPC work for residential, commercial and developer-led projects.';
 
 const A_SERVICES =
   'Surrey Contracting provides foundation and build-to-DPC packages, foul and surface water drainage, soakaway construction, utility trenching, site preparation, excavation and agricultural groundworks. The company works on domestic, commercial and developer-led projects across Surrey, London and the South East.';
@@ -57,7 +57,7 @@ const STAGES = [
   ['Excavation', 'Reduced-level digs, trenches and spoil removal', 'Correct formation levels'],
   ['Substructure', 'Foundations, concrete and build to DPC', 'Structure ready for the next trade'],
   ['Drainage and services', 'Pipework, chambers, soakaways and ducting', 'Coordinated below-ground infrastructure'],
-  ['Reinstatement', 'Backfilling, compaction and surface preparation', 'Site ready for surfacing or landscaping'],
+  ['Reinstatement', 'Backfilling, compaction and surface preparation', 'Site ready for landscaping or the next phase'],
 ];
 
 /* ── Project evidence ─────────────────────────────────────────────────────────
@@ -205,7 +205,7 @@ const evidence = EVIDENCE.map((e) => ({ ...e, project: bySlug.get(e.slug) })).fi
 
       <p>The work is governed by paperwork rather than judgement on the day. Drawings define the footprint, the engineer specifies the foundation type and reinforcement, and agreed datum and formation levels control the depth of every dig. Building control signs off the below-ground elements before they are covered up, so a contractor who works from approved drawings and records what was built is far easier to coordinate with.</p>
 
-      <p>It also helps to be clear where groundworks stop and other disciplines begin. <a href="/demolition">Demolition and site clearance</a> removes existing structures and makes the site safe to work on. <a href="/earthworks">Bulk excavation and earthworks</a> moves large volumes of material to reshape a site or form platforms. Groundworks is the constructed below-ground package between those two and the building itself, and <a href="/surfacing">commercial surfacing</a> is the finished running surface laid once it is complete.</p>
+      <p>It also helps to be clear where groundworks stop and other disciplines begin. <a href="/demolition">Demolition and site clearance</a> removes existing structures and makes the site safe to work on. <a href="/earthworks">Bulk excavation and earthworks</a> moves large volumes of material to reshape a site or form platforms. Groundworks is the constructed below-ground package between those two and the building itself.</p>
 
       <p>Sequencing matters most where foundations, drainage runs and service routes cross. Agreeing where the drainage falls, the soakaway, the chambers and the incoming water, electricity and gas ducts go before excavation starts is far cheaper than breaking out concrete later. The package should then end in a defined condition: trenches backfilled and compacted, covers protected, formation levels clean and a record of what is buried where, so the next trade starts without remedial work.</p>
 
