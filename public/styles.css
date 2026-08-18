@@ -111,7 +111,7 @@ h1, h2, h3, h4, h5 {
 
 .section-head {
   max-width: 760px;
-  margin-bottom: 56px;
+  margin-bottom: 40px;
 }
 .section-head.split {
   display: flex;
@@ -640,7 +640,7 @@ h1, h2, h3, h4, h5 {
 
 /* ============ Services tiles (image-backed) ============ */
 .services {
-  padding: clamp(80px, 10vw, 140px) 0;
+  padding: clamp(56px, 6.5vw, 88px) 0;
   background: var(--white);
 }
 .svc-grid {
@@ -814,7 +814,7 @@ h1, h2, h3, h4, h5 {
 .about {
   background: var(--grey-900);
   color: var(--white);
-  padding: clamp(80px, 10vw, 140px) 0;
+  padding: clamp(56px, 6.5vw, 88px) 0;
 }
 .about-grid {
   display: grid;
@@ -957,7 +957,7 @@ h1, h2, h3, h4, h5 {
 
 /* ============ Feature dark ============ */
 .feature-dark {
-  padding: clamp(80px, 10vw, 140px) 0;
+  padding: clamp(56px, 6.5vw, 88px) 0;
   background: var(--grey-800);
   color: var(--white);
 }
@@ -1032,7 +1032,7 @@ h1, h2, h3, h4, h5 {
 
 /* ============ Process ============ */
 .process {
-  padding: clamp(80px, 10vw, 140px) 0;
+  padding: clamp(56px, 6.5vw, 88px) 0;
   background: var(--white);
 }
 .process-row {
@@ -1106,7 +1106,7 @@ h1, h2, h3, h4, h5 {
 
 /* ============ Projects ============ */
 .projects {
-  padding: clamp(80px, 10vw, 140px) 0;
+  padding: clamp(56px, 6.5vw, 88px) 0;
   background: var(--grey-50);
 }
 .proj-grid {
@@ -1183,7 +1183,7 @@ h1, h2, h3, h4, h5 {
 .areas {
   background: var(--grey-900);
   color: var(--white);
-  padding: clamp(80px, 10vw, 140px) 0;
+  padding: clamp(56px, 6.5vw, 88px) 0;
 }
 .areas-grid {
   display: grid;
@@ -1236,7 +1236,7 @@ h1, h2, h3, h4, h5 {
 .testimonial {
   background: var(--grey-800);
   color: var(--white);
-  padding: clamp(72px, 8vw, 120px) 0;
+  padding: clamp(48px, 6vw, 80px) 0;
   position: relative;
   text-align: center;
 }
@@ -1322,7 +1322,7 @@ h1, h2, h3, h4, h5 {
 .quote {
   background: var(--grey-900);
   color: var(--white);
-  padding: clamp(80px, 10vw, 140px) 0;
+  padding: clamp(56px, 6.5vw, 88px) 0;
 }
 .quote-grid {
   display: grid;
@@ -1470,7 +1470,7 @@ a.qd-val:hover { color: var(--yellow); }
 
 /* ============ Clients (mirror of accreditations marquee) ============ */
 .clients {
-  padding: clamp(72px, 9vw, 110px) 0;
+  padding: clamp(48px, 6vw, 80px) 0;
   background: var(--grey-50);
   border-top: 1px solid var(--border);
 }
@@ -1646,7 +1646,7 @@ a.qd-val:hover { color: var(--yellow); }
 
 /* ============ Inner-page generic section ============ */
 .page-section {
-  padding: clamp(72px, 9vw, 120px) 0;
+  padding: clamp(48px, 6vw, 80px) 0;
   background: var(--white);
 }
 .page-section-grey {
@@ -2390,7 +2390,7 @@ a.contact-value:hover { color: var(--yellow-700); }
 
 /* ============ Accreditations (scrolling marquee) ============ */
 .accs {
-  padding: clamp(72px, 9vw, 120px) 0;
+  padding: clamp(48px, 6vw, 80px) 0;
   background: var(--white);
 }
 .accs-head { text-align: center; margin-bottom: 48px; }
