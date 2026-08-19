@@ -30,7 +30,7 @@ navDrawer.querySelectorAll('[data-drawer-toggle]').forEach(btn => {
 const slides = document.querySelectorAll('.hero-slide');
 const dotBtns = document.querySelectorAll('.dot-btn');
 const wordTrack = document.getElementById('wordTrack');
-const wordsCount = 3; // Groundworks, Bulk Earthworks, Commercial Surfacing (last duplicate for seamless loop)
+const wordsCount = 3; // Demolition, Groundworks, Bulk Earthworks (a duplicate of the first word is appended for a seamless loop)
 
 let activeSlide = 0;
 let wordIdx = 0;
@@ -78,7 +78,7 @@ const rotateWord = () => {
 };
 
 const advanceSlide = () => setSlide((activeSlide + 1) % slides.length);
-const slideDurations = [5000, wordsCount * 3000]; // slide 1 = 5s, slide 2 = 4 words × 3s
+const slideDurations = [5000, wordsCount * 3000]; // slide 1 = 5s, slide 2 = 3 words × 3s
 const startSlideTimer = () => {
   if (slideTimer) clearTimeout(slideTimer);
   slideTimer = setTimeout(() => { advanceSlide(); startSlideTimer(); }, slideDurations[activeSlide] || 5000);
@@ -96,8 +96,12 @@ if (slides.length) {
   startSlideTimer();
 }
 
-// ---------- Stats counters (count up when in view) ----------
+// ---------- Stats counters (progressive enhancement) ----------
+// The final values are rendered in the static HTML so crawlers, AI systems and
+// no-JS visitors always see the real numbers. When JS runs (and the visitor
+// hasn't asked for reduced motion) we count up to the value already present.
 const counters = document.querySelectorAll('.stat-num[data-target]');
+const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const animateCount = el => {
   const target = +el.dataset.target;
   const suffix = el.dataset.suffix || '';
@@ -111,15 +115,17 @@ const animateCount = el => {
   };
   requestAnimationFrame(tick);
 };
-const statObs = new IntersectionObserver((entries) => {
-  entries.forEach(e => {
-    if (e.isIntersecting) {
-      animateCount(e.target);
-      statObs.unobserve(e.target);
-    }
-  });
-}, { threshold: 0.4 });
-counters.forEach(c => statObs.observe(c));
+if (!prefersReducedMotion && counters.length) {
+  const statObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        animateCount(e.target);
+        statObs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.4 });
+  counters.forEach(c => statObs.observe(c));
+}
 
 // ---------- Testimonial slider ----------
 const tTrack = document.getElementById('tTrack');
@@ -194,7 +200,7 @@ if (form) {
         success.style.color = '#ff6b6b';
         success.textContent = (err && err.message && err.message !== 'Send failed')
           ? err.message
-          : 'Something went wrong — please call us on 01932 932650.';
+          : 'Something went wrong — please call us on 01483 323568.';
       }
     }
   });

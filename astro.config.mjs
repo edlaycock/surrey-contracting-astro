@@ -12,9 +12,19 @@ export default defineConfig({
   adapter: node({ mode: 'standalone' }),
   security: { checkOrigin: false },
   redirects: {
-    '/project-tarmac-driveway': '/projects/tarmac-driveway',
-    '/project-tarmac-driveway-fetcham': '/projects/tarmac-driveway-fetcham',
-    '/project-tarmac-repairs-sutton': '/projects/tarmac-repairs-sutton',
+    // Surfacing removed from the business (Deployment 1) — permanent redirects.
+    '/surfacing': '/groundworks',
+    '/lp/surfacing': '/groundworks',
+    '/projects/tarmac-driveway': '/projects',
+    '/projects/tarmac-driveway-fetcham': '/projects',
+    '/projects/tarmac-repairs-sutton': '/projects',
+    // Canonical sitemap entry point (the generated files keep their names).
+    '/sitemap.xml': '/sitemap-index.xml',
+    // Legacy pre-rebuild URLs. Former surfacing project URLs go straight to
+    // /projects (avoids a 301 chain through the removed case-study pages).
+    '/project-tarmac-driveway': '/projects',
+    '/project-tarmac-driveway-fetcham': '/projects',
+    '/project-tarmac-repairs-sutton': '/projects',
     '/project-southbank-centre': '/projects/southbank-centre',
     '/project-site-clearance-earthworks': '/projects/site-clearance-earthworks',
     '/project-domestic-earthworks': '/projects/domestic-earthworks',

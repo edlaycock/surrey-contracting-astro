@@ -17,7 +17,7 @@ const REVIEWED = '19 August 2026';
    Single source of truth: each string is rendered once as the visible answer
    paragraph and once inside the FAQPage JSON-LD, so the two can never drift. */
 const A_WHAT =
-  'A groundworks contractor prepares a site and constructs the below-ground elements required before the main building or surfacing work begins. This can include site clearance, excavation, foundations, concrete slabs, drainage, utility trenches, ground stabilisation and build-to-DPC work for residential, commercial and developer-led projects.';
+  'A groundworks contractor prepares a site and constructs the below-ground elements required before the main building work begins. This can include site clearance, excavation, foundations, concrete slabs, drainage, utility trenches, ground stabilisation and build-to-DPC work for residential, commercial and developer-led projects.';
 
 const A_SERVICES =
   'Surrey Contracting provides foundation and build-to-DPC packages, foul and surface water drainage, soakaway construction, utility trenching, site preparation, excavation and agricultural groundworks. The company works on domestic, commercial and developer-led projects across Surrey, London and the South East.';
@@ -53,7 +53,7 @@ const STAGES = [
   ['Excavation', 'Reduced-level digs, trenches and spoil removal', 'Correct formation levels'],
   ['Substructure', 'Foundations, concrete and build to DPC', 'Structure ready for the next trade'],
   ['Drainage and services', 'Pipework, chambers, soakaways and ducting', 'Coordinated below-ground infrastructure'],
-  ['Reinstatement', 'Backfilling, compaction and surface preparation', 'Site ready for surfacing or landscaping'],
+  ['Reinstatement', 'Backfilling, compaction and surface preparation', 'Site ready for landscaping or the next phase'],
 ];
 
 /* ── Project evidence ─────────────────────────────────────────────────────────
@@ -95,8 +95,8 @@ const evidence = EVIDENCE.map((e) => ({ ...e, project: bySlug.get(e.slug) })).fi
 );
 ---
 <BaseLayout
-  title="Groundworks Contractor Surrey | Surrey Contracting"
-  description="Need a groundworks contractor in Surrey? We deliver foundations, drainage, excavation and site preparation. Request a clear project quotation."
+  title="Groundworks Contractor Surrey | Foundations & Drainage"
+  description="Foundations, drainage, site preparation and groundworks across Surrey. Self-delivered by our own teams. Free measured site visit."
   path="/groundworks"
   active="services"
 >
@@ -116,7 +116,7 @@ const evidence = EVIDENCE.map((e) => ({ ...e, project: bySlug.get(e.slug) })).fi
       <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 6l6 6-6 6"/></svg>
       <span>Groundworks</span>
     </nav>
-    <h1 class="page-title">Groundworks Contractor in Surrey</h1>
+    <h1 class="page-title">Groundworks Contractor in Surrey &amp; the Home Counties</h1>
     <p class="page-lede">Foundations, drainage, excavation and site preparation across Surrey, London and the South East.</p>
   </div>
 </section>
@@ -165,11 +165,11 @@ const evidence = EVIDENCE.map((e) => ({ ...e, project: bySlug.get(e.slug) })).fi
   <div class="container">
    <div class="gw-intro-grid">
     <div class="gw-intro">
-      <p class="lede-dark">Finding the right <strong>groundworks contractor in Surrey</strong> means choosing a team that can prepare the site, construct accurate foundations and coordinate drainage, utilities and excavation around the wider building programme. Surrey Contracting delivers residential, commercial and developer-led groundworks across Surrey, London and the South East. Our services include foundations and build to DPC, foul and surface water drainage, utility trenching, site preparation, excavation and agricultural groundworks. To discuss drawings, access, timescales or site conditions, call <a href="tel:01932932650">01932 932650</a> or <a href="/contact">request a project quotation</a>.</p>
+      <p class="lede-dark">Finding the right <strong>groundworks contractor in Surrey</strong> means choosing a team that can prepare the site, construct accurate foundations and coordinate drainage, utilities and excavation around the wider building programme. Surrey Contracting delivers residential, commercial and developer-led groundworks across Surrey, London and the South East. Our services include foundations and build to DPC, foul and surface water drainage, utility trenching, site preparation, excavation and agricultural groundworks. To discuss drawings, access, timescales or site conditions, call <a href="tel:01483323568">01483 323568</a> or <a href="/contact">request a project quotation</a>.</p>
       <p class="gw-reviewed">Reviewed and updated: <time datetime="2026-08-19">{REVIEWED}</time></p>
       <div class="gw-ctas">
         <a href="/contact" class="btn btn-yellow">Request a Groundworks Quote</a>
-        <a href="tel:01932932650" class="btn btn-outline-dark">Call 01932 932650</a>
+        <a href="tel:01483323568" class="btn btn-outline-dark">Call 01483 323568</a>
       </div>
     </div>
 
@@ -200,7 +200,7 @@ const evidence = EVIDENCE.map((e) => ({ ...e, project: bySlug.get(e.slug) })).fi
 
       <p>The work is governed by paperwork rather than judgement on the day. Drawings define the footprint, the engineer specifies the foundation type and reinforcement, and agreed datum and formation levels control the depth of every dig. Building control signs off the below-ground elements before they are covered up, so a contractor who works from approved drawings and records what was built is far easier to coordinate with.</p>
 
-      <p>It also helps to be clear where groundworks stop and other disciplines begin. <a href="/demolition">Demolition and site clearance</a> removes existing structures and makes the site safe to work on. <a href="/earthworks">Bulk excavation and earthworks</a> moves large volumes of material to reshape a site or form platforms. Groundworks is the constructed below-ground package between those two and the building itself, and <a href="/surfacing">commercial surfacing</a> is the finished running surface laid once it is complete.</p>
+      <p>It also helps to be clear where groundworks stop and other disciplines begin. <a href="/demolition">Demolition and site clearance</a> removes existing structures and makes the site safe to work on. <a href="/earthworks">Bulk excavation and earthworks</a> moves large volumes of material to reshape a site or form platforms. Groundworks is the constructed below-ground package between those two and the building itself.</p>
 
       <p>Sequencing matters most where foundations, drainage runs and service routes cross. Agreeing where the drainage falls, the soakaway, the chambers and the incoming water, electricity and gas ducts go before excavation starts is far cheaper than breaking out concrete later. The package should then end in a defined condition: trenches backfilled and compacted, covers protected, formation levels clean and a record of what is buried where, so the next trade starts without remedial work.</p>
 
@@ -366,7 +366,7 @@ const evidence = EVIDENCE.map((e) => ({ ...e, project: bySlug.get(e.slug) })).fi
     </div>
     <div class="cta-strip-ctas">
       <a href="/contact" class="btn btn-yellow">Request a Groundworks Quote</a>
-      <a href="tel:01932932650" class="btn btn-ghost-light">Call 01932 932650</a>
+      <a href="tel:01483323568" class="btn btn-ghost-light">Call 01483 323568</a>
     </div>
   </div>
 </section>
@@ -469,7 +469,7 @@ const evidence = EVIDENCE.map((e) => ({ ...e, project: bySlug.get(e.slug) })).fi
       </ul>
       <div class="gw-ctas">
         <a href="/contact" class="btn btn-yellow">Request a Groundworks Quote</a>
-        <a href="tel:01932932650" class="btn btn-ghost-light">Call 01932 932650</a>
+        <a href="tel:01483323568" class="btn btn-ghost-light">Call 01483 323568</a>
       </div>
     </div>
   </div>

@@ -5,6 +5,61 @@ import Footer from '../components/Footer.astro';
 
 const SITE = 'https://surreycontracting.co.uk';
 
+// LocalBusiness structured data, emitted on every page. Service pages and the
+// homepage reference this node via its @id.
+const localBusinessJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'HomeAndConstructionBusiness',
+  '@id': `${SITE}/#business`,
+  name: 'Surrey Contracting Limited',
+  url: SITE,
+  logo: `${SITE}/assets/logo-color.png`,
+  image: `${SITE}/assets/logo-transparent.png`,
+  telephone: '+441932932650',
+  email: 'info@surreycontracting.co.uk',
+  description:
+    'Groundworks, earthworks and demolition contractor based in Leatherhead, Surrey. Self-delivered enabling works, site clearance, drainage, foundations, bulk excavation and demolition across Surrey and the Home Counties.',
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: 'Upper Leewood Farm Yard, Effingham Common Road',
+    addressLocality: 'Leatherhead',
+    addressRegion: 'Surrey',
+    postalCode: 'KT24 5JQ',
+    addressCountry: 'GB',
+  },
+  geo: { '@type': 'GeoCoordinates', latitude: 51.296, longitude: -0.331 },
+  openingHoursSpecification: [
+    {
+      '@type': 'OpeningHoursSpecification',
+      dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+      opens: '07:30',
+      closes: '17:30',
+    },
+  ],
+  areaServed: [
+    'Cobham', 'Leatherhead', 'Guildford', 'Esher', 'Woking', 'Reigate',
+    'Dorking', 'Epsom', 'Weybridge', 'Kingston upon Thames', 'Redhill', 'Surbiton',
+  ].map((name) => ({ '@type': 'Place', name })),
+  sameAs: [
+    'https://www.linkedin.com/company/surrey-contracting/',
+    'https://www.instagram.com/surreycontracting',
+    'https://www.facebook.com/surreycontracting',
+  ],
+  identifier: [
+    { '@type': 'PropertyValue', propertyID: 'Companies House', value: '15454300' },
+    { '@type': 'PropertyValue', propertyID: 'VAT', value: '415 8380 91' },
+  ],
+  hasOfferCatalog: {
+    '@type': 'OfferCatalog',
+    name: 'Services',
+    itemListElement: [
+      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Groundworks', url: `${SITE}/groundworks` } },
+      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Bulk Earthworks & Excavation', url: `${SITE}/earthworks` } },
+      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Demolition', url: `${SITE}/demolition` } },
+    ],
+  },
+};
+
 interface Props {
   title: string;
   description: string;
@@ -64,6 +119,7 @@ const canonical = path === '/' ? SITE : SITE + path;
   <meta property="og:url" content={canonical} />
   {ogImage && <meta property="og:image" content={SITE + ogImage} />}
   <title>{title}</title>
+  <script type="application/ld+json" set:html={JSON.stringify(localBusinessJsonLd)} />
   <link rel="icon" type="image/x-icon" href="/favicon.ico" />
   <link rel="stylesheet" href="/styles.css" />
   <slot name="head" />
