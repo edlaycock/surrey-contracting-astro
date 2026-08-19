@@ -87,7 +87,7 @@ from the sitemap). Happy to trim them in a follow-up if the client agrees.
 
 - **LocalBusiness** (`@type: HomeAndConstructionBusiness`, `@id:
   https://surreycontracting.co.uk/#business`) emitted on **every page** via
-  `BaseLayout`: name "Surrey Contracting Limited", telephone "+441932932650",
+  `BaseLayout`: name "Surrey Contracting Limited", telephone "+441483323568" (updated 2026-08-19 per client instruction; was 01932 932650),
   registered yard address (Leatherhead, Surrey, KT24 5JQ, GB), url, geo,
   openingHours Mon–Fri 07:30–17:30, `areaServed` = the 12 towns listed on the
   site, `sameAs` = LinkedIn/Instagram/Facebook from the footer, Companies

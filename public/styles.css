@@ -2598,6 +2598,11 @@ a.contact-value:hover { color: var(--yellow-700); }
     padding-left: 16px;
     padding-right: 16px;
   }
+  /* The rotator slide's longest word ("Bulk Earthworks") overflows the
+     viewport at the clamp minimum — step the size down on small screens. */
+  .hero-slide[data-slide="1"] .hero-title {
+    font-size: clamp(26px, 8vw, 36px);
+  }
   .hero-title {
     font-size: clamp(32px, 8vw, 48px) !important;
   }
