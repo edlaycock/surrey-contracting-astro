@@ -41,6 +41,37 @@ const servicesJsonLd = {
     },
   ],
 };
+
+/* Homepage FAQ. Single source of truth: each entry is rendered once as the
+   visible answer and once inside the FAQPage JSON-LD, so the two cannot drift. */
+const HOME_FAQS = [
+  {
+    q: 'What services does Surrey Contracting provide?',
+    a: 'Surrey Contracting provides groundworks, bulk earthworks and demolition, self-delivered by its own teams, plant and operators. The work includes foundations and build to DPC, foul and surface water drainage, utility trenching, cut and fill, site levelling, muck-away, soft strip-out, structural demolition, concrete crushing and licensed asbestos removal.',
+  },
+  {
+    q: 'What areas does Surrey Contracting cover?',
+    a: 'Surrey Contracting is based at Send, near Woking, and works across Surrey, London and the South East, including Guildford, Woking, Cobham, Esher, Epsom, Weybridge, Leatherhead, Reigate, Dorking, Kingston upon Thames, Redhill, Surbiton and the wider M25 and A3 corridors.',
+  },
+  {
+    q: 'What do I need to get a quote?',
+    a: 'A project postcode and a short description of the works are enough to start. Drawings, photographs, surveys and access details all help. Every enquiry receives a free measured site visit within five working days, followed by a fixed-price itemised quotation.',
+  },
+  {
+    q: 'How quickly does Surrey Contracting respond to enquiries?',
+    a: 'Surrey Contracting responds to every enquiry within one working day and offers a free measured site visit within five working days, with a fixed-price quotation to follow. Call 01483 323568 or send an enquiry through the quote form.',
+  },
+];
+
+const homeFaqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: HOME_FAQS.map(({ q, a }) => ({
+    '@type': 'Question',
+    name: q,
+    acceptedAnswer: { '@type': 'Answer', text: a },
+  })),
+};
 ---
 <BaseLayout
   title="Groundworks & Earthworks Contractor Surrey | Demolition"
@@ -49,6 +80,7 @@ const servicesJsonLd = {
   path="/"
 >
   <script type="application/ld+json" slot="head" set:html={JSON.stringify(servicesJsonLd)} />
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify(homeFaqSchema)} />
 
 <!-- ============ HERO ============ -->
 <section class="hero" id="top">
@@ -392,6 +424,24 @@ const servicesJsonLd = {
           <span class="pin-label">HQ · Send</span>
         </div>
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FAQ ============ -->
+<section class="page-section" id="faq">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow">Common questions</span>
+      <h2 class="section-title">Frequently asked questions</h2>
+    </div>
+    <div class="faq-list">
+      {HOME_FAQS.map(({ q, a }) => (
+        <details class="faq-item">
+          <summary>{q}</summary>
+          <p>{a}</p>
+        </details>
+      ))}
     </div>
   </div>
 </section>

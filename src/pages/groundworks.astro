@@ -25,6 +25,15 @@ const A_SERVICES =
 const A_CHOOSE =
   'Choose a Surrey groundworks contractor by checking relevant project experience, health and safety credentials, plant capability, insurance, written scope and the ability to work from approved drawings. The quotation should define excavation, drainage, foundations, waste removal, exclusions and responsibility for coordinating with engineers, building control and other trades.';
 
+const A_COST =
+  'Groundworks in Surrey are priced per project rather than at a standard rate, because the cost is driven by ground conditions, access, excavation and muck-away volumes, and the foundation and drainage design. Surrey Contracting provides a free measured site visit and a fixed-price itemised quotation covering materials, plant, prelims and programme, so the price reflects the actual site rather than an estimate.';
+
+const A_QUOTE =
+  'A project postcode, a description of the works and any drawings, surveys or engineering information you already have are enough to start, along with details of site access. A free measured site visit within five working days captures levels, access, services and constraints, and the quotation that follows is fixed-price and itemised.';
+
+const A_DPC =
+  'Build to DPC means constructing the substructure up to damp proof course level: excavation, foundations, concrete, and brickwork and blockwork to DPC, ready for the bricklayer or frame contractor to take over. It is a defined handover point between the groundworks and the superstructure, and Surrey Contracting delivers it as a complete package on extensions, new-build homes and development schemes.';
+
 const faqSchema = {
   '@context': 'https://schema.org',
   '@type': 'FAQPage',
@@ -43,6 +52,21 @@ const faqSchema = {
       '@type': 'Question',
       name: 'How should you choose a groundworks contractor in Surrey?',
       acceptedAnswer: { '@type': 'Answer', text: A_CHOOSE },
+    },
+    {
+      '@type': 'Question',
+      name: 'How much do groundworks cost in Surrey?',
+      acceptedAnswer: { '@type': 'Answer', text: A_COST },
+    },
+    {
+      '@type': 'Question',
+      name: 'What do you need to provide a groundworks quote?',
+      acceptedAnswer: { '@type': 'Answer', text: A_QUOTE },
+    },
+    {
+      '@type': 'Question',
+      name: 'What is build to DPC?',
+      acceptedAnswer: { '@type': 'Answer', text: A_DPC },
     },
   ],
 };
@@ -448,6 +472,30 @@ const evidence = EVIDENCE.map((e) => ({ ...e, project: bySlug.get(e.slug) })).fi
       </ol>
 
       <p class="gw-close"><a href="/contact">Send Surrey Contracting your drawings, project postcode, access information and proposed start date for an informed groundworks quotation.</a></p>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ — answers rendered from the same constants as the FAQPage JSON-LD -->
+<section class="page-section">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow">Common questions</span>
+      <h2 class="section-title">Groundworks FAQs</h2>
+    </div>
+    <div class="faq-list">
+      <details class="faq-item">
+        <summary>How much do groundworks cost in Surrey?</summary>
+        <p>{A_COST}</p>
+      </details>
+      <details class="faq-item">
+        <summary>What do you need to provide a groundworks quote?</summary>
+        <p>{A_QUOTE}</p>
+      </details>
+      <details class="faq-item">
+        <summary>What is build to DPC?</summary>
+        <p>{A_DPC}</p>
+      </details>
     </div>
   </div>
 </section>
