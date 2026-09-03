@@ -84,6 +84,16 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       </fieldset>
       <label><span>Project postcode</span><input name="postcode" type="text" placeholder="GU1 1AA"></label>
       <label><span>Tell us about the job</span><textarea name="message" rows="5" placeholder="Site type, scale, target start date…"></textarea></label>
+      <label class="qf-hear">
+        <span>Where did you hear about us?</span>
+        <select name="source">
+          <option>Google</option>
+          <option>Referral / client</option>
+          <option>LinkedIn</option>
+          <option>Site signage</option>
+          <option>Other</option>
+        </select>
+      </label>
       <button type="submit" class="btn btn-yellow btn-block">Send enquiry</button>
       <p class="qf-success" id="qfSuccess" hidden>Thanks, we've got it. A contracts manager will be in touch within one working day.</p>
     </form>

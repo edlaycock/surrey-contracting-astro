@@ -41,4 +41,5 @@ Plan: `/Users/edlaycock/.claude/plans/warm-noodling-dahl.md`
 - [x] app.js appends `page` (pathname + query) to the `/api/contact` FormData on submit
 - [x] contact.ts prints `Page:` as the last line of the email; falls back to the Referer header if `page` is missing
 - [x] Verified: `astro build` passes; dev server with stubbed SMTP2GO shows `Page: /lp/groundworks?utm_source=google` and Referer fallback
-- [ ] Decide whether "Where did you hear about us?" should exist on /contact (it is only on the homepage form today)
+- [x] "Where did you hear about us?" select added to /contact (same options as the homepage)
+- [x] Default recipient is info@surreycontracting.co.uk; privacy and cookies mailto links fixed to match
