@@ -36,3 +36,9 @@ Plan: `/Users/edlaycock/.claude/plans/warm-noodling-dahl.md`
 - [ ] GA4 542209922: mark `generate_lead` as key event, import as Ads conversion (launch blocker)
 - [ ] Check YTQ apiKey `ytq_live_demo_key_12345` is not a dead demo key on prod
 - [ ] Sandbox build hang: node_modules has iCloud-evicted files; run `npm ci` locally to restore (see lessons.md)
+
+## Enquiry email: page attribution (2026-09-03)
+- [x] app.js appends `page` (pathname + query) to the `/api/contact` FormData on submit
+- [x] contact.ts prints `Page:` as the last line of the email; falls back to the Referer header if `page` is missing
+- [x] Verified: `astro build` passes; dev server with stubbed SMTP2GO shows `Page: /lp/groundworks?utm_source=google` and Referer fallback
+- [ ] Decide whether "Where did you hear about us?" should exist on /contact (it is only on the homepage form today)
