@@ -175,7 +175,9 @@ if (form) {
     btn.textContent = 'Sending…';
 
     try {
-      const res = await fetch('/api/contact', { method: 'POST', body: new FormData(form) });
+      const body = new FormData(form);
+      body.append('page', location.pathname + location.search);
+      const res = await fetch('/api/contact', { method: 'POST', body });
       const data = await res.json().catch(() => ({}));
       if (!res.ok || !data.ok) throw new Error(data.error || 'Send failed');
       if (success) {
