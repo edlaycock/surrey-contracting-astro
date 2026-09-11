@@ -2,7 +2,7 @@
 import UtilityBar from '../components/UtilityBar.astro';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
-import { DATES, KNOWS_ABOUT } from '../data/homepage';
+import { KNOWS_ABOUT } from '../data/homepage';
 
 const SITE = 'https://surreycontracting.co.uk';
 
@@ -51,9 +51,6 @@ const localBusinessJsonLd = {
     { '@type': 'PropertyValue', propertyID: 'VAT', value: '415 8380 91' },
   ],
   knowsAbout: KNOWS_ABOUT,
-  // Same value as the visible "Last updated" on the homepage; both come from
-  // src/data/homepage.ts so a copy change means editing one date in one place.
-  dateModified: DATES.reviewed,
   hasOfferCatalog: {
     '@type': 'OfferCatalog',
     name: 'Services',

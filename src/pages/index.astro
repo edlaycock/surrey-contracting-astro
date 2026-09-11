@@ -2,9 +2,10 @@
 /**
  * Homepage. A direct-answer paragraph immediately under the H1, the visual
  * sections (services, projects, areas), then the explanatory content in a
- * collapsed FAQ rather than as text blocks, and an author/date note. All
- * copy, the FAQ and the schema fragments come from src/data/homepage.ts so
- * visible text and JSON-LD render from the same strings.
+ * collapsed FAQ rather than as text blocks. No author, reviewer or date
+ * credits. All copy, the FAQ and the schema fragments come from
+ * src/data/homepage.ts so visible text and JSON-LD render from the same
+ * strings.
  *
  * Schema on this page: the site-wide business node (BaseLayout) plus FAQPage.
  * No Article, no aggregateRating. scripts/check-homepage.mjs enforces this
@@ -12,8 +13,7 @@
  */
 import BaseLayout from '../layouts/BaseLayout.astro';
 import {
-  META, DIRECT_ANSWER, AREAS_RESPONSE, FAQS, FAQ_SCHEMA,
-  ACCREDITATION_LOGOS, REVIEWER, DATES,
+  META, DIRECT_ANSWER, AREAS_RESPONSE, FAQS, FAQ_SCHEMA, ACCREDITATION_LOGOS,
 } from '../data/homepage';
 
 const faqJsonLd = { '@context': 'https://schema.org', ...FAQ_SCHEMA };
@@ -345,13 +345,6 @@ const logos = ACCREDITATION_LOGOS;
   </div>
 </section>
 
-<!-- ============ PUBLISHER & DATES ============ -->
-<section class="author-note" aria-label="Publisher and review dates">
-  <div class="container">
-    <p>Published by Surrey Contracting Limited. Reviewed by {REVIEWER.name}, {REVIEWER.role}.</p>
-    <p class="author-dates">Published <time datetime={DATES.published}>{DATES.publishedLabel}</time>. Last updated <time datetime={DATES.reviewed}>{DATES.reviewedLabel}</time>.</p>
-  </div>
-</section>
 </BaseLayout>
 
 <style is:global>
@@ -367,8 +360,4 @@ const logos = ACCREDITATION_LOGOS;
   .areas-response { margin-top: 18px; }
   #faq .faq-item p a { color: var(--yellow-700, #9a6c00); text-decoration: underline; }
   #faq .faq-item p a:hover { color: var(--ink, #1a1a1a); }
-
-  .author-note { padding: 28px 0 40px; border-top: 1px solid var(--border, #e5e5e5); }
-  .author-note p { margin: 0; max-width: 72ch; color: var(--mid, #444); font-size: .95rem; line-height: 1.65; }
-  .author-dates { margin-top: 6px !important; font-size: .88rem !important; }
 </style>

@@ -29,3 +29,11 @@ Log each correction as: **Pattern** (what went wrong) + **Rule** (how to prevent
 ## The accreditation logo strip stands alone (11 Sep 2026)
 - **Pattern:** After the registration numbers were removed, a list of scheme names, notes and register links was left beneath the logo strip. Ed does not want any section under the logos.
 - **Rule:** The accreditations section is the heading and the logo marquee, nothing else. Register links, if wanted at all, belong inside the FAQ answer that asks how to check a contractor, not as a block on the page.
+
+## No external register links either (11 Sep 2026)
+- **Pattern:** With the list under the logos gone, the SSIP Portal, Constructionline and Companies House links were kept inline in the FAQ answer on checking a contractor. Ed wants those removed as well.
+- **Rule:** No links to accreditation or company registers anywhere on the site. Accreditation is shown by the logo strip and stated in copy; the company number appears as plain text in the footer and FAQ. Treat this as one rule with the two entries above: logos only, no numbers, no register links, no supporting block.
+
+## No author, reviewer or date credits (11 Sep 2026)
+- **Pattern:** The brief's changes 2a and 2b (author note, Published and Last updated dates, dateModified in schema) were built, then reframed company-first after the sole-trader correction. Ed wants none of it on the page.
+- **Rule:** Commercial pages carry no author, reviewer, published or updated credits, and the business schema carries no dateModified, unless Ed asks for them on a specific page. If a brief asks for them, raise it before building.

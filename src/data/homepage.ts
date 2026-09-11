@@ -19,20 +19,8 @@ export const QUOTE_LEAD_TIME = '5 working days';
 export const QUOTE_TURNAROUND = '{{QUOTE_TURNAROUND}}';
 export const EXTENSION_DURATION = '{{EXTENSION_DURATION}}';
 
-// The company is the author. A director signs off the content as reviewer;
-// this is a role credit, not a personal profile.
-export const REVIEWER = {
-  name: '{{REVIEWER_NAME}}',
-  role: 'Director',
-};
-
-// ISO values feed the schema, labels feed the visible text. Change both.
-export const DATES = {
-  published: '2026-09-11',
-  publishedLabel: '11 September 2026',
-  reviewed: '{{REVIEW_DATE_ISO}}',
-  reviewedLabel: '{{REVIEW_DATE}}',
-};
+// No author, reviewer or published/updated dates on the page, and no
+// dateModified in the business schema (Ed, 11 Sep 2026).
 
 /* ── Head ─────────────────────────────────────────────────────────────────── */
 export const META = {
@@ -49,8 +37,6 @@ export const DIRECT_ANSWER =
 
 export const AREAS_RESPONSE =
   `Site visits within ${QUOTE_LEAD_TIME} for Guildford, Woking, Leatherhead, Epsom, Kingston and the surrounding Surrey and south west London area.`;
-
-export const COMPANIES_HOUSE_URL = 'https://find-and-update.company-information.service.gov.uk/company/15454300';
 
 /* ── FAQ ──────────────────────────────────────────────────────────────────────
    Rendered as <details> in the page and as FAQPage mainEntity in the schema,
@@ -98,7 +84,7 @@ export const FAQS: Faq[] = [
   },
   {
     q: 'How do you check a groundworks or demolition contractor is legitimate?',
-    a: `Check four things: SSIP accreditation (CHAS or SafeContractor) against the public register, current public liability insurance, an Environment Agency waste carrier registration for muck away, and an active Companies House record. Surrey Contracting Limited is <a href="${COMPANIES_HOUSE_URL}" rel="noopener">company number 15454300</a>, and our SSIP and Constructionline accreditations can be checked by company name on the <a href="https://www.ssipportal.org.uk/" rel="noopener">SSIP Portal</a> and <a href="https://www.constructionline.co.uk/buyers/supply-chain-management/find-supplier/" rel="noopener">Constructionline</a>.`,
+    a: 'Check four things: SSIP accreditation (CHAS or SafeContractor) against the public register, current public liability insurance, an Environment Agency waste carrier registration for muck away, and an active Companies House record. Surrey Contracting Limited is company number 15454300 and holds SSIP and Constructionline accreditation, shown in the <a href="#accreditations">accreditations strip</a> on this page.',
   },
   {
     q: 'Are you accredited?',
@@ -114,12 +100,8 @@ export const FAQS: Faq[] = [
 export const plainText = (html: string) => html.replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim();
 
 /* ── Accreditations: the logo strip only ──────────────────────────────────── */
-// The strip stands alone. No registration numbers and no supporting list
-// beneath it (Ed, 11 Sep 2026). The public registers are linked from the FAQ
-// answer on checking a contractor, where the question calls for them.
-export const SSIP_PORTAL_URL = 'https://www.ssipportal.org.uk/';
-export const CONSTRUCTIONLINE_SEARCH_URL = 'https://www.constructionline.co.uk/buyers/supply-chain-management/find-supplier/';
-
+// The strip stands alone. No registration numbers, no supporting list beneath
+// it, and no links to external registers anywhere on the page (Ed, 11 Sep 2026).
 export const ACCREDITATION_LOGOS = [
   { logo: '/assets/acc/chas.webp', alt: 'CHAS Accredited Contractor' },
   { logo: '/assets/acc/safe-contractor.webp', alt: 'SafeContractor by Alcumus' },
