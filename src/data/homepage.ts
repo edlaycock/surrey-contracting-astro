@@ -68,10 +68,6 @@ export const FAQS: Faq[] = [
     a: 'The person carrying out the demolition serves it. Surrey Contracting serves the Section 80 notice as principal contractor, and the six week period runs from the date the local authority receives it, not the date it is posted. The council may reply with a Section 81 counter notice setting conditions for the work.',
   },
   {
-    q: 'How long does a groundworks job take on a typical house extension?',
-    a: 'It depends on the ground more than the floor area. Clay, a high water table or roots near protected trees can mean deeper foundations or piling, which adds time, and tight access slows the muck away. We confirm the programme in the written quote after the site visit, once we have seen the ground, the access and the drawings.',
-  },
-  {
     q: 'What are the common ground problems on Surrey sites?',
     a: 'London clay that shrinks and heaves with the seasons, high water tables near the Wey and the Mole, tree roots near protected trees, and tight access on infill plots. Each one changes the foundation depth or method, which is why we visit before quoting rather than price from a plan.',
   },
