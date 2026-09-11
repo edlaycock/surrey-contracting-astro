@@ -4,20 +4,18 @@
  * Every string here is rendered once in the page markup and, where relevant,
  * once in the JSON-LD, so visible text and structured data cannot drift.
  *
- * Values still wrapped in {{ }} are unconfirmed and must come from Jason.
- * scripts/check-homepage.mjs fails the build while any remain in the output,
- * so nothing half-filled can deploy.
+ * Any value wrapped in {{ }} is unconfirmed. scripts/check-homepage.mjs fails
+ * the build while any remain in the output, so nothing half-filled can
+ * deploy. None remain at the time of writing.
  */
 
 const SITE = 'https://surreycontracting.co.uk';
 
-/* ── Values awaiting Jason's confirmation ─────────────────────────────────── */
-// The site already publishes "free measured site visit within 5 working days"
-// on the homepage, contact page and llms-full.txt, so this one is prefilled
-// with the existing promise. Jason to confirm or correct.
+/* ── Published service promise ────────────────────────────────────────────── */
+// Already stated on the homepage quote section, the contact page and
+// llms-full.txt. No other figures (durations, turnaround times, prices) are
+// published on the homepage (Ed, 11 Sep 2026).
 export const QUOTE_LEAD_TIME = '5 working days';
-export const QUOTE_TURNAROUND = '{{QUOTE_TURNAROUND}}';
-export const EXTENSION_DURATION = '{{EXTENSION_DURATION}}';
 
 // No author, reviewer or published/updated dates on the page, and no
 // dateModified in the business schema (Ed, 11 Sep 2026).
@@ -71,7 +69,7 @@ export const FAQS: Faq[] = [
   },
   {
     q: 'How long does a groundworks job take on a typical house extension?',
-    a: `Most single storey extension groundworks in Surrey take ${EXTENSION_DURATION} from first dig to slab, longer where clay or a high water table needs deeper foundations or piling. We confirm the duration after the site visit, once we have seen the ground, the access and the drawings.`,
+    a: 'It depends on the ground more than the floor area. Clay, a high water table or roots near protected trees can mean deeper foundations or piling, which adds time, and tight access slows the muck away. We confirm the programme in the written quote after the site visit, once we have seen the ground, the access and the drawings.',
   },
   {
     q: 'What are the common ground problems on Surrey sites?',
@@ -92,7 +90,7 @@ export const FAQS: Faq[] = [
   },
   {
     q: 'How do I get a quote?',
-    a: `Call <a href="tel:01483323568">01483 323568</a> or use the <a href="#quote">form on this page</a>. We respond within one working day, visit the site within ${QUOTE_LEAD_TIME} to check levels, access and services, and the written fixed price quote follows within ${QUOTE_TURNAROUND}. A postcode and a short description of the job are enough to start.`,
+    a: `Call <a href="tel:01483323568">01483 323568</a> or use the <a href="#quote">form on this page</a>. We respond within one working day and visit the site within ${QUOTE_LEAD_TIME} to check levels, access and services, and the written fixed price quote follows the visit. A postcode and a short description of the job are enough to start.`,
   },
 ];
 
