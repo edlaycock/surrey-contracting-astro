@@ -98,11 +98,11 @@ export const FAQS: Faq[] = [
   },
   {
     q: 'How do you check a groundworks or demolition contractor is legitimate?',
-    a: `Check four things: SSIP accreditation (CHAS or SafeContractor) against the public register, current public liability insurance, an Environment Agency waste carrier registration for muck away, and an active Companies House record. Surrey Contracting Limited is <a href="${COMPANIES_HOUSE_URL}" rel="noopener">company number 15454300</a>. Our CHAS registration is {{CHAS_NUMBER}} and our Constructionline number is {{CONSTRUCTIONLINE_NUMBER}}, both <a href="#accreditations">linked below</a>.`,
+    a: `Check four things: SSIP accreditation (CHAS or SafeContractor) against the public register, current public liability insurance, an Environment Agency waste carrier registration for muck away, and an active Companies House record. Surrey Contracting Limited is <a href="${COMPANIES_HOUSE_URL}" rel="noopener">company number 15454300</a>, and links to the SSIP and Constructionline registers are in the <a href="#accreditations">accreditations section</a> below.`,
   },
   {
     q: 'Are you accredited?',
-    a: 'Yes. Surrey Contracting holds CHAS, SafeContractor, SSIP, SMAS Worksafe and Constructionline registrations, and our operatives carry CITB, CSCS, NPORS and IPAF cards. Registration numbers and links to the public registers are in the <a href="#accreditations">accreditations section</a> of this page, so you can verify each one.',
+    a: 'Yes. Surrey Contracting holds CHAS, SafeContractor, SSIP, SMAS Worksafe and Constructionline registrations, and our operatives carry CITB, CSCS, NPORS and IPAF cards. Links to the public registers are in the <a href="#accreditations">accreditations section</a> of this page, so you can verify each one by company name.',
   },
   {
     q: 'How do I get a quote?',
@@ -113,12 +113,13 @@ export const FAQS: Faq[] = [
 /** Plain text of an answer, as a reader sees it and as the schema carries it. */
 export const plainText = (html: string) => html.replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim();
 
-/* ── Accreditations: logo strip plus verifiable register entries ──────────── */
-// CHAS, SafeContractor and SMAS are SSIP member schemes. None of the three
-// offers a login-free public lookup of its own; the SSIP Portal is the public
-// register that verifies all of them. Constructionline has its own search.
-// CITB, CSCS, NPORS and IPAF are card schemes: name only unless Jason supplies
-// a company-level registration.
+/* ── Accreditations: logo strip plus links to the public registers ────────── */
+// Registration numbers are deliberately NOT published (Ed, 11 Sep 2026).
+// Each entry is the logo, a short note and, where one exists, a link to the
+// public register where a buyer can search by company name. CHAS,
+// SafeContractor and SMAS are SSIP member schemes with no login-free lookup
+// of their own; the SSIP Portal verifies all three. Constructionline has its
+// own search. CITB, CSCS, NPORS and IPAF are operative card schemes.
 export const SSIP_PORTAL_URL = 'https://www.ssipportal.org.uk/';
 export const CONSTRUCTIONLINE_SEARCH_URL = 'https://www.constructionline.co.uk/buyers/supply-chain-management/find-supplier/';
 
@@ -126,21 +127,22 @@ export interface Accreditation {
   name: string;
   logo: string | null;
   alt: string;
-  number: string | null;
+  /** Short line shown under the name. Never a registration number. */
+  note: string;
   registerUrl: string | null;
   registerLabel: string | null;
 }
 
 export const ACCREDITATIONS: Accreditation[] = [
-  { name: 'CHAS', logo: '/assets/acc/chas.webp', alt: 'CHAS Accredited Contractor', number: '{{CHAS_NUMBER}}', registerUrl: SSIP_PORTAL_URL, registerLabel: 'Check on the SSIP Portal' },
-  { name: 'SafeContractor', logo: '/assets/acc/safe-contractor.webp', alt: 'SafeContractor by Alcumus', number: '{{SAFECONTRACTOR_NUMBER}}', registerUrl: SSIP_PORTAL_URL, registerLabel: 'Check on the SSIP Portal' },
-  { name: 'SSIP', logo: '/assets/acc/ssip.webp', alt: 'SSIP, Safety Schemes in Procurement', number: null, registerUrl: SSIP_PORTAL_URL, registerLabel: 'SSIP Portal' },
-  { name: 'SMAS Worksafe', logo: '/assets/acc/smas.webp', alt: 'SMAS Worksafe', number: '{{SMAS_NUMBER}}', registerUrl: SSIP_PORTAL_URL, registerLabel: 'Check on the SSIP Portal' },
-  { name: 'Constructionline', logo: null, alt: 'Constructionline', number: '{{CONSTRUCTIONLINE_NUMBER}}', registerUrl: CONSTRUCTIONLINE_SEARCH_URL, registerLabel: 'Check on Constructionline' },
-  { name: 'CITB', logo: '/assets/acc/citb.webp', alt: 'CITB Registered', number: null, registerUrl: null, registerLabel: null },
-  { name: 'CSCS', logo: '/assets/acc/cscs.webp', alt: 'CSCS, Construction Skills Certification Scheme', number: null, registerUrl: null, registerLabel: null },
-  { name: 'NPORS', logo: '/assets/acc/npors.webp', alt: 'NPORS Registered', number: null, registerUrl: null, registerLabel: null },
-  { name: 'IPAF', logo: '/assets/acc/ipaf.webp', alt: 'IPAF', number: null, registerUrl: null, registerLabel: null },
+  { name: 'CHAS', logo: '/assets/acc/chas.webp', alt: 'CHAS Accredited Contractor', note: 'SSIP accredited', registerUrl: SSIP_PORTAL_URL, registerLabel: 'Check on the SSIP Portal' },
+  { name: 'SafeContractor', logo: '/assets/acc/safe-contractor.webp', alt: 'SafeContractor by Alcumus', note: 'SSIP accredited', registerUrl: SSIP_PORTAL_URL, registerLabel: 'Check on the SSIP Portal' },
+  { name: 'SSIP', logo: '/assets/acc/ssip.webp', alt: 'SSIP, Safety Schemes in Procurement', note: 'Umbrella scheme', registerUrl: SSIP_PORTAL_URL, registerLabel: 'SSIP Portal' },
+  { name: 'SMAS Worksafe', logo: '/assets/acc/smas.webp', alt: 'SMAS Worksafe', note: 'SSIP accredited', registerUrl: SSIP_PORTAL_URL, registerLabel: 'Check on the SSIP Portal' },
+  { name: 'Constructionline', logo: null, alt: 'Constructionline', note: 'Registered supplier', registerUrl: CONSTRUCTIONLINE_SEARCH_URL, registerLabel: 'Check on Constructionline' },
+  { name: 'CITB', logo: '/assets/acc/citb.webp', alt: 'CITB Registered', note: 'Operative card scheme', registerUrl: null, registerLabel: null },
+  { name: 'CSCS', logo: '/assets/acc/cscs.webp', alt: 'CSCS, Construction Skills Certification Scheme', note: 'Operative card scheme', registerUrl: null, registerLabel: null },
+  { name: 'NPORS', logo: '/assets/acc/npors.webp', alt: 'NPORS Registered', note: 'Operative card scheme', registerUrl: null, registerLabel: null },
+  { name: 'IPAF', logo: '/assets/acc/ipaf.webp', alt: 'IPAF', note: 'Operative card scheme', registerUrl: null, registerLabel: null },
 ];
 
 /* ── Schema fragments shared with BaseLayout ──────────────────────────────── */

@@ -345,11 +345,11 @@ const logos = ACCREDITATIONS.filter((a) => a.logo);
   </div>
 
   <div class="container">
-    <ul class="acc-register" aria-label="Registration numbers and public registers">
+    <ul class="acc-register" aria-label="Accreditations and public registers">
       {ACCREDITATIONS.map((a) => (
         <li>
           <strong>{a.name}</strong>
-          <span>{a.number ? `Registration ${a.number}` : a.registerUrl ? 'Umbrella scheme' : 'Operative card scheme'}</span>
+          <span>{a.note}</span>
           {a.registerUrl && <a href={a.registerUrl} target="_blank" rel="noopener noreferrer">{a.registerLabel}</a>}
         </li>
       ))}
