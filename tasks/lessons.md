@@ -9,3 +9,7 @@ Log each correction as: **Pattern** (what went wrong) + **Rule** (how to prevent
 ## `npm run build` hangs in this sandbox (iCloud-evicted files + no network)
 - **Pattern:** `astro build` stalls indefinitely at ~0.2s CPU with no output. A stack sample showed the main thread blocked in `read()` during a dynamic module import. `node_modules` contains duplicate " 2"/" 3"-suffixed files with the canonical name missing (e.g. the esbuild native binary), the same corruption seen in the repo (`Screenshot … 2.png`). Cause: iCloud "Optimize Storage" evicts file contents to dataless placeholders; reading one triggers an on-demand download that never completes because the sandbox has no network.
 - **Rule:** Do not trust a hanging build as a code failure. Verify the build in a real environment with network, after `npm ci` (clean reinstall restores evicted/renamed binaries). In-sandbox, validate statically instead. Consider disabling iCloud optimisation for this repo + node_modules.
+
+## Two git commands' output read as one (11 Sep 2026)
+- **Pattern:** `git log origin/main -3` and `git log -1 <branch>` were run in one shell call and their output read as a single list, so the branch's own commit was taken to be on main. Ed was then told the P0/P1 work had been merged and reverted when it had never been merged at all.
+- **Rule:** One git question per command, or label each command's output with an echo line. Before claiming anything about merge state, run `git merge-base --is-ancestor <commit> origin/main` and report that result, not a reading of a log listing.

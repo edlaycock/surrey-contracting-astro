@@ -54,6 +54,7 @@ const startWords = () => {
 };
 const stopWords = () => {
   if (wordTimer) { clearInterval(wordTimer); wordTimer = null; }
+  if (!wordTrack) return; // homepage now ships a single hero slide with no rotator
   // reset to first word
   wordIdx = 0;
   wordTrack.style.transition = 'none';
@@ -63,6 +64,7 @@ const stopWords = () => {
   wordTrack.style.transition = '';
 };
 const rotateWord = () => {
+  if (!wordTrack) return;
   wordIdx += 1;
   wordTrack.style.transform = `translateY(-${wordIdx}em)`;
   // when we hit the duplicate (index 3 == copy of index 0), snap back silently
@@ -91,7 +93,8 @@ dotBtns.forEach((b) => {
   });
 });
 
-if (slides.length) {
+// Only run the slider when there is something to slide between.
+if (slides.length > 1) {
   setSlide(0);
   startSlideTimer();
 }

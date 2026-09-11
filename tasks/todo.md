@@ -67,8 +67,27 @@ Verification (evidence to be recorded in the review section below):
 
 Order: decisions A to H and Jason's values -> build with guard -> local verification 1, 2, 4, 5, 6, 7 -> PR with evidence -> Ed merges (deploy is automatic on main) -> live verification 3 -> Ed does 8.
 
+### Build status (11 Sep 2026)
+BUILT against placeholders on branch `claude/surrey-contracting-seo-aeo-gt6joc`. Decisions taken: keep 01483 323568; approved cut list applied; keep HomeAndConstructionBusiness; semantic schema (site-wide business node extended with founder, dateModified, knowsAbout; FAQPage emitted from the homepage); live address form kept; "5 star client rating" removed; testimonials removed; cost section renders its first sentence only; Constructionline listed as a text entry with a placeholder number.
+
+Also applied, both literal readings of the brief:
+- "LocalBusiness and FAQPage only": the homepage's standalone three-node Service @graph was removed. The business node's OfferCatalog still references the three services, and each service page declares its own Service schema. Reversible in one line if preferred.
+- Meta description: the brief's wording was 161 characters against its own 155 limit; "south west London" became "SW London" (153 characters).
+
+Not in the brief, done because verification item 7 exposed it: the hero background is the LCP resource and the 859 KB coverage map plus 19 marquee logos were competing with it at low priority from 686 ms. Added a homepage-only `preload` for the hero and `loading="lazy" decoding="async"` on the coverage map and marquee logos. No asset was changed.
+
 ### Review section (evidence per verification item)
-Empty until build.
+
+1. **Build**: `npx astro build` completes clean, no warnings. `npm run build` currently exits 1 by design: the postbuild guard reports the 18 unfilled placeholders on the homepage and 2 on every other page (founder name and dateModified in the site-wide business node). Nothing else fails. Once `src/data/homepage.ts` is filled the same command goes green.
+2. **Placeholders**: 18 `{{` on the built homepage, all from Jason's list. Enforced by `scripts/check-homepage.mjs` across every built HTML file, not just the homepage.
+3. **Schema**: built homepage JSON-LD parses. Top-level nodes are `HomeAndConstructionBusiness` (with `founder`, `dateModified`, `knowsAbout`, `identifier`) and `FAQPage` (6 questions). No Article, no aggregateRating (both guarded). validator.schema.org and the Rich Results Test against the LIVE URL, with screenshots, happen after deploy and are attached to the PR as a follow-up comment.
+4. **DOM**: with JavaScript disabled (Playwright, `javaScriptEnabled: false`) the first `<p>` after the `<h1>` is "Surrey Contracting Limited is a groundworks, earthworks and demolition contractor..." and all six FAQ items are present in the server HTML as `<details>` with `<summary>` and `<p>`. Answer lengths 46, 47, 50, 53, 52, 51 words.
+5. **Word count**: 1,185 body-copy words (nav, footer, scripts, form controls excluded), reported by the guard on every build; the guard fails above 1,200.
+6. **Forbidden terms**: zero occurrences of surfacing, tarmac, resin, surreyhillssurfacing (guarded). Zero em dashes on the homepage (guarded; the one found was an HTML comment in BaseLayout, now a colon). "Leatherhead" appears only as a service area and in the map alt text.
+7. **Lighthouse, mobile, same sandbox, Lighthouse perf preset**. Before (pre-change commit rebuilt in a worktree, 3 runs): performance 54, 64, 60; LCP 10.1 to 10.3 s; TBT 130 to 410 ms; 37 requests, 5.5 MB. After (2 runs): performance 65, 65; LCP 16.2 s; TBT 80 to 100 ms; CLS 0.001; 13 initial requests, 2.8 MB. Performance is up, not down. The LCP figure needs reading with care: the before page's hero image finished loading at 27.5 s, after Lighthouse had stopped tracing, so its 10.3 s "LCP" was a text element and the hero never registered; the after page loads the hero at 16.1 s, 11 s sooner, and it now registers correctly as the LCP element. Hero and coverage map are both around 860 KB and are the next lever; recompressing them is an asset change outside this brief and is recommended separately.
+8. **Search Console**: request indexing of the homepage after deploy. Ed. Date: ____________.
+
+Public register note for change 2c: CHAS, SafeContractor and SMAS do not offer login-free public lookups of their own (CHAS's search sits inside the VeriforceONE client portal). The SSIP Portal is the public register that verifies all three, so those entries link there; Constructionline links to its supplier search; Companies House links to the company record. SSIP has no number (umbrella scheme) and CITB, CSCS, NPORS and IPAF show the scheme name only.
 
 ---
 
