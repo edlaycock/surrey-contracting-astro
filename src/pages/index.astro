@@ -1,10 +1,10 @@
 ---
 /**
- * Homepage. Answer-first structure: a direct-answer paragraph immediately
- * under the H1, question-shaped H2 sections that open with the answer, a
- * six-question FAQ, and an author/date note. All copy, the FAQ and the
- * schema fragments come from src/data/homepage.ts so visible text and
- * JSON-LD render from the same strings.
+ * Homepage. A direct-answer paragraph immediately under the H1, the visual
+ * sections (services, projects, areas), then the explanatory content in a
+ * collapsed FAQ rather than as text blocks, and an author/date note. All
+ * copy, the FAQ and the schema fragments come from src/data/homepage.ts so
+ * visible text and JSON-LD render from the same strings.
  *
  * Schema on this page: the site-wide business node (BaseLayout) plus FAQPage.
  * No Article, no aggregateRating. scripts/check-homepage.mjs enforces this
@@ -12,8 +12,8 @@
  */
 import BaseLayout from '../layouts/BaseLayout.astro';
 import {
-  META, DIRECT_ANSWER, SECTIONS, AREAS_RESPONSE, COST_ANSWER, FAQS, FAQ_SCHEMA,
-  ACCREDITATIONS, AUTHOR, AUTHOR_NAME, DATES,
+  META, DIRECT_ANSWER, AREAS_RESPONSE, FAQS, FAQ_SCHEMA,
+  ACCREDITATIONS, REVIEWER, DATES,
 } from '../data/homepage';
 
 const faqJsonLd = { '@context': 'https://schema.org', ...FAQ_SCHEMA };
@@ -81,7 +81,7 @@ const logos = ACCREDITATIONS.filter((a) => a.logo);
     <div class="section-head">
       <span class="eyebrow">What we do</span>
       <h2 class="section-title">A Groundworks, Earthworks &amp; Demolition contractor for any site.</h2>
-      <p class="section-lede">Three core disciplines, delivered in house by our own team, with one point of contact from the first dig to handover.</p>
+      <p class="section-lede">Three disciplines, one team, one point of contact from first dig to handover.</p>
     </div>
 
     <div class="svc-grid">
@@ -114,18 +114,6 @@ const logos = ACCREDITATIONS.filter((a) => a.logo);
     </div>
   </div>
 </section>
-
-<!-- ============ QUESTION SECTIONS (answer in the first sentence) ============ -->
-{SECTIONS.map((s, i) => (
-  <section class:list={['page-section', 'q-section', { 'page-section-grey': i % 2 === 0 }]} id={s.id}>
-    <div class="container">
-      <div class="q-prose">
-        <h2 class="section-title">{s.h2}</h2>
-        <p class="lede-dark" set:html={s.body} />
-      </div>
-    </div>
-  </section>
-))}
 
 <!-- ============ PROJECTS ============ -->
 <section class="projects" id="projects">
@@ -196,19 +184,8 @@ const logos = ACCREDITATIONS.filter((a) => a.logo);
   </div>
 </section>
 
-<!-- ============ COST ============ -->
-<section class="page-section q-section" id="cost">
-  <div class="container">
-    <div class="q-prose">
-      <h2 class="section-title">What does groundworks cost in Surrey?</h2>
-      <p class="lede-dark">{COST_ANSWER}</p>
-      <a href="#quote" class="btn btn-yellow">Request a site visit</a>
-    </div>
-  </div>
-</section>
-
 <!-- ============ FAQ ============ -->
-<section class="page-section page-section-grey q-section" id="faq">
+<section class="page-section page-section-grey" id="faq">
   <div class="container">
     <div class="section-head">
       <span class="eyebrow">Common questions</span>
@@ -218,7 +195,7 @@ const logos = ACCREDITATIONS.filter((a) => a.logo);
       {FAQS.map(({ q, a }) => (
         <details class="faq-item">
           <summary>{q}</summary>
-          <p>{a}</p>
+          <p set:html={a} />
         </details>
       ))}
     </div>
@@ -380,10 +357,10 @@ const logos = ACCREDITATIONS.filter((a) => a.logo);
   </div>
 </section>
 
-<!-- ============ AUTHOR & DATES ============ -->
-<section class="author-note" aria-label="About the author">
+<!-- ============ PUBLISHER & DATES ============ -->
+<section class="author-note" aria-label="Publisher and review dates">
   <div class="container">
-    <p>Written by {AUTHOR_NAME}, {AUTHOR.role.toLowerCase()} of Surrey Contracting Limited. {AUTHOR.years} years in groundworks and demolition across Surrey, working on {AUTHOR.sectors}. Last reviewed {DATES.reviewedLabel}.</p>
+    <p>Published by Surrey Contracting Limited. Reviewed by {REVIEWER.name}, {REVIEWER.role}.</p>
     <p class="author-dates">Published <time datetime={DATES.published}>{DATES.publishedLabel}</time>. Last updated <time datetime={DATES.reviewed}>{DATES.reviewedLabel}</time>.</p>
   </div>
 </section>
@@ -399,15 +376,9 @@ const logos = ACCREDITATIONS.filter((a) => a.logo);
     color: inherit;
     opacity: .92;
   }
-  /* The shared .page-section pads generously; six question sections in a row
-     need a tighter rhythm. */
-  .q-section { padding: clamp(40px, 6vw, 72px) 0; }
-  .q-prose { max-width: 72ch; }
-  .q-prose .section-title { margin-bottom: 14px; }
-  .q-prose .lede-dark a { color: var(--yellow-700, #9a6c00); text-decoration: underline; }
-  .q-prose .lede-dark a:hover { color: var(--ink, #1a1a1a); }
-  .q-prose .btn { margin-top: 18px; }
   .areas-response { margin-top: 18px; }
+  #faq .faq-item p a { color: var(--yellow-700, #9a6c00); text-decoration: underline; }
+  #faq .faq-item p a:hover { color: var(--ink, #1a1a1a); }
 
   .acc-register {
     list-style: none;

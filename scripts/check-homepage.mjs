@@ -62,7 +62,15 @@ if (!firstPText.startsWith('Surrey Contracting Limited is a groundworks, earthwo
 const ld = [...html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)].map((m) => JSON.parse(m[1]));
 const nodes = ld.flatMap((d) => (d['@graph'] ? d['@graph'] : [d]));
 const faq = nodes.find((n) => n['@type'] === 'FAQPage');
-const visible = decode(html.replace(/<script[\s\S]*?<\/script>/g, '').replace(/<[^>]+>/g, ' ')).replace(/\s+/g, ' ');
+// Inline tags (links, emphasis) disappear without leaving a space, so
+// "pours <a>foundations</a>," reads "pours foundations," exactly as a person
+// sees it; block-level tags become a space so adjacent elements do not fuse.
+const visible = decode(
+  html
+    .replace(/<script[\s\S]*?<\/script>/g, '')
+    .replace(/<\/?(a|strong|em|b|i|span|time)\b[^>]*>/gi, '')
+    .replace(/<[^>]+>/g, ' '),
+).replace(/\s+/g, ' ');
 if (!faq) failures.push('homepage: no FAQPage node in JSON-LD');
 else {
   for (const q of faq.mainEntity) {

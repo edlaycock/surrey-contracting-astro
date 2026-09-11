@@ -13,3 +13,11 @@ Log each correction as: **Pattern** (what went wrong) + **Rule** (how to prevent
 ## Two git commands' output read as one (11 Sep 2026)
 - **Pattern:** `git log origin/main -3` and `git log -1 <branch>` were run in one shell call and their output read as a single list, so the branch's own commit was taken to be on main. Ed was then told the P0/P1 work had been merged and reverted when it had never been merged at all.
 - **Rule:** One git question per command, or label each command's output with an echo line. Before claiming anything about merge state, run `git merge-base --is-ancestor <commit> origin/main` and report that result, not a reading of a log listing.
+
+## Built text-block sections on the homepage without showing a mock-up first (11 Sep 2026)
+- **Pattern:** The brief prescribed question-shaped H2 sections and I built them literally: four full-width text blocks in a row. Ed's reaction on seeing the screenshot was that it was not user friendly on the eye and the content belonged in the FAQ. The plan had described the sections, but a description of a layout is not the same as seeing it, and approval of the cut list was not approval of the visual result.
+- **Rule:** On a commercial page, explanatory content goes in the collapsed FAQ; the page itself stays visual (hero, tiles, gallery, map, form, logos). Any change that alters the homepage layout gets a screenshot or mock-up in front of Ed before the full build, not after.
+
+## Framed a limited company around one person (11 Sep 2026)
+- **Pattern:** The brief's author note ("Written by Jason, N years in groundworks, working on...") and a `founder: Person` schema node were built as specified. Ed's correction: Surrey Contracting Limited is a business with a team, not a sole trader, and the homepage must not present Jason as the owner-persona.
+- **Rule:** The company is the author and the entity. Editorial credits are company-first ("Published by Surrey Contracting Limited. Reviewed by [name], Director"), no personal biographies on commercial pages, and no `founder` or `Person` nodes in the business schema unless Ed asks for them. When a brief personalises the business, raise it before building rather than follow it literally.
