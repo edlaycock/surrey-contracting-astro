@@ -13,11 +13,11 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import {
   META, DIRECT_ANSWER, AREAS_RESPONSE, FAQS, FAQ_SCHEMA,
-  ACCREDITATIONS, REVIEWER, DATES,
+  ACCREDITATION_LOGOS, REVIEWER, DATES,
 } from '../data/homepage';
 
 const faqJsonLd = { '@context': 'https://schema.org', ...FAQ_SCHEMA };
-const logos = ACCREDITATIONS.filter((a) => a.logo);
+const logos = ACCREDITATION_LOGOS;
 ---
 <BaseLayout
   title={META.title}
@@ -343,18 +343,6 @@ const logos = ACCREDITATIONS.filter((a) => a.logo);
       </div>
     </div>
   </div>
-
-  <div class="container">
-    <ul class="acc-register" aria-label="Accreditations and public registers">
-      {ACCREDITATIONS.map((a) => (
-        <li>
-          <strong>{a.name}</strong>
-          <span>{a.note}</span>
-          {a.registerUrl && <a href={a.registerUrl} target="_blank" rel="noopener noreferrer">{a.registerLabel}</a>}
-        </li>
-      ))}
-    </ul>
-  </div>
 </section>
 
 <!-- ============ PUBLISHER & DATES ============ -->
@@ -379,20 +367,6 @@ const logos = ACCREDITATIONS.filter((a) => a.logo);
   .areas-response { margin-top: 18px; }
   #faq .faq-item p a { color: var(--yellow-700, #9a6c00); text-decoration: underline; }
   #faq .faq-item p a:hover { color: var(--ink, #1a1a1a); }
-
-  .acc-register {
-    list-style: none;
-    margin: 28px 0 0;
-    padding: 0;
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    gap: 10px 20px;
-    font-size: .92rem;
-  }
-  .acc-register li { display: flex; flex-direction: column; gap: 2px; padding: 10px 0; border-top: 1px solid var(--border, #e5e5e5); }
-  .acc-register strong { font-weight: 600; }
-  .acc-register span { color: var(--mid, #444); }
-  .acc-register a { color: var(--yellow-700, #9a6c00); text-decoration: underline; }
 
   .author-note { padding: 28px 0 40px; border-top: 1px solid var(--border, #e5e5e5); }
   .author-note p { margin: 0; max-width: 72ch; color: var(--mid, #444); font-size: .95rem; line-height: 1.65; }

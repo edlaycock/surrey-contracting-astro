@@ -25,3 +25,7 @@ Log each correction as: **Pattern** (what went wrong) + **Rule** (how to prevent
 ## Accreditation registration numbers must not be published (11 Sep 2026)
 - **Pattern:** The 11 Sep brief (sections 1b and 2c) asked for CHAS, SafeContractor, SMAS and Constructionline registration numbers on the homepage, and placeholders for them were built in. Ed's instruction is that these numbers are not published. The brief text and the instruction conflicted and the brief was followed.
 - **Rule:** No accreditation or registration numbers on the site, in copy, in the accreditations list or in schema. Logos plus links to the public registers only; a buyer can search those by company name. If a brief asks for the numbers, raise it before building rather than add placeholders for them. The Companies House number is not covered by this rule; it is already in the footer.
+
+## The accreditation logo strip stands alone (11 Sep 2026)
+- **Pattern:** After the registration numbers were removed, a list of scheme names, notes and register links was left beneath the logo strip. Ed does not want any section under the logos.
+- **Rule:** The accreditations section is the heading and the logo marquee, nothing else. Register links, if wanted at all, belong inside the FAQ answer that asks how to check a contractor, not as a block on the page.
