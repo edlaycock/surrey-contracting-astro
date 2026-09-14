@@ -187,14 +187,44 @@ Guildford rather than adding a hub level that would need its own content.
       Town), FAQPage (3 questions each)
 - [x] One H1 per page, unique titles and meta descriptions, canonical correct
 - [x] Screenshots at 1440 and 390 wide
-- [ ] validator.schema.org: the POST `code` path was captcha'd from this
-      environment today, but the POST `url` path works (it returned 0 errors
-      and 0 warnings for the live homepage at 09:28 UTC on 14 Sep). Re-run it
-      against /groundworks-guildford and /groundworks-woking once they deploy.
-      Google's Rich Results Test stays unreachable: Chromium navigation to
-      external hosts is reset by the sandbox egress proxy.
+- [x] validator.schema.org against the LIVE URLs, 18:05 UTC on 14 Sep:
+      /groundworks-guildford and /groundworks-woking each return
+      `totalNumErrors: 0`, `totalNumWarnings: 0`, `numObjects: 3`,
+      `isRendered: true`, with no node or property errors on BreadcrumbList,
+      Service or FAQPage. Use the POST `url` path; the POST `code` path gets
+      captcha'd from this sandbox.
+- [ ] Google's Rich Results Test stays unreachable: Chromium navigation to
+      external hosts is reset by the sandbox egress proxy. Run it by hand if a
+      visual record is wanted.
 
 ### Next batch, once this pattern is approved
 Weybridge and Epsom were named in the brief as batch 2. Neither has a published
 case study in Sanity today, so the same rule applies: they wait for real local
 proof rather than shipping on a town name swap.
+
+## P2 batch 1 merged and live (2026-09-14)
+
+PR #10 squash-merged as `11411a0` at 17:58 UTC, deploy run #69. Ed asked twice
+for the live validation while the PR was still open; three independent checks
+(GitHub API, git ancestry, live 404s) said otherwise each time, and he then
+asked me to merge it, which I did.
+
+Verified against the live site at 18:05 UTC:
+- [x] Both URLs return 200
+- [x] Unique titles and meta descriptions matching locations.ts, canonicals correct
+- [x] Exactly one H1 per page; direct answer appears before the first H2
+- [x] Case study card rendered on both (the reason each page exists)
+- [x] No em dash, no Article, no aggregateRating
+- [x] JSON-LD per page: HomeAndConstructionBusiness, Service (areaServed City =
+      town, containedInPlace Surrey, provider -> /#business), BreadcrumbList
+      (Home > Groundworks > Town), FAQPage (3 questions matching visible text)
+- [x] validator.schema.org: 0 errors, 0 warnings on both live URLs
+- [x] sitemap-0.xml carries both; homepage areas list links both; footer carries
+      both; /groundworks "Groundworks by town" links both; llms.txt lists both
+
+Still open for Ed:
+- [ ] Request indexing for both URLs in Search Console
+- [ ] Confirm two pages instead of four is accepted (no demolition case study
+      exists for any town, so those pages were refused)
+- [ ] Confirm the flat /groundworks-guildford URL shape stands now that it is
+      live and indexable
