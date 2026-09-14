@@ -1,60 +1,40 @@
 ---
+/**
+ * Homepage. A direct-answer paragraph immediately under the H1, the visual
+ * sections (services, projects, areas), then the explanatory content in a
+ * collapsed FAQ rather than as text blocks. No author, reviewer or date
+ * credits. All copy, the FAQ and the schema fragments come from
+ * src/data/homepage.ts so visible text and JSON-LD render from the same
+ * strings.
+ *
+ * Schema on this page: the site-wide business node (BaseLayout) plus FAQPage.
+ * No Article, no aggregateRating. scripts/check-homepage.mjs enforces this
+ * and the other brief constraints after every build.
+ */
 import BaseLayout from '../layouts/BaseLayout.astro';
+import {
+  META, DIRECT_ANSWER, AREAS_RESPONSE, FAQS, FAQ_SCHEMA, ACCREDITATION_LOGOS,
+} from '../data/homepage';
 
-// Service schema: exactly three services (Groundworks, Bulk Earthworks &
-// Excavation, Demolition), each referencing the LocalBusiness emitted
-// site-wide by BaseLayout via its @id.
-const BUSINESS_ID = 'https://surreycontracting.co.uk/#business';
-const AREA_SERVED = [
-  'Cobham', 'Leatherhead', 'Guildford', 'Esher', 'Woking', 'Reigate',
-  'Dorking', 'Epsom', 'Weybridge', 'Kingston upon Thames', 'Redhill', 'Surbiton',
-].map((name) => ({ '@type': 'Place', name }));
-const servicesJsonLd = {
-  '@context': 'https://schema.org',
-  '@graph': [
-    {
-      '@type': 'Service',
-      name: 'Groundworks',
-      serviceType: 'Groundworks',
-      description: 'Foundations, drainage, site preparation and groundworks across Surrey and the Home Counties, self-delivered by our own teams.',
-      url: 'https://surreycontracting.co.uk/groundworks',
-      provider: { '@id': BUSINESS_ID },
-      areaServed: AREA_SERVED,
-    },
-    {
-      '@type': 'Service',
-      name: 'Bulk Earthworks & Excavation',
-      serviceType: 'Bulk Earthworks & Excavation',
-      description: 'Bulk excavation, cut and fill, muck away and site levelling across Surrey, London and the South East with self-delivered plant and operators.',
-      url: 'https://surreycontracting.co.uk/earthworks',
-      provider: { '@id': BUSINESS_ID },
-      areaServed: AREA_SERVED,
-    },
-    {
-      '@type': 'Service',
-      name: 'Demolition',
-      serviceType: 'Demolition',
-      description: 'Soft strip out, structural demolition, site clearance, on-site crushing and asbestos removal across Surrey and the Home Counties.',
-      url: 'https://surreycontracting.co.uk/demolition',
-      provider: { '@id': BUSINESS_ID },
-      areaServed: AREA_SERVED,
-    },
-  ],
-};
+const faqJsonLd = { '@context': 'https://schema.org', ...FAQ_SCHEMA };
+const logos = ACCREDITATION_LOGOS;
 ---
 <BaseLayout
-  title="Groundworks & Earthworks Contractor Surrey | Demolition"
-  description="Self-delivered groundworks, bulk earthworks and demolition across Surrey and the Home Counties. CHAS and SSIP accredited. Free measured site visit."
-  ogTitle="Groundworks & Earthworks Contractor Surrey | Demolition"
+  title={META.title}
+  description={META.description}
+  ogTitle={META.title}
   path="/"
 >
-  <script type="application/ld+json" slot="head" set:html={JSON.stringify(servicesJsonLd)} />
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify(faqJsonLd)} />
+  <!-- The hero background is the LCP element but, as a CSS background, it is
+       only discovered after the stylesheet parses. Preloading it from the
+       document makes it discoverable immediately and lets it fetch at high priority. -->
+  <link slot="head" rel="preload" as="image" href="/assets/img/Groundworks_Surrey_Contracting.jpg" fetchpriority="high" />
 
 <!-- ============ HERO ============ -->
 <section class="hero" id="top">
   <div class="hero-bg" id="heroBg" aria-hidden="true">
     <div class="hero-img hero-img-1"></div>
-    <div class="hero-img hero-img-2"></div>
     <div class="hero-vignette" style="opacity: 0.5"></div>
   </div>
 
@@ -72,32 +52,7 @@ const servicesJsonLd = {
         <h1 class="hero-sub">
           Groundworks, Earthworks &amp; Demolition Contractor, Surrey &amp; the Home Counties
         </h1>
-        <div class="hero-ctas">
-          <a href="#quote" class="btn btn-yellow">Request a quote</a>
-          <a href="#services" class="btn btn-ghost-light">Our services →</a>
-        </div>
-      </article>
-
-      <article class="hero-slide" data-slide="1">
-        <div class="hero-eyebrow">
-          <span class="dot"></span>
-          One contractor, every discipline
-        </div>
-        <p class="hero-title">
-          A
-          <span class="word-rotator" aria-label="Demolition, Groundworks, Bulk Earthworks">
-            <span class="word-track" id="wordTrack">
-              <span class="word">Demolition</span>
-              <span class="word">Groundworks</span>
-              <span class="word">Bulk Earthworks</span>
-              <span class="word">Demolition</span>
-            </span>
-          </span><br>
-          <span class="hero-tail">contractor for any site.</span>
-        </p>
-        <p class="hero-sub">
-          From enabling works and site clearance through to finished groundworks and external works, one experienced team delivering across commercial, residential and developer projects throughout Surrey.
-        </p>
+        <p class="hero-answer">{DIRECT_ANSWER}</p>
         <div class="hero-ctas">
           <a href="#quote" class="btn btn-yellow">Request a quote</a>
           <a href="#services" class="btn btn-ghost-light">Our services →</a>
@@ -111,13 +66,6 @@ const servicesJsonLd = {
       <div class="trust-item"><strong>Surrey</strong><span>&amp; the South East</span></div>
       <div class="trust-divider"></div>
       <div class="trust-item"><strong>CHAS</strong><span>accredited</span></div>
-      <div class="trust-divider"></div>
-      <div class="trust-item"><strong>5★</strong><span>client rating</span></div>
-    </div>
-
-    <div class="hero-dots" id="heroDots" aria-label="Hero slide selector">
-      <button class="dot-btn is-active" data-go="0" aria-label="Slide 1"></button>
-      <button class="dot-btn" data-go="1" aria-label="Slide 2"></button>
     </div>
   </div>
 
@@ -127,20 +75,13 @@ const servicesJsonLd = {
   </a>
 </section>
 
-<!-- ============ AI ANSWER BLOCK ============ -->
-<section class="intro-answer" aria-label="About Surrey Contracting">
-  <div class="container">
-    <p><strong>Surrey Contracting Limited</strong> is a groundworks, bulk earthworks and demolition contractor based in Send, near Woking, Surrey. The company delivers enabling works, site clearance, drainage, foundations, bulk excavation and demolition for residential, commercial and developer clients. Surrey Contracting is CHAS accredited, SafeContractor approved and SSIP certified, and operates across Surrey, London and the South East — including Cobham, Guildford, Woking, Epsom, Weybridge, Reigate and Kingston upon Thames.</p>
-  </div>
-</section>
-
 <!-- ============ SERVICE TILES ============ -->
 <section class="services" id="services">
   <div class="container">
     <div class="section-head">
       <span class="eyebrow">What we do</span>
       <h2 class="section-title">A Groundworks, Earthworks &amp; Demolition contractor for any site.</h2>
-      <p class="section-lede">Three core disciplines, delivered in-house by our specialist team. We take your project from its initial stages right through to completion, with no chain of subbies and different contracts to chase, just one point of contact for complete simplicity.</p>
+      <p class="section-lede">Three disciplines, one team, one point of contact from first dig to handover.</p>
     </div>
 
     <div class="svc-grid">
@@ -171,137 +112,10 @@ const servicesJsonLd = {
         </div>
       </a>
     </div>
-
   </div>
 </section>
 
-<!-- ============ VALUE PROP STRIP ============ -->
-<section class="values">
-  <div class="container values-grid">
-    <div class="value">
-      <div class="value-ico">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-      </div>
-      <h4>Accredited &amp; insured</h4>
-      <p>CHAS, Constructionline, SafeContractor and £10m PLI. Audited every job.</p>
-    </div>
-    <div class="value">
-      <div class="value-ico">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 12l3 3 6-6 6 6 3-3"/><path d="M3 18l3 3 6-6 6 6 3-3"/></svg>
-      </div>
-      <h4>One point of contact</h4>
-      <p>No call centres. No multiple points of contact. One direct line every time, right from the start of your project through to handover.</p>
-    </div>
-    <div class="value">
-      <div class="value-ico">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
-      </div>
-      <h4>Logistics, Programmes &amp; Planning</h4>
-      <p>From the planning stage through to site programmes and logistics, we plan every stage from start to finish.</p>
-    </div>
-    <div class="value">
-      <div class="value-ico">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4h16v12H5.5L4 18z"/><path d="M8 9h8M8 12h5"/></svg>
-      </div>
-      <h4>Talk to a contracts manager</h4>
-      <p>Not a call-centre. A site lead on the phone, every time, from quote to defects.</p>
-    </div>
-  </div>
-</section>
-
-<!-- ============ ABOUT / INTRO ============ -->
-<section class="about" id="about">
-  <div class="container about-grid">
-    <div class="about-copy">
-      <span class="eyebrow eyebrow-yellow">About Surrey Contracting</span>
-      <h2 class="section-title light">Built on Experience. Driven by Quality.</h2>
-      <p class="lede">Surrey Contracting Limited is a site enabling, groundworks, earthworks and demolition contractor based at Send, near Woking, working across Surrey, London and the South East.</p>
-      <p>We have been successfully delivering residential and commercial external works projects for over 15 years, providing turnkey solutions for developers, main contractors, homeowners, self-builders, local businesses and established organisations. No project is too small or too large. Every project receives the same level of expertise, care and professional service from start to finish.</p>
-      <p>We manage every stage of the project in-house, from site clearance through to handover. With our experienced team and structured approach, you can be confident your project will be delivered on time, to a high standard, and with quality maintained right through to handover.</p>
-
-      <ul class="bullet-list">
-        <li><span>15+ years of experience across Surrey, London &amp; the South East</span></li>
-        <li><span>Self-delivery of site enabling works, groundworks, earthworks &amp; demolition</span></li>
-        <li><span>Turnkey solutions for projects of all sizes and complexities, providing reliable services for residential, commercial and contractor-led works.</span></li>
-        <li><span>Reliable workmanship, audit-grade paperwork</span></li>
-      </ul>
-
-      <div class="about-ctas">
-        <a href="#projects" class="btn btn-yellow">See recent projects</a>
-        <a href="/about" class="btn btn-outline-dark">About Us</a>
-      </div>
-    </div>
-
-    <div class="about-visual">
-      <div class="about-photo about-photo-1" style="background-image:url('/assets/img/brickwork.jpeg')">
-        <div class="ph-label">Foundations · Surrey</div>
-      </div>
-      <div class="about-photo about-photo-2" style="background-image:url('/assets/img/bulk-earthworks.jpg')">
-        <div class="ph-label">Bulk earthworks</div>
-      </div>
-      <div class="about-badge">
-        <div class="bg-num">15+</div>
-        <div class="bg-lbl">Years delivering<br>projects across<br>Surrey &amp; London</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ============ PROCESS ============ -->
-<section class="process">
-  <div class="container">
-    <div class="section-head">
-      <span class="eyebrow">How we work</span>
-      <h2 class="section-title">A four-step delivery you can plan to.</h2>
-    </div>
-    <ol class="process-row">
-      <li>
-        <div class="proc-num">01</div>
-        <h4>Initial site visit and measure</h4>
-        <p>Free measured visit within 5 working days. Levels, access, services and constraints captured.</p>
-      </li>
-      <li>
-        <div class="proc-num">02</div>
-        <h4>Fixed-price quote</h4>
-        <p>Itemised proposal, materials, plant, prelims, programme. No surprises later in the project.</p>
-      </li>
-      <li>
-        <div class="proc-num">03</div>
-        <h4>Mobilise &amp; deliver</h4>
-        <p>RAMS issued, plant booked, team allocated. Weekly progress reports straight to your inbox.</p>
-      </li>
-      <li>
-        <div class="proc-num">04</div>
-        <h4>Sign-off and project handover</h4>
-        <p>Snag-walk, O&amp;M pack handed over and a 12-month defects window we actually return for.</p>
-      </li>
-    </ol>
-  </div>
-</section>
-
-<!-- ============ STATS BAND ============ -->
-<section class="stats">
-  <div class="container stats-row">
-    <div class="stat">
-      <div class="stat-num">100s</div>
-      <div class="stat-lbl">Projects delivered</div>
-    </div>
-    <div class="stat">
-      <div class="stat-num" data-target="15" data-suffix="+">15+</div>
-      <div class="stat-lbl">Years of experience</div>
-    </div>
-    <div class="stat">
-      <div class="stat-num" data-target="90" data-suffix="%+">90%+</div>
-      <div class="stat-lbl">Repeat-client rate</div>
-    </div>
-    <div class="stat">
-      <div class="stat-num" data-target="100" data-suffix="%">100%</div>
-      <div class="stat-lbl">Surrey-based team</div>
-    </div>
-  </div>
-</section>
-
-<!-- ============ PROJECTS GALLERY ============ -->
+<!-- ============ PROJECTS ============ -->
 <section class="projects" id="projects">
   <div class="container">
     <div class="section-head split">
@@ -313,30 +127,12 @@ const servicesJsonLd = {
     </div>
 
     <div class="proj-grid">
-      <article class="proj proj-lg">
+      <article class="proj">
         <div class="proj-photo" style="background-image:url('/assets/img/bulk-earthworks.jpg')"></div>
         <div class="proj-meta">
           <span class="proj-tag">Bulk Earthworks</span>
           <h3>Commercial site cut &amp; fill</h3>
-          <p>Large-scale excavation and site levelling using modern tracked plant for a phased commercial development.</p>
-        </div>
-      </article>
-
-      <article class="proj">
-        <div class="proj-photo" style="background-image:url('/assets/img/hard-landscaping.jpg')"></div>
-        <div class="proj-meta">
-          <span class="proj-tag">Hard Landscaping</span>
-          <h3>Porcelain patio &amp; gabion</h3>
-          <p>Large-format porcelain laid over a SUDS-friendly base with bespoke gabion retaining wall.</p>
-        </div>
-      </article>
-
-      <article class="proj">
-        <div class="proj-photo" style="background-image:url('/assets/img/groundworks.webp')"></div>
-        <div class="proj-meta">
-          <span class="proj-tag">Groundworks</span>
-          <h3>Surface-water drainage</h3>
-          <p>Excavation, twin-wall pipework and reinstatement for a private estate drainage scheme.</p>
+          <p>Large-scale excavation and site levelling for a phased commercial development.</p>
         </div>
       </article>
 
@@ -345,16 +141,7 @@ const servicesJsonLd = {
         <div class="proj-meta">
           <span class="proj-tag">Demolition</span>
           <h3>Soft strip &amp; structural demolition</h3>
-          <p>Soft strip-out, structural demolition and on-site crushing for a commercial site, cleared and handed over ready for rebuild.</p>
-        </div>
-      </article>
-
-      <article class="proj">
-        <div class="proj-photo" style="background-image:url('/assets/img/block-paving.jpeg')"></div>
-        <div class="proj-meta">
-          <span class="proj-tag">Block Paving</span>
-          <h3>Block-paved driveway</h3>
-          <p>Bespoke residential block paving with edge restraints and full base preparation.</p>
+          <p>Soft strip, structural demolition and on-site crushing, handed over ready for rebuild.</p>
         </div>
       </article>
 
@@ -363,29 +150,30 @@ const servicesJsonLd = {
         <div class="proj-meta">
           <span class="proj-tag">Groundworks</span>
           <h3>Substructure &amp; foundations</h3>
-          <p>Strip foundations, drainage and oversite to a residential extension scheme, taken from site clearance to slab.</p>
+          <p>Strip foundations, drainage and oversite for a residential extension, from clearance to slab.</p>
         </div>
       </article>
     </div>
   </div>
 </section>
 
-<!-- ============ AREAS WE COVER ============ -->
+<!-- ============ AREAS ============ -->
 <section class="areas" id="areas">
   <div class="container areas-grid">
     <div class="areas-copy">
       <span class="eyebrow eyebrow-yellow">Areas we cover</span>
-      <h2 class="section-title light">Local roots with a nationwide reach.</h2>
+      <h2 class="section-title light">Which areas does Surrey Contracting cover?</h2>
       <p>Our HQ is based at Send, just outside Woking, but we operate across Surrey, London and the South East. If you're inside the M25 ring or along the A3 corridor, we're a short call out.</p>
       <ul class="areas-list">
         <li>Cobham</li><li>Leatherhead</li><li>Guildford</li><li>Esher</li>
         <li>Woking</li><li>Reigate</li><li>Dorking</li><li>Epsom</li>
         <li>Weybridge</li><li>Kingston</li><li>Redhill</li><li>Surbiton</li>
       </ul>
+      <p class="areas-response">{AREAS_RESPONSE}</p>
     </div>
     <div class="areas-map" aria-hidden="true">
       <div class="map-frame">
-        <img src="/assets/img/coverage-map.png" alt="Surrey Contracting coverage area covering Surrey and surrounding regions including Guildford, Woking, Cobham, Leatherhead, Epsom, Kingston upon Thames, Walton-on-Thames, Weybridge, Godalming and Cranleigh." class="map-img">
+        <img src="/assets/img/coverage-map.png" loading="lazy" decoding="async" alt="Surrey Contracting coverage area covering Surrey and surrounding regions including Guildford, Woking, Cobham, Leatherhead, Epsom, Kingston upon Thames, Walton-on-Thames, Weybridge, Godalming and Cranleigh." class="map-img">
         <div class="map-pin" aria-hidden="true">
           <span class="pin-dot"></span>
           <span class="pin-ring"></span>
@@ -396,54 +184,20 @@ const servicesJsonLd = {
   </div>
 </section>
 
-<!-- ============ TESTIMONIAL ============ -->
-<section class="testimonial">
+<!-- ============ FAQ ============ -->
+<section class="page-section page-section-grey" id="faq">
   <div class="container">
-    <svg class="quote-mark" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M7 7h4v4H7c0 4 2 6 4 6v3c-5 0-8-3-8-9V7zm10 0h4v4h-4c0 4 2 6 4 6v3c-5 0-8-3-8-9V7z"/></svg>
-    <div class="t-slider" id="tSlider">
-      <div class="t-track" id="tTrack">
-        <article class="t-card">
-          <blockquote>
-            Surrey Contracting picked up a job another firm had walked away from. They re-priced honestly, hit every milestone and handed over a paperwork pack that sailed through our auditor. They're our first call for anything below 600mm.
-          </blockquote>
-          <div class="t-attrib">
-            <div class="t-avatar">JM</div>
-            <div>
-              <strong>James M.</strong>
-              <span>Senior PM · Tier-1 housebuilder</span>
-            </div>
-          </div>
-        </article>
-        <article class="t-card">
-          <blockquote>
-            Quoted on the Monday, mobilised the following week, finished in three days and tidied up properly before they left. The drive looks better than I'd dared hope, and the price was exactly what they said it would be.
-          </blockquote>
-          <div class="t-attrib">
-            <div class="t-avatar">MT</div>
-            <div>
-              <strong>Mark T.</strong>
-              <span>Homeowner · Cobham</span>
-            </div>
-          </div>
-        </article>
-        <article class="t-card">
-          <blockquote>
-            Site clearance and bulk earthworks on a constrained urban plot, they handled the muck-away, the levels and the neighbour management without us having to chase a thing. Genuine, capable contractors.
-          </blockquote>
-          <div class="t-attrib">
-            <div class="t-avatar">DR</div>
-            <div>
-              <strong>David R.</strong>
-              <span>Contracts Manager · Commercial developer</span>
-            </div>
-          </div>
-        </article>
-      </div>
+    <div class="section-head">
+      <span class="eyebrow">Common questions</span>
+      <h2 class="section-title">Frequently asked questions</h2>
     </div>
-    <div class="t-dots" id="tDots" role="tablist" aria-label="Testimonials">
-      <button type="button" class="is-active" aria-label="Show testimonial 1"></button>
-      <button type="button" aria-label="Show testimonial 2"></button>
-      <button type="button" aria-label="Show testimonial 3"></button>
+    <div class="faq-list">
+      {FAQS.map(({ q, a }) => (
+        <details class="faq-item">
+          <summary>{q}</summary>
+          <p set:html={a} />
+        </details>
+      ))}
     </div>
   </div>
 </section>
@@ -540,30 +294,30 @@ const servicesJsonLd = {
   <div class="acc-marquee clients-marquee" aria-label="Previous client logos">
     <div class="acc-track clients-track">
       <div class="acc-set">
-        <div class="acc-badge client-badge"><img src="/assets/clients/dhl.webp" alt="DHL"></div>
-        <div class="acc-badge client-badge"><img src="/assets/clients/southbank.webp" alt="Southbank Centre"></div>
-        <div class="acc-badge client-badge"><img src="/assets/clients/environment-agency.webp" alt="Environment Agency, Registered Waste Carrier"></div>
-        <div class="acc-badge client-badge"><img src="/assets/clients/gratte-brothers.webp" alt="Gratte Brothers"></div>
-        <div class="acc-badge client-badge"><img src="/assets/clients/coinstreet.webp" alt="Coin Street"></div>
-        <div class="acc-badge client-badge"><img src="/assets/clients/hunter-hyland.webp" alt="Hunter &amp; Hyland"></div>
-        <div class="acc-badge client-badge"><img src="/assets/clients/penningtons.webp" alt="Pennington's Electrical Contractors"></div>
-        <div class="acc-badge client-badge"><img src="/assets/clients/easigrass.webp" alt="Easigrass, the artificial grass company"></div>
-        <div class="acc-badge client-badge"><img src="/assets/clients/ocb.webp" alt="OCB Construction"></div>
-        <div class="acc-badge client-badge"><img src="/assets/clients/denville.webp" alt="Denville Interiors"></div>
-        <div class="acc-badge client-badge"><img src="/assets/clients/property-mgmt-hampshire.webp" alt="Property Management Hampshire"></div>
+        <div class="acc-badge client-badge"><img loading="lazy" decoding="async" src="/assets/clients/dhl.webp" alt="DHL"></div>
+        <div class="acc-badge client-badge"><img loading="lazy" decoding="async" src="/assets/clients/southbank.webp" alt="Southbank Centre"></div>
+        <div class="acc-badge client-badge"><img loading="lazy" decoding="async" src="/assets/clients/environment-agency.webp" alt="Environment Agency, Registered Waste Carrier"></div>
+        <div class="acc-badge client-badge"><img loading="lazy" decoding="async" src="/assets/clients/gratte-brothers.webp" alt="Gratte Brothers"></div>
+        <div class="acc-badge client-badge"><img loading="lazy" decoding="async" src="/assets/clients/coinstreet.webp" alt="Coin Street"></div>
+        <div class="acc-badge client-badge"><img loading="lazy" decoding="async" src="/assets/clients/hunter-hyland.webp" alt="Hunter &amp; Hyland"></div>
+        <div class="acc-badge client-badge"><img loading="lazy" decoding="async" src="/assets/clients/penningtons.webp" alt="Pennington's Electrical Contractors"></div>
+        <div class="acc-badge client-badge"><img loading="lazy" decoding="async" src="/assets/clients/easigrass.webp" alt="Easigrass, the artificial grass company"></div>
+        <div class="acc-badge client-badge"><img loading="lazy" decoding="async" src="/assets/clients/ocb.webp" alt="OCB Construction"></div>
+        <div class="acc-badge client-badge"><img loading="lazy" decoding="async" src="/assets/clients/denville.webp" alt="Denville Interiors"></div>
+        <div class="acc-badge client-badge"><img loading="lazy" decoding="async" src="/assets/clients/property-mgmt-hampshire.webp" alt="Property Management Hampshire"></div>
       </div>
       <div class="acc-set" aria-hidden="true">
-        <div class="acc-badge client-badge"><img src="/assets/clients/dhl.webp" alt=""></div>
-        <div class="acc-badge client-badge"><img src="/assets/clients/southbank.webp" alt=""></div>
-        <div class="acc-badge client-badge"><img src="/assets/clients/environment-agency.webp" alt=""></div>
-        <div class="acc-badge client-badge"><img src="/assets/clients/gratte-brothers.webp" alt=""></div>
-        <div class="acc-badge client-badge"><img src="/assets/clients/coinstreet.webp" alt=""></div>
-        <div class="acc-badge client-badge"><img src="/assets/clients/hunter-hyland.webp" alt=""></div>
-        <div class="acc-badge client-badge"><img src="/assets/clients/penningtons.webp" alt=""></div>
-        <div class="acc-badge client-badge"><img src="/assets/clients/easigrass.webp" alt=""></div>
-        <div class="acc-badge client-badge"><img src="/assets/clients/ocb.webp" alt=""></div>
-        <div class="acc-badge client-badge"><img src="/assets/clients/denville.webp" alt=""></div>
-        <div class="acc-badge client-badge"><img src="/assets/clients/property-mgmt-hampshire.webp" alt=""></div>
+        <div class="acc-badge client-badge"><img loading="lazy" decoding="async" src="/assets/clients/dhl.webp" alt=""></div>
+        <div class="acc-badge client-badge"><img loading="lazy" decoding="async" src="/assets/clients/southbank.webp" alt=""></div>
+        <div class="acc-badge client-badge"><img loading="lazy" decoding="async" src="/assets/clients/environment-agency.webp" alt=""></div>
+        <div class="acc-badge client-badge"><img loading="lazy" decoding="async" src="/assets/clients/gratte-brothers.webp" alt=""></div>
+        <div class="acc-badge client-badge"><img loading="lazy" decoding="async" src="/assets/clients/coinstreet.webp" alt=""></div>
+        <div class="acc-badge client-badge"><img loading="lazy" decoding="async" src="/assets/clients/hunter-hyland.webp" alt=""></div>
+        <div class="acc-badge client-badge"><img loading="lazy" decoding="async" src="/assets/clients/penningtons.webp" alt=""></div>
+        <div class="acc-badge client-badge"><img loading="lazy" decoding="async" src="/assets/clients/easigrass.webp" alt=""></div>
+        <div class="acc-badge client-badge"><img loading="lazy" decoding="async" src="/assets/clients/ocb.webp" alt=""></div>
+        <div class="acc-badge client-badge"><img loading="lazy" decoding="async" src="/assets/clients/denville.webp" alt=""></div>
+        <div class="acc-badge client-badge"><img loading="lazy" decoding="async" src="/assets/clients/property-mgmt-hampshire.webp" alt=""></div>
       </div>
     </div>
   </div>
@@ -582,26 +336,28 @@ const servicesJsonLd = {
     <div class="acc-track">
       <!-- two copies of the same set for seamless infinite scroll -->
       <div class="acc-set">
-        <div class="acc-badge"><img src="/assets/acc/chas.webp" alt="CHAS Accredited Contractor"></div>
-        <div class="acc-badge"><img src="/assets/acc/safe-contractor.webp" alt="SafeContractor by Alcumus"></div>
-        <div class="acc-badge"><img src="/assets/acc/ssip.webp" alt="SSIP, Safety Schemes in Procurement"></div>
-        <div class="acc-badge"><img src="/assets/acc/smas.webp" alt="SMAS Worksafe"></div>
-        <div class="acc-badge"><img src="/assets/acc/citb.webp" alt="CITB Registered"></div>
-        <div class="acc-badge"><img src="/assets/acc/cscs.webp" alt="CSCS, Construction Skills Certification Scheme"></div>
-        <div class="acc-badge"><img src="/assets/acc/npors.webp" alt="NPORS Registered"></div>
-        <div class="acc-badge"><img src="/assets/acc/ipaf.webp" alt="IPAF"></div>
+        {logos.map((a) => <div class="acc-badge"><img loading="lazy" decoding="async" src={a.logo} alt={a.alt}></div>)}
       </div>
       <div class="acc-set" aria-hidden="true">
-        <div class="acc-badge"><img src="/assets/acc/chas.webp" alt=""></div>
-        <div class="acc-badge"><img src="/assets/acc/safe-contractor.webp" alt=""></div>
-        <div class="acc-badge"><img src="/assets/acc/ssip.webp" alt=""></div>
-        <div class="acc-badge"><img src="/assets/acc/smas.webp" alt=""></div>
-        <div class="acc-badge"><img src="/assets/acc/citb.webp" alt=""></div>
-        <div class="acc-badge"><img src="/assets/acc/cscs.webp" alt=""></div>
-        <div class="acc-badge"><img src="/assets/acc/npors.webp" alt=""></div>
-        <div class="acc-badge"><img src="/assets/acc/ipaf.webp" alt=""></div>
+        {logos.map((a) => <div class="acc-badge"><img loading="lazy" decoding="async" src={a.logo} alt=""></div>)}
       </div>
     </div>
   </div>
 </section>
+
 </BaseLayout>
+
+<style is:global>
+  /* Homepage-only additions. Class names are unique to this page. */
+  .hero-answer {
+    margin: 14px 0 0;
+    max-width: 62ch;
+    font-size: clamp(15px, 1.5vw, 17px);
+    line-height: 1.65;
+    color: inherit;
+    opacity: .92;
+  }
+  .areas-response { margin-top: 18px; }
+  #faq .faq-item p a { color: var(--yellow-700, #9a6c00); text-decoration: underline; }
+  #faq .faq-item p a:hover { color: var(--ink, #1a1a1a); }
+</style>
