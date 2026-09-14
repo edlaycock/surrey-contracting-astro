@@ -33,6 +33,14 @@ export const META = {
 export const DIRECT_ANSWER =
   `Surrey Contracting Limited is a groundworks, earthworks and demolition contractor based in Send, near Woking, working across Surrey and south west London. We self-deliver excavation, foundations, drainage, site clearance and demolition with our own plant and operators, and we typically visit a site to quote within ${QUOTE_LEAD_TIME}.`;
 
+/* Towns listed under "Areas we cover". Towns that have their own location
+   page are linked automatically via LOCATION_LINKS in src/data/locations.ts. */
+export const AREAS = [
+  'Cobham', 'Leatherhead', 'Guildford', 'Esher',
+  'Woking', 'Reigate', 'Dorking', 'Epsom',
+  'Weybridge', 'Kingston', 'Redhill', 'Surbiton',
+];
+
 export const AREAS_RESPONSE =
   `Site visits within ${QUOTE_LEAD_TIME} for Guildford, Woking, Leatherhead, Epsom, Kingston and the surrounding Surrey and south west London area.`;
 

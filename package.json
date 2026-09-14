@@ -8,7 +8,7 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
-    "postbuild": "node scripts/check-homepage.mjs",
+    "postbuild": "node scripts/check-homepage.mjs && node scripts/check-locations.mjs",
     "preview": "astro preview",
     "astro": "astro"
   },

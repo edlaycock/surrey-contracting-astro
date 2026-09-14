@@ -1,0 +1,247 @@
+---
+/**
+ * Location pages for groundworks. One file, one route per entry in
+ * src/data/locations.ts, so every town page shares a layout and cannot drift.
+ *
+ * A town only appears here when a published Sanity case study in that town
+ * backs it up (see the header comment in src/data/locations.ts). The visible
+ * FAQ answers and the FAQPage JSON-LD are rendered from the same strings, and
+ * scripts/check-locations.mjs fails the build if they ever stop matching or if
+ * the case study card is missing.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ServiceSchema from '../components/ServiceSchema.astro';
+import { LOCATIONS, type LocationPage } from '../data/locations';
+import { getProjects, urlFor } from '../lib/sanity';
+
+export function getStaticPaths() {
+  return LOCATIONS.map((loc) => ({ params: { town: loc.town.toLowerCase() }, props: { loc } }));
+}
+
+const { loc } = Astro.props as { loc: LocationPage };
+
+const projects = await getProjects();
+const project = projects.find((p) => p.slug === loc.projectSlug);
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: loc.faqs.map((f) => ({
+    '@type': 'Question',
+    name: f.q,
+    acceptedAnswer: { '@type': 'Answer', text: f.a },
+  })),
+};
+
+/* The service list is the same package wherever we work. It links back to the
+   detail on /groundworks rather than repeating it town by town. */
+const SERVICES = [
+  'Foundations and build to DPC',
+  'Foul and surface water drainage',
+  'Soakaways, manholes and inspection chambers',
+  'Service trenches and ducting',
+  'Excavation and muck-away',
+  'Site clearance and preparation',
+];
+---
+<BaseLayout
+  title={loc.title}
+  description={loc.description}
+  path={`/${loc.slug}`}
+  active="services"
+>
+  <ServiceSchema
+    slot="head"
+    name={`Groundworks in ${loc.town}`}
+    slug={loc.slug}
+    description={loc.description}
+    areaServedTown={loc.town}
+    crumbName={loc.town}
+    parent={{ name: 'Groundworks', slug: 'groundworks' }}
+  />
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify(faqSchema)} />
+
+<section class="page-hero">
+  <div class="page-hero-bg" aria-hidden="true">
+    <div class="page-hero-img" style="background-image:url('/assets/img/groundworks.webp')"></div>
+    <div class="page-hero-vignette"></div>
+  </div>
+  <div class="container page-hero-inner">
+    <nav class="crumbs" aria-label="Breadcrumb">
+      <a href="/">Home</a>
+      <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 6l6 6-6 6"/></svg>
+      <a href="/groundworks">Groundworks</a>
+      <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 6l6 6-6 6"/></svg>
+      <span>{loc.town}</span>
+    </nav>
+    <h1 class="page-title">{loc.h1}</h1>
+    <p class="page-lede">{loc.lede}</p>
+  </div>
+</section>
+
+<!-- Direct answer, before any H2, followed by the primary CTA -->
+<section class="page-section">
+  <div class="container">
+    <div class="loc-intro-grid">
+      <div>
+        <p class="lede-dark loc-answer">{loc.answer}</p>
+        <p>The below-ground package is set out in full on our <a href="/groundworks">groundworks page</a>. This page covers what is different about working in {loc.town}: the run from the yard, the ground we tend to find and the access we have to plan around.</p>
+        <div class="loc-ctas">
+          <a href="/contact" class="btn btn-yellow">Request a Quote</a>
+          <a href="tel:01483323568" class="btn btn-outline-dark">Call 01483 323568</a>
+        </div>
+      </div>
+      <div class="loc-intro-media">
+        <img
+          class="loc-photo"
+          src="/assets/img/services/groundworks-trench.jpg"
+          width="1000"
+          height="667"
+          loading="eager"
+          fetchpriority="high"
+          decoding="async"
+          alt={`Groundworks contractor excavating a foundation trench on a site near ${loc.town}`}
+        />
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="page-section page-section-grey">
+  <div class="container">
+    <div class="loc-prose">
+      <h2 class="section-title">Getting to {loc.town} from our yard</h2>
+      <p>{loc.travel}</p>
+    </div>
+  </div>
+</section>
+
+<section class="page-section">
+  <div class="container">
+    <div class="loc-prose">
+      <h2 class="section-title">Ground conditions and access in {loc.town}</h2>
+      <p>{loc.ground}</p>
+      <p>{loc.access}</p>
+    </div>
+  </div>
+</section>
+
+<!-- Project evidence: the published case study that justifies this page -->
+<section class="page-section page-section-grey">
+  <div class="container">
+    <div class="loc-prose">
+      <h2 class="section-title">Work we have completed in {loc.town}</h2>
+      {project ? (
+        <article class="loc-proof">
+          <a href={`/projects/${project.slug}`} class="loc-proof-link">
+            {project.heroImage && (
+              <img
+                class="loc-proof-photo"
+                src={urlFor(project.heroImage).width(700).height(500).fit('crop').url()}
+                width="700"
+                height="500"
+                loading="lazy"
+                decoding="async"
+                alt={`${project.title}, a project completed by Surrey Contracting`}
+              />
+            )}
+            <div class="loc-proof-body">
+              <span class="gallery-meta">{[project.location, project.sector].filter(Boolean).join(' · ')}</span>
+              <h3>{project.title}</h3>
+              <p>{loc.projectNote}</p>
+              <span class="gallery-cta">View project →</span>
+            </div>
+          </a>
+        </article>
+      ) : (
+        <p class="loc-missing"><strong>Case study unavailable.</strong> The {loc.town} project that supports this page could not be loaded from the CMS at build time.</p>
+      )}
+    </div>
+  </div>
+</section>
+
+<section class="page-section">
+  <div class="container">
+    <div class="loc-prose">
+      <h2 class="section-title">Groundworks services in {loc.town}</h2>
+      <p>We self-deliver the below-ground package with our own plant and operators, working directly for homeowners and as a groundworks subcontractor to builders, developers and main contractors.</p>
+      <ul class="feature-list loc-services">
+        {SERVICES.map((s) => <li>{s}</li>)}
+      </ul>
+      <p>Larger reshaping and muck-away sits under <a href="/earthworks">bulk earthworks and excavation</a>, and clearing structures before the dig starts under <a href="/demolition">demolition and site clearance</a>.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ, rendered from the same strings as the FAQPage JSON-LD -->
+<section class="page-section page-section-grey">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow">Common questions</span>
+      <h2 class="section-title">Groundworks in {loc.town}: FAQs</h2>
+    </div>
+    <div class="faq-list">
+      {loc.faqs.map((f) => (
+        <details class="faq-item">
+          <summary>{f.q}</summary>
+          <p>{f.a}</p>
+        </details>
+      ))}
+    </div>
+  </div>
+</section>
+
+<section class="cta-strip">
+  <div class="container cta-strip-row">
+    <div>
+      <h3>Got a site in {loc.town} to price?</h3>
+      <p>Send us the postcode, any drawings and how the machine gets in, and we will come back with a written quotation.</p>
+    </div>
+    <div class="cta-strip-ctas">
+      <a href="/contact" class="btn btn-yellow">Request a Quote</a>
+      <a href="tel:01483323568" class="btn btn-ghost-light">Call 01483 323568</a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .loc-intro-grid {
+    display: grid;
+    grid-template-columns: 1.15fr 1fr;
+    gap: 40px;
+    align-items: center;
+  }
+  @media (max-width: 900px) {
+    .loc-intro-grid { grid-template-columns: 1fr; gap: 28px; }
+  }
+  .loc-answer { margin-bottom: 18px; }
+  .loc-intro-grid p { max-width: 62ch; }
+  .loc-ctas { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 22px; }
+  .loc-photo {
+    width: 100%;
+    height: auto;
+    border-radius: 14px;
+    display: block;
+    object-fit: cover;
+  }
+  .loc-prose { max-width: 74ch; }
+  .loc-prose p { margin-bottom: 16px; }
+  .loc-prose .section-title { margin-bottom: 14px; }
+  .loc-services { margin: 18px 0 20px; }
+
+  .loc-proof {
+    background: #fff;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, .08);
+  }
+  .loc-proof-link { display: grid; grid-template-columns: 320px 1fr; color: inherit; text-decoration: none; }
+  @media (max-width: 700px) {
+    .loc-proof-link { grid-template-columns: 1fr; }
+  }
+  .loc-proof-photo { width: 100%; height: 100%; min-height: 220px; object-fit: cover; display: block; }
+  .loc-proof-body { padding: 24px 26px; }
+  .loc-proof-body h3 { margin: 6px 0 10px; }
+  .loc-missing { color: #b3261e; }
+</style>
+</BaseLayout>

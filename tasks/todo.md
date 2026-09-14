@@ -109,7 +109,7 @@ P0 and P1 are complete on this branch but NOT merged and NOT live. They ship wit
 * [x] P0: demolition FAQ schema/visible drift fixed. Not live.
 * [x] P1: service page FAQs extended (groundworks 6, demolition 7, earthworks 7; cost answers carry no figures pending Ed's sign-off). Not live.
 * [x] P1: homepage 4-question FAQ. Superseded by the brief's six questions.
-* [ ] P2: location pages. Awaiting approval and case studies from Jason. Proposed first batch: groundworks-guildford, groundworks-woking, demolition-esher (Esher demolition photos and video received 20 Aug; facts still needed).
+* [x] P2: location pages. Batch 1 built: /groundworks-guildford and /groundworks-woking. The two demolition town pages in the brief were not built (see below).
 * [ ] P3: cost and planning guides. Awaiting approval; cost figures need Ed's sign-off.
 
 ## NOT Claude Code tasks (Ed)
@@ -129,3 +129,68 @@ P0 and P1 are complete on this branch but NOT merged and NOT live. They ship wit
 - [x] Verified: `astro build` passes; dev server with stubbed SMTP2GO shows `Page: /lp/groundworks?utm_source=google` and Referer fallback
 - [x] "Where did you hear about us?" select on / and /contact: blank "Please choose" default, options Google, Facebook, Instagram, TikTok, YouTube, Referral, Sign Board, Other
 - [x] Default recipient is info@surreycontracting.co.uk; privacy and cookies mailto links fixed to match
+
+## P2 location pages, batch 1 (2026-09-14)
+
+Brief asked for four pages: groundworks and demolition for Guildford and Woking.
+Two were built. Two were refused, on the brief's own rule: "If a page would end
+up as thin boilerplate because there is no real local proof, stop and flag it to
+Ed rather than padding it."
+
+### Built
+- [x] `/groundworks-guildford`, backed by the published `landscape-guildford`
+      case study (Guildford, Surrey: 30sqm porcelain patio and sleeper borders,
+      base preparation and levels by the same team).
+- [x] `/groundworks-woking`, backed by the published `domestic-earthworks` case
+      study (Horsell, Woking: pool removal and garden preparation, around 220
+      tonnes moved).
+
+### Not built, and why
+- [ ] `/demolition-guildford` and `/demolition-woking`. Sanity holds no
+      demolition case study for any town. Building either page would mean
+      swapping a town name into generic demolition copy with nothing local
+      behind it, which is the doorway page the brief rules out. Blocked on
+      Jason supplying facts for the Esher demolition (photos and video received
+      20 Aug, facts still outstanding). Once that case study is published,
+      `/demolition-esher` is the honest first demolition location page, not
+      Guildford or Woking.
+
+### URL structure
+Flat `/groundworks-guildford`, not `/areas/guildford`. Reasons: the existing
+site is flat (`/groundworks`, `/demolition`, `/earthworks`), the service and the
+town both need to be in the URL because a town will eventually have more than
+one service page, and a flat URL keeps the breadcrumb at Home > Groundworks >
+Guildford rather than adding a hub level that would need its own content.
+
+### Implementation
+- `src/data/locations.ts` is the single source of truth: title, description,
+  answer, local copy, case study slug and FAQs. Visible copy and the FAQPage
+  JSON-LD render from the same strings.
+- One route file, `src/pages/groundworks-[town].astro`, so both pages share a
+  layout and cannot drift.
+- `ServiceSchema.astro` extended backwards-compatibly with `areaServedTown`,
+  `crumbName` and `parent`. The three existing service pages are unchanged.
+- Internal links: `/groundworks` has a "Groundworks by town" section, the
+  homepage "Areas we cover" list now links the towns that have pages (via
+  `LOCATION_LINKS`), and both pages are in the footer Services column.
+- `scripts/check-locations.mjs` runs in postbuild alongside check-homepage. It
+  fails the build on a missing page, a duplicate title or description, more or
+  fewer than one H1, an answer that falls after the first H2, a missing case
+  study card, an em dash, FAQ schema that does not match visible text, a Service
+  node whose areaServed is not the town, or a URL missing from sitemap-0.xml.
+
+### Verified
+- [x] `npm run build` clean, both guards pass
+- [x] `sitemap-0.xml` contains `/groundworks-guildford` and `/groundworks-woking`
+- [x] All four JSON-LD blocks per page parse: HomeAndConstructionBusiness,
+      Service (areaServed City = town), BreadcrumbList (Home > Groundworks >
+      Town), FAQPage (3 questions each)
+- [x] One H1 per page, unique titles and meta descriptions, canonical correct
+- [x] Screenshots at 1440 and 390 wide
+- [ ] validator.schema.org: rate limited from this environment today (Google
+      returned a captcha redirect). Re-run against the live URLs after deploy.
+
+### Next batch, once this pattern is approved
+Weybridge and Epsom were named in the brief as batch 2. Neither has a published
+case study in Sanity today, so the same rule applies: they wait for real local
+proof rather than shipping on a town name swap.

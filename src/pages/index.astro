@@ -13,8 +13,9 @@
  */
 import BaseLayout from '../layouts/BaseLayout.astro';
 import {
-  META, DIRECT_ANSWER, AREAS_RESPONSE, FAQS, FAQ_SCHEMA, ACCREDITATION_LOGOS,
+  META, DIRECT_ANSWER, AREAS, AREAS_RESPONSE, FAQS, FAQ_SCHEMA, ACCREDITATION_LOGOS,
 } from '../data/homepage';
+import { LOCATION_LINKS } from '../data/locations';
 
 const faqJsonLd = { '@context': 'https://schema.org', ...FAQ_SCHEMA };
 const logos = ACCREDITATION_LOGOS;
@@ -165,9 +166,9 @@ const logos = ACCREDITATION_LOGOS;
       <h2 class="section-title light">Which areas does Surrey Contracting cover?</h2>
       <p>Our HQ is based at Send, just outside Woking, but we operate across Surrey, London and the South East. If you're inside the M25 ring or along the A3 corridor, we're a short call out.</p>
       <ul class="areas-list">
-        <li>Cobham</li><li>Leatherhead</li><li>Guildford</li><li>Esher</li>
-        <li>Woking</li><li>Reigate</li><li>Dorking</li><li>Epsom</li>
-        <li>Weybridge</li><li>Kingston</li><li>Redhill</li><li>Surbiton</li>
+        {AREAS.map((town) => (
+          <li>{LOCATION_LINKS[town] ? <a href={LOCATION_LINKS[town]}>{town}</a> : town}</li>
+        ))}
       </ul>
       <p class="areas-response">{AREAS_RESPONSE}</p>
     </div>
