@@ -3,9 +3,18 @@ interface Props {
   name: string;
   slug: string;
   description: string;
+  /** Town name for a location page. Omit for the main service pages, which
+   *  keep the regional area. */
+  areaServedTown?: string;
+  /** Breadcrumb label for the final crumb. Defaults to `name`. */
+  crumbName?: string;
+  /** Second breadcrumb. Defaults to Services. Location pages sit under their
+   *  service page instead. */
+  parent?: { name: string; slug: string };
 }
-const { name, slug, description } = Astro.props;
+const { name, slug, description, areaServedTown, crumbName, parent } = Astro.props;
 const site = 'https://surreycontracting.co.uk';
+const up = parent ?? { name: 'Services', slug: 'services' };
 
 const service = {
   '@context': 'https://schema.org',
@@ -16,10 +25,9 @@ const service = {
   url: `${site}/${slug}`,
   // Reference the LocalBusiness node emitted site-wide by BaseLayout.
   provider: { '@id': `${site}/#business` },
-  areaServed: {
-    '@type': 'AdministrativeArea',
-    name: 'Surrey, London & the South East',
-  },
+  areaServed: areaServedTown
+    ? { '@type': 'City', name: areaServedTown, containedInPlace: { '@type': 'AdministrativeArea', name: 'Surrey' } }
+    : { '@type': 'AdministrativeArea', name: 'Surrey, London & the South East' },
 };
 
 const breadcrumb = {
@@ -27,8 +35,8 @@ const breadcrumb = {
   '@type': 'BreadcrumbList',
   itemListElement: [
     { '@type': 'ListItem', position: 1, name: 'Home', item: `${site}/` },
-    { '@type': 'ListItem', position: 2, name: 'Services', item: `${site}/services` },
-    { '@type': 'ListItem', position: 3, name, item: `${site}/${slug}` },
+    { '@type': 'ListItem', position: 2, name: up.name, item: `${site}/${up.slug}` },
+    { '@type': 'ListItem', position: 3, name: crumbName ?? name, item: `${site}/${slug}` },
   ],
 };
 ---

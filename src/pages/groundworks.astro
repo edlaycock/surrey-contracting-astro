@@ -10,6 +10,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import ServiceSchema from '../components/ServiceSchema.astro';
 import { getProjects, urlFor } from '../lib/sanity';
+import { LOCATIONS } from '../data/locations';
 
 const REVIEWED = '19 August 2026';
 
@@ -472,6 +473,21 @@ const evidence = EVIDENCE.map((e) => ({ ...e, project: bySlug.get(e.slug) })).fi
       </ol>
 
       <p class="gw-close"><a href="/contact">Send Surrey Contracting your drawings, project postcode, access information and proposed start date for an informed groundworks quotation.</a></p>
+    </div>
+  </div>
+</section>
+
+<!-- Location pages: only towns with a published local case study are listed -->
+<section class="page-section">
+  <div class="container">
+    <div class="gw-prose">
+      <h2 class="section-title">Groundworks by town</h2>
+      <p>We work across Surrey from the yard at Send. Where we have completed and published work in a town, there is a page covering the run from the yard, the ground conditions and the access to expect.</p>
+      <ul class="feature-list gw-towns">
+        {LOCATIONS.map((l) => (
+          <li><a href={`/${l.slug}`}>Groundworks in {l.town}</a></li>
+        ))}
+      </ul>
     </div>
   </div>
 </section>
