@@ -101,15 +101,15 @@ Public register note for change 2c: CHAS, SafeContractor and SMAS do not offer l
 
 ## SEO/AEO plan (20 Aug 2026) status
 
-P0 and P1 are complete on this branch but NOT merged and NOT live. They ship with the brief above.
+P0 and P1 shipped in PR #9, merged 14 Sep 08:57 UTC and live. Verified against the live site at 09:28 UTC the same morning.
 
-* [x] P0: og:image + twitter:card default (1200x630 real site photo). Not live.
-* [x] P0: training-manual removed from robots.txt Disallow, noindex meta on the page. Not live.
-* [x] P0: llms-full.txt verified, linked from llms.txt. Not live.
-* [x] P0: demolition FAQ schema/visible drift fixed. Not live.
-* [x] P1: service page FAQs extended (groundworks 6, demolition 7, earthworks 7; cost answers carry no figures pending Ed's sign-off). Not live.
+* [x] P0: og:image + twitter:card default (1200x630 real site photo). Live.
+* [x] P0: training-manual removed from robots.txt Disallow, noindex meta on the page. Live and verified.
+* [x] P0: llms-full.txt verified, linked from llms.txt. Live and verified.
+* [x] P0: demolition FAQ schema/visible drift fixed. Live.
+* [x] P1: service page FAQs extended. Live and verified: groundworks 6, demolition 7, earthworks 7 FAQPage questions. Cost answers still carry no figures, pending Ed's sign-off.
 * [x] P1: homepage 4-question FAQ. Superseded by the brief's six questions.
-* [x] P2: location pages. Batch 1 built: /groundworks-guildford and /groundworks-woking. The two demolition town pages in the brief were not built (see below).
+* [x] P2: location pages. Batch 1 built and raised as PR #10: /groundworks-guildford and /groundworks-woking. The two demolition town pages in the brief were not built (see below).
 * [ ] P3: cost and planning guides. Awaiting approval; cost figures need Ed's sign-off.
 
 ## NOT Claude Code tasks (Ed)
