@@ -187,8 +187,12 @@ Guildford rather than adding a hub level that would need its own content.
       Town), FAQPage (3 questions each)
 - [x] One H1 per page, unique titles and meta descriptions, canonical correct
 - [x] Screenshots at 1440 and 390 wide
-- [ ] validator.schema.org: rate limited from this environment today (Google
-      returned a captcha redirect). Re-run against the live URLs after deploy.
+- [ ] validator.schema.org: the POST `code` path was captcha'd from this
+      environment today, but the POST `url` path works (it returned 0 errors
+      and 0 warnings for the live homepage at 09:28 UTC on 14 Sep). Re-run it
+      against /groundworks-guildford and /groundworks-woking once they deploy.
+      Google's Rich Results Test stays unreachable: Chromium navigation to
+      external hosts is reset by the sandbox egress proxy.
 
 ### Next batch, once this pattern is approved
 Weybridge and Epsom were named in the brief as batch 2. Neither has a published
