@@ -9,7 +9,10 @@
  *   - the title or meta description is missing, or duplicated across towns
  *   - there is not exactly one <h1>
  *   - the direct answer is missing, or does not appear before the first <h2>
- *   - the local case study card did not render (the page's whole justification)
+ *   - the case study card did not render
+ *   - a page whose case study is NOT in that town (proofLocal: false) fails to
+ *     say so in plain words on the page, which would imply local work we have
+ *     not published
  *   - a FAQPage question or answer in the JSON-LD is missing from visible text
  *   - the Service node is missing, or areaServed is not the town
  *   - the page contains an em dash
@@ -34,6 +37,8 @@ const towns = blocks.map((b) => ({
   title: field(b, 'title'),
   description: field(b, 'description'),
   answer: field(b, 'answer'),
+  proofLead: field(b, 'proofLead'),
+  proofLocal: /\bproofLocal:\s*true\b/.test(b),
 }));
 
 if (!towns.length) failures.push('locations: no entries parsed out of src/data/locations.ts');
@@ -87,9 +92,19 @@ for (const t of towns) {
     if (!beforeH2.includes(answer)) failures.push(`${tag()}: direct answer appears after the first <h2>`);
   }
 
-  /* The local case study is the reason this page exists */
-  if (/class="loc-missing"/.test(html)) failures.push(`${tag()}: the local case study card did not render`);
+  /* The case study card is the reason this page exists */
+  if (/class="loc-missing"/.test(html)) failures.push(`${tag()}: the case study card did not render`);
   if (!/class="loc-proof"/.test(html)) failures.push(`${tag()}: no project evidence card on the page`);
+
+  /* A page whose case study is not in this town must say so on the page. */
+  if (!t.proofLocal) {
+    const lead = (t.proofLead || '').replace(/\s+/g, ' ');
+    if (!lead) failures.push(`${tag()}: proofLocal is false but no proofLead was parsed`);
+    else if (!visible.includes(lead)) failures.push(`${tag()}: proofLead is not visible on the page`);
+    else if (!/not published|no .* case study|nearest/i.test(lead)) {
+      failures.push(`${tag()}: proofLocal is false but proofLead does not say the work is not in this town`);
+    }
+  }
 
   /* Em dashes */
   if (html.includes('—')) failures.push(`${tag()}: em dash present`);
@@ -126,6 +141,37 @@ if (existsSync(sitemap)) {
   }
 } else {
   failures.push('sitemap-0.xml was not generated');
+}
+
+/* The /areas hub must exist, list every town, and link every town that has a
+   page. A hub that silently drops a town is worse than no hub. */
+const areasFile = join(DIST, 'areas', 'index.html');
+if (!existsSync(areasFile)) {
+  failures.push('/areas: page was not built');
+} else {
+  const areasHtml = readFileSync(areasFile, 'utf8');
+  const areasVisible = visibleText(areasHtml);
+  const h1s = (areasHtml.match(/<h1\b/gi) || []).length;
+  if (h1s !== 1) failures.push(`/areas: ${h1s} <h1> elements, expected exactly 1`);
+  if (areasHtml.includes('\u2014')) failures.push('/areas: em dash present');
+  if (!/coverage-map/.test(areasHtml)) failures.push('/areas: coverage map image missing');
+  for (const t of towns) {
+    if (!areasVisible.includes(t.town)) failures.push(`/areas: ${t.town} missing from the town list`);
+    if (!areasHtml.includes(`href="/${t.slug}"`)) failures.push(`/areas: no link to /${t.slug}`);
+  }
+  const areasLd = [...areasHtml.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)].map((m) => JSON.parse(m[1]));
+  const areasNodes = areasLd.flatMap((d) => (d['@graph'] ? d['@graph'] : [d]));
+  const areasFaq = areasNodes.find((n) => n['@type'] === 'FAQPage');
+  if (!areasFaq) failures.push('/areas: no FAQPage node in JSON-LD');
+  else {
+    for (const q of areasFaq.mainEntity) {
+      if (!areasVisible.includes(q.name)) failures.push(`/areas: FAQ question not in visible text: ${q.name}`);
+      if (!areasVisible.includes(q.acceptedAnswer.text.replace(/\s+/g, ' '))) failures.push(`/areas: FAQ answer not in visible text for: ${q.name}`);
+    }
+  }
+  if (!areasNodes.some((n) => n['@type'] === 'BreadcrumbList')) failures.push('/areas: no BreadcrumbList in JSON-LD');
+  if (existsSync(sitemap) && !readFileSync(sitemap, 'utf8').includes('/areas')) failures.push('/areas: missing from sitemap-0.xml');
+  console.log(`/areas: ok (${towns.length} town pages linked, ${areasFaq ? areasFaq.mainEntity.length : 0} FAQ questions)`);
 }
 
 if (failures.length) {

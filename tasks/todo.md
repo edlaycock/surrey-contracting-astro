@@ -295,3 +295,76 @@ Approved Document.
 - [x] No horizontal overflow at 1440 or 390 wide
 - [ ] validator.schema.org against the live URLs after deploy. The POST `code`
       path is captcha'd from this sandbox; the POST `url` path works.
+
+## Weybridge, Epsom and the /areas hub (2026-09-15)
+
+Ed asked for Weybridge and Epsom, and for an "Areas We Cover" page with a map
+and a summary list, after the P3 guides went live.
+
+### Live validation of the P3 guides, completed first
+PR #11 merged as `3cbb052`, deploy served both guides. validator.schema.org
+against the LIVE URLs: /guides/demolition-cost-uk and /guides/groundworks-planning
+each return `totalNumErrors: 0`, `totalNumWarnings: 0`, `numObjects: 3`,
+`isRendered: true`, nodes HomeAndConstructionBusiness, BreadcrumbList and
+FAQPage, no standalone Service node. Company number 15877451 confirmed live in
+the footer, the business JSON-LD and the homepage FAQ; 15454300 appears nowhere.
+
+### Weybridge and Epsom: the proof position, stated plainly
+Sanity still holds the same 7 projects. There is no Weybridge case study and no
+Epsom case study, and Jason has added nothing since 20 Aug. The P2 rule was
+that a town gets a page only when local work backs it up, and I flagged that
+for these two towns in PR #10 and again in chat. Ed asked for them anyway,
+which is his call to make.
+
+They were built without breaking the no-invention rule, by changing what the
+page claims rather than inventing proof:
+- New `proofLocal` flag in src/data/locations.ts. False for both towns.
+- The evidence section heading becomes "Our nearest published project to
+  Weybridge" instead of "Work we have completed in Weybridge", and a visible
+  lead line says: "We have not published a Weybridge case study yet. The
+  nearest completed work we can show is at Cobham, about four miles away in the
+  same borough." Epsom says the same about Cobham, roughly eight miles away.
+- `scripts/check-locations.mjs` now FAILS the build if a page with
+  `proofLocal: false` does not carry that disclosure in visible text.
+  Negative-tested: replacing the Weybridge lead with "Recent work in the
+  Weybridge area." fails the build with a named error.
+- llms-full.txt records the same distinction for machine readers.
+
+Everything else on the pages is real: distance and route from the yard, local
+geology (Weybridge sand and river terrace gravel at the Wey and Thames
+confluence, high water table near the Navigation; Epsom London Clay through the
+town with chalk rising onto the Downs, and what clay means for foundation depth
+near trees), property and access types, and the correct building control
+authority (Elmbridge for Weybridge, Epsom and Ewell for Epsom).
+
+When a genuine case study lands for either town, set `proofLocal: true` and
+rewrite `proofLead`.
+
+### /areas
+Hub page: coverage map, the direct answer first, a table of 12 towns with
+approximate road distance from the Send yard, cards for the four towns that
+have pages, and two further H2 questions with FAQPage schema. Distances are
+labelled approximate on the page rather than presented as measured. Linked from
+the main nav, the mobile drawer, the footer Company column, the homepage areas
+section and /groundworks.
+
+This reverses the "no hub page" line taken for the guides, because Ed asked for
+it and because a coverage hub with 12 towns, a map and distances is real
+content rather than two cards.
+
+### Verified
+- [x] `npm run build` clean, all three guards pass
+- [x] 25 URLs in sitemap-0.xml including /areas and both new towns
+- [x] Four location pages: one H1 each, unique titles and descriptions,
+      areaServed City per town, Home > Groundworks > Town breadcrumbs, FAQ
+      parity
+- [x] /areas: one H1, coverage map present, all 12 towns listed, all 4 town
+      pages linked, FAQ parity, BreadcrumbList, sitemap entry
+- [x] Disclosure guard negative-tested
+- [x] No horizontal overflow at 1440 or 390 wide
+- [ ] validator.schema.org against the live URLs after deploy
+
+### Still blocked on Jason
+No demolition case study exists for any town, so /demolition-guildford and the
+rest remain unbuilt. The Esher demolition photos and video from 20 Aug are
+still unusable without the facts.

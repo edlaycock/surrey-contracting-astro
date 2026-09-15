@@ -484,7 +484,7 @@ const evidence = EVIDENCE.map((e) => ({ ...e, project: bySlug.get(e.slug) })).fi
   <div class="container">
     <div class="gw-prose">
       <h2 class="section-title">Groundworks by town</h2>
-      <p>We work across Surrey from the yard at Send. Where we have completed and published work in a town, there is a page covering the run from the yard, the ground conditions and the access to expect.</p>
+      <p>We work across Surrey from the yard at Send. Each town page covers the run from the yard, the ground conditions and the access to expect. The full list, with distances, is on our <a href="/areas">areas we cover</a> page.</p>
       <ul class="feature-list gw-towns">
         {LOCATIONS.map((l) => (
           <li><a href={`/${l.slug}`}>Groundworks in {l.town}</a></li>
