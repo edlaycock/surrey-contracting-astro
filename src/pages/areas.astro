@@ -1,0 +1,275 @@
+---
+/**
+ * Areas we cover. Hub page for the location pages, with the coverage map and
+ * the full town list.
+ *
+ * Distances come from AREAS_COVERED in src/data/locations.ts and are
+ * approximate road distances from the Send yard. The page says so, rather than
+ * presenting derived figures as measured ones.
+ *
+ * Each H2 answer is also the FAQPage JSON-LD source, so the visible text and
+ * the structured data cannot drift.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { AREAS_COVERED, LOCATIONS } from '../data/locations';
+
+const SITE = 'https://surreycontracting.co.uk';
+
+const TITLE = 'Areas We Cover | Surrey Contracting, Send, Woking';
+const DESCRIPTION =
+  'Where Surrey Contracting works, and how far each town is from our yard at Send. Groundworks, earthworks and demolition across Surrey and the South East.';
+
+const A_WHERE =
+  'Surrey Contracting works from a yard at Send, between Woking and Guildford, and covers Surrey, south west London and the surrounding South East. Most of the work sits inside a twenty mile radius of the yard, which takes in Woking, Guildford, Cobham, Weybridge, Leatherhead, Esher, Dorking, Epsom, Surbiton, Kingston upon Thames, Reigate and Redhill. We travel further for larger projects.';
+
+const A_HOW_FAR =
+  'Distance matters less than project size. For a foundation package, a drainage installation or an earthworks programme, the plant goes out and stays out, so a site twenty miles away runs no differently from one down the road. For a short call-out or a half day repair, being close is genuinely useful, and we will tell you straight if somewhere is too far for that kind of job to make sense.';
+
+const A_OUTSIDE =
+  'Ask. The list on this page is where we work regularly rather than a boundary. We have completed projects at the Southbank Centre in London SE1, at Ascot and at Farnham, all outside the usual radius. What decides it is the project rather than the postcode: size, duration, access and whether the programme justifies moving plant.';
+
+/* A_WHERE is the page's opening direct answer, not an FAQ entry, so it is not
+   repeated here. Every question below is an H2 with a visible answer. */
+const FAQS = [
+  { q: 'How far will you travel for a project?', a: A_HOW_FAR },
+  { q: 'What if my site is outside the areas listed?', a: A_OUTSIDE },
+];
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: FAQS.map((f) => ({
+    '@type': 'Question',
+    name: f.q,
+    acceptedAnswer: { '@type': 'Answer', text: f.a },
+  })),
+};
+
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE}/` },
+    { '@type': 'ListItem', position: 2, name: 'Areas we cover', item: `${SITE}/areas` },
+  ],
+};
+
+/* Only towns with a live page are listed here, so the list cannot advertise a
+   page that does not exist. */
+const withPages = LOCATIONS.map((l) => ({ town: l.town, slug: l.slug, lede: l.lede }));
+---
+<BaseLayout title={TITLE} description={DESCRIPTION} path="/areas" active="areas">
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify(breadcrumbSchema)} />
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify(faqSchema)} />
+
+<section class="page-hero">
+  <div class="page-hero-bg" aria-hidden="true">
+    <div class="page-hero-img" style="background-image:url('/assets/img/groundworks.webp')"></div>
+    <div class="page-hero-vignette"></div>
+  </div>
+  <div class="container page-hero-inner">
+    <nav class="crumbs" aria-label="Breadcrumb">
+      <a href="/">Home</a>
+      <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 6l6 6-6 6"/></svg>
+      <span>Areas we cover</span>
+    </nav>
+    <h1 class="page-title">Areas We Cover</h1>
+    <p class="page-lede">Where we work, and how far each town is from the yard at Send.</p>
+  </div>
+</section>
+
+<section class="page-section">
+  <div class="container">
+    <div class="areas-page-grid">
+      <div>
+        <p class="lede-dark">{A_WHERE}</p>
+        <p>Our yard is at Unit 3, Tannery House, Tannery Lane, Send, Woking, GU23 7EF. Being inside Woking borough and a short run from the A3 is the reason we can get someone out to look at a job quickly across most of this list.</p>
+        <div class="areas-page-ctas">
+          <a href="/contact" class="btn btn-yellow">Request a Quote</a>
+          <a href="tel:01483323568" class="btn btn-outline-dark">Call 01483 323568</a>
+        </div>
+      </div>
+      <div class="areas-page-map">
+        <img
+          src="/assets/img/coverage-map.png"
+          width="900"
+          height="700"
+          loading="eager"
+          decoding="async"
+          alt="Map of the Surrey Contracting coverage area, centred on the yard at Send near Woking and reaching Guildford, Cobham, Weybridge, Leatherhead, Esher, Dorking, Epsom, Kingston upon Thames, Reigate and Redhill."
+        />
+        <p class="areas-map-note">Coverage centred on the yard at Send.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="page-section page-section-grey">
+  <div class="container">
+    <div class="areas-prose">
+      <h2 class="section-title">Towns we work in</h2>
+      <p>Distances below are approximate road distances from the yard at Send, given as a guide rather than a measurement. Towns with their own page have one because we have published work to show; the rest are covered just the same.</p>
+    </div>
+
+    <div class="areas-table-scroll" role="region" aria-labelledby="areasCaption" tabindex="0">
+      <table class="cookie-table areas-table">
+        <caption id="areasCaption" class="areas-table-caption">Towns covered, with approximate road distance from the Send yard</caption>
+        <thead>
+          <tr>
+            <th scope="col">Town</th>
+            <th scope="col">Approx. distance from Send</th>
+            <th scope="col">Local page</th>
+          </tr>
+        </thead>
+        <tbody>
+          {AREAS_COVERED.map((a) => (
+            <tr>
+              <th scope="row">{a.town}</th>
+              <td>{a.miles} miles</td>
+              <td>
+                {a.slug
+                  ? <a href={`/${a.slug}`}>Groundworks in {a.town}</a>
+                  : <span class="areas-none">Covered, no page yet</span>}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section class="page-section">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow">Local pages</span>
+      <h2 class="section-title">Groundworks by town</h2>
+    </div>
+    <div class="areas-cards">
+      {withPages.map((l) => (
+        <article class="areas-card">
+          <a href={`/${l.slug}`}>
+            <h3>Groundworks in {l.town}</h3>
+            <p>{l.lede}</p>
+            <span class="gallery-cta">Read more →</span>
+          </a>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<section class="page-section page-section-grey">
+  <div class="container">
+    <div class="areas-prose">
+      <h2 class="section-title">How far will you travel for a project?</h2>
+      <p class="areas-answer">{A_HOW_FAR}</p>
+      <p>The services are the same wherever the site is: <a href="/groundworks">groundworks</a>, <a href="/earthworks">bulk earthworks and excavation</a> and <a href="/demolition">demolition and site clearance</a>, self-delivered with our own plant and operators.</p>
+    </div>
+  </div>
+</section>
+
+<section class="page-section">
+  <div class="container">
+    <div class="areas-prose">
+      <h2 class="section-title">What if my site is outside the areas listed?</h2>
+      <p class="areas-answer">{A_OUTSIDE}</p>
+    </div>
+  </div>
+</section>
+
+<section class="cta-strip">
+  <div class="container cta-strip-row">
+    <div>
+      <h3>Got a site to price?</h3>
+      <p>Send the postcode, any drawings and how a machine gets in, and we will come and measure it.</p>
+    </div>
+    <div class="cta-strip-ctas">
+      <a href="/contact" class="btn btn-yellow">Request a Quote</a>
+      <a href="tel:01483323568" class="btn btn-ghost-light">Call 01483 323568</a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .areas-page-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 44px;
+    align-items: center;
+  }
+  @media (max-width: 900px) {
+    .areas-page-grid { grid-template-columns: 1fr; gap: 28px; }
+  }
+  .areas-page-grid p { max-width: 62ch; }
+  .areas-page-ctas { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 22px; }
+  .areas-page-map img {
+    width: 100%;
+    height: auto;
+    border-radius: 14px;
+    display: block;
+    background: var(--white);
+  }
+  .areas-map-note { font-size: 13px; color: var(--grey-500); margin: 10px 0 0; }
+
+  .areas-prose { max-width: 74ch; }
+  .areas-prose p { margin-bottom: 16px; }
+  .areas-prose .section-title { margin-bottom: 14px; }
+  .areas-prose p a:not(.btn) { color: var(--yellow-700); text-decoration: underline; }
+  .areas-prose p a:not(.btn):hover { color: var(--ink); }
+  .areas-answer {
+    background: var(--white);
+    border-left: 4px solid var(--yellow);
+    border-radius: 0 var(--radius) var(--radius) 0;
+    padding: 16px 20px;
+    margin: 0 0 22px;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--ink);
+  }
+
+  .areas-table-scroll {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin: 24px 0 0;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--white);
+  }
+  .areas-table-scroll:focus-visible { outline: 2px solid var(--yellow); outline-offset: 2px; }
+  .areas-table { min-width: 560px; margin: 0; }
+  .areas-table-caption {
+    text-align: left;
+    padding: 12px 12px 0;
+    font-size: 13px;
+    color: var(--grey-500);
+  }
+  .areas-table tbody th {
+    background: transparent;
+    text-transform: none;
+    font-size: 14px;
+    letter-spacing: 0;
+    white-space: nowrap;
+  }
+  .areas-table a { color: var(--yellow-700); text-decoration: underline; }
+  .areas-table a:hover { color: var(--ink); }
+  .areas-none { color: var(--grey-500); }
+
+  .areas-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 20px;
+    margin-top: 28px;
+  }
+  .areas-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+  }
+  .areas-card a { display: block; padding: 24px 24px 22px; color: inherit; text-decoration: none; }
+  .areas-card h3 { margin: 0 0 10px; font-size: 18px; }
+  .areas-card p { margin: 0 0 14px; font-size: 14.5px; line-height: 1.65; color: var(--text-mute); }
+  .areas-card:hover { border-color: var(--yellow); }
+</style>
+</BaseLayout>
