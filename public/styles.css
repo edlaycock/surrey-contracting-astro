@@ -2864,3 +2864,69 @@ a.contact-value:hover { color: var(--yellow-700); }
   .stats { padding: 40px 0; }
   .section-head { margin-bottom: 28px; }
 }
+
+/* ── Guides (/guides/*) ──────────────────────────────────────────────────────
+   Shared by every guide page so the two do not carry duplicate scoped CSS.
+   Mirrors the prose styling already used on the service pages. */
+.guide-prose { max-width: 76ch; }
+.guide-prose h2 { margin-bottom: 16px; }
+.guide-prose > p {
+  font-size: 15.5px;
+  line-height: 1.7;
+  color: var(--text-mute);
+  margin: 0 0 16px;
+}
+.guide-prose .lede-dark { margin-bottom: 14px; }
+/* In-prose links only, never the .btn CTAs, which keep their own colours. */
+.guide-prose p a:not(.btn),
+.guide-steps a:not(.btn) { color: var(--yellow-700); text-decoration: underline; }
+.guide-prose p a:not(.btn):hover,
+.guide-steps a:not(.btn):hover { color: var(--ink); }
+
+.guide-ctas { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 22px; }
+
+/* Direct answer block, first paragraph after each H2. */
+.guide-answer {
+  background: var(--white);
+  border-left: 4px solid var(--yellow);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  padding: 16px 20px;
+  margin: 0 0 26px !important;
+  font-size: 16px !important;
+  line-height: 1.7;
+  color: var(--ink) !important;
+}
+
+.guide-steps {
+  margin: 26px 0 22px;
+  padding-left: 22px;
+  display: grid;
+  gap: 14px;
+}
+.guide-steps li { font-size: 15.5px; line-height: 1.7; color: var(--text-mute); }
+.guide-steps li::marker { color: var(--yellow-700); font-weight: 700; }
+.guide-steps strong { color: var(--ink); }
+
+/* Responsive wrapper so a table never forces page overflow. */
+.guide-table-scroll {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin: 28px 0 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--white);
+}
+.guide-table-scroll:focus-visible { outline: 2px solid var(--yellow); outline-offset: 2px; }
+.guide-table { min-width: 620px; margin: 0; }
+.guide-table-caption {
+  text-align: left;
+  padding: 12px 12px 0;
+  font-size: 13px;
+  color: var(--grey-500);
+}
+.guide-table tbody th {
+  background: transparent;
+  text-transform: none;
+  font-size: 14px;
+  letter-spacing: 0;
+}

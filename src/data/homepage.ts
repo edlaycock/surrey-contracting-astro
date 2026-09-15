@@ -86,7 +86,7 @@ export const FAQS: Faq[] = [
   },
   {
     q: 'How do you check a groundworks or demolition contractor is legitimate?',
-    a: 'Check four things: SSIP accreditation (CHAS or SafeContractor) against the public register, current public liability insurance, an Environment Agency waste carrier registration for muck away, and an active Companies House record. Surrey Contracting Limited is company number 15454300 and holds SSIP and Constructionline accreditation, shown in the <a href="#accreditations">accreditations strip</a> on this page.',
+    a: 'Check four things: SSIP accreditation (CHAS or SafeContractor) against the public register, current public liability insurance, an Environment Agency waste carrier registration for muck away, and an active Companies House record. Surrey Contracting Limited is company number 15877451 and holds SSIP and Constructionline accreditation, shown in the <a href="#accreditations">accreditations strip</a> on this page.',
   },
   {
     q: 'Are you accredited?',

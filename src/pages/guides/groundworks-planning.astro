@@ -1,0 +1,213 @@
+---
+/**
+ * Guide: planning groundworks before the machines arrive.
+ *
+ * No prices anywhere. Every regulatory reference is to published UK law or
+ * Approved Documents, not to anything company-specific that has not been
+ * verified. Each H2 answer is also the FAQPage JSON-LD source, so visible text
+ * and structured data cannot drift. scripts/check-guides.mjs enforces it.
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const TITLE = 'Groundworks Planning Guide | Surrey Contracting';
+const DESCRIPTION =
+  'What to settle before groundworks start: drawings, engineer design, ground investigation, drainage approvals and the building control inspection stages.';
+
+const A_BEFORE =
+  'Before groundworks start you need approved drawings, a structural engineer\'s foundation and reinforcement design, a view of the ground conditions, the position of existing services, and agreement on where the drainage runs and where it connects. Anything missing at that point becomes a decision taken on site by whoever is standing in the trench, which is the expensive way to make it.';
+
+const A_INVESTIGATION =
+  'A site investigation tells you what is under the topsoil before anyone prices a dig. On a small domestic job this may be trial holes; on a larger scheme it is boreholes and laboratory testing. It establishes bearing capacity, water table, made ground and contamination, all of which change foundation depth and type. Without it, foundation depth is an assumption, and assumptions in groundworks are usually resolved at the client\'s cost.';
+
+const A_BUILDING_CONTROL =
+  'Below-ground work is inspected before it is covered up, so building control needs to see it at defined stages: commencement, the open excavation at formation level before concrete is placed, reinforcement where the design calls for it, drainage before backfilling, and a drain test. Either the local authority building control team or a private approved inspector can carry this out. Booking inspections around the programme is part of planning the work, not an afterthought.';
+
+const A_DRAINAGE =
+  'Foul and surface water drainage is governed by Approved Document H. Connecting to a public sewer needs the agreement of the sewerage undertaker, and building over or close to a public sewer needs a build-over agreement, which takes time to obtain. Where surface water goes to a soakaway, its size comes from a percolation test to BRE Digest 365 rather than from a standard detail, and sandy ground and clay give very different answers.';
+
+const A_SEQUENCE =
+  'Groundworks sit at the front of the programme, so the order matters more than on most packages. Clearance and reduced level dig come first, then foundations, then drainage and service routes, then backfill and the slab. The crossings are what need agreeing in advance: where drainage runs pass foundations, where incoming water, electricity and gas ducts enter, and what levels everything sits at. Moving a drain run after the concrete is in means breaking out concrete.';
+
+const A_NEIGHBOURS =
+  'Excavating near a neighbouring building can trigger the Party Wall etc. Act 1996, which has its own notice periods. Trees are the other common constraint: a protected tree needs consent before roots are disturbed, and clay soils near mature trees affect foundation depth through heave and shrinkage. Both are cheaper to establish during design than after a machine has arrived.';
+
+const A_QUOTE =
+  'To price groundworks properly a contractor needs the project postcode, the approved drawings, the engineer\'s foundation design, any site investigation or survey you hold, a description of access including the widest entrance a machine can get through, and your intended start date. With those, a measured site visit produces a fixed-price itemised quotation rather than a rate applied to a floor area.';
+
+/* The FAQPage entries are exactly the H2 questions on this page, each rendered
+   once. A_BEFORE is the page's opening direct answer rather than an FAQ entry,
+   so it is deliberately not repeated here. */
+const FAQS = [
+  { q: 'Do you need a site investigation before groundworks?', a: A_INVESTIGATION },
+  { q: 'What does building control inspect during groundworks?', a: A_BUILDING_CONTROL },
+  { q: 'What approvals does drainage need?', a: A_DRAINAGE },
+  { q: 'What order does groundworks happen in?', a: A_SEQUENCE },
+  { q: 'What do neighbouring buildings and trees change?', a: A_NEIGHBOURS },
+  { q: 'What does a contractor need to quote groundworks accurately?', a: A_QUOTE },
+];
+
+/* Breadcrumb only. A guide is reference content, not a service offering, so it
+   deliberately emits no Service node: that entity belongs to /groundworks and
+   duplicating it here at a different URL would compete with it. */
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://surreycontracting.co.uk/' },
+    { '@type': 'ListItem', position: 2, name: 'Groundworks', item: 'https://surreycontracting.co.uk/groundworks' },
+    { '@type': 'ListItem', position: 3, name: 'Planning groundworks', item: 'https://surreycontracting.co.uk/guides/groundworks-planning' },
+  ],
+};
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: FAQS.map((f) => ({
+    '@type': 'Question',
+    name: f.q,
+    acceptedAnswer: { '@type': 'Answer', text: f.a },
+  })),
+};
+
+/* Building control inspection stages. Standard UK practice, no figures. */
+const STAGES = [
+  ['Commencement', 'Notice that work is starting', 'Before the first dig'],
+  ['Excavation', 'Open trench at formation level, ground conditions as found', 'Before any concrete is placed'],
+  ['Reinforcement', 'Steel fixed to the engineer\'s design where the design requires it', 'Before the pour'],
+  ['Damp proof course', 'Substructure brickwork and blockwork up to DPC', 'Before the superstructure starts'],
+  ['Drainage', 'Pipework, falls, bedding and surround, chambers', 'Before backfilling'],
+  ['Drain test', 'Air or water test on the completed run', 'After backfill, before handover'],
+];
+---
+<BaseLayout title={TITLE} description={DESCRIPTION} path="/guides/groundworks-planning" active="services">
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify(breadcrumbSchema)} />
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify(faqSchema)} />
+
+<section class="page-hero">
+  <div class="page-hero-bg" aria-hidden="true">
+    <div class="page-hero-img" style="background-image:url('/assets/img/groundworks.webp')"></div>
+    <div class="page-hero-vignette"></div>
+  </div>
+  <div class="container page-hero-inner">
+    <nav class="crumbs" aria-label="Breadcrumb">
+      <a href="/">Home</a>
+      <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 6l6 6-6 6"/></svg>
+      <a href="/groundworks">Groundworks</a>
+      <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 6l6 6-6 6"/></svg>
+      <span>Planning groundworks</span>
+    </nav>
+    <h1 class="page-title">Planning Groundworks Before the Machines Arrive</h1>
+    <p class="page-lede">Drawings, ground investigation, drainage approvals and the inspection stages that govern below-ground work.</p>
+  </div>
+</section>
+
+<section class="page-section">
+  <div class="container">
+    <div class="guide-prose">
+      <p class="lede-dark">{A_BEFORE}</p>
+      <p>Groundworks is the one package where almost every problem is cheaper to solve on paper. Once the dig is open, the options narrow and the clock is running on plant and labour. This guide covers what to settle first. For the work itself, see our <a href="/groundworks">groundworks service</a>.</p>
+      <div class="guide-ctas">
+        <a href="/contact" class="btn btn-yellow">Request a Groundworks Quote</a>
+        <a href="tel:01483323568" class="btn btn-outline-dark">Call 01483 323568</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="page-section page-section-grey">
+  <div class="container">
+    <div class="guide-prose">
+      <h2 class="section-title">Do you need a site investigation before groundworks?</h2>
+      <p class="guide-answer">{A_INVESTIGATION}</p>
+      <p>It matters more in some places than others. Around Guildford the ground changes over short distances where the Wey cuts through the North Downs, so two neighbouring plots can need different foundation depths. Across much of Woking borough the ground is sand, which digs and drains well but will not stand unsupported in a deep trench. Local knowledge narrows the range; it does not replace the investigation.</p>
+    </div>
+  </div>
+</section>
+
+<section class="page-section">
+  <div class="container">
+    <div class="guide-prose">
+      <h2 class="section-title">What does building control inspect during groundworks?</h2>
+      <p class="guide-answer">{A_BUILDING_CONTROL}</p>
+
+      <div class="guide-table-scroll" role="region" aria-labelledby="stagesCaption" tabindex="0">
+        <table class="cookie-table guide-table">
+          <caption id="stagesCaption" class="guide-table-caption">Typical building control inspection stages for below-ground work</caption>
+          <thead>
+            <tr>
+              <th scope="col">Stage</th>
+              <th scope="col">What is inspected</th>
+              <th scope="col">When</th>
+            </tr>
+          </thead>
+          <tbody>
+            {STAGES.map(([stage, what, when]) => (
+              <tr>
+                <th scope="row">{stage}</th>
+                <td>{what}</td>
+                <td>{when}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      <p>Where conditions at formation level differ from the design, the right move is to stop and refer it back to the engineer and building control rather than carry on to the drawing. That is a short delay. Building on the wrong assumption is not.</p>
+    </div>
+  </div>
+</section>
+
+<section class="page-section page-section-grey">
+  <div class="container">
+    <div class="guide-prose">
+      <h2 class="section-title">What approvals does drainage need?</h2>
+      <p class="guide-answer">{A_DRAINAGE}</p>
+      <p>The build-over agreement is the one that catches people out, because it is obtained from the sewerage undertaker rather than from building control, and it runs on its own timetable. If any part of the footprint sits over or near a public sewer, start that conversation during design.</p>
+      <p>Soakaway feasibility is worth testing early too. Where the percolation test comes back poor, the surface water strategy has to change, and that can affect the levels and the foundation layout rather than just the drainage drawing.</p>
+    </div>
+  </div>
+</section>
+
+<section class="page-section">
+  <div class="container">
+    <div class="guide-prose">
+      <h2 class="section-title">What order does groundworks happen in?</h2>
+      <p class="guide-answer">{A_SEQUENCE}</p>
+      <p>Where an existing structure has to come down first, that is <a href="/demolition">demolition and site clearance</a>, and it has its own notice periods. Where large volumes of material are being moved to reshape a site or form a platform, that is <a href="/earthworks">bulk earthworks</a>. Groundworks is the constructed below-ground package between those and the building.</p>
+    </div>
+  </div>
+</section>
+
+<section class="page-section page-section-grey">
+  <div class="container">
+    <div class="guide-prose">
+      <h2 class="section-title">What do neighbouring buildings and trees change?</h2>
+      <p class="guide-answer">{A_NEIGHBOURS}</p>
+      <p>Access belongs in the same conversation. The machine has to reach the dig, and the spoil has to reach the road. On a terraced or semi-detached plot with no side access, everything goes through the property or over it, and that decides plant size before anyone looks at the excavation depth.</p>
+    </div>
+  </div>
+</section>
+
+<section class="page-section">
+  <div class="container">
+    <div class="guide-prose">
+      <h2 class="section-title">What does a contractor need to quote groundworks accurately?</h2>
+      <p class="guide-answer">{A_QUOTE}</p>
+      <p>Send what you have, even if it is incomplete. A postcode and a set of drawings is enough to start a conversation, and the site visit fills in the rest.</p>
+    </div>
+  </div>
+</section>
+
+<section class="cta-strip">
+  <div class="container cta-strip-row">
+    <div>
+      <h3>Got drawings ready?</h3>
+      <p>Send the plans, the postcode and how a machine gets in, and we will price it properly.</p>
+    </div>
+    <div class="cta-strip-ctas">
+      <a href="/contact" class="btn btn-yellow">Request a Groundworks Quote</a>
+      <a href="tel:01483323568" class="btn btn-ghost-light">Call 01483 323568</a>
+    </div>
+  </div>
+</section>
+</BaseLayout>
