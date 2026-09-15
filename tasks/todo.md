@@ -110,7 +110,7 @@ P0 and P1 shipped in PR #9, merged 14 Sep 08:57 UTC and live. Verified against t
 * [x] P1: service page FAQs extended. Live and verified: groundworks 6, demolition 7, earthworks 7 FAQPage questions. Cost answers still carry no figures, pending Ed's sign-off.
 * [x] P1: homepage 4-question FAQ. Superseded by the brief's six questions.
 * [x] P2: location pages. Batch 1 built and raised as PR #10: /groundworks-guildford and /groundworks-woking. The two demolition town pages in the brief were not built (see below).
-* [ ] P3: cost and planning guides. Awaiting approval; cost figures need Ed's sign-off.
+* [x] P3: cost and planning guides. Both built: /guides/demolition-cost-uk and /guides/groundworks-planning. The cost guide carries no figures (see below).
 
 ## NOT Claude Code tasks (Ed)
 1. Google Business Profile at the Send address, categories Excavating Contractor and Demolition Contractor, real site photos.
@@ -187,14 +187,111 @@ Guildford rather than adding a hub level that would need its own content.
       Town), FAQPage (3 questions each)
 - [x] One H1 per page, unique titles and meta descriptions, canonical correct
 - [x] Screenshots at 1440 and 390 wide
-- [ ] validator.schema.org: the POST `code` path was captcha'd from this
-      environment today, but the POST `url` path works (it returned 0 errors
-      and 0 warnings for the live homepage at 09:28 UTC on 14 Sep). Re-run it
-      against /groundworks-guildford and /groundworks-woking once they deploy.
-      Google's Rich Results Test stays unreachable: Chromium navigation to
-      external hosts is reset by the sandbox egress proxy.
+- [x] validator.schema.org against the LIVE URLs, 18:05 UTC on 14 Sep:
+      /groundworks-guildford and /groundworks-woking each return
+      `totalNumErrors: 0`, `totalNumWarnings: 0`, `numObjects: 3`,
+      `isRendered: true`, with no node or property errors on BreadcrumbList,
+      Service or FAQPage. Use the POST `url` path; the POST `code` path gets
+      captcha'd from this sandbox.
+- [ ] Google's Rich Results Test stays unreachable: Chromium navigation to
+      external hosts is reset by the sandbox egress proxy. Run it by hand if a
+      visual record is wanted.
 
 ### Next batch, once this pattern is approved
 Weybridge and Epsom were named in the brief as batch 2. Neither has a published
 case study in Sanity today, so the same rule applies: they wait for real local
 proof rather than shipping on a town name swap.
+
+## P2 batch 1 merged and live (2026-09-14)
+
+PR #10 squash-merged as `11411a0` at 17:58 UTC, deploy run #69. Ed asked twice
+for the live validation while the PR was still open; three independent checks
+(GitHub API, git ancestry, live 404s) said otherwise each time, and he then
+asked me to merge it, which I did.
+
+Verified against the live site at 18:05 UTC:
+- [x] Both URLs return 200
+- [x] Unique titles and meta descriptions matching locations.ts, canonicals correct
+- [x] Exactly one H1 per page; direct answer appears before the first H2
+- [x] Case study card rendered on both (the reason each page exists)
+- [x] No em dash, no Article, no aggregateRating
+- [x] JSON-LD per page: HomeAndConstructionBusiness, Service (areaServed City =
+      town, containedInPlace Surrey, provider -> /#business), BreadcrumbList
+      (Home > Groundworks > Town), FAQPage (3 questions matching visible text)
+- [x] validator.schema.org: 0 errors, 0 warnings on both live URLs
+- [x] sitemap-0.xml carries both; homepage areas list links both; footer carries
+      both; /groundworks "Groundworks by town" links both; llms.txt lists both
+
+Still open for Ed:
+- [ ] Request indexing for both URLs in Search Console
+- [ ] Confirm two pages instead of four is accepted (no demolition case study
+      exists for any town, so those pages were refused)
+- [ ] Confirm the flat /groundworks-guildford URL shape stands now that it is
+      live and indexable
+
+## P3 guides (2026-09-15)
+
+Built both guides from the P3 brief, plus the company number correction Ed
+asked for in the same message.
+
+### Company number
+Companies House number corrected from 15454300 to 15877451 in all four places
+it appears: the footer line, the `identifier` array in the site-wide business
+JSON-LD, the homepage FAQ answer about checking a contractor, and
+llms-full.txt. Verified that the old number appears nowhere in the build.
+Not independently checked against the Companies House register from here; the
+number is as Ed supplied it.
+
+### /guides/demolition-cost-uk
+"What Drives the Cost of a Demolition". Six H2 questions with visible answers,
+a cost line table (what each line covers, what moves it), a six step routine
+for comparing two quotations, and the notices position (Section 80, prior
+approval, party wall). About 1,280 body words.
+
+**Carries no prices, deliberately.** Ed has never signed off figures and the
+rest of the site already takes the line that demolition is quoted per project
+after a measured site visit. The guide makes that an explicit section rather
+than a gap. `scripts/check-guides.mjs` fails the build if a currency figure
+ever appears on a guide page, so numbers cannot creep in unreviewed.
+Trade-off recorded: queries like "demolition cost uk" expect numbers, so this
+page will not compete with listicles carrying per square metre rates until Ed
+supplies figures he will stand behind publicly.
+
+### /guides/groundworks-planning
+"Planning Groundworks Before the Machines Arrive". Six H2 questions, a
+building control inspection stage table, and sections on site investigation,
+drainage approvals (Approved Document H, build-over agreements, BRE Digest 365
+percolation testing), sequencing, and party wall and tree constraints. About
+1,070 body words. Every regulatory reference is to published UK law or an
+Approved Document.
+
+### Structure decisions
+- **No /guides index page.** A hub carrying two cards would be thin. The
+  guides are reachable from a new footer Guides column, from in-content links
+  on /groundworks and /demolition, from llms.txt and llms-full.txt, and from
+  the sitemap. Revisit a hub and a nav entry at four or more guides.
+- **No duplicate FAQ accordion.** The first build rendered every answer twice,
+  once under its H2 and again in a "Common questions" accordion, which put the
+  demolition guide at 1,853 words of largely duplicated text. Each question now
+  appears once, as an H2 with a visible answer, and the FAQPage JSON-LD is
+  generated from those same strings. The opening direct answer sits before the
+  first H2 and is not repeated as an FAQ entry.
+- **No Service node on a guide.** The first build emitted one via
+  ServiceSchema, which would have put a second Demolition Service entity at a
+  guide URL competing with /demolition. Guides now emit BreadcrumbList and
+  FAQPage only, alongside the site-wide business node, and the guard fails the
+  build if a Service node reappears on a guide.
+- **No Article schema.** Article wants an author and dates, and Ed removed
+  author credit and review dates from the site in PR #9.
+
+### Verified
+- [x] `npm run build` clean, all three guards pass
+- [x] Both guide URLs in sitemap-0.xml
+- [x] One H1 each, unique titles (63 and 47 chars) and meta descriptions (141
+      and 152 chars), canonicals correct
+- [x] JSON-LD parses: business node, BreadcrumbList, FAQPage (6 questions each,
+      every question and answer matched to visible text)
+- [x] No em dash, no currency figure, no aggregateRating
+- [x] No horizontal overflow at 1440 or 390 wide
+- [ ] validator.schema.org against the live URLs after deploy. The POST `code`
+      path is captcha'd from this sandbox; the POST `url` path works.

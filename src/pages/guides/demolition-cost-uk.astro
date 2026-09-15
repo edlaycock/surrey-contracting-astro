@@ -1,0 +1,226 @@
+---
+/**
+ * Guide: what drives demolition cost in the UK.
+ *
+ * DELIBERATELY CARRIES NO PRICES. Ed has not signed off any figures, and the
+ * rest of the site takes the same line: demolition is quoted per project after
+ * a measured site visit. If figures are approved later, add them as a costed
+ * table and update A_COST and the guide's opening answer together.
+ *
+ * Each H2 question is followed by a plain answer paragraph, and those answers
+ * are the source of the FAQPage JSON-LD, so visible text and structured data
+ * cannot drift. scripts/check-guides.mjs enforces that after every build.
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const TITLE = 'Demolition Costs UK: What Drives the Price | Surrey Contracting';
+const DESCRIPTION =
+  'What a UK demolition quote is made of: survey, asbestos, the works, waste and haulage, reinstatement. How to compare two quotations properly.';
+
+/* Direct answers. Rendered once as visible text and once in the JSON-LD. */
+const A_WHAT_DRIVES =
+  'Demolition in the UK is priced per project rather than at a standard rate. The five things that move the price most are the size and construction of the building, whether asbestos is present, how much waste leaves site and where it goes, how a machine and lorries get in and out, and what condition the site has to be left in afterwards. Two buildings with the same floor area can differ substantially in price once those are known.';
+
+const A_QUOTE_PARTS =
+  'A demolition quotation usually breaks down into a pre-demolition survey, asbestos removal where it is found, the demolition works themselves, waste handling and haulage, reinstatement of the site, and preliminaries such as welfare, hoarding, permits and insurance. Asking for those as separate lines is the only reliable way to compare two quotations, because a low headline figure often means something has been left out rather than priced more keenly.';
+
+const A_ASBESTOS =
+  'Asbestos is the single biggest variable in most pre-2000 buildings. A refurbishment and demolition survey has to be carried out before work starts, and what it finds determines the cost. Licensed work has to be done by an HSE-licensed contractor and notified to the HSE 14 days in advance, which affects the programme as well as the price. A quotation priced before the survey is an estimate, and any contractor who says otherwise is guessing.';
+
+const A_WASTE =
+  'Waste is usually the second largest line. It is driven by volume, by what the material is, and by how far it has to travel. Clean hardcore can often be crushed on site and reused as fill where there is room for a crusher, which takes lorry movements off the road. Contaminated material is a different matter: it needs testing, a licensed tip and consignment paperwork, and it costs considerably more per tonne than inert waste.';
+
+const A_COMPARE =
+  'Compare scope, not the headline number. Check each quotation states the same survey position on asbestos, the same assumption about what happens to the waste, the same reinstatement condition, and the same responsibility for notices and permits. Then check the exclusions, which is where genuinely different quotations usually differ. A quotation with no exclusions listed is not a safer quotation, it is a less complete one.';
+
+const A_NOTICES =
+  'Most demolition needs a Section 80 notice to the local authority under the Building Act 1984 before work starts, and usually a prior approval application to the planning authority covering the method of demolition and the restoration of the site. Listed buildings and buildings in conservation areas need consent in their own right. Where excavation or removal affects a neighbouring structure, the Party Wall etc. Act 1996 may apply as well.';
+
+const A_WHY_NO_PRICES =
+  'Because a published rate would be a guess dressed as a price. Per square metre figures circulate widely online, but they hide asbestos, access, waste classification and reinstatement, which are the things that actually decide the number. Surrey Contracting carries out a free measured site visit and returns a fixed-price itemised quotation, so the figure reflects the building in front of us rather than an average of buildings that are nothing like it.';
+
+/* The FAQPage entries are exactly the H2 questions on this page, each rendered
+   once. A_WHAT_DRIVES is the page's opening direct answer rather than an FAQ
+   entry, so it is deliberately not repeated here. */
+const FAQS = [
+  { q: 'What should a demolition quotation include?', a: A_QUOTE_PARTS },
+  { q: 'How much does asbestos add to a demolition project?', a: A_ASBESTOS },
+  { q: 'How does waste disposal affect demolition costs?', a: A_WASTE },
+  { q: 'How do you compare two demolition quotes?', a: A_COMPARE },
+  { q: 'What notices and approvals does a demolition need?', a: A_NOTICES },
+  { q: 'Why does Surrey Contracting not publish demolition prices?', a: A_WHY_NO_PRICES },
+];
+
+/* Breadcrumb only. A guide is reference content, not a service offering, so it
+   deliberately emits no Service node: that entity belongs to /demolition and
+   duplicating it here at a different URL would compete with it. */
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://surreycontracting.co.uk/' },
+    { '@type': 'ListItem', position: 2, name: 'Demolition', item: 'https://surreycontracting.co.uk/demolition' },
+    { '@type': 'ListItem', position: 3, name: 'Demolition costs', item: 'https://surreycontracting.co.uk/guides/demolition-cost-uk' },
+  ],
+};
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: FAQS.map((f) => ({
+    '@type': 'Question',
+    name: f.q,
+    acceptedAnswer: { '@type': 'Answer', text: f.a },
+  })),
+};
+
+/* Cost lines. No figures: each row says what the line covers and what moves it. */
+const LINES = [
+  ['Pre-demolition survey', 'Refurbishment and demolition asbestos survey, plus a structural view where needed', 'Building age and how many rooms need intrusive sampling'],
+  ['Asbestos removal', 'Licensed and non-licensed removal, encapsulation, certified disposal', 'How much is found, where it is, and whether the work is licensed'],
+  ['Demolition works', 'Soft strip, structural demolition, plant and operators on site', 'Construction type, height, attachment to neighbouring buildings'],
+  ['Waste and haulage', 'Grading, loading, lorry movements, tip charges and paperwork', 'Volume, material classification, distance to a licensed tip'],
+  ['Reinstatement', 'Backfill, compaction, capping and leaving the site to an agreed condition', 'What the site is needed for next'],
+  ['Preliminaries', 'Welfare, hoarding, permits, traffic management, insurance, supervision', 'Site location, public exposure, programme length'],
+];
+---
+<BaseLayout title={TITLE} description={DESCRIPTION} path="/guides/demolition-cost-uk" active="services">
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify(breadcrumbSchema)} />
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify(faqSchema)} />
+
+<section class="page-hero">
+  <div class="page-hero-bg" aria-hidden="true">
+    <div class="page-hero-img" style="background-image:url('/assets/img/demolition.webp')"></div>
+    <div class="page-hero-vignette"></div>
+  </div>
+  <div class="container page-hero-inner">
+    <nav class="crumbs" aria-label="Breadcrumb">
+      <a href="/">Home</a>
+      <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 6l6 6-6 6"/></svg>
+      <a href="/demolition">Demolition</a>
+      <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 6l6 6-6 6"/></svg>
+      <span>Demolition costs</span>
+    </nav>
+    <h1 class="page-title">What Drives the Cost of a Demolition</h1>
+    <p class="page-lede">A guide to what sits inside a UK demolition quotation, and how to compare two of them without being caught out.</p>
+  </div>
+</section>
+
+<section class="page-section">
+  <div class="container">
+    <div class="guide-prose">
+      <p class="lede-dark">{A_WHAT_DRIVES}</p>
+      <p>This guide sets out what a quotation is made of, which lines move most, and what to check before you sign one. It does not carry a price per square metre, and the section at the end explains why. For the work itself, see our <a href="/demolition">demolition and site clearance service</a>.</p>
+      <div class="guide-ctas">
+        <a href="/contact" class="btn btn-yellow">Request a Demolition Quote</a>
+        <a href="tel:01483323568" class="btn btn-outline-dark">Call 01483 323568</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="page-section page-section-grey">
+  <div class="container">
+    <div class="guide-prose">
+      <h2 class="section-title">What should a demolition quotation include?</h2>
+      <p class="guide-answer">{A_QUOTE_PARTS}</p>
+      <p>The table below is the shape most quotations take. If yours arrives as a single number with no breakdown, ask for one. A contractor who has actually priced the job can produce it without difficulty.</p>
+
+      <div class="guide-table-scroll" role="region" aria-labelledby="linesCaption" tabindex="0">
+        <table class="cookie-table guide-table">
+          <caption id="linesCaption" class="guide-table-caption">What each line in a demolition quotation covers, and what moves it</caption>
+          <thead>
+            <tr>
+              <th scope="col">Cost line</th>
+              <th scope="col">What it covers</th>
+              <th scope="col">What moves it</th>
+            </tr>
+          </thead>
+          <tbody>
+            {LINES.map(([line, covers, moves]) => (
+              <tr>
+                <th scope="row">{line}</th>
+                <td>{covers}</td>
+                <td>{moves}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="page-section">
+  <div class="container">
+    <div class="guide-prose">
+      <h2 class="section-title">How much does asbestos add to a demolition project?</h2>
+      <p class="guide-answer">{A_ASBESTOS}</p>
+      <p>The practical consequence is about sequence. The survey comes first, the removal follows, and only then does structural demolition start. Trying to compress that is where projects go wrong, because discovering asbestos once machines are on site stops the job while a licensed contractor is arranged and the notification period runs.</p>
+      <p>Asbestos is also the most common reason two quotations look nothing alike. One may have priced removal from a completed survey. The other may have assumed none is present. Those are not competing prices for the same work.</p>
+    </div>
+  </div>
+</section>
+
+<section class="page-section page-section-grey">
+  <div class="container">
+    <div class="guide-prose">
+      <h2 class="section-title">How does waste disposal affect demolition costs?</h2>
+      <p class="guide-answer">{A_WASTE}</p>
+      <p>Two things are worth asking about early. The first is whether material can be crushed and reused on site, which depends on what the structure is made of and whether there is space to stand a crusher. The second is who holds the duty of care for the waste and who registers as the carrier, because that paperwork follows the material to the tip and back to you.</p>
+      <p>Where a project also involves moving significant volumes of soil rather than building material, that usually sits under <a href="/earthworks">bulk earthworks and excavation</a> rather than demolition, and is priced differently.</p>
+    </div>
+  </div>
+</section>
+
+<section class="page-section">
+  <div class="container">
+    <div class="guide-prose">
+      <h2 class="section-title">What notices and approvals does a demolition need?</h2>
+      <p class="guide-answer">{A_NOTICES}</p>
+      <p>None of this is optional, and all of it takes time. The Section 80 notice has a notice period before work can begin, prior approval runs to a planning timetable, and licensed asbestos work carries its own 14 day notification. A programme that assumes a start next week rarely survives contact with those dates.</p>
+      <p>Surrey Contracting advises on notifications as part of project planning, and our <a href="/health-safety">health and safety standards</a> cover how the works themselves are planned and supervised.</p>
+    </div>
+  </div>
+</section>
+
+<section class="page-section page-section-grey">
+  <div class="container">
+    <div class="guide-prose">
+      <h2 class="section-title">How do you compare two demolition quotes?</h2>
+      <p class="guide-answer">{A_COMPARE}</p>
+      <ol class="guide-steps">
+        <li><strong>Put them side by side by line, not by total.</strong> Survey, asbestos, demolition, waste, reinstatement, preliminaries. Gaps show up immediately.</li>
+        <li><strong>Read the exclusions first.</strong> Disposal of contaminated material, asbestos beyond the survey, disconnection of services and reinstatement are the usual ones.</li>
+        <li><strong>Check the asbestos position.</strong> Priced from a completed survey, or assumed. These are not the same quotation.</li>
+        <li><strong>Check who handles notices.</strong> Section 80, prior approval, party wall, permits and traffic management all cost someone time.</li>
+        <li><strong>Check the finished condition.</strong> Slab out or slab left, backfilled or open, fenced or open to the road.</li>
+        <li><strong>Check accreditation and insurance.</strong> SSIP membership through CHAS or SafeContractor, current public liability cover, and a waste carrier registration.</li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<section class="page-section">
+  <div class="container">
+    <div class="guide-prose">
+      <h2 class="section-title">Why does Surrey Contracting not publish demolition prices?</h2>
+      <p class="guide-answer">{A_WHY_NO_PRICES}</p>
+      <p>If you want a number rather than a range, the fastest route is a site visit. Send a postcode, a description of the building, any survey you already hold and a note on access, and we will come and measure it.</p>
+    </div>
+  </div>
+</section>
+
+<section class="cta-strip">
+  <div class="container cta-strip-row">
+    <div>
+      <h3>Got a building to price?</h3>
+      <p>Send the postcode, a description and any survey you hold, and we will come and measure it.</p>
+    </div>
+    <div class="cta-strip-ctas">
+      <a href="/contact" class="btn btn-yellow">Request a Demolition Quote</a>
+      <a href="tel:01483323568" class="btn btn-ghost-light">Call 01483 323568</a>
+    </div>
+  </div>
+</section>
+</BaseLayout>
