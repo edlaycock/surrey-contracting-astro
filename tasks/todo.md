@@ -362,7 +362,16 @@ content rather than two cards.
       pages linked, FAQ parity, BreadcrumbList, sitemap entry
 - [x] Disclosure guard negative-tested
 - [x] No horizontal overflow at 1440 or 390 wide
-- [ ] validator.schema.org against the live URLs after deploy
+- [x] validator.schema.org against the LIVE URLs, 16 Sep: /areas,
+      /groundworks-weybridge and /groundworks-epsom each return 0 errors and
+      0 warnings, numObjects 3, isRendered true. /areas carries
+      HomeAndConstructionBusiness, BreadcrumbList and FAQPage; the town pages
+      carry Service (areaServed City = town), BreadcrumbList and FAQPage.
+- [x] Both disclosure lines confirmed in the live HTML, under the heading
+      "Our nearest published project to <town>".
+- [x] 25 URLs in the live sitemap; homepage areas list links all four towns;
+      /areas linked four times from the homepage (nav, drawer, footer, areas
+      section).
 
 ### Still blocked on Jason
 No demolition case study exists for any town, so /demolition-guildford and the
