@@ -402,8 +402,14 @@ Shipped in PR #13, squash-merged as `20f2ad0` on 22 Sep, verified live:
       Live: zero joined sentences on either page, "carrys" gone.
 - [x] validator.schema.org, live: /groundworks-woking 0 errors, 0 warnings,
       3 objects (BreadcrumbList, Service, FAQPage), isRendered true.
-- [ ] validator.schema.org, live: /guides/groundworks-planning. Rate limited
-      three times on 22 Sep; a retry after a twenty minute pause is pending.
+- [ ] validator.schema.org, live: /guides/groundworks-planning. NOT OBTAINED
+      on 22 Sep: four attempts (immediate, 75 s, 4 min and 20 min apart) all
+      returned Google's captcha redirect, while a call to /groundworks-woking
+      between them succeeded, so the throttle looks URL-specific. Stopped
+      retrying rather than keep hitting it. One final attempt is queued an
+      hour out; if that fails too, run it by hand in a browser at
+      https://validator.schema.org/#url=https%3A%2F%2Fsurreycontracting.co.uk%2Fguides%2Fgroundworks-planning
+      or retry from here tomorrow.
       CORRECTION to an earlier note: the JSON-LD on this page DID change in
       PR #13. The RBCA sentence lives inside A_BUILDING_CONTROL, which is the
       second FAQ answer, so the FAQPage answer text changed by exactly that
