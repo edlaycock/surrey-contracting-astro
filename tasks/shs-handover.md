@@ -125,6 +125,34 @@ SHS work:
 SHS is agenda item 5 at the meeting Ed is arranging with Jason for the week
 of 29 September, as a separate session or the back end of the SC one.
 
+## Update, Jason's reply of 22 September
+
+Jason confirmed the following in writing. Treat them as settled inputs:
+
+- **Two separate trading arms, no linking, no crossover.** His words: "I
+  definitely don't want to link the two sites together and keep them as
+  separate trading arms as such ... I most definitely do not want any cross
+  over from either site." Branding alignment is wanted; entity or link
+  crossover is ruled out by the client himself, not only by us.
+- **Positioning split.** Surrey Contracting: demolition, groundworks and
+  earthworks. Surrey Hills Surfacing: surfacing. No overlap in services.
+- **One address for everything.** "I will be using the Send office address
+  now for all parts of the business for the foreseeable future." So SHS will
+  carry the same postal address as SC. That is fine and normal, but it is
+  the one shared NAP signal, so the two sites must differ cleanly on
+  everything else that identifies a business: name, telephone number if
+  possible, email domain, company number, and structured data. Do not let
+  the SHS site reuse SC's phone number, business schema or sameAs links.
+- **An SHS audit is coming.** Jason has run an audit on the SHS site
+  (almost certainly ChatGPT again, see above) and will send bullet points,
+  a report and notes. Verify every claim against the live SHS site before
+  acting on any of it, exactly as was done for SC on 22 September.
+- **What he wants from the relationship generally**, which applies to SHS
+  as much as SC: to understand what the fee covers, what ads cost and bring
+  in, what extra work is recommended and why, what results are being aimed
+  at and when to review, and a simple monthly update. Build the SHS work so
+  those questions have answers from the start.
+
 ## Suggested first tasks for the new session
 
 1. Confirm the domain, platform and access. Check the Novamira MCP connector
