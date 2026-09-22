@@ -403,8 +403,18 @@ Shipped in PR #13, squash-merged as `20f2ad0` on 22 Sep, verified live:
 - [x] validator.schema.org, live: /groundworks-woking 0 errors, 0 warnings,
       3 objects (BreadcrumbList, Service, FAQPage), isRendered true.
 - [ ] validator.schema.org, live: /guides/groundworks-planning. Rate limited
-      twice on 22 Sep; retry pending. The page's JSON-LD was not changed by
-      PR #13 (only a prose sentence), and it validated clean on 15 Sep.
+      three times on 22 Sep; a retry after a twenty minute pause is pending.
+      CORRECTION to an earlier note: the JSON-LD on this page DID change in
+      PR #13. The RBCA sentence lives inside A_BUILDING_CONTROL, which is the
+      second FAQ answer, so the FAQPage answer text changed by exactly that
+      one sentence (git diff of the constant against 20f2ad0^ confirms it is
+      the only difference). Schema shape is unchanged: the same three nodes
+      and six questions. Verified live today: every JSON-LD block parses, all
+      six FAQ answers match the visible text, no standalone Service node. The
+      four town pages carry the identical sentence change inside their FAQ
+      answers and /groundworks-woking validated 0 errors, 0 warnings today,
+      so the guide's external verdict is expected to match; it is recorded as
+      pending until the validator actually returns it.
 - [x] Draft reply to Jason run through the humanizer skill at Ed's request:
       five edits (one rule of three, two signposting sentences, one
       "actually" in a heading, one keep/keep/keep parallel). No dashes, no
