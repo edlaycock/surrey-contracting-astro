@@ -42,12 +42,27 @@ demolition page version is the risky one. Licensed asbestos work can only be
 done by an HSE-licensed contractor, and if we do not hold that licence the page
 is advertising something we cannot lawfully do.
 
-So one question, and I need a straight answer: **does Surrey Contracting hold
-a current HSE asbestos licence?** If yes, send me the licence number and I will
-make the site consistent around it. If no, I change the demolition page and the
-homepage card this week to say we coordinate licensed removal through a
-specialist. I have the wording ready. Nothing else in the audit matters as much
-as this.
+My understanding, and it is what the homepage already says, is that the
+licensed removal is subcontracted to a specialist and we coordinate it. If that
+is right, the demolition page is wrong and I will change it this week to match.
+I have the wording ready. If I have that backwards and Surrey Contracting does
+hold a current HSE asbestos licence, tell me and I will make the site
+consistent the other way. Either way I need it from you in writing, because
+this is the one thing in the audit that carries real risk and I do not want to
+guess at it.
+
+While we are on that, one thing worth being clear about, and it is not a dig at
+anyone. Anything factual on the site, licences, accreditations, what plant you
+run, what a job involved, tonnages, dates, has to come from you and be right,
+because you are the expert in your own business and I am not. We write it up,
+we make it read well, we make Google understand it. But we cannot know whether
+a claim about a licence is true, and neither can the tool that wrote the brief.
+Your own document says exactly that on page two: any statement about licences,
+accreditations, asbestos work or project quantities "must be confirmed against
+current company records before publication". That is the right rule, and I
+would like us to work to it. If something on the site is wrong about the
+business, the fix is a two-minute message from you, and I would always rather
+have that than find out later.
 
 **2. "Private approved inspector" is out of date.** Approved Inspectors were
 replaced by Registered Building Control Approvers in England, and the four town
