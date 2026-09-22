@@ -90,7 +90,7 @@ export const LOCATIONS: LocationPage[] = [
       },
       {
         q: 'Who handles building control for groundworks in Guildford?',
-        a: 'Either Guildford Borough Council building control or a private approved inspector, whichever the project uses. Below ground work is inspected before it is covered up, so the dig, the reinforcement and the drainage all need to be signed off at the right stage. We work to the approved drawings and book inspections around them.',
+        a: 'Either Guildford Borough Council building control or a Registered Building Control Approver, whichever the project uses. Below ground work is inspected before it is covered up, so the dig, the reinforcement and the drainage all need to be signed off at the right stage. We work to the approved drawings and book inspections around them.',
       },
     ],
   },
@@ -129,7 +129,7 @@ export const LOCATIONS: LocationPage[] = [
       },
       {
         q: 'Who handles building control for groundworks in Woking?',
-        a: 'Either Woking Borough Council building control or a private approved inspector, depending on what the project uses. Below ground work has to be inspected before it is covered over, so the excavation, any reinforcement and the drainage each need signing off at the right point. We work from the approved drawings and book the inspections in around them.',
+        a: 'Either Woking Borough Council building control or a Registered Building Control Approver, depending on what the project uses. Below ground work has to be inspected before it is covered over, so the excavation, any reinforcement and the drainage each need signing off at the right point. We work from the approved drawings and book the inspections in around them.',
       },
     ],
   },
@@ -169,7 +169,7 @@ export const LOCATIONS: LocationPage[] = [
       },
       {
         q: 'Who handles building control for groundworks in Weybridge?',
-        a: 'Either Elmbridge Borough Council building control or a private approved inspector, depending on what the project uses. Below ground work is inspected before it is covered over, so the excavation, any reinforcement and the drainage each need signing off at the right point. Protected trees are worth checking early, because consent is needed before roots are disturbed.',
+        a: 'Either Elmbridge Borough Council building control or a Registered Building Control Approver, depending on what the project uses. Below ground work is inspected before it is covered over, so the excavation, any reinforcement and the drainage each need signing off at the right point. Protected trees are worth checking early, because consent is needed before roots are disturbed.',
       },
     ],
   },
@@ -209,7 +209,7 @@ export const LOCATIONS: LocationPage[] = [
       },
       {
         q: 'Who handles building control for groundworks in Epsom?',
-        a: 'Either Epsom and Ewell Borough Council building control or a private approved inspector, depending on what the project uses. Below ground work has to be inspected before it is covered over, so the excavation, any reinforcement and the drainage each need signing off at the right stage. We work from the approved drawings and book the inspections around them.',
+        a: 'Either Epsom and Ewell Borough Council building control or a Registered Building Control Approver, depending on what the project uses. Below ground work has to be inspected before it is covered over, so the excavation, any reinforcement and the drainage each need signing off at the right stage. We work from the approved drawings and book the inspections around them.',
       },
     ],
   },

@@ -362,9 +362,55 @@ content rather than two cards.
       pages linked, FAQ parity, BreadcrumbList, sitemap entry
 - [x] Disclosure guard negative-tested
 - [x] No horizontal overflow at 1440 or 390 wide
-- [ ] validator.schema.org against the live URLs after deploy
+- [x] validator.schema.org against the LIVE URLs, 16 Sep: /areas,
+      /groundworks-weybridge and /groundworks-epsom each return 0 errors and
+      0 warnings, numObjects 3, isRendered true. /areas carries
+      HomeAndConstructionBusiness, BreadcrumbList and FAQPage; the town pages
+      carry Service (areaServed City = town), BreadcrumbList and FAQPage.
+- [x] Both disclosure lines confirmed in the live HTML, under the heading
+      "Our nearest published project to <town>".
+- [x] 25 URLs in the live sitemap; homepage areas list links all four towns;
+      /areas linked four times from the homepage (nav, drawer, footer, areas
+      section).
 
 ### Still blocked on Jason
 No demolition case study exists for any town, so /demolition-guildford and the
 rest remain unbuilt. The Esher demolition photos and video from 20 Aug are
 still unusable without the facts.
+
+## Jason's implementation brief (22 Sep 2026)
+
+Jason's 22 Sep email turned out to be a summary of a 35-page AI-generated
+implementation brief dated 19 Sep. Full register in
+`tasks/jason-brief-register-2026-09-22.md`; draft reply updated.
+
+Verdict: the brief fetched the live site for the pages changed 14 to 16 Sep
+and a cache for the project and legacy pages. Its headline "old template on
+two project pages" claim is false today (fresh fetch, zero hits for the old
+identity on all 26 pages) and its own reference list includes two URLs that
+have been 301s since August. But it caught two real things we missed.
+
+Done in source (this commit):
+- [x] "private approved inspector" replaced with Registered Building Control
+      Approver on all four town pages and the planning guide. My error, from
+      14 to 16 Sep. Approved Inspectors ceased in England in April 2024.
+- [x] Nine joined sentences and "carrys" fixed on /demolition and /earthworks.
+
+Blocking on Jason:
+- [ ] Does Surrey Contracting hold a current HSE asbestos licence? /demolition
+      currently claims "fully licensed" removal; the homepage and the cost
+      guide say coordination. If no licence, the demolition page is advertising
+      work it cannot lawfully do. Replacement copy is prepared in the register
+      appendix and deploys on his answer.
+
+Ed's call, not changed:
+- [ ] Duplicate "number one priority" heading on /health-safety
+- [ ] The brief's commercial repositioning (developer/main contractor first,
+      residential second). A business decision for the meeting; it conflicts
+      with the residential ad funnel and the 5-working-day site visit promise.
+- [ ] Demolition and earthworks page rewrites, after positioning is decided.
+
+Lesson logged in lessons.md: I characterised the audit as having "no specific
+examples" from the email alone. The source document had 25 URLs and 60-odd
+change IDs. Ask whether a source document exists before characterising an
+audit.

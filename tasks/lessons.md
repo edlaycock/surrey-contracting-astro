@@ -37,3 +37,22 @@ Log each correction as: **Pattern** (what went wrong) + **Rule** (how to prevent
 ## No author, reviewer or date credits (11 Sep 2026)
 - **Pattern:** The brief's changes 2a and 2b (author note, Published and Last updated dates, dateModified in schema) were built, then reframed company-first after the sole-trader correction. Ed wants none of it on the page.
 - **Rule:** Commercial pages carry no author, reviewer, published or updated credits, and the business schema carries no dateModified, unless Ed asks for them on a specific page. If a brief asks for them, raise it before building.
+
+## Ask for the source before judging a summary (22 Sep 2026)
+
+Jason's email summarised an audit with no URLs or examples. I told Ed the
+audit "contains not one single specific example" and treated that as the tell
+of a generic AI checklist. The email was a poor summary of a 35-page brief
+that named 25 URLs and 60-odd change IDs, and two of its findings were correct
+and missed by me. Rule: when a client forwards a summary of an audit, ask for
+the underlying document before characterising the audit. Verify the summary's
+claims by all means, but do not infer the quality of the source from the
+quality of the summary.
+
+## Check regulatory terminology against the current regime (22 Sep 2026)
+
+I wrote "private approved inspector" on five pages. Approved Inspectors were
+replaced by Registered Building Control Approvers in England in April 2024.
+Rule: any regulatory or statutory term in copy (building control, asbestos,
+waste, CDM, party wall) gets checked against the current GOV.UK or HSE page
+before it ships, not written from memory.
