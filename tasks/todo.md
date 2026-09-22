@@ -445,3 +445,31 @@ Lesson logged in lessons.md: I characterised the audit as having "no specific
 examples" from the email alone. The source document had 25 URLs and 60-odd
 change IDs. Ask whether a source document exists before characterising an
 audit.
+
+## Project case study form for Jason (22 Sep 2026)
+
+Checked the repo first: no template of any kind existed, tracked or
+untracked, only the promise of one in the reply. Built
+`tasks/Surrey-Contracting-project-case-study-form.docx`.
+
+- Fields map one-to-one onto `studio/schemaTypes/project.ts` (title,
+  categories from the schema's list minus Hard Landscaping, sector from the
+  schema's list, client, location, services, year, duration, status,
+  summary) so what Jason writes goes into the CMS without translation.
+- Narrative follows the structure the brief recommends and Southbank already
+  uses: the brief, the delivery, key quantities, site constraints, the
+  outcome. Each has a prompt and a grey writing box.
+- Two rules built into the form: leave a figure blank rather than guess, and
+  only name a client who is happy to be named. Town published, never a street
+  address. Sign-off ticks for facts checked, client permission, and no
+  licence or accreditation claimed that is not held.
+- Worked example uses the Premier Inn Cobham job with only facts already
+  published on the site.
+- Generated with docx-js (scratchpad install, nothing added to the project).
+  Passed the docx skill's XSD validator (95 paragraphs, all checks). Parsed
+  by Mammoth with zero warnings; structure checked visually from that
+  render. LibreOffice in this sandbox cannot open any docx, so no PDF render
+  was possible; Word itself will render the shading and box heights.
+- No em or en dashes.
+
+Ed sent the reply to Jason on 22 Sep, with the register PDF attached.
