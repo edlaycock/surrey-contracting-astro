@@ -471,5 +471,9 @@ untracked, only the promise of one in the reply. Built
   render. LibreOffice in this sandbox cannot open any docx, so no PDF render
   was possible; Word itself will render the shading and box heights.
 - No em or en dashes.
+- Ed opened it in Word (4 pages, shading and box heights render) and asked
+  for clickable tick boxes rather than glyphs. Regenerated with real Word
+  checkbox content controls (w14:checkbox): 18 controls, all unchecked,
+  schema validation passed.
 
 Ed sent the reply to Jason on 22 Sep, with the register PDF attached.
