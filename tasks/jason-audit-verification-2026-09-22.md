@@ -1,3 +1,10 @@
+> **Superseded on the same day.** This reviewed Jason's *email* only. The email was a
+> summary of a 35-page implementation brief which arrived afterwards and which is
+> considerably more specific. See `jason-brief-register-2026-09-22.md` for the
+> change-by-change status, including two findings in the brief that were correct
+> and that this document missed (the asbestos licensing claim and the outdated
+> building control terminology).
+
 # Verification of Jason's audit claims, 22 September 2026
 
 Every claim in Jason's email checked against the live site. Method: crawled all
