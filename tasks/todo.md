@@ -406,8 +406,9 @@ Shipped in PR #13, squash-merged as `20f2ad0` on 22 Sep, verified live:
       on 22 Sep: four attempts (immediate, 75 s, 4 min and 20 min apart) all
       returned Google's captcha redirect, while a call to /groundworks-woking
       between them succeeded, so the throttle looks URL-specific. Stopped
-      retrying rather than keep hitting it. One final attempt is queued an
-      hour out; if that fails too, run it by hand in a browser at
+      retrying rather than keep hitting it. A fifth attempt after a full
+      hour also failed, so this is the final position for 22 Sep. Run it by
+      hand in a browser at
       https://validator.schema.org/#url=https%3A%2F%2Fsurreycontracting.co.uk%2Fguides%2Fgroundworks-planning
       or retry from here tomorrow.
       CORRECTION to an earlier note: the JSON-LD on this page DID change in
