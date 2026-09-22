@@ -96,6 +96,35 @@ These are Ed's standing rules and they apply to SHS too:
   stop and flag it rather than padding it.
 - Log any correction from Ed as a pattern so it is not repeated.
 
+## Update, 22 September, after Jason's implementation brief
+
+Three things learned on the Surrey Contracting side that apply directly to
+SHS work:
+
+1. **Jason produces audits with ChatGPT.** His 35-page Surrey Contracting
+   brief carried PDF metadata of `python-docx` plus headless LibreOffice, the
+   fingerprint of ChatGPT's document export. It mixed a genuine live fetch of
+   current pages with cached copies of pages that had been redirects for a
+   month, and presented both as current. Expect the same for any SHS audit he
+   sends. Verify every claim against the live SHS site before acting; the
+   cached findings will be plausible, specific and wrong. Its genuine catches
+   (an asbestos licensing claim, an outdated building control term) were
+   things nobody else had spotted, so do not dismiss it either.
+2. **Facts come from Jason, in writing.** Ed's rule, now stated to Jason in
+   the SC reply: anything factual about the business (licences,
+   accreditations, plant, quantities, dates) must come from Jason and be
+   confirmed, because he is the expert in his business and we are not. Apply
+   it to SHS from the first page. Do not carry over any factual claim from the
+   SC site, and do not accept an AI audit's version of a fact either.
+3. **No crossover is now agreed in writing.** The SC reply to Jason says:
+   aligning the look is fine, linking the sites or sharing company details
+   behind the scenes is not, because Google will treat them as one business.
+   Jason's own agenda item was "lining the brands up alongside each other but
+   without cross over". Treat that as settled and design within it.
+
+SHS is agenda item 5 at the meeting Ed is arranging with Jason for the week
+of 29 September, as a separate session or the back end of the SC one.
+
 ## Suggested first tasks for the new session
 
 1. Confirm the domain, platform and access. Check the Novamira MCP connector

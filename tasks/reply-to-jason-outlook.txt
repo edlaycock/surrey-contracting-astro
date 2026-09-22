@@ -1,0 +1,101 @@
+Subject: Re: Surrey Contracting, website audit and next steps
+
+Hi mate,
+
+Good to hear from you, and no apology needed for the length. Thanks for sending the full brief as well. Good to see you have mastered ChatGPT, I am assuming this is one of its reports? 🙂 It has done a decent job in places. I have been through all 35 pages against the live site, so let me break it out into a friendlier version and get to the point.
+
+Congratulations on getting out of Paul's yard. Send being settled is good for local search, so shout when the new yard is confirmed and I will check nothing needs changing.
+
+
+THE SHORT VERSION
+
+The report got two things right that I had missed. It got its biggest finding wrong, and I can show you why. And about half of it is a decision about what kind of business you want Surrey Contracting to be, which is a conversation for us, not a job list for me.
+
+
+WHAT IT GOT RIGHT
+
+1. The asbestos claim. This is the one that matters.
+
+The demolition page says Surrey Contracting "carries out fully licensed and fully insured asbestos removal". The homepage says we coordinate it. The cost guide says a licensed specialist does it. Three stories on one site, and the demolition page version is the risky one, because licensed asbestos work can only be done by an HSE-licensed contractor.
+
+My understanding, and it is what the homepage already says, is that the licensed removal is subcontracted and we coordinate it. If that is right, the demolition page is wrong and I will change it this week. I have the wording ready. If you do hold an HSE asbestos licence, tell me and I will make the site consistent the other way. Either way I need it from you in writing, because this is the one thing in the report with real risk attached and I do not want to guess.
+
+One thing worth saying while we are on it, and it is not a dig at anyone. Anything factual on the site, licences, accreditations, plant, what a job involved, tonnages, dates, has to come from you and be right, because you are the expert in your business and I am not. Our job is to write it up so it reads well and Google understands it. We cannot know whether a claim about a licence is true, and neither can ChatGPT. Your own report says exactly that on page two: licence, accreditation and quantity claims "must be confirmed against current company records before publication". Good rule, let's work to it. If something on the site is wrong about the business, a two-minute message from you fixes it.
+
+2. "Private approved inspector" is out of date.
+
+Approved Inspectors were replaced by Registered Building Control Approvers, and the town pages and the planning guide used the old term. That one is on us. Fixed and live. It also caught some missing spaces and a spelling mistake on the demolition and earthworks pages. Also fixed and live.
+
+
+WHAT IT GOT WRONG
+
+Its headline finding is that two project pages, Domestic Earthworks and the Guildford landscaping job, are "still on the old template" with the old 01932 number, the Leatherhead address, the old company number and Commercial Surfacing in the menu. It calls that critical.
+
+They are not. I fetched both pages fresh today. Both carry 01483 323568, the Send address and company number 15877451, and none of the old details appear. Every page is built from one shared header and footer, so there is no old template to be stuck on. I crawled all 26 pages and searched for the old number, postcode, company number and "Commercial Surfacing". Zero hits.
+
+The giveaway: the report lists two old tarmac project pages among the URLs it reviewed and describes their "page template". Those two URLs have been redirects since 19 August. A redirect has no template, there is nothing to describe. So ChatGPT was reading a cached copy of the old site for those pages. The old details are real, they were ours until June, they just are not current. Worth knowing for next time: it mixes live pages with its own memory and cannot always tell which is which.
+
+The full page-by-page register is attached, every change ID marked confirmed, wrong, already done, or a decision for you, with the evidence.
+
+
+THE HALF THAT IS A BUSINESS DECISION
+
+Most of the rest rewrites the site towards developers, main contractors and commercial packages, and away from residential. Some of that is good, the demolition and earthworks pages are the oldest copy on the site and deserve a rewrite. But the direction is a decision about who you want ringing the phone. Right now a fair chunk of your enquiries are residential, the ads are built around that, and the homepage promises a site visit within five working days. If you want to move upmarket I am all for it, but it should be a decision you make on purpose, with the numbers in front of us, not something I implement because a report said so. First thing to talk through when we meet.
+
+On cost: [ED TO COMPLETE]
+
+
+WHAT YOU HAVE BEEN GETTING, AND A CHANGE FROM ME
+
+The line in your email that stood out was "I just want to understand spend, processes and future alignment". Fair, you should not have to ask. Here is what has gone live in the last fortnight, and from October you get this as a one-page report every month without asking:
+
+- Homepage rebuilt around the questions people search for, which is what gets you picked up by AI search as well as Google
+- Four town pages: Guildford, Woking, Weybridge, Epsom
+- An Areas We Cover page with the map and every town
+- Two guides, on what drives demolition cost and on planning groundworks. Your report calls the planning guide "the standard the weaker service pages should move toward", which I will take
+- Company number corrected everywhere
+- Structured data across the site checked error free by Google's validator
+
+The report also says to leave every H1 alone, leave the town pages alone, and keep the honest "no local case study yet" wording on Weybridge and Epsom. So the foundations are not the problem.
+
+
+WHAT I NEED FROM YOU
+
+- Asbestos licence: yes or no, in writing. This is blocking.
+- The Esher demolition case study: client type, scope, what was hard, outcome, rough dates. Bullets are fine. Waiting since 20 August, and the site has no demolition evidence at all until it lands.
+- A Guildford groundworks job, so the patio can come off the Guildford page.
+- Three or four more projects. Word template coming this week.
+- New yard address when confirmed.
+
+
+WHAT I AM DOING
+
+- Asbestos wording: on your answer
+- Project template and Search Console re-indexing: this week
+- Demolition case study: within days of your notes
+- Positioning decision, then the demolition and earthworks rewrites: after we meet
+- Monthly one-page report: from October
+
+
+SURREY HILLS SURFACING
+
+Happy to talk SHS properly, but as its own conversation. Aligning the look is fine. Linking the sites or sharing company details behind the scenes is not, because Google will treat them as one business and you lose both. I will bring SHS as a separate item with its own notes.
+
+
+THE MEETING
+
+Yes to next week. [ED: availability.] About an hour and a half:
+
+1. Surrey Contracting: what went live, what the report found, the asbestos question (15 min)
+2. Positioning: commercial, residential or both, with the enquiry numbers in front of us (30 min)
+3. SEO and backlinks: plan, cost, realistic timeline (20 min)
+4. Ads: current spend, what it returns, the path to leaning on it less (15 min)
+5. SHS (separate session, or the back end of this one)
+
+On ads, SEO reduces reliance on paid over months rather than weeks, and the two run side by side for a while. Worth doing properly rather than by email.
+
+And the feeling is mutual. You are not hard work. You ask direct questions, which is a good deal easier to work with than the alternative.
+
+Speak next week.
+
+Ed

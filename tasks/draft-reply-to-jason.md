@@ -27,10 +27,10 @@ confirmed and I will check nothing needs changing.
 
 ## The short version
 
-The brief got two things right that I had missed, and I want to lead with
-those. It also got one big thing wrong, and I can show you exactly why. And
-about half of it is a decision about what kind of business Surrey Contracting
-wants to be, which is a conversation for the meeting, not a developer ticket.
+The brief got two things right that I had missed, so I will start there. Its
+biggest finding is wrong, and I can show you why. And about half of it is a
+decision about what kind of business Surrey Contracting wants to be, which is
+a conversation for the meeting rather than a developer ticket.
 
 ## What the brief got right
 
@@ -54,9 +54,10 @@ guess at it.
 While we are on that, one thing worth being clear about, and it is not a dig at
 anyone. Anything factual on the site, licences, accreditations, what plant you
 run, what a job involved, tonnages, dates, has to come from you and be right,
-because you are the expert in your own business and I am not. We write it up,
-we make it read well, we make Google understand it. But we cannot know whether
-a claim about a licence is true, and neither can the tool that wrote the brief.
+because you are the expert in your own business and I am not. Our job is to
+write it up so it reads well and Google understands it. What we cannot do is
+know whether a claim about a licence is true, and neither can the tool that
+wrote the brief.
 Your own document says exactly that on page two: any statement about licences,
 accreditations, asbestos work or project quantities "must be confirmed against
 current company records before publication". That is the right rule, and I
@@ -88,10 +89,10 @@ and footer, so there is no old template for a page to be stuck on. I crawled
 all 26 pages in the sitemap and searched for the old number, the old postcode,
 the old company number and "Commercial Surfacing". Zero hits, on any page.
 
-Here is how I know where that part came from. The brief lists two tarmac project
-pages among the URLs it reviewed and describes what is "in their page
-template". Those two URLs have been redirects since 19 August. A redirect has
-no page template; there is nothing there to describe. So whatever produced the
+The brief lists two tarmac project pages among the URLs it reviewed and
+describes what is "in their page template". Those two URLs have been redirects
+since 19 August. A redirect has no page template; there is nothing there to
+describe. That is how I know where that part came from: whatever produced the
 brief was reading a cached copy of the old site for those pages, not the live
 one. The old details it quotes are real, they were our details until June, so
 it had genuine historical data. It just was not current.
@@ -126,7 +127,7 @@ above are covered. The demolition and earthworks rewrites and the case study
 work are a piece of work in their own right and I will cost them once we have
 agreed the positioning at the meeting.]
 
-## What you are actually getting, and a change from me
+## What you have been getting, and a change from me
 
 Reading your email back, the line that stood out was "I just want to understand
 spend, processes and future alignment". Fair. You should not have to ask. So
@@ -143,9 +144,9 @@ this as a one-page report without asking:
 - Company number corrected everywhere
 - Structured data across the site verified error free by Google's validator
 
-For what it is worth, the brief also says to keep every H1 on the site as it
-is, keep the town pages as they are, and keep the honest "no local case study
-yet" wording on Weybridge and Epsom. So the foundations are not the problem.
+For what it is worth, the brief also says to leave every H1 on the site alone.
+Same for the town pages, and for the honest "no local case study yet" wording
+on Weybridge and Epsom. So the foundations are not the problem.
 
 ## What I need from you
 

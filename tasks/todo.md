@@ -390,11 +390,42 @@ two project pages" claim is false today (fresh fetch, zero hits for the old
 identity on all 26 pages) and its own reference list includes two URLs that
 have been 301s since August. But it caught two real things we missed.
 
-Done in source (this commit):
+Shipped in PR #13, squash-merged as `20f2ad0` on 22 Sep, verified live:
 - [x] "private approved inspector" replaced with Registered Building Control
       Approver on all four town pages and the planning guide. My error, from
       14 to 16 Sep. Approved Inspectors ceased in England in April 2024.
+      Live: the term is on all five pages; "approved inspector" survives only
+      in the guide's deliberate "the body that replaced approved inspectors"
+      clause. FAQ schema on the four town pages carries the new wording and
+      every answer still matches the visible text.
 - [x] Nine joined sentences and "carrys" fixed on /demolition and /earthworks.
+      Live: zero joined sentences on either page, "carrys" gone.
+- [x] validator.schema.org, live: /groundworks-woking 0 errors, 0 warnings,
+      3 objects (BreadcrumbList, Service, FAQPage), isRendered true.
+- [ ] validator.schema.org, live: /guides/groundworks-planning. NOT OBTAINED
+      on 22 Sep: four attempts (immediate, 75 s, 4 min and 20 min apart) all
+      returned Google's captcha redirect, while a call to /groundworks-woking
+      between them succeeded, so the throttle looks URL-specific. Stopped
+      retrying rather than keep hitting it. A fifth attempt after a full
+      hour also failed, so this is the final position for 22 Sep. Run it by
+      hand in a browser at
+      https://validator.schema.org/#url=https%3A%2F%2Fsurreycontracting.co.uk%2Fguides%2Fgroundworks-planning
+      or retry from here tomorrow.
+      CORRECTION to an earlier note: the JSON-LD on this page DID change in
+      PR #13. The RBCA sentence lives inside A_BUILDING_CONTROL, which is the
+      second FAQ answer, so the FAQPage answer text changed by exactly that
+      one sentence (git diff of the constant against 20f2ad0^ confirms it is
+      the only difference). Schema shape is unchanged: the same three nodes
+      and six questions. Verified live today: every JSON-LD block parses, all
+      six FAQ answers match the visible text, no standalone Service node. The
+      four town pages carry the identical sentence change inside their FAQ
+      answers and /groundworks-woking validated 0 errors, 0 warnings today,
+      so the guide's external verdict is expected to match; it is recorded as
+      pending until the validator actually returns it.
+- [x] Draft reply to Jason run through the humanizer skill at Ed's request:
+      five edits (one rule of three, two signposting sentences, one
+      "actually" in a heading, one keep/keep/keep parallel). No dashes, no
+      curly quotes.
 
 Blocking on Jason:
 - [ ] Does Surrey Contracting hold a current HSE asbestos licence? /demolition
