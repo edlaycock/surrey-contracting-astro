@@ -390,11 +390,25 @@ two project pages" claim is false today (fresh fetch, zero hits for the old
 identity on all 26 pages) and its own reference list includes two URLs that
 have been 301s since August. But it caught two real things we missed.
 
-Done in source (this commit):
+Shipped in PR #13, squash-merged as `20f2ad0` on 22 Sep, verified live:
 - [x] "private approved inspector" replaced with Registered Building Control
       Approver on all four town pages and the planning guide. My error, from
       14 to 16 Sep. Approved Inspectors ceased in England in April 2024.
+      Live: the term is on all five pages; "approved inspector" survives only
+      in the guide's deliberate "the body that replaced approved inspectors"
+      clause. FAQ schema on the four town pages carries the new wording and
+      every answer still matches the visible text.
 - [x] Nine joined sentences and "carrys" fixed on /demolition and /earthworks.
+      Live: zero joined sentences on either page, "carrys" gone.
+- [x] validator.schema.org, live: /groundworks-woking 0 errors, 0 warnings,
+      3 objects (BreadcrumbList, Service, FAQPage), isRendered true.
+- [ ] validator.schema.org, live: /guides/groundworks-planning. Rate limited
+      twice on 22 Sep; retry pending. The page's JSON-LD was not changed by
+      PR #13 (only a prose sentence), and it validated clean on 15 Sep.
+- [x] Draft reply to Jason run through the humanizer skill at Ed's request:
+      five edits (one rule of three, two signposting sentences, one
+      "actually" in a heading, one keep/keep/keep parallel). No dashes, no
+      curly quotes.
 
 Blocking on Jason:
 - [ ] Does Surrey Contracting hold a current HSE asbestos licence? /demolition
