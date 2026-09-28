@@ -56,3 +56,16 @@ replaced by Registered Building Control Approvers in England in April 2024.
 Rule: any regulatory or statutory term in copy (building control, asbestos,
 waste, CDM, party wall) gets checked against the current GOV.UK or HSE page
 before it ships, not written from memory.
+
+## Check the legal basis before recommending a removal (28 Sep 2026)
+
+I told Ed the line on the Surrey Hills Surfacing site saying it is a trading
+name of Surrey Contracting Limited should come off, to reduce the chance of
+Google merging the two Business Profiles. Surrey Contracting Limited is the
+operating company and SHS is its trading name, so that line is a statutory
+disclosure and cannot be removed. Rule: before recommending that anything
+identifying a company, its registered name, number, address or VAT number,
+is removed from a site or profile, check whether it is there because the law
+requires it. Solve entity-separation problems with what Google actually uses
+to tell profiles apart: distinct names, phone numbers, categories, websites
+and prompt verification, not by hiding legal identity.
