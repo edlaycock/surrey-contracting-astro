@@ -7,12 +7,12 @@ Prepared by Ed for Jason. Covers the Surrey Contracting website, search and Goog
 - The website rebuild is complete and live: 26 pages, four town pages, an areas page, two guides, corrected company details, structured data passing Google's validator.
 - The site produced 19 genuine form enquiries between 1 July and 28 September. Phone calls are not measured, so the true number is higher and unknown.
 - Organic search is not yet delivering. The site is young, the new pages are one to two weeks old, and Surrey Contracting is not on page one for its main terms today.
-- The Google Business Profile was removed by Google on or about 24 September. A new one was created on 29 September and needs your video tomorrow.
+- The Google Business Profile was removed by Google on or about 24 September. A new one was created and verified by email on 29 September and should appear on Google within days.
 - Four decisions are yours to make in this meeting. They are listed in section 6.
 
 ## 2. What the monthly fee covers
 
-Fee: [ED: amount and what it includes].
+Fee: £200 a month. That buys four to five hours of SEO work and site amendments each month, which also covers monitoring, Search Console, structured data checks and this monthly update.
 
 Delivered since the August plan, all live on surreycontracting.co.uk:
 
@@ -25,7 +25,7 @@ Delivered since the August plan, all live on surreycontracting.co.uk:
 | 22 Sep | Building control terminology corrected, spacing and spelling fixes, your audit brief checked page by page against the live site |
 | Ready | Asbestos wording changed to coordination through licensed specialists across five pages, goes live on release |
 
-Ongoing under the fee: hosting and deployment, monitoring, Search Console, structured data checks, this monthly pack from October.
+September ran well over the monthly hours because the rebuild was the priority. From October the work fits the four to five hours, in the order set out in section 7.
 
 ## 3. Enquiries: what actually arrived
 
@@ -59,37 +59,33 @@ One competitor to know about: Surrey Hills Contracting Ltd, a demolition and ena
 
 ## 5. Google Business Profile
 
-What happened: on 20 August Google asked for video verification after the address change to Send. The profile stayed unverified for five weeks at the old Effingham address, the same address as the verified SHS profile. Google removed it as a duplicate on or about 24 September. Nobody deleted it and no video was ever submitted, so nothing was there to defend it.
+What happened: on 20 August Google asked for further verification after the address change to Send. The profile stayed unverified for five weeks at the old Effingham address, the same address as the verified SHS profile. Google removed it as a duplicate on or about 24 September. Nobody deleted it, and nothing was in place to defend it.
 
-What is done: a new profile for Surrey Contracting Limited at Unit 3, Tannery House, created on 29 September. Excavating contractor, demolition contractor and construction company as categories. 01483 number. No surfacing, paving or road services on it anywhere. You are on it as an owner.
+What is done: a new profile for Surrey Contracting Limited at Unit 3, Tannery House, created and verified by email on 29 September. Excavating contractor, demolition contractor and construction company as categories. 01483 number. No surfacing, paving or road services on it anywhere. You and I are the only people with access.
 
-What it needs: your video from the yard tomorrow morning, then it goes public once Google approves it, usually within a few days. After that, photos of real work and the first genuine reviews from clients who are happy to be asked.
+What happens next: Google usually publishes a newly verified profile within a few days. Then it needs photos of real work, the services and description filled out fully, and the first genuine reviews from clients who are happy to be asked. That is October's work.
 
 ## 6. Decisions for you
 
 1. Positioning. You said both: developers, builders and main contractors first, suitable residential kept. The enquiry data says the site currently brings in householders, more than half from outside the patch. Agreeing "both" means agreeing what we say no to. Proposal: keep the residential pages and form, and rewrite demolition and earthworks for commercial buyers.
 2. Commercial surfacing under the Surrey Contracting name. A commercial surfacing page now exists at contact.surreycontracting.co.uk, built by your other agency, on your domain, open to Google. It says Surrey Contracting is a commercial surfacing contractor while the main site, at your instruction, says nothing about surfacing. Which business owns commercial surfacing? If SHS, that page should come down. If Surrey Contracting, it belongs on the main site openly. A subdomain saying the opposite of the main site is the worst version of both.
 3. One definition of a lead. A form sent, or a call. Started forms and taps on the phone number do not count. This is how enquiries will be reported from October.
-4. Who owns the Google profile. You as primary owner, with both agencies as managers, so it survives any change of supplier.
+4. Call tracking. A tracking number on the website is the only way to count the calls the site produces. It carries a small monthly cost of its own. Yes or no.
 
-## 7. Recommended extra work, with cost and why
+## 7. The next three months: October to December
 
-Costs to be confirmed by Ed. Nothing here starts without your yes.
+All of this fits inside the monthly hours. It runs in this order, and it moves faster the sooner the material in section 8 arrives.
 
-| Work | Why | Cost |
-|---|---|---|
-| Call tracking number on the website | Calls are the missing half of the enquiry count. Without it nobody can say what the site brings in | [ED] |
-| Lead measurement in analytics | Count sent forms and calls, with their source, so the monthly report is true | [ED] |
-| Demolition and earthworks page rewrites | The two oldest pages on the site, written for householders, with no case study behind demolition at all | [ED] |
-| Four case studies from your project forms | The single biggest factor in ranking for commercial terms and in converting commercial visitors | [ED] |
-| Business Profile build-out and a reviews routine | Local pack visibility for "near me" searches, currently zero | [ED] |
-| Monthly one-page report | Answers "what am I paying for" without asking | included |
+| Month | Work |
+|---|---|
+| October | Asbestos wording released. Business Profile filled out: photos, services, description, first review requests. Lead measurement set up so sent forms and calls are counted with their source. Re-indexing requested for every page changed since 14 September. Esher demolition case study written and published as soon as the facts arrive. |
+| November | Demolition page rewritten for commercial buyers, using the Esher case study as its proof. Two further case studies from your forms. Guildford landscaping project replaced by a groundworks job so the Guildford page has the right evidence. |
+| December | Earthworks page rewritten. Fourth case study. Town pages refreshed with the new proof. Review against the targets in section 9, and the plan for the new year agreed. |
 
-Not recommended: any further location pages until there is real work in those towns to show, and any link buying.
+Not planned: any further location pages until there is real work in those towns to show, and any link buying.
 
 ## 8. What I need from you
 
-- Tomorrow: the verification video from the yard.
 - This week: the Esher demolition facts, outstanding since 20 August. Client type, scope, what was hard, outcome, rough dates. Bullets are fine.
 - This week: a completed Guildford groundworks job, so the patio can come off the Guildford page.
 - Next two weeks: three or four projects on the form I sent, with photos.
@@ -100,13 +96,13 @@ Not recommended: any further location pages until there is real work in those to
 
 | By | Target | How measured |
 |---|---|---|
-| 10 Oct | Business Profile verified and public, asbestos wording live, call tracking live, lead definition agreed | Visible on Google and on the site |
-| 31 Oct | Every enquiry counted, forms and calls, with source. First monthly report | Report |
-| 30 Nov | Esher and three further case studies live. Demolition and earthworks pages rewritten. Surrey Contracting in the local pack for at least one core term from Woking | Live pages, Google |
+| 10 Oct | Business Profile public on Google, asbestos wording live, lead definition agreed, call tracking decided | Visible on Google and on the site |
+| 31 Oct | Every enquiry counted, forms and calls if tracking is on, with source. First monthly report | Report |
+| 30 Nov | Esher and two further case studies live. Demolition page rewritten. Surrey Contracting in the local pack for at least one core term from Woking | Live pages, Google |
 | 31 Jan | Page one organic for at least two of: groundworks contractor Surrey, demolition contractors Surrey, groundworks Woking, groundworks Guildford | Search Console, report |
 
 If the January target is missed the review is on the approach, not on more spend.
 
 ## 10. The monthly update
 
-One page, first week of each month, covering: what went live, enquiries by source and type (forms and calls), organic movement on the tracked terms, Business Profile views and calls, what is planned next, what is needed from you. No jargon and no numbers that cannot be traced to a source.
+One page, first week of each month, covering: what went live, hours used, enquiries by source and type (forms and calls), organic movement on the tracked terms, Business Profile views and calls, what is planned next, what is needed from you. No jargon and no numbers that cannot be traced to a source.
