@@ -82,6 +82,8 @@ All of this fits inside the monthly hours. It runs in this order, and it moves f
 | November | Demolition page rewritten for commercial buyers, using the Esher case study as its proof. Two further case studies from your forms. Guildford landscaping project replaced by a groundworks job so the Guildford page has the right evidence. |
 | December | Earthworks page rewritten. Fourth case study. Town pages refreshed with the new proof. Review against the targets in section 9, and the plan for the new year agreed. |
 
+Two ways to run it. Within the monthly hours it takes the three months above. If you want it done sooner, the same work can be brought forward as additional work on top of the fee, most of it in October, and I will price that up and advise before anything starts. Your call, and it can be either in full or just the case studies.
+
 Not planned: any further location pages until there is real work in those towns to show, and any link buying.
 
 ## 8. What I need from you
@@ -91,6 +93,7 @@ Not planned: any further location pages until there is real work in those towns 
 - Next two weeks: three or four projects on the form I sent, with photos.
 - In writing: confirmation of the £10m public liability figure, which is stated in the site's machine-readable company summary.
 - A yes or no on each of the four decisions above.
+- Whether the October to December work runs within the monthly hours or is brought forward as additional priced work.
 
 ## 9. Targets and review dates
 
