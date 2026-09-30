@@ -507,3 +507,31 @@ questions and answers present in visible text; grep of the built site for
 returns nothing.
 
 PR opened for Ed to merge. Not merged unprompted: it changes a live claim.
+
+## Unverified claims removed and v1 landing page FAQ schema parity (30 Sep 2026)
+
+Branch claude/lp-v1-claims-fix, cut from origin/main so it merges independently
+of the v2 work. Ed ruled Constructionline, an HSE asbestos licence and CCDO
+qualified operatives unverified; none of them may appear on the site.
+
+Changed:
+- CCDO: /lp/demolition (meta description, hero trust item, body copy, feature
+  list, FAQ answer and its JSON-LD) and /demolition (feature list, FAQ answer
+  and its JSON-LD) now say "CSCS cards" or "CSCS carded operatives".
+- Constructionline: homepage meta description (now "CHAS and SafeContractor
+  accredited") and two homepage FAQ answers in src/data/homepage.ts, which feed
+  both the visible FAQ and the FAQPage schema.
+- llms.txt and llms-full.txt: CCDO and the "Constructionline Gold" line removed.
+- FAQPage JSON-LD on all five /lp pages rewritten to the visible answer text
+  word for word (12 answers changed: demolition 3, groundworks 2, earthworks 1,
+  agricultural 2, drainage 4). Visible copy only changed where it held CCDO.
+Not changed: asbestos wording, which already matches the approved
+coordination wording from the 22 Sep change on every page and in llms files.
+
+Verified: npm run build green with all three postbuild guards; grep of
+dist/client for Constructionline and CCDO returns nothing, and every
+"licensed asbestos" hit is the approved coordination wording; parity script
+on the built HTML shows all 4 of 4 questions and answers identical on each
+/lp page and 10 of 10 on the homepage. /demolition: 7 of 7 questions, 6
+answers identical, the cost answer's schema text is the visible answer minus
+its follow-on guide link paragraph (left as is).
