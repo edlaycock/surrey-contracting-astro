@@ -510,8 +510,11 @@ PR opened for Ed to merge. Not merged unprompted: it changes a live claim.
 
 ## Landing page v2 (A/B) - demolition, groundworks, earthworks (30 Sep 2026)
 
-STATUS: PLAN ONLY. NOTHING BUILT. Awaiting Ed's go-ahead on the open
-questions at the end.
+STATUS (30 Sep): plan approved by Ed as written; H1 order "Surrey
+demolition contractors". demolition-2 BUILT (uncommitted) with the scoped
+CSS block and check-lp.mjs; screenshots taken, awaiting Ed's look before
+groundworks-2 and earthworks-2. v1 fixes (CCDO, FAQ drift, homepage
+Constructionline) are a separate change, not touched here.
 
 ### Goal
 
@@ -953,11 +956,18 @@ the v1 /lp pages, any image.
 
 ### Implementation items (checkable)
 
-- [ ] Build demolition-2 first, on this branch, with the scoped CSS block
+- [x] Build demolition-2 first, on this branch, with the scoped CSS block
       and the guard. Run the full verification below on that one page.
+      Done 30 Sep: src/pages/lp/demolition-2.astro, LP v2 block appended
+      to public/styles.css (hand-authored, served directly; no source
+      file), scripts/check-lp.mjs, postbuild line. Evidence under
+      "Verification steps" below.
 - [ ] Playwright screenshots of demolition-2 at 375 and 1280 sent to Ed
       before the other two pages are written (lessons.md: mock-up before
       the full build on a commercial page).
+      Screenshots TAKEN 30 Sep (fold and full page at 375x812 and
+      1280x800, session scratchpad lp2/demolition-2-*.png); not yet sent
+      to Ed, so left unticked.
 - [ ] After Ed's look, clone the skeleton to groundworks-2 and earthworks-2
       with their own copy, images, FAQ constants and lead sources.
 - [ ] Extend the guard's page list to all three.
@@ -1042,6 +1052,34 @@ the v1 /lp pages, any image.
     with a clearly marked test message; confirm the enquiry email's last
     line reads "Page: /lp/demolition-2" and GA4 DebugView shows
     generate_lead with event_label lp_demolition_2.
+
+Evidence, demolition-2 only (30 Sep, this sandbox, node 22):
+- 1: `npm run build` exit 0; check-homepage, check-locations,
+  check-guides and check-lp all passed ("lp/demolition-2: ok (5 FAQ
+  questions, 16 assets checked)"). Guard proven: with one em dash put in
+  the trust line, the build exited 1 with "check-lp: FAILED -
+  lp/demolition-2: em dash present"; reverted, exit 0 again. Mutating the
+  built HTML (one FAQ answer word, one image path) also failed the guard
+  with the parity and missing-asset messages.
+- 2: dash grep on dist/client/lp/demolition-2/ printed nothing.
+- 3: noindex count 1. 4: `/lp/` in sitemap-0.xml count 0.
+- 5: no /lp/ link in src/components, src/layouts, src/pages/index.astro.
+- 6: FAQ parity: 5 schema, 5 visible, 0 of 5 not matching (exact
+  equality, in order).
+- 7: id="quoteForm" count 1; data-lead-source="lp_demolition_2".
+- 8: forbidden-word grep returned nothing.
+- 9: all 18 /assets/ paths in the built page exist under public/; no
+  external image hosts.
+- 10: 375x812: h1 2 lines (28px), lede bottom 361px, CTAs bottom 445 and
+  503 (inside 812), scrollWidth 375, 2 eyebrows, 5 FAQ items, no broken
+  images. 1280x800: h1 2 lines (64px), CTAs bottom 568, scrollWidth
+  1280. Sticky bar: unified labels overflowed at 375 (right edge 407px),
+  fixed with a scoped .lp2-sticky rule under 480px; both buttons now fit
+  at 320 to 414. prefers-reduced-motion: tile transition computes to 0s.
+- Site-wide, not this page: at 320 wide the shared .contact-grid
+  overflows by 18px (v1 /lp/demolition and /demolition overflow by 20px
+  the same way). Nav keeps its own "Request quote" label and a "Call us"
+  aria-label on the mobile phone icon; both are site chrome.
 
 ### Risks
 
