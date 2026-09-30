@@ -507,3 +507,10 @@ questions and answers present in visible text; grep of the built site for
 returns nothing.
 
 PR opened for Ed to merge. Not merged unprompted: it changes a live claim.
+
+## 30 Sep 2026: PR #16 merged, asbestos wording live, meeting pack
+
+- PR #16 squash-merged as 2dcdc55 (deploy run 75). Live validation at 06:25 UTC: 26 sitemap URLs, no old asbestos claim on any page, /demolition new heading and FAQ question present, 4 JSON-LD blocks parse, FAQ parity 7 of 7, homepage card, /about, llms.txt and llms-full.txt all on the coordination wording. All pass.
+- Branch reset onto main after the merge. Docs committed since: meeting pack (tasks/meeting-pack-surrey-contracting-2026-09-30.md and PDF) and the September update email (tasks/sc-september-update-email.txt), both marking the asbestos change as live 30 Sep.
+- Google Business Profile: the old profile (Effingham address, unverified since the 20 Aug re-verification request) was removed by Google on or about 24 Sep, most likely as a duplicate of the verified SHS profile at the same address. Ed created a new profile at Unit 3, Tannery House on 29 Sep, verified by email. Only Ed and Jason have access. Awaiting publication on Google.
+- Not ours: Surrey Contracting's Google Ads moved to Jason's other agency on 9 Sep. Meeting pack covers website, search and profile only.
