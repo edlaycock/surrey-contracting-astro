@@ -43,7 +43,7 @@ Source: the website enquiry emails in the inbox, 1 July to 28 September. Tests a
 - By area: 8 inside the core Surrey patch, 11 outside it (south and south east London, Croydon, Bracknell, Ascot, Morden, Harrow, Hampshire).
 - Two said they found the site through Google. Most did not say. The source question was only added to the form on 3 September, so from October this will be answered for every enquiry.
 
-Phone enquiries are not counted anywhere. The site has no call tracking number, so the calls it generates are invisible. This is the biggest gap in knowing what the website brings in, and it is cheap to close.
+Phone enquiries are not counted anywhere, so the calls the site generates are invisible. This is the biggest gap in knowing what the website brings in, and it can be closed at no cost (decision 4).
 
 ## 4. Organic search: where it stands
 
@@ -70,7 +70,7 @@ What happens next: Google usually publishes a newly verified profile within a fe
 1. Positioning. You said both: developers, builders and main contractors first, suitable residential kept. The enquiry data says the site currently brings in householders, more than half from outside the patch. Agreeing "both" means agreeing what we say no to. Proposal: keep the residential pages and form, and rewrite demolition and earthworks for commercial buyers.
 2. Commercial surfacing under the Surrey Contracting name. A commercial surfacing page now exists at contact.surreycontracting.co.uk, built by your other agency, on your domain, open to Google. It says Surrey Contracting is a commercial surfacing contractor while the main site, at your instruction, says nothing about surfacing. Which business owns commercial surfacing? If SHS, that page should come down. If Surrey Contracting, it belongs on the main site openly. A subdomain saying the opposite of the main site is the worst version of both.
 3. One definition of a lead. A form sent, or a call. Started forms and taps on the phone number do not count. This is how enquiries will be reported from October.
-4. Call tracking. A tracking number on the website is the only way to count the calls the site produces. It carries a small monthly cost of its own. Yes or no.
+4. Counting calls without paying for it. Google Ads includes free call tracking for visitors who arrive from an ad: a forwarding number is swapped in for them and every call is counted with its length. It needs Tom to switch it on in the Ads account and a ten-minute snippet on our side. At the same time the phone tap event should be downgraded from a primary conversion, so the bidding stops chasing taps. Fallback if neither happens: a sheet by the phone for a month, asking every caller how they found you.
 
 ## 7. The next three months: October to December
 
@@ -99,8 +99,8 @@ Not planned: any further location pages until there is real work in those towns 
 
 | By | Target | How measured |
 |---|---|---|
-| 10 Oct | Business Profile public on Google, lead definition agreed, call tracking decided | Visible on Google and on the site |
-| 31 Oct | Every enquiry counted, forms and calls if tracking is on, with source. First monthly report | Report |
+| 10 Oct | Business Profile public on Google, lead definition agreed, free call counting switched on or the phone sheet started | Visible on Google and on the site |
+| 31 Oct | Every enquiry counted, forms and calls, with source. First monthly report | Report |
 | 30 Nov | Esher and two further case studies live. Demolition page rewritten. Surrey Contracting in the local pack for at least one core term from Woking | Live pages, Google |
 | 31 Jan | Page one organic for at least two of: groundworks contractor Surrey, demolition contractors Surrey, groundworks Woking, groundworks Guildford | Search Console, report |
 
