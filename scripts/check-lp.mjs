@@ -44,6 +44,9 @@ const FORBIDDEN = [
   'asbestos removal licen',
   'fully licensed',
   'aggregaterating',
+  // Ed, 30 Sep: the v2 pages promise an itemised written quotation, not a set price.
+  'fixed-price',
+  'fixed price',
 ];
 
 const EM_DASH = '—';

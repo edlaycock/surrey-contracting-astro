@@ -640,7 +640,7 @@ clicks per session) against v1.
 
 Held constant so the result is about structure, not offer: same hero photo,
 same H1 subject, same offer (free site visit, one working day response,
-fixed-price itemised quotation), same two CTA labels, same form and fields,
+itemised written quotation), same two CTA labels, same form and fields,
 same phone number, same FAQ count (five, one more than v1, because the
 source has five and the "how do I get a quote" answer carries the offer),
 same sticky CTA bar. Only the page structure and copy density change.
@@ -674,7 +674,7 @@ hero and on the closing CTA. No other section carries an eyebrow.
    --yellow, one sentence in --grey-200. Four items, not three.
 5. How it works (new .lp2-steps). H2 and four numbered steps on --grey-50.
    Steps carry the published promises: site visit within 5 working days,
-   fixed-price itemised quotation, one point of contact.
+   itemised written quotation, one point of contact.
 6. Recent work (groundworks-2 and earthworks-2 only, reusing .proj-grid and
    .proj). Two or three real project tiles linking to /projects/<slug>, and
    a "View all projects" button. demolition-2 has no such section because no
@@ -742,7 +742,7 @@ site; no client names except those already on the published project pages.
   assessments and method statements for every job); Own plant and crews
   (self-delivered, as the homepage says).
 - How it works. H2 "How a demolition job runs with us". Steps: Free site
-  visit within 5 working days; Fixed-price itemised quotation; Survey, RAMS
+  visit within 5 working days; Itemised written quotation; Survey, RAMS
   and asbestos sequencing; Demolition, crushing and handover.
 - No Recent work section (see claims table).
 - FAQ. H2 "Demolition FAQs".
@@ -783,7 +783,7 @@ site; no client names except those already on the published project pages.
   15+ years; Accredited; Safety first; Surrey and South East coverage
   (from Send, near Woking, the published base).
 - How it works. H2 "How a groundworks job runs with us". Steps: Free site
-  visit within 5 working days; Fixed-price itemised quotation; Programme
+  visit within 5 working days; Itemised written quotation; Programme
   agreed to your drawings and levels; Dig to DPC with one point of contact.
 - Recent work. H2 "Groundworks we have delivered". Tiles: Drainage
   Installation, Ascot; Concrete Base Installation, Premier Inn Cobham; Site
@@ -828,7 +828,7 @@ site; no client names except those already on the published project pages.
   15+ years; Accredited; Safety first; Own plant (tracked excavators,
   dumpers and support plant, 1.5 to 30 tonnes).
 - How it works. H2 "How an earthworks job runs with us". Steps: Free site
-  visit within 5 working days; Fixed-price itemised quotation; Cut and fill
+  visit within 5 working days; Itemised written quotation; Cut and fill
   to your drawings and levels; Muck away, compaction and handover.
 - Recent work. H2 "Earthworks we have delivered". Tiles: Site Clearance and
   Earthworks, Farnham; Domestic Earthworks, Horsell, Woking; third slot is
@@ -868,7 +868,7 @@ site; no client names except those already on the published project pages.
 | "ponds, lakes and swimming pools" | earthworks | Retained; live /earthworks has a "Lakes, Ponds & Swimming Pools" section. |
 | "Agricultural Groundworks" | groundworks | Retained; live /groundworks has an agricultural section and /lp/agricultural exists. |
 | "Are you a licensed excavation contractor? Yes." | earthworks | Question reworded to accreditation; there is no excavation licence to claim. |
-| "Free, no-obligation quote", "detailed written quotation" | all three | Retained as "free site visit" and "fixed-price itemised quotation", both live on /demolition and the homepage; "within 5 working days" and "one working day response" are the published promises. |
+| "Free, no-obligation quote", "detailed written quotation" | all three | Retained as "free site visit" (live on /demolition and the homepage) and "itemised written quotation" (Ed, 30 Sep: the v2 pages promise an itemised written quotation, not a set price); "within 5 working days" and "one working day response" are the published promises. |
 | Coverage: Surrey, London and the South East; Guildford, Woking, Reigate, Epsom, Leatherhead | all three | Retained; matches areaServed in BaseLayout. Leatherhead appears only as a service area, as on the homepage. |
 | Client names | none in source | None added except Premier Inn Cobham and the published project titles, which are already on /projects. |
 | Guarantees, years founded, headcount, turnover | none in source | None; none introduced. |
