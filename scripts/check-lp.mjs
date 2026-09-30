@@ -16,8 +16,9 @@
  *   - the Service or BreadcrumbList node is missing
  *   - a forbidden term appears (unsupported claims, the surfacing business,
  *     aggregateRating)
- *   - an /assets/ path is referenced that does not exist under public/, or an
- *     image is loaded from another host
+ *   - an /assets/ path is referenced that does not exist under public/ or
+ *     cannot be URI-decoded, or an image is loaded from another host through
+ *     an <img> or a CSS url()
  *   - the hero carries an eyebrow (Ed, 30 Sep: v2 heroes have none)
  *   - a /projects/<slug> link points at a page that was not built
  *   - the URL appears in sitemap-0.xml
@@ -47,6 +48,8 @@ const FORBIDDEN = [
   // Ed, 30 Sep: the v2 pages promise an itemised written quotation, not a set price.
   'fixed-price',
   'fixed price',
+  // Offer parity with v1 (Ed, 30 Sep): v1 does not promise a visit window.
+  '5 working days',
 ];
 
 const EM_DASH = '—';
@@ -132,15 +135,23 @@ for (const { slug, leadSource } of V2_PAGES) {
   if (!nodes.some((n) => n['@type'] === 'BreadcrumbList')) failures.push(`${slug}: no BreadcrumbList in JSON-LD`);
 
   // Every local asset must exist; no image may come from another host.
-  const assets = new Set(
-    [...html.matchAll(/(?:src|href)="(\/assets\/[^"]+)"|url\(['"]?(\/assets\/[^'")]+)['"]?\)/g)]
-      .map((m) => decodeURI(decode(m[1] || m[2]))),
-  );
+  const assets = new Set();
+  for (const m of html.matchAll(/(?:src|href)="(\/assets\/[^"]+)"|url\(['"]?(\/assets\/[^'")]+)['"]?\)/g)) {
+    const raw = decode(m[1] || m[2]);
+    try {
+      assets.add(decodeURI(raw));
+    } catch {
+      failures.push(`${slug}: malformed asset path (cannot be URI-decoded): ${raw}`);
+    }
+  }
   for (const a of assets) {
     if (!existsSync(join(PUBLIC, a))) failures.push(`${slug}: referenced asset does not exist: ${a}`);
   }
   const external = [...html.matchAll(/<img\b[^>]*\bsrc="(https?:)?\/\/[^"]+"/gi)].map((m) => m[0]);
   if (external.length) failures.push(`${slug}: ${external.length} image(s) loaded from an external host`);
+  // Same rule for CSS backgrounds, inline styles or <style> blocks.
+  const externalCss = [...html.matchAll(/url\(['"]?(https?:)?\/\/[^'")]+/gi)].map((m) => m[0]);
+  if (externalCss.length) failures.push(`${slug}: ${externalCss.length} CSS url() reference(s) to an external host: ${externalCss.slice(0, 2).join(', ')}`);
 
   if (failures.length === before) console.log(`${slug}: ok (${faq ? faq.mainEntity.length : 0} FAQ questions, ${assets.size} assets checked)`);
 }

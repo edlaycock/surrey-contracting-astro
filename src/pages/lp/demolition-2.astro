@@ -20,37 +20,37 @@ const QUOTE_LABEL = 'Get a free quote';
 const SERVICES = [
   {
     title: 'Full structural demolition',
-    img: '/assets/img/demolition.jpg',
+    img: '/assets/img/demolition-640.webp',
     alt: 'Excavator demolishing a structure on a Surrey site',
     text: 'Complete structural take-downs and partial demolition for renovation, on residential and commercial sites.',
   },
   {
     title: 'Soft strip-out',
-    img: '/assets/img/services/demolition-softstrip.webp',
+    img: '/assets/img/services/demolition-softstrip-640.webp',
     alt: 'Interior soft strip-out with fixtures and fittings removed',
     text: 'Fixtures, fittings, ceilings, partitions and M&E removed while the structural frame stays in place.',
   },
   {
     title: 'Site clearance',
-    img: '/assets/img/services/demolition-clearance.webp',
+    img: '/assets/img/services/demolition-clearance-640.webp',
     alt: 'Cleared demolition site ready for the next phase of works',
     text: 'Debris, vegetation and redundant structures cleared and waste disposed of responsibly, ready for the next phase.',
   },
   {
     title: 'Concrete crushing',
-    img: '/assets/img/services/demolition-crushing.jpg',
+    img: '/assets/img/services/demolition-crushing-640.webp',
     alt: 'Mobile crusher processing demolition arisings into aggregate',
     text: 'On-site mobile crushing or off-site processing turns arisings into reusable sub-base, fill and drainage aggregate.',
   },
   {
     title: 'Site hoarding and security',
-    img: '/assets/img/services/demolition-hoarding.webp',
+    img: '/assets/img/services/demolition-hoarding-640.webp',
     alt: 'Timber site hoarding around a demolition project',
     text: 'Surface-mounted and dug-in hoarding, Harris fencing and gates, with CCTV and alarms through specialist partners.',
   },
   {
     title: 'Asbestos surveys and licensed removal coordination',
-    img: '/assets/img/Asbestos.jpg',
+    img: '/assets/img/asbestos-640.webp',
     alt: 'Asbestos survey being carried out before demolition',
     text: 'The refurbishment and demolition survey is arranged first, licensed removal is carried out by an HSE-licensed specialist contractor, and Surrey Contracting sequences the two with the demolition programme.',
   },
@@ -60,14 +60,14 @@ const WHY = [
   { fig: '15+ years', text: 'Delivering demolition, groundworks and earthworks across Surrey, London and the South East.' },
   { fig: 'Accredited', text: 'CHAS, SafeContractor, SSIP and SMAS schemes, with CSCS-carded operatives on site.' },
   { fig: 'Safety first', text: 'Written risk assessments and method statements for every job, in place before work starts.' },
-  { fig: 'Own plant and crews', text: 'Demolition, crushing and clearance self-delivered with our own plant and operators.' },
+  { fig: 'Own plant and crews', text: 'Demolition and clearance self-delivered with our own plant and operators, with on-site crushing where space allows.' },
 ];
 
 const STEPS = [
-  { title: 'Free site visit within 5 working days', text: 'We measure the site and check access, services and constraints.' },
-  { title: 'Itemised written quotation', text: 'A written quotation broken down line by line, so you can compare like for like.' },
+  { title: 'Free site visit', text: 'A contracts manager is in touch within one working day to arrange a visit and look at access, services and constraints.' },
+  { title: 'Quotation', text: 'We price the job from what we saw on site and send you our quote.' },
   { title: 'Survey, RAMS and asbestos sequencing', text: 'The asbestos survey, risk assessments and method statements are in place before anyone starts on site.' },
-  { title: 'Demolition, crushing and handover', text: 'One point of contact runs the job through demolition, crushing and clearance to a clean handover.' },
+  { title: 'Demolition, clearance and handover', text: 'One point of contact runs the job through demolition and clearance, with on-site crushing where space allows, to handover.' },
 ];
 
 const FAQS = [
@@ -89,7 +89,7 @@ const FAQS = [
   },
   {
     q: 'How do I get a quote for demolition work?',
-    a: 'Call 01483 323568 or send the form on this page. We respond within one working day, visit the site free of charge within 5 working days, and follow up with an itemised written quotation before any work starts.',
+    a: 'Call 01483 323568 or send the form on this page. A contracts manager will be in touch within one working day to arrange a free site visit, and you have one point of contact from quote to handover.',
   },
 ];
 
@@ -104,7 +104,7 @@ const faqSchema = {
 };
 ---
 <BaseLayout
-  title="Demolition Contractors Surrey | Free Site Visit, Written Quote"
+  title="Demolition Contractors Surrey | Free Site Visit, Free Quote"
   description="Structural demolition, soft strip-out, site clearance and concrete crushing across Surrey, London and the South East. CHAS, SafeContractor and SSIP accredited. Call 01483 323568."
   path="/lp/demolition-2"
 >
@@ -131,7 +131,7 @@ const faqSchema = {
   <div class="container">
     <ul class="lp2-trust-logos">
       {ACCREDITATION_LOGOS.map(({ logo, alt }) => (
-        <li class="acc-badge lp2-badge"><img src={logo} alt={alt} width="160" height="80" loading="lazy" decoding="async" /></li>
+        <li class="acc-badge lp2-badge"><img src={logo} alt={alt} width="160" height="80" decoding="async" /></li>
       ))}
     </ul>
     <p class="lp2-trust-line">CHAS, SafeContractor and SSIP accredited. CSCS-carded operatives. Written risk assessments and method statements on every job.</p>

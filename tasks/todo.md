@@ -562,8 +562,10 @@ from nav or footer.
   checkboxes and the qf-success paragraph. v2 pages copy that form block.
   One form per page (lessons.md: the JS binds only the first match).
 - app.js appends `page` = pathname + query to the /api/contact FormData and
-  fires `generate_lead` with event_label = data-lead-source, so a distinct
-  lead source per v2 page gives clean attribution in both the email and GA4.
+  fires `generate_lead` with event_label = data-lead-source. The lead-source
+  label reaches GA4 only: /api/contact does not put it in the enquiry email.
+  The email identifies the variant by its last line, "Page: /lp/<slug>-2",
+  built from the `page` field. No hidden source field is added (Ed, 30 Sep).
 - Sitemap filter in astro.config.mjs excludes any page containing "/lp/".
   Confirmed on a fresh build: `grep -c "/lp/" dist/client/sitemap-0.xml` is 0.
   The new slugs are covered without a config change.
@@ -639,11 +641,13 @@ narrative blocks, will raise the enquiry rate (form sends plus phone
 clicks per session) against v1.
 
 Held constant so the result is about structure, not offer: same hero photo,
-same H1 subject, same offer (free site visit, one working day response,
-itemised written quotation), same two CTA labels, same form and fields,
-same phone number, same FAQ count (five, one more than v1, because the
-source has five and the "how do I get a quote" answer carries the offer),
-same sticky CTA bar. Only the page structure and copy density change.
+same H1 subject, same offer, worded as v1 words it and nothing more (free
+site visit, one working day response, one point of contact from quote to
+handover; v2 promises no visit window and no particular kind of quotation,
+review fix 30 Sep), same two CTA labels, same form and fields, same phone
+number, same sticky CTA bar. The FAQ count differs (five against v1's
+four, because the source has five). Only the page structure and copy
+density change.
 
 Measure: GA4 `generate_lead` by event_label (lp_demolition vs
 lp_demolition_2, and the same for the other two) and `phone_click` by page
@@ -673,8 +677,8 @@ hero and on the closing CTA. No other section carries an eyebrow.
    H2 and four items in a two-by-two grid: figure or scheme name in
    --yellow, one sentence in --grey-200. Four items, not three.
 5. How it works (new .lp2-steps). H2 and four numbered steps on --grey-50.
-   Steps carry the published promises: site visit within 5 working days,
-   itemised written quotation, one point of contact.
+   Steps describe the process and make no offer beyond v1's: free site
+   visit arranged within one working day, quotation, one point of contact.
 6. Recent work (groundworks-2 and earthworks-2 only, reusing .proj-grid and
    .proj). Two or three real project tiles linking to /projects/<slug>, and
    a "View all projects" button. demolition-2 has no such section because no
@@ -711,9 +715,10 @@ site; no client names except those already on the published project pages.
 
 #### /lp/demolition-2 (src/pages/lp/demolition-2.astro)
 
-- Meta: title "Demolition Contractors Surrey | Free Site Visit, Written
-  Quote"; description "Structural demolition, soft strip-out, site clearance
-  and concrete crushing across Surrey, London and the South East. CHAS,
+- Meta: title "Demolition Contractors Surrey | Free Site Visit, Free
+  Quote" (was "Written Quote"; changed 30 Sep for offer parity with v1);
+  description "Structural demolition, soft strip-out, site clearance and
+  concrete crushing across Surrey, London and the South East. CHAS,
   SafeContractor and SSIP accredited. Call 01483 323568."
 - Head: `<meta name="robots" content="noindex,follow">`, ServiceSchema
   name="Demolition" slug="lp/demolition-2", FAQPage JSON-LD from the FAQ
@@ -740,10 +745,12 @@ site; no client names except those already on the published project pages.
   15+ years (already published on the homepage hero and About page);
   Accredited (CHAS, SafeContractor, SSIP, SMAS); Safety first (written risk
   assessments and method statements for every job); Own plant and crews
-  (self-delivered, as the homepage says).
+  (self-delivered, as the homepage says; built text "Demolition and
+  clearance self-delivered with our own plant and operators, with on-site
+  crushing where space allows").
 - How it works. H2 "How a demolition job runs with us". Steps: Free site
-  visit within 5 working days; Itemised written quotation; Survey, RAMS
-  and asbestos sequencing; Demolition, crushing and handover.
+  visit; Quotation; Survey, RAMS and asbestos sequencing; Demolition,
+  clearance and handover.
 - No Recent work section (see claims table).
 - FAQ. H2 "Demolition FAQs".
   1. What types of demolition do you carry out?
@@ -783,7 +790,7 @@ site; no client names except those already on the published project pages.
   15+ years; Accredited; Safety first; Surrey and South East coverage
   (from Send, near Woking, the published base).
 - How it works. H2 "How a groundworks job runs with us". Steps: Free site
-  visit within 5 working days; Itemised written quotation; Programme
+  visit; Quotation; Programme
   agreed to your drawings and levels; Dig to DPC with one point of contact.
 - Recent work. H2 "Groundworks we have delivered". Tiles: Drainage
   Installation, Ascot; Concrete Base Installation, Premier Inn Cobham; Site
@@ -828,7 +835,7 @@ site; no client names except those already on the published project pages.
   15+ years; Accredited; Safety first; Own plant (tracked excavators,
   dumpers and support plant, 1.5 to 30 tonnes).
 - How it works. H2 "How an earthworks job runs with us". Steps: Free site
-  visit within 5 working days; Itemised written quotation; Cut and fill
+  visit; Quotation; Cut and fill
   to your drawings and levels; Muck away, compaction and handover.
 - Recent work. H2 "Earthworks we have delivered". Tiles: Site Clearance and
   Earthworks, Farnham; Domestic Earthworks, Horsell, Woking; third slot is
@@ -868,7 +875,7 @@ site; no client names except those already on the published project pages.
 | "ponds, lakes and swimming pools" | earthworks | Retained; live /earthworks has a "Lakes, Ponds & Swimming Pools" section. |
 | "Agricultural Groundworks" | groundworks | Retained; live /groundworks has an agricultural section and /lp/agricultural exists. |
 | "Are you a licensed excavation contractor? Yes." | earthworks | Question reworded to accreditation; there is no excavation licence to claim. |
-| "Free, no-obligation quote", "detailed written quotation" | all three | Retained as "free site visit" (live on /demolition and the homepage) and "itemised written quotation" (Ed, 30 Sep: the v2 pages promise an itemised written quotation, not a set price); "within 5 working days" and "one working day response" are the published promises. |
+| "Free, no-obligation quote", "detailed written quotation" | all three | Retained only as v1 words it: "free site visit" and "one working day response" (Ed, 30 Sep review: no visit window and no written, itemised or set-price quotation promise on the v2 pages). |
 | Coverage: Surrey, London and the South East; Guildford, Woking, Reigate, Epsom, Leatherhead | all three | Retained; matches areaServed in BaseLayout. Leatherhead appears only as a service area, as on the homepage. |
 | Client names | none in source | None added except Premier Inn Cobham and the published project titles, which are already on /projects. |
 | Guarantees, years founded, headcount, turnover | none in source | None; none introduced. |
@@ -1065,6 +1072,30 @@ the v1 /lp pages, any image.
     with a clearly marked test message; confirm the enquiry email's last
     line reads "Page: /lp/demolition-2" and GA4 DebugView shows
     generate_lead with event_label lp_demolition_2.
+
+Evidence, review fixes (30 Sep, third pass, this sandbox):
+- Offer matched to v1: steps now Free site visit / Quotation / (page
+  step 3) / (page step 4); FAQ 5 answers say a contracts manager will be
+  in touch within one working day to arrange a free site visit. Built HTML
+  of all three: 0 hits for "5 working days", "written quot", "itemised",
+  "fixed", "free of charge". demolition-2 title now "... | Free Site
+  Visit, Free Quote". Guard now also forbids "5 working days".
+- Trust logos: 0 of 8 lazy on each page, decoding="async" kept.
+- Images: 21 resized copies (640px wide .webp, quality 72, sharp 0.34.5
+  from node_modules) next to the originals; originals untouched. Image
+  bytes per page, measured in Chromium after a full scroll (v1 for
+  reference): demolition-2 1,402,220 to 508,803 (v1 389,245);
+  groundworks-2 4,270,577 to 1,239,754 (v1 1,701,299); earthworks-2
+  1,306,956 to 527,400 (v1 491,270). Heroes unchanged.
+- Project cards filtered by getProjects(): 3 cards on groundworks-2, 2 on
+  earthworks-2. With SANITY_DISABLE=1 both pages drop the section (0
+  project links) and check-lp passes; that build fails only in
+  check-locations, which needs Sanity case studies (existing behaviour).
+- Guard: external CSS url() mutation (https and protocol-relative) fails
+  check-lp; malformed %-escape in an asset path now gives a listed
+  failure where the old guard crashed with URIError. Restored: pass.
+- Build exit 0, all four guards green. Screenshots re-taken at 375x812
+  and 1280x800 (fold and full) for all three; no layout regressions.
 
 Evidence, all three v2 pages (30 Sep, second pass, this sandbox):
 - 1: `npm run build` exit 0, all four guards green; check-lp printed

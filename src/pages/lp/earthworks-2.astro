@@ -12,6 +12,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import ServiceSchema from '../../components/ServiceSchema.astro';
 import { ACCREDITATION_LOGOS } from '../../data/homepage';
+import { getProjects } from '../../lib/sanity';
 
 const LEAD_SOURCE = 'lp_earthworks_2';
 const PHONE_LABEL = 'Call 01483 323568';
@@ -21,25 +22,25 @@ const QUOTE_LABEL = 'Get a free quote';
 const SERVICES = [
   {
     title: 'Bulk earthworks',
-    img: '/assets/img/bulk-earthworks.jpg',
+    img: '/assets/img/bulk-earthworks-640.webp',
     alt: 'Excavator and dumper moving material on a bulk earthworks site',
     text: 'Cut and fill, topsoil strip, stockpiling and removal of surplus material, working to your drawings and levels.',
   },
   {
     title: 'Commercial site clearance',
-    img: '/assets/img/services/earthworks-clearance.jpg',
+    img: '/assets/img/services/earthworks-clearance-640.webp',
     alt: 'Commercial site being cleared of vegetation and structures',
     text: 'Structures, vegetation and waste cleared from commercial and domestic sites, with waste segregated and disposed of responsibly.',
   },
   {
     title: 'Bulk excavation',
-    img: '/assets/img/services/earthworks-excavations.jpg',
+    img: '/assets/img/services/earthworks-excavations-640.webp',
     alt: 'Large excavation in progress with a tracked excavator',
     text: 'Excavation for foundations and basements, and for ponds, lakes and swimming pools, with accurate level control.',
   },
   {
     title: 'Land levelling and remediation support',
-    img: '/assets/img/services/earthworks-levelling.jpg',
+    img: '/assets/img/services/earthworks-levelling-640.webp',
     alt: 'Land being graded and levelled for development',
     text: 'Slope adjustment, development platforms and garden re-grading, with remediation support to prepare land for the next phase.',
   },
@@ -53,30 +54,36 @@ const WHY = [
 ];
 
 const STEPS = [
-  { title: 'Free site visit within 5 working days', text: 'We measure the site and check levels, access and ground conditions.' },
-  { title: 'Itemised written quotation', text: 'A written quotation broken down line by line, so you can compare like for like.' },
+  { title: 'Free site visit', text: 'A contracts manager is in touch within one working day to arrange a visit and check levels, access and ground conditions.' },
+  { title: 'Quotation', text: 'We price the works from the site visit and your drawings or levels, and send you our quote.' },
   { title: 'Cut and fill to your drawings and levels', text: 'Material is cut, moved and placed to your approved drawings and levels, and reused on site where it can be.' },
   { title: 'Muck away, compaction and handover', text: 'Surplus is taken away, the platform is compacted, and one point of contact takes the job through to handover.' },
 ];
 
-const PROJECTS = [
+// Wanted project cards, in display order. Only the ones Sanity currently
+// publishes are rendered, so unpublishing a project drops its card instead
+// of leaving a link to a page that no longer builds.
+const PROJECT_CARDS = [
   {
-    href: '/projects/site-clearance-earthworks',
+    slug: 'site-clearance-earthworks',
     tag: 'Earthworks',
     title: 'Site Clearance and Earthworks, Farnham',
-    img: '/assets/img/projects/site-clearance-earthworks-2.jpg',
+    img: '/assets/img/projects/site-clearance-earthworks-2-640.webp',
     alt: 'Cleared and levelled land at a residential site in Farnham',
     text: 'Overgrown land cleared after building works, with around 80 tonnes of green waste removed and 100 tonnes of topsoil brought in.',
   },
   {
-    href: '/projects/domestic-earthworks',
+    slug: 'domestic-earthworks',
     tag: 'Earthworks',
     title: 'Domestic Earthworks, Horsell, Woking',
-    img: '/assets/img/projects/domestic-earthworks-3.jpg',
+    img: '/assets/img/projects/domestic-earthworks-3-640.webp',
     alt: 'Garden earthworks after a swimming pool was filled in, Horsell',
     text: 'Swimming pool broken out and filled in, with 220 tonnes of material moved to set finished garden levels ready for turfing.',
   },
 ];
+
+const published = new Set((await getProjects()).map((p) => p.slug));
+const PROJECTS = PROJECT_CARDS.filter((p) => published.has(p.slug));
 
 const FAQS = [
   {
@@ -97,7 +104,7 @@ const FAQS = [
   },
   {
     q: 'How do I get a quote for earthworks or site clearance?',
-    a: 'Call 01483 323568 or send the form on this page with your project postcode, a description of the works and any drawings or levels you have. We respond within one working day, visit the site free of charge within 5 working days, and follow up with an itemised written quotation.',
+    a: 'Call 01483 323568 or send the form on this page with your project postcode, a description of the works and any drawings or levels you have. A contracts manager will be in touch within one working day to arrange a free site visit.',
   },
 ];
 
@@ -139,7 +146,7 @@ const faqSchema = {
   <div class="container">
     <ul class="lp2-trust-logos">
       {ACCREDITATION_LOGOS.map(({ logo, alt }) => (
-        <li class="acc-badge lp2-badge"><img src={logo} alt={alt} width="160" height="80" loading="lazy" decoding="async" /></li>
+        <li class="acc-badge lp2-badge"><img src={logo} alt={alt} width="160" height="80" decoding="async" /></li>
       ))}
     </ul>
     <p class="lp2-trust-line">CHAS, SafeContractor and SSIP accredited. CSCS-carded operators. Excavators from 1.5 to 30 tonnes.</p>
@@ -196,14 +203,15 @@ const faqSchema = {
   </div>
 </section>
 
+{PROJECTS.length > 0 && (
 <section class="page-section lp2-work">
   <div class="container">
     <div class="section-head">
       <h2 class="section-title">Earthworks we have delivered</h2>
     </div>
     <div class="lp2-proj-grid">
-      {PROJECTS.map(({ href, tag, title, img, alt, text }) => (
-        <a class="proj" href={href}>
+      {PROJECTS.map(({ slug, tag, title, img, alt, text }) => (
+        <a class="proj" href={`/projects/${slug}`}>
           <div class="proj-photo"><img src={img} alt={alt} width="640" height="480" loading="lazy" decoding="async" /></div>
           <div class="proj-meta">
             <span class="proj-tag">{tag}</span>
@@ -212,7 +220,7 @@ const faqSchema = {
           </div>
         </a>
       ))}
-      <div class="lp2-proj-all lp2-proj-all-wide">
+      <div class={PROJECTS.length % 2 === 0 ? 'lp2-proj-all lp2-proj-all-wide' : 'lp2-proj-all'}>
         <h3>More of our work</h3>
         <p>Groundworks, earthworks and drainage projects across Surrey and the South East.</p>
         <a href="/projects" class="btn btn-ghost-light">View all projects</a>
@@ -220,6 +228,7 @@ const faqSchema = {
     </div>
   </div>
 </section>
+)}
 
 <section class="page-section page-section-grey">
   <div class="container">
