@@ -87,10 +87,10 @@ control term. The brief caught both.
 
 | # | Action | Owner | Status |
 |---|---|---|---|
-| 1 | Answer: does Surrey Contracting hold a current HSE asbestos licence? | Jason | **Blocking.** Everything asbestos-related waits on this. |
+| 1 | Answer: does Surrey Contracting hold a current HSE asbestos licence? | Jason | **Answered 22 Sep: no.** "We are not licensed to remove asbestos. We work closely with licensed asbestos removal companies who carry out that work, and we coordinate it." He asked for the wording to be made consistent across the site. |
 | 2 | Replace "private approved inspector" with Registered Building Control Approver on 4 town pages and the guide | Ed / Claude | Done in source, ships next deploy |
 | 3 | Fix joined sentences and "carrys" on `/demolition` and `/earthworks` | Ed / Claude | Done in source, ships next deploy |
-| 4 | Change asbestos wording on `/demolition` and the homepage demolition card to coordination language | Ed / Claude | Copy ready; deploy on Jason's answer to 1 (or immediately if the answer is no) |
+| 4 | Change asbestos wording on `/demolition` and the homepage demolition card to coordination language | Ed / Claude | Done in source 22 Sep on Jason's answer, plus three further places the register had not listed: the demolition FAQ that named it as a service, the About page enabling-works list, and both llms files. PR open for Ed to merge. |
 | 5 | Remove the duplicate "number one priority" heading | Ed | Proposed. Not changed without Ed's say-so. |
 | 6 | Reply to Jason with this register, and ask which tool produced the brief | Ed | Draft updated |
 | 7 | Meeting: decide the commercial-vs-residential positioning before any service page rewrite | Ed and Jason | Next week |

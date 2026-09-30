@@ -477,3 +477,33 @@ untracked, only the promise of one in the reply. Built
   schema validation passed.
 
 Ed sent the reply to Jason on 22 Sep, with the register PDF attached.
+
+## Asbestos wording made consistent (22 Sep 2026)
+
+Jason confirmed in writing: not licensed to remove asbestos; licensed
+removal companies do that work and Surrey Contracting coordinates it. He
+asked for the wording to be made clear and consistent across the site.
+
+Changed, twelve replacements across five files, every one asserted to hit
+exactly the expected number of times:
+- /demolition: the "Licensed Asbestos Removal" section retitled and rewritten
+  as survey and licensed-removal coordination; its five-item feature list
+  rewritten; the FAQ "Does Surrey Contracting carry out asbestos removal
+  before demolition?" replaced with "Who carries out asbestos removal before
+  a demolition?" and an honest answer; the first FAQ's service list changed
+  from "licensed asbestos removal" to coordination; the meta description.
+  Both the hand-written JSON-LD copy and the visible copy changed together.
+- Homepage demolition service card.
+- About page enabling-works list (not in the register; found by grep).
+- llms.txt and llms-full.txt service lists (not in the register; found by
+  grep).
+Not changed: the demolition cost guide, which already had the correct
+position, and the homepage FAQ answers, which already said coordination.
+
+Verified: build green with all three guards; ad-hoc parity check on
+/demolition (no guard covers that page's hand-written FAQ JSON): all seven
+questions and answers present in visible text; grep of the built site for
+"carries out fully licensed", "Licensed ACM removal" and the old FAQ question
+returns nothing.
+
+PR opened for Ed to merge. Not merged unprompted: it changes a live claim.
