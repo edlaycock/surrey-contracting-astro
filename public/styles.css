@@ -3019,6 +3019,29 @@ a.contact-value:hover { color: var(--yellow-700); }
 .lp2-steps-row h3 { font-size: 16px; font-weight: 700; line-height: 1.3; margin-bottom: 8px; }
 .lp2-steps-row p { margin: 0; font-size: 14px; line-height: 1.55; color: var(--text-mute); }
 
+/* Recent work: reuses .proj cards in two columns, never three in a row. */
+.lp2-proj-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+}
+.lp2-proj-grid .proj { grid-column: auto; }
+.lp2-proj-grid .proj-photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.lp2-proj-all {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 12px;
+  padding: clamp(24px, 3vw, 40px);
+  background: var(--grey-800);
+  border-radius: var(--radius-lg);
+  color: var(--white);
+}
+.lp2-proj-all h3 { color: var(--white); font-size: 22px; font-weight: 700; }
+.lp2-proj-all p { margin: 0; font-size: 15px; line-height: 1.55; color: var(--grey-200); }
+.lp2-proj-all-wide { grid-column: 1 / -1; }
+
 @media (max-width: 900px) {
   .lp2-trust-logos { grid-template-columns: repeat(4, minmax(0, 1fr)); }
   .lp2-steps-row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -3026,6 +3049,7 @@ a.contact-value:hover { color: var(--yellow-700); }
 @media (max-width: 700px) {
   .lp2-tiles { grid-template-columns: 1fr; }
   .lp2-why-grid { grid-template-columns: 1fr; gap: 22px; }
+  .lp2-proj-grid { grid-template-columns: 1fr; }
 }
 @media (max-width: 480px) {
   .lp2-trust-logos { gap: 8px; }
@@ -3041,5 +3065,6 @@ a.contact-value:hover { color: var(--yellow-700); }
 }
 @media (prefers-reduced-motion: reduce) {
   .lp2-tile, .lp2-badge.acc-badge, .lp2-badge.acc-badge img { transition: none; }
-  .lp2-tile:hover, .lp2-badge.acc-badge:hover { transform: none; }
+  .lp2-proj-grid .proj { transition: none; }
+  .lp2-tile:hover, .lp2-badge.acc-badge:hover, .lp2-proj-grid .proj:hover { transform: none; }
 }

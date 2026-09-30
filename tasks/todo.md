@@ -510,11 +510,15 @@ PR opened for Ed to merge. Not merged unprompted: it changes a live claim.
 
 ## Landing page v2 (A/B) - demolition, groundworks, earthworks (30 Sep 2026)
 
-STATUS (30 Sep): plan approved by Ed as written; H1 order "Surrey
-demolition contractors". demolition-2 BUILT (uncommitted) with the scoped
-CSS block and check-lp.mjs; screenshots taken, awaiting Ed's look before
-groundworks-2 and earthworks-2. v1 fixes (CCDO, FAQ drift, homepage
-Constructionline) are a separate change, not touched here.
+STATUS (30 Sep): plan approved by Ed as written; H1s "Surrey demolition
+contractors", "Surrey groundworks contractors", "Surrey earthworks
+contractors". demolition-2 built and committed (06ca5c1); Ed approved it.
+Ed then asked for the hero eyebrow to go on all three v2 pages (not moved
+into the lede, nothing in its place), so each v2 page has one eyebrow
+(closing CTA) and the plan's hero eyebrows below are superseded. CPCS
+stays wherever it is already live. groundworks-2 and earthworks-2 built.
+v1 fixes (CCDO, FAQ drift, homepage Constructionline) are on a separate
+branch, not touched here. PR and URL hand-off still to do.
 
 ### Goal
 
@@ -962,16 +966,25 @@ the v1 /lp pages, any image.
       to public/styles.css (hand-authored, served directly; no source
       file), scripts/check-lp.mjs, postbuild line. Evidence under
       "Verification steps" below.
-- [ ] Playwright screenshots of demolition-2 at 375 and 1280 sent to Ed
+- [x] Playwright screenshots of demolition-2 at 375 and 1280 sent to Ed
       before the other two pages are written (lessons.md: mock-up before
       the full build on a commercial page).
-      Screenshots TAKEN 30 Sep (fold and full page at 375x812 and
-      1280x800, session scratchpad lp2/demolition-2-*.png); not yet sent
-      to Ed, so left unticked.
-- [ ] After Ed's look, clone the skeleton to groundworks-2 and earthworks-2
+      Done 30 Sep: Ed saw them and approved demolition-2, with one change
+      (hero eyebrow removed, done).
+- [x] After Ed's look, clone the skeleton to groundworks-2 and earthworks-2
       with their own copy, images, FAQ constants and lead sources.
-- [ ] Extend the guard's page list to all three.
-- [ ] Run the full verification on all three; record evidence here.
+      Done 30 Sep: src/pages/lp/groundworks-2.astro (lp_groundworks_2),
+      src/pages/lp/earthworks-2.astro (lp_earthworks_2). Recent work uses
+      a scoped two-column .lp2-proj-grid around the existing .proj cards
+      (the stock .proj-grid puts three equal cards in a row, which the
+      acceptance criteria forbid): groundworks is three project cards
+      plus a dark "View all projects" card (2 by 2); earthworks is two
+      project cards plus the same card full width beneath.
+- [x] Extend the guard's page list to all three. Also added: fail if the
+      hero carries an eyebrow, and fail if a /projects/<slug> link points
+      at a project page that was not built (the Sanity risk below).
+- [x] Run the full verification on all three; record evidence here.
+      Evidence under "Verification steps", all three pages.
 - [ ] Open a PR titled "LP v2 A/B variants: demolition-2, groundworks-2,
       earthworks-2 (noindex)". Body lists the three URLs, the lead-source
       labels and the claims table. Do not merge unprompted.
@@ -1053,7 +1066,29 @@ the v1 /lp pages, any image.
     line reads "Page: /lp/demolition-2" and GA4 DebugView shows
     generate_lead with event_label lp_demolition_2.
 
-Evidence, demolition-2 only (30 Sep, this sandbox, node 22):
+Evidence, all three v2 pages (30 Sep, second pass, this sandbox):
+- 1: `npm run build` exit 0, all four guards green; check-lp printed
+  "lp/demolition-2: ok (5 FAQ questions, 16 assets checked)",
+  "lp/groundworks-2: ok (5 FAQ questions, 19 assets checked)",
+  "lp/earthworks-2: ok (5 FAQ questions, 16 assets checked)". Injecting
+  an eyebrow into the groundworks-2 hero and a link to
+  /projects/not-a-project into the built HTML failed the guard with both
+  messages; restored, exit 0.
+- 2 to 9, per page (demolition-2 / groundworks-2 / earthworks-2): dash
+  files 0/0/0; noindex 1/1/1; id="quoteForm" 1/1/1; lead source
+  lp_demolition_2 / lp_groundworks_2 / lp_earthworks_2; eyebrows in the
+  hero 0/0/0, on the page 1/1/1; FAQ schema 5, visible 5, 0 mismatched in
+  order, on each; forbidden words 0; external images 0; missing assets 0
+  of 18 / 21 / 18. `/lp/` in sitemap-0.xml: 0. /lp/ links in nav, footer
+  and homepage: 0. CTA labels only "Get a free quote" (2) and "Call 01483
+  323568" (2) on each page.
+- 10: 375x812 on all three: h1 2 lines (28px), lede bottom 317px, CTAs
+  bottom 401 and 459px, scrollWidth 375, sticky buttons right edges 184
+  and 355. 1280x800 on all three: h1 2 lines (64px), CTAs bottom 536px,
+  scrollWidth 1280. No broken images or HTTP errors. Project grid is
+  2 columns at 1280, 1 at 375.
+
+Evidence, demolition-2 only (30 Sep, first pass, this sandbox, node 22):
 - 1: `npm run build` exit 0; check-homepage, check-locations,
   check-guides and check-lp all passed ("lp/demolition-2: ok (5 FAQ
   questions, 16 assets checked)"). Guard proven: with one em dash put in

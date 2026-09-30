@@ -4,8 +4,7 @@
  * Runs after `npm run build` alongside the other check-*.mjs guards.
  *
  * Scoped by an explicit list, so the v1 /lp pages (which predate these rules)
- * do not fail the build. Add groundworks-2 and earthworks-2 to V2_PAGES when
- * they are built.
+ * do not fail the build.
  *
  * Fails the build if, on any listed page:
  *   - the page was not built
@@ -19,6 +18,8 @@
  *     aggregateRating)
  *   - an /assets/ path is referenced that does not exist under public/, or an
  *     image is loaded from another host
+ *   - the hero carries an eyebrow (Ed, 30 Sep: v2 heroes have none)
+ *   - a /projects/<slug> link points at a page that was not built
  *   - the URL appears in sitemap-0.xml
  */
 import { readFileSync, existsSync } from 'node:fs';
@@ -29,6 +30,8 @@ const PUBLIC = 'public';
 
 const V2_PAGES = [
   { slug: 'lp/demolition-2', leadSource: 'lp_demolition_2' },
+  { slug: 'lp/groundworks-2', leadSource: 'lp_groundworks_2' },
+  { slug: 'lp/earthworks-2', leadSource: 'lp_earthworks_2' },
 ];
 
 const FORBIDDEN = [
@@ -87,6 +90,15 @@ for (const { slug, leadSource } of V2_PAGES) {
   if (forms !== 1) failures.push(`${slug}: ${forms} id="quoteForm", expected exactly 1`);
   if (!html.includes(`data-lead-source="${leadSource}"`)) {
     failures.push(`${slug}: data-lead-source="${leadSource}" not found on the form`);
+  }
+
+  const hero = (html.match(/<section class="page-hero[\s\S]*?<\/section>/) || [''])[0];
+  if (!hero) failures.push(`${slug}: no page-hero section found`);
+  else if (/class="eyebrow\b/.test(hero)) failures.push(`${slug}: the hero carries an eyebrow, v2 heroes have none`);
+
+  // Project tiles render from Sanity; a link to an unbuilt project would 404.
+  for (const m of html.matchAll(/href="\/projects\/([^"\/#?]+)"/g)) {
+    if (!existsSync(join(DIST, 'projects', m[1], 'index.html'))) failures.push(`${slug}: links to /projects/${m[1]}, which was not built`);
   }
 
   for (const term of FORBIDDEN) {
