@@ -507,3 +507,588 @@ questions and answers present in visible text; grep of the built site for
 returns nothing.
 
 PR opened for Ed to merge. Not merged unprompted: it changes a live claim.
+
+## Landing page v2 (A/B) - demolition, groundworks, earthworks (30 Sep 2026)
+
+STATUS: PLAN ONLY. NOTHING BUILT. Awaiting Ed's go-ahead on the open
+questions at the end.
+
+### Goal
+
+Three new paid-traffic landing pages, /lp/demolition-2, /lp/groundworks-2
+and /lp/earthworks-2, that recreate the structure of the old
+contact.surreycontracting.co.uk pages (scraped verbatim into
+tasks/source-pages/) inside this Astro site, using only claims, images and
+accreditations the repo can stand behind. They run as B variants against the
+existing /lp/demolition, /lp/groundworks and /lp/earthworks, which do not
+change. Not live in search: noindex,follow, out of the sitemap, not linked
+from nav or footer.
+
+### Decisions already made (Ed)
+
+- Source pages: demolition.md, groundworks.md, earthworks.md only.
+  surfacing-commercial.md is out of scope: /surfacing and /lp/surfacing
+  redirect to /groundworks and the homepage guard blocks surfacing, tarmac
+  and resin wording. Not built.
+- v1 pages untouched. v2 slugs: /lp/demolition-2, /lp/groundworks-2,
+  /lp/earthworks-2 (files src/pages/lp/demolition-2.astro and so on). Plain
+  numeric suffix, readable in GA4 and in the enquiry email's Page line.
+- Dropped from the source: Constructionline Gold, "Licensed Asbestos
+  Removal", CCDO-qualified operatives. Accreditations shown are the eight
+  with logos in public/assets/acc/ (CHAS, SafeContractor, SSIP, SMAS, CITB,
+  CSCS, NPORS, IPAF). Asbestos wording is the coordination copy approved on
+  the live /demolition page in PR #16 (2dcdc55), after Jason's written
+  confirmation on 22 Sep that the company is not licensed to remove asbestos.
+  (The brief said PR #13; #13 was the building-control fix, #16 is the
+  asbestos one.)
+- No images from cdn.lugc.link, Landingi or Unsplash. public/assets/img/ only.
+- Brand: existing tokens in public/styles.css (Montserrat, --yellow #E6A91A
+  on dark surfaces only, --yellow-700 #8A6408 for text on light, --radius
+  10px, --radius-lg 16px). New CSS only as one scoped block for new layouts.
+
+### Repo facts checked for this plan (corrections to the brief in bold)
+
+- **BaseLayout does not emit a quote form.** BaseLayout.astro emits GTM, the
+  consent default, the business JSON-LD, the YTQ connector script and
+  app.js. Each /lp page carries its own `<form id="quoteForm" data-ytq-form
+  data-lead-source="lp_x">` inline, with the honeypot, the four service
+  checkboxes and the qf-success paragraph. v2 pages copy that form block.
+  One form per page (lessons.md: the JS binds only the first match).
+- app.js appends `page` = pathname + query to the /api/contact FormData and
+  fires `generate_lead` with event_label = data-lead-source, so a distinct
+  lead source per v2 page gives clean attribution in both the email and GA4.
+- Sitemap filter in astro.config.mjs excludes any page containing "/lp/".
+  Confirmed on a fresh build: `grep -c "/lp/" dist/client/sitemap-0.xml` is 0.
+  The new slugs are covered without a config change.
+- No component links to /lp/ (grep of src/components, src/layouts,
+  src/pages/index.astro). Nothing to remove.
+- Postbuild guards: check-homepage.mjs scans every built page for `{{`
+  placeholders but its forbidden-term, em-dash and FAQ-parity checks run on
+  the homepage only. check-locations.mjs covers only the towns in
+  src/data/locations.ts. check-guides.mjs covers only /guides. **No guard
+  scans /lp pages** beyond the placeholder check. Plan adds one (below).
+- Existing v1 /lp pages already drift: FAQ JSON-LD answer text does not
+  match the visible answer on /lp/demolition (3 of 4), /lp/groundworks (2 of
+  4) and /lp/earthworks (1 of 4), because the schema says "Surrey
+  Contracting provides..." and the page says "Full structural...". So any
+  new parity guard must be scoped to the v2 pages, or v1 breaks the build.
+  The v1 drift is recorded here for Ed; it is not fixed by this work.
+- Build works in this sandbox: `npm ci` then `npm run build` completed with
+  all three guards green on 30 Sep (node 22.22, Astro 6.4). The iCloud hang
+  in lessons.md applies to the Mac sandbox, not here.
+- Playwright 1.56.1 is installed globally (/opt/node22/bin/playwright) with
+  Chromium at /opt/pw-browsers (PLAYWRIGHT_BROWSERS_PATH is set). Visual
+  checks are feasible.
+- app.js writes two runtime strings with em dashes ("Thanks [em dash] we've got
+  it", "Something went wrong [em dash] please call"). They are injected after a
+  submit, so they are not in the built HTML and the dash grep will not see
+  them. Site-wide, pre-existing, not changed here; noted as a follow-up.
+- Real published projects (Sanity, seeded by scripts/seed-projects.mjs, local
+  photos in public/assets/img/projects/): Southbank Centre (London SE1),
+  Site Clearance and Earthworks (Farnham), Domestic Earthworks (Horsell,
+  Woking), Drainage Installation (Ascot), Residential Re-landscape
+  (Guildford), Concrete Base Installation, Premier Inn Cobham, Complete
+  Re-landscape (Virginia Water). **No demolition case study exists**
+  (still blocked on Jason, see the Weybridge/Epsom section above).
+
+### Lessons from tasks/lessons.md that apply
+
+1. One functional quoteForm per page; extra CTAs are anchors to #quoteForm.
+2. Do not trust a hanging build; verify in a real environment. Here the
+   build runs, so verify by building.
+3. Show a mock-up or screenshot before the full build on a commercial page.
+   Applied: Playwright screenshots at 375 and 1280 go to Ed before the PR is
+   marked ready, and the first page (demolition-2) is built alone and shown
+   before the other two are cloned from it.
+4. The company is the entity, not a person: no author or founder framing.
+5. No accreditation registration numbers, no register links, nothing under
+   the logo strip. The v2 trust strip is logos plus one line of copy, no
+   list.
+6. No author, reviewer or date credits on commercial pages.
+7. Check regulatory terms against the current regime: asbestos wording is
+   the HSE-licensed-contractor copy already checked in PR #16; nothing new
+   is written from memory. If a term is added (for example CDM or waste
+   carrier), check GOV.UK or HSE first.
+8. Report only on what we are responsible for: the Google Ads split itself
+   is the other agency's to run since 9 Sep; the plan says what URLs and
+   labels to give them, not how to run their account.
+
+### Hypothesis (the variable under test)
+
+v1 is a long-form service-detail page: hero with a four-stat trust bar,
+intro paragraph, three alternating photo-and-copy blocks each with a
+five-item feature list, four FAQs, then the form. It reads like the main
+service page with the nav kept.
+
+v2 tests a scan-first, trust-first structure taken from the source pages:
+accreditation logos immediately under the hero, a compact tiled service
+list, a short "why choose" band, a four-step "how it works" strip, FAQ,
+then the form. Copy per section is one or two sentences, not a paragraph.
+
+Hypothesis: paid visitors decide in the first two screens on whether the
+firm looks legitimate and does the thing they searched for. Putting the
+eight logos and the full service list above the fold, and cutting the
+narrative blocks, will raise the enquiry rate (form sends plus phone
+clicks per session) against v1.
+
+Held constant so the result is about structure, not offer: same hero photo,
+same H1 subject, same offer (free site visit, one working day response,
+fixed-price itemised quotation), same two CTA labels, same form and fields,
+same phone number, same FAQ count (five, one more than v1, because the
+source has five and the "how do I get a quote" answer carries the offer),
+same sticky CTA bar. Only the page structure and copy density change.
+
+Measure: GA4 `generate_lead` by event_label (lp_demolition vs
+lp_demolition_2, and the same for the other two) and `phone_click` by page
+path, per session, over the same date range with a 50/50 final-URL split
+in the ads. Ed or the ads agency decides the split and the run length; the
+site only needs the two URLs to exist.
+
+### Page structure (all three pages, same skeleton)
+
+Section count is eight; eyebrow allowance is therefore two. They go on the
+hero and on the closing CTA. No other section carries an eyebrow.
+
+1. Hero (existing .page-hero classes, no .hero-trust bar). Eyebrow, H1,
+   lede (20 words or fewer), two CTAs. The trust bar is dropped because the
+   logo strip below replaces it and the hero must fit the viewport at
+   375 wide with both CTAs visible.
+2. Trust strip (new .lp2-trust). Eight logos in a static wrapping row using
+   the existing .acc-badge look at a reduced height, no marquee, no
+   animation, so every logo is visible at once and there is nothing to wait
+   for. One line of copy beneath, no list, no numbers, no links.
+3. Services (new .lp2-services). H2, one-line lede, then tiles in a
+   two-column grid on desktop (one column under 700px): photo left, title
+   and one sentence right. Six tiles for demolition and groundworks, four
+   for earthworks. Two columns, never three, so the page never shows a row
+   of three equal cards.
+4. Why choose (new .lp2-why, dark band on --grey-800, --yellow accents).
+   H2 and four items in a two-by-two grid: figure or scheme name in
+   --yellow, one sentence in --grey-200. Four items, not three.
+5. How it works (new .lp2-steps). H2 and four numbered steps on --grey-50.
+   Steps carry the published promises: site visit within 5 working days,
+   fixed-price itemised quotation, one point of contact.
+6. Recent work (groundworks-2 and earthworks-2 only, reusing .proj-grid and
+   .proj). Two or three real project tiles linking to /projects/<slug>, and
+   a "View all projects" button. demolition-2 has no such section because no
+   demolition case study is published; that gap is recorded in the claims
+   table and is the one structural difference between the three pages.
+7. FAQ (existing .faq-list and .faq-item). H2 and five details/summary
+   items. Visible text is the single source; the FAQPage JSON-LD is built
+   from the same constant so it cannot drift.
+8. Closing CTA and form (existing .contact-grid, .contact-info,
+   .quote-form). Eyebrow, H2, the two contact cards, the form with
+   id="quoteForm" and a page-specific data-lead-source. Sticky .lp-sticky-cta
+   bar as v1, with the unified CTA labels.
+
+CTA labels, one per intent, used everywhere on the page including the
+sticky bar: quote intent "Get a free quote" (anchor to #quoteForm); call
+intent "Call 01483 323568" (tel: link). The form submit stays "Send
+enquiry", which is the submit action rather than a link. v1 mixes "Get a
+free quote" and "Get a quote"; v2 does not.
+
+Motion (dial 3): hover lift on tiles and buttons as the existing classes
+already do, details open and close, sticky bar slide as v1. No marquee, no
+counters, no parallax. All transitions sit under the existing
+prefers-reduced-motion rules; the scoped block adds its own
+`@media (prefers-reduced-motion: reduce)` line switching its transitions
+off.
+
+Copy rules: UK English; no em or en dashes anywhere in visible copy, JSON-LD
+or meta; hyphen only inside compound terms (soft strip-out, build-to-DPC,
+1.5-tonne); no "fully accredited", "all relevant legislation" or similar
+blanket claims; no figures that are not already published on the live
+site; no client names except those already on the published project pages.
+
+### Per-page outline with draft copy headings
+
+#### /lp/demolition-2 (src/pages/lp/demolition-2.astro)
+
+- Meta: title "Demolition Contractors Surrey | Free Site Visit, Written
+  Quote"; description "Structural demolition, soft strip-out, site clearance
+  and concrete crushing across Surrey, London and the South East. CHAS,
+  SafeContractor and SSIP accredited. Call 01483 323568."
+- Head: `<meta name="robots" content="noindex,follow">`, ServiceSchema
+  name="Demolition" slug="lp/demolition-2", FAQPage JSON-LD from the FAQ
+  constant. data-lead-source="lp_demolition_2".
+- Hero. Eyebrow: "Demolition contractors, Surrey and the South East".
+  H1: "Surrey demolition contractors". Lede (20 words): "Structural
+  demolition, soft strip and site clearance for homeowners, developers and
+  commercial clients. Free site visit, one working day response."
+  CTAs: Get a free quote / Call 01483 323568.
+- Trust strip. Line: "CHAS, SafeContractor and SSIP accredited. CSCS-carded
+  operatives. Written risk assessments and method statements on every job."
+- Services. H2 "Our demolition services". Lede "From first survey to a
+  cleared site, one team and one point of contact." Tiles:
+  1. Full structural demolition
+  2. Soft strip-out
+  3. Site clearance
+  4. Concrete crushing
+  5. Site hoarding and security
+  6. Asbestos surveys and licensed removal coordination (approved wording:
+     the refurbishment and demolition survey is arranged first, licensed
+     removal is carried out by an HSE-licensed specialist contractor, and
+     Surrey Contracting sequences the two with the demolition programme)
+- Why choose. H2 "Why choose Surrey Contracting for demolition". Items:
+  15+ years (already published on the homepage hero and About page);
+  Accredited (CHAS, SafeContractor, SSIP, SMAS); Safety first (written risk
+  assessments and method statements for every job); Own plant and crews
+  (self-delivered, as the homepage says).
+- How it works. H2 "How a demolition job runs with us". Steps: Free site
+  visit within 5 working days; Fixed-price itemised quotation; Survey, RAMS
+  and asbestos sequencing; Demolition, crushing and handover.
+- No Recent work section (see claims table).
+- FAQ. H2 "Demolition FAQs".
+  1. What types of demolition do you carry out?
+  2. Who carries out asbestos removal before a demolition? (question and
+     answer verbatim from src/pages/demolition.astro lines 210 to 211)
+  3. Do you crush concrete on site?
+  4. What areas do you cover for demolition?
+  5. How do I get a quote for demolition work?
+- Closing. Eyebrow "Get your demolition quote". H2 "Ready to start your
+  demolition project?" Form title "Get a free demolition quote".
+- Sticky bar text: "Structural or soft strip demolition?" with "Free site
+  visit, one working day response."
+
+#### /lp/groundworks-2 (src/pages/lp/groundworks-2.astro)
+
+- Meta: title "Groundworks Contractors Surrey | Foundations, Drainage, Site
+  Prep"; description "Foundations, build to DPC, drainage, utility trenching
+  and site preparation across Surrey, London and the South East. CHAS,
+  SafeContractor and SSIP accredited. Call 01483 323568."
+- Head as above with slug "lp/groundworks-2", data-lead-source
+  "lp_groundworks_2".
+- Hero. Eyebrow "Groundworks contractors, Surrey and the South East".
+  H1 "Surrey groundworks contractors". Lede (19 words): "Foundations,
+  drainage, trenching and site preparation for homeowners, developers and
+  commercial clients. Free site visit, one working day response."
+- Trust strip. Line: "CHAS, SafeContractor and SSIP accredited. CSCS, CITB,
+  NPORS and IPAF carded operatives, insured on every project."
+- Services. H2 "Our groundworks services". Lede "Complete groundworks for
+  residential, commercial and developer-led projects." Tiles:
+  1. Foundations and build to DPC
+  2. Utility trenching and drainage
+  3. Site preparation
+  4. Excavations
+  5. Agricultural groundworks
+  6. Surface water drainage
+- Why choose. H2 "Why choose Surrey Contracting for groundworks". Items:
+  15+ years; Accredited; Safety first; Surrey and South East coverage
+  (from Send, near Woking, the published base).
+- How it works. H2 "How a groundworks job runs with us". Steps: Free site
+  visit within 5 working days; Fixed-price itemised quotation; Programme
+  agreed to your drawings and levels; Dig to DPC with one point of contact.
+- Recent work. H2 "Groundworks we have delivered". Tiles: Drainage
+  Installation, Ascot; Concrete Base Installation, Premier Inn Cobham; Site
+  Clearance and Earthworks, Farnham. Button "View all projects" to
+  /projects.
+- FAQ. H2 "Groundworks FAQs".
+  1. What groundworks services do you offer?
+  2. Do you work on residential and commercial projects?
+  3. Are you accredited and insured? (answer names CHAS, SafeContractor,
+     SSIP and SMAS, CSCS cards and insurance; no Constructionline)
+  4. What areas do you cover for groundworks?
+  5. How do I get a groundworks quote?
+- Closing. Eyebrow "Get your groundworks quote". H2 "Ready to start your
+  groundworks project?" Form title "Get a free groundworks quote".
+- Sticky bar text: "Foundations, drainage or site prep?"
+
+#### /lp/earthworks-2 (src/pages/lp/earthworks-2.astro)
+
+- Meta: title "Bulk Earthworks Contractors Surrey | Cut and Fill, Site
+  Clearance"; description "Bulk earthworks, cut and fill, site levelling,
+  excavation and site clearance across Surrey, London and the South East.
+  CHAS, SafeContractor and SSIP accredited. Call 01483 323568."
+- Head as above with slug "lp/earthworks-2", data-lead-source
+  "lp_earthworks_2".
+- Hero. Eyebrow "Bulk earthworks and site clearance, Surrey and the South
+  East". H1 "Surrey earthworks contractors". Lede (19 words): "Bulk
+  earthworks, site levelling, land clearance and excavation for developers,
+  contractors and homeowners. Free site visit, one working day response."
+- Trust strip. Line: "CHAS, SafeContractor and SSIP accredited. CSCS-carded
+  operators. Excavators from 1.5 to 30 tonnes." (fleet range already
+  published on /earthworks and /lp/earthworks)
+- Services. H2 "Our earthworks and site clearance services". Lede
+  "Bulk earthworks and excavation for developers, contractors and
+  homeowners across the South East." Tiles (four, two by two):
+  1. Bulk earthworks (cut and fill, topsoil strip, stockpiling, surplus
+     removal)
+  2. Commercial site clearance
+  3. Bulk excavation (foundations, basements, ponds, lakes and swimming
+     pools, as on the live /earthworks page)
+  4. Land levelling and remediation support
+- Why choose. H2 "Why choose Surrey Contracting for earthworks". Items:
+  15+ years; Accredited; Safety first; Own plant (tracked excavators,
+  dumpers and support plant, 1.5 to 30 tonnes).
+- How it works. H2 "How an earthworks job runs with us". Steps: Free site
+  visit within 5 working days; Fixed-price itemised quotation; Cut and fill
+  to your drawings and levels; Muck away, compaction and handover.
+- Recent work. H2 "Earthworks we have delivered". Tiles: Site Clearance and
+  Earthworks, Farnham; Domestic Earthworks, Horsell, Woking; third slot is
+  the "View all projects" card, not a third equal tile.
+- FAQ. H2 "Bulk earthworks FAQs".
+  1. What areas do you cover for bulk earthworks? (Guildford, Woking,
+     Reigate, Epsom, Leatherhead and surrounding areas, all in areaServed)
+  2. Do you handle commercial site clearance as well as residential?
+  3. What is included in bulk earthworks?
+  4. Are you accredited for excavation work? (replaces the source's "licensed
+     excavation contractor", which names no licence; answer is CHAS,
+     SafeContractor, SSIP, CSCS cards)
+  5. How do I get a quote for earthworks or site clearance?
+- Closing. Eyebrow "Get your earthworks quote". H2 "Ready to start your
+  earthworks project?" Form title "Get a free earthworks quote".
+- Sticky bar text: "Cut and fill or muck away?"
+
+### Claims treatment table (source claim, where, treatment)
+
+| Source claim | Pages | Treatment |
+|---|---|---|
+| Constructionline Gold Member (badge and text) | all three | Dropped. No logo in assets/acc, Ed's instruction. Note: src/data/homepage.ts FAQ answers still say the company holds Constructionline; homepage is out of scope here but Ed may want that reconciled. |
+| "Licensed Asbestos Removal", "holds full asbestos removal licences" | demolition | Replaced with the PR #16 coordination wording: survey first, removal by an HSE-licensed specialist, Surrey Contracting sequences it. Tile, FAQ 2 and the services FAQ list all use it. |
+| CCDO qualified operatives | demolition | Dropped. CSCS kept (logo exists). v1 /lp/demolition and live /demolition still say CCDO; unchanged here, flagged for Ed. |
+| "15+ Years Experience", "over 15 years", "decade and a half" | all three | Retained as "15+ years": already on the homepage hero trust bar, About page and all v1 /lp pages. |
+| CHAS Accredited, SafeContractor Approved, SSIP Certified | all three | Retained, worded "CHAS, SafeContractor and SSIP accredited" as the live site does. SMAS added because its logo exists. |
+| CSCS Qualified Operatives | all three | Retained as "CSCS-carded". CITB, NPORS, IPAF named on groundworks-2 because the homepage FAQ already says operatives carry those cards and the logos exist. |
+| "Fully insured", "Qualified & Insured" | groundworks, earthworks | Retained as "insured on every project": the live /earthworks FAQ already says operators are "fully trained, qualified and insured". |
+| "Safe, efficient and fully accredited" | demolition | "fully accredited" replaced by the named schemes. |
+| "compliance with all relevant legislation" | demolition | Dropped as a blanket claim. Replaced by "written risk assessments and method statements for every job", which is live copy. |
+| "All staff fully trained and compliant" | groundworks | Replaced by the card schemes above. |
+| "Modern Fleet", "Modern Plant & Equipment", "fleet of tracked excavators, dumpers and support plant" | demolition, earthworks | Retained as "own plant": "modern plant" is on live /services, /earthworks and About; the 1.5 to 30 tonne range is on live /earthworks. |
+| Recent Demolition Projects: Weybridge structural demolition, Guildford site clearance, Croydon concrete crushing | demolition | Dropped. No demolition case study is published; the photos were CDN stock. demolition-2 has no Recent work section. |
+| Our Projects gallery (six CDN photos captioned Excavation Works, Site Preparation, Agricultural, Surface Water Drainage, Utility Trenching, Groundworks) | groundworks | Replaced with three published projects: Drainage Installation Ascot, Concrete Base Premier Inn Cobham, Site Clearance and Earthworks Farnham. |
+| Recent Earthworks Projects: Commercial Site Clearance Surrey, Bulk Excavation Home Counties, Land Levelling Surrey | earthworks | Replaced with two published projects (Farnham, Horsell) plus a link card. |
+| "Land Levelling & Remediation ... environmental compliance for development-ready sites" | earthworks | Softened to "remediation support", the phrase on the live /earthworks and About pages. No compliance guarantee. |
+| "ponds, lakes and swimming pools" | earthworks | Retained; live /earthworks has a "Lakes, Ponds & Swimming Pools" section. |
+| "Agricultural Groundworks" | groundworks | Retained; live /groundworks has an agricultural section and /lp/agricultural exists. |
+| "Are you a licensed excavation contractor? Yes." | earthworks | Question reworded to accreditation; there is no excavation licence to claim. |
+| "Free, no-obligation quote", "detailed written quotation" | all three | Retained as "free site visit" and "fixed-price itemised quotation", both live on /demolition and the homepage; "within 5 working days" and "one working day response" are the published promises. |
+| Coverage: Surrey, London and the South East; Guildford, Woking, Reigate, Epsom, Leatherhead | all three | Retained; matches areaServed in BaseLayout. Leatherhead appears only as a service area, as on the homepage. |
+| Client names | none in source | None added except Premier Inn Cobham and the published project titles, which are already on /projects. |
+| Guarantees, years founded, headcount, turnover | none in source | None; none introduced. |
+| "© 2026", Quick Links, Accreditations footer | all three | Not applicable; BaseLayout footer. |
+
+### Images per section (paths verified to exist under public/)
+
+Hero images stay identical to v1 so the test is not confounded by the
+photo. All non-hero images get loading="lazy" decoding="async" where they
+are real img elements (tiles and project cards); the hero stays a CSS
+background as v1.
+
+demolition-2
+- Hero: /assets/img/services/demolition-hero.jpg (149 KB)
+- Tile 1 Full structural: /assets/img/demolition.jpg (261 KB)
+- Tile 2 Soft strip: /assets/img/services/demolition-softstrip.webp (63 KB)
+- Tile 3 Site clearance: /assets/img/services/demolition-clearance.webp (135 KB)
+- Tile 4 Concrete crushing: /assets/img/services/demolition-crushing.jpg (458 KB)
+- Tile 5 Hoarding: /assets/img/services/demolition-hoarding.webp (52 KB)
+- Tile 6 Asbestos coordination: /assets/img/Asbestos.jpg (143 KB)
+- Trust strip: /assets/acc/chas.webp, safe-contractor.webp, ssip.webp,
+  smas.webp, citb.webp, cscs.webp, npors.webp, ipaf.webp (alt text from
+  ACCREDITATION_LOGOS in src/data/homepage.ts, imported, not retyped)
+
+groundworks-2
+- Hero: /assets/img/services/groundworks-hero.jpg (562 KB)
+- Tile 1 Foundations: /assets/img/services/groundworks-foundations.webp (100 KB)
+- Tile 2 Trenching and drainage: /assets/img/services/groundworks-trench.jpg (653 KB)
+- Tile 3 Site preparation: /assets/img/services/groundworks-siteprep.jpg (344 KB)
+- Tile 4 Excavations: /assets/img/services/groundworks-excavation.jpg (604 KB)
+- Tile 5 Agricultural: /assets/img/services/groundworks-agricultural.jpg (710 KB)
+- Tile 6 Surface water drainage: "/assets/img/Surface water drainage.jpg"
+  (154 KB; the filename has spaces and is already used quoted on the live
+  /groundworks page; keep it quoted, do not rename the asset)
+- Recent work: /assets/img/projects/drainage-ascot-4.jpg (404 KB),
+  /assets/img/projects/concrete-base-cobham-3.jpg (303 KB),
+  /assets/img/projects/site-clearance-earthworks.jpg (295 KB)
+- Trust strip: as above
+
+earthworks-2
+- Hero: /assets/img/services/earthworks-hero.jpg (55 KB)
+- Tile 1 Bulk earthworks: /assets/img/bulk-earthworks.jpg (235 KB)
+- Tile 2 Site clearance: /assets/img/services/earthworks-clearance.jpg (78 KB)
+- Tile 3 Bulk excavation: /assets/img/services/earthworks-excavations.jpg (81 KB)
+- Tile 4 Levelling: /assets/img/services/earthworks-levelling.jpg (97 KB)
+- Recent work: /assets/img/projects/site-clearance-earthworks-2.jpg (191 KB),
+  /assets/img/projects/domestic-earthworks-3.jpg (429 KB)
+- Trust strip: as above
+
+Not used, and why: Demolition2.webp and demolition.jpg are byte-identical
+copies (261 KB each), so one is enough; CAommercial 2.jpg, Commercial.jpg,
+Hotel-and-Leisure.jpg and Schools.jpeg are sector shots, not service
+shots; block-paving, brickwork, paving and hard-landscaping are
+landscaping; the 800 KB-plus JPGs (drainage-ascot.jpg,
+contact-hero-earthworks.jpg, Groundworks_Surrey_Contracting.jpg) are
+avoided where a smaller sibling exists.
+
+### Files to create or change
+
+Create
+- src/pages/lp/demolition-2.astro
+- src/pages/lp/groundworks-2.astro
+- src/pages/lp/earthworks-2.astro
+  Each holds a `FAQS` constant of {q, a} pairs in the frontmatter; the
+  visible details/summary markup and the FAQPage JSON-LD both render from
+  it, so parity is structural, not a matter of care.
+- scripts/check-lp.mjs: postbuild guard scoped by an explicit list to the
+  three v2 pages. Fails the build if any of them: is missing; lacks
+  `<meta name="robots" content="noindex,follow">`; contains an em or en
+  dash; has other than exactly one h1 and exactly one id="quoteForm";
+  has a FAQPage question or answer not in the visible text; has no Service
+  or BreadcrumbList node; contains any of surfacing, tarmac, resin,
+  surreyhillssurfacing, constructionline, ccdo, "asbestos removal licen",
+  "fully licensed", aggregateRating; references an /assets/ path that does
+  not exist under public/; or appears in dist/client/sitemap-0.xml. Same
+  helper style as check-guides.mjs.
+
+Change
+- package.json "postbuild": append `&& node scripts/check-lp.mjs`.
+- public/styles.css: append one block headed `/* ============ LP v2 (A/B)
+  ============ */` with .lp2-trust, .lp2-services, .lp2-tile, .lp2-why,
+  .lp2-steps and their breakpoints (700px, 480px) and a
+  prefers-reduced-motion rule. Tokens only; no new colours, radii or fonts.
+  Target under 120 lines. Nothing existing is edited.
+- tasks/todo.md: this section, updated with build status and evidence.
+
+Not changed: BaseLayout, Nav, Footer, ServiceSchema, app.js, astro.config,
+the v1 /lp pages, any image.
+
+### Implementation items (checkable)
+
+- [ ] Build demolition-2 first, on this branch, with the scoped CSS block
+      and the guard. Run the full verification below on that one page.
+- [ ] Playwright screenshots of demolition-2 at 375 and 1280 sent to Ed
+      before the other two pages are written (lessons.md: mock-up before
+      the full build on a commercial page).
+- [ ] After Ed's look, clone the skeleton to groundworks-2 and earthworks-2
+      with their own copy, images, FAQ constants and lead sources.
+- [ ] Extend the guard's page list to all three.
+- [ ] Run the full verification on all three; record evidence here.
+- [ ] Open a PR titled "LP v2 A/B variants: demolition-2, groundworks-2,
+      earthworks-2 (noindex)". Body lists the three URLs, the lead-source
+      labels and the claims table. Do not merge unprompted.
+- [ ] Hand Ed the three final URLs and the GA4 event_label values for the
+      ads split (or for the ads agency).
+
+### Acceptance criteria
+
+- Three pages build at /lp/demolition-2, /lp/groundworks-2,
+  /lp/earthworks-2; the v1 pages are byte-identical to main.
+- Each page: one h1; hero H1 renders on at most two lines at 375 and 1280
+  wide; hero lede is 20 words or fewer; both hero CTAs are inside the
+  first viewport at 375 by 812 and 1280 by 800; no horizontal scroll at
+  either width.
+- Exactly one form with id="quoteForm" per page, data-ytq-form present,
+  data-lead-source is lp_<service>_2, same field names as v1 so
+  /api/contact and the YTQ connector need no change.
+- CTA labels: every quote link reads "Get a free quote" and every call link
+  reads "Call 01483 323568"; no "Get a quote" or "Call us".
+- At most two eyebrows per page.
+- No section renders three equal cards in a row at any width.
+- Zero em or en dashes in the built HTML of each page.
+- noindex,follow present in the head; none of the three URLs in
+  sitemap-0.xml; no link to any /lp/ URL from Nav, Footer or the homepage.
+- FAQPage JSON-LD: five questions, each question and answer present
+  character-for-character in the visible text.
+- None of: Constructionline, CCDO, "asbestos removal licence", "fully
+  licensed", surfacing, tarmac, resin, registration numbers, register
+  links, author or date credits, aggregateRating.
+- Every image path referenced exists under public/; no external image
+  hosts.
+- Only the scoped .lp2-* rules are added to styles.css; no existing rule is
+  edited; colours resolve to existing tokens; yellow (#E6A91A) appears only
+  on dark surfaces, gold (#8A6408) for accents on light.
+- prefers-reduced-motion disables every transition the new block adds.
+- `npm run build` exits 0 with all four postbuild guards passing.
+
+### Verification steps (record evidence under each when done)
+
+1. `npm ci && npm run build` from the repo root. Expect the three existing
+   guards plus check-lp.mjs all green. (Confirmed possible in this sandbox
+   on 30 Sep: build and guards green on the current tree.)
+2. Dashes: `grep -rl -e "$(printf '\342\200\224')" -e "$(printf '\342\200\223')"
+   dist/client/lp/` must print nothing (the two printf escapes are the em
+   and en dash in UTF-8 octal, so the command itself carries no dash).
+   Note: `grep -P '\x{2014}'` fails in this sandbox's locale; use the
+   printf form above.
+3. noindex: `grep -c 'name="robots" content="noindex,follow"'
+   dist/client/lp/<slug>-2/index.html` is 1 for each page.
+4. Sitemap: `grep -c "/lp/" dist/client/sitemap-0.xml` is 0.
+5. Nav and footer: `grep -rn "/lp/" src/components src/layouts
+   src/pages/index.astro` returns nothing.
+6. FAQ parity: enforced by check-lp.mjs; also run the ad-hoc node snippet
+   used on 22 Sep for /demolition against each v2 page and record "0 of 5
+   not matching".
+7. Single form: `grep -o 'id="quoteForm"' dist/client/lp/<slug>-2/index.html
+   | wc -l` is 1.
+8. Forbidden words: `grep -il "constructionline\|ccdo\|asbestos removal
+   licen\|fully licensed\|surfacing\|tarmac\|resin" dist/client/lp/*-2/
+   index.html` returns nothing.
+9. Images: for each `/assets/...` referenced in the three built pages,
+   `test -f public<path>`; the guard does this too.
+10. Visual, Playwright with Chromium at /opt/pw-browsers (installed,
+    1.56.1): start `node dist/server/entry.mjs` (standalone node adapter)
+    or `npm run preview`, then a short script that for each page at
+    375 by 812 and 1280 by 800: takes a full-page screenshot to the
+    scratchpad; asserts h1 height divided by its computed line-height is
+    at most 2; asserts both hero CTA bounding boxes have bottom at most
+    innerHeight; asserts document.scrollWidth equals innerWidth; counts
+    .eyebrow elements at most 2; counts details.faq-item equals 5. Attach
+    the six screenshots to the PR and send them to Ed.
+11. Schema, after deploy: validator.schema.org on each live URL (the pages
+    are noindex but the validator still fetches them). Expect Service,
+    BreadcrumbList, FAQPage plus the site-wide business node, 0 errors.
+    Google's Rich Results Test cannot be automated from this sandbox
+    (egress proxy resets), so Ed runs that by hand if he wants the record.
+12. End to end after deploy: one test submission from /lp/demolition-2
+    with a clearly marked test message; confirm the enquiry email's last
+    line reads "Page: /lp/demolition-2" and GA4 DebugView shows
+    generate_lead with event_label lp_demolition_2.
+
+### Risks
+
+- Confounding. Structure and copy density change together; that is the
+  intended bundle, but if v2 wins nobody learns which element did it.
+  Accepted for a first test; a follow-up could test the trust strip alone.
+- Message match. Google Ads is with another agency since 9 Sep. If their
+  ad headlines say "Demolition Contractors in Surrey" and the H1 says
+  "Surrey demolition contractors", the words match but the order differs.
+  Ed can swap the H1 order if the ads dictate; the two-line rule at 375
+  wide is the constraint that drove the shorter form.
+- H1 wrapping. Montserrat 800 at the page-title minimum of 36px fits about
+  15 characters a line at 375 wide, so any H1 over 30 characters wraps to
+  three lines. The proposed H1s are 28 to 30 characters. If Ed wants the
+  longer source H1s, the scoped block can lower the v2 hero minimum to
+  30px, and the Playwright check decides.
+- Image weight. Several service JPGs are 450 to 710 KB and the groundworks
+  hero is 562 KB. Lazy loading keeps them off the critical path but LCP on
+  groundworks-2 will match v1, not beat it. Recompressing is an asset
+  change outside this plan, as noted for the homepage on 14 Sep.
+- v1 drift. The v1 /lp pages fail FAQ parity today. The new guard is scoped
+  to v2 so the build stays green, but the drift remains live and is Ed's
+  call to fix separately.
+- Runtime dashes. app.js success and error messages contain em dashes and
+  will show after a submit on every page, v2 included. A one-line change
+  in app.js fixes it site-wide; not in this plan's scope unless Ed says so.
+- Demolition proof. demolition-2 has no project tiles because none are
+  published. If the Esher demolition facts arrive from Jason, a tile can
+  be added later; until then the page leans on the trust strip and the
+  process steps.
+- Guard false positives. The forbidden-word list includes "resin"; no v2
+  copy uses it, but "resinous" or similar in a future edit would trip it,
+  as on the homepage. Intentional.
+- Sanity dependency. Project tiles link to /projects/<slug> pages that
+  render from Sanity. If a project is unpublished the link 404s; the guard
+  cannot see that. Check the three slugs exist on the live /projects page
+  before the PR.
+
+### Open questions for Ed
+
+1. Who runs the 50/50 split (Ed in the ads account, or the agency), and for
+   how long? The site side is ready once the three URLs exist; the plan
+   only needs the labels agreed: lp_demolition_2, lp_groundworks_2,
+   lp_earthworks_2.
+2. H1 order: "Surrey demolition contractors" (fits two lines at 375 wide)
+   or the source's "Demolition contractors in Surrey" (three lines at 375
+   unless the v2 hero minimum font drops to 30px). Same for the other two.
+3. Should the v1 /lp pages' CCDO wording and FAQ schema drift, and the
+   homepage FAQ's Constructionline sentence, be fixed in a separate small
+   PR? They contradict the v2 rules but are outside this brief.
