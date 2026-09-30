@@ -23,7 +23,7 @@ Delivered since the August plan, all live on surreycontracting.co.uk:
 | 11 Sep | Homepage rebuilt around the questions people search, company number corrected everywhere, accreditation strip, FAQ and business schema |
 | 14 to 16 Sep | Town pages for Guildford, Woking, Weybridge and Epsom, Areas We Cover page with map, guides on demolition cost and groundworks planning |
 | 22 Sep | Building control terminology corrected, spacing and spelling fixes, your audit brief checked page by page against the live site |
-| Ready | Asbestos wording changed to coordination through licensed specialists across five pages, goes live on release |
+| 30 Sep | Asbestos wording changed to coordination through licensed specialists across five pages, as you confirmed |
 
 September ran well over the monthly hours because the rebuild was the priority. From October the work fits the four to five hours, in the order set out in section 7.
 
@@ -78,7 +78,7 @@ All of this fits inside the monthly hours. It runs in this order, and it moves f
 
 | Month | Work |
 |---|---|
-| October | Asbestos wording released. Business Profile filled out: photos, services, description, first review requests. Lead measurement set up so sent forms and calls are counted with their source. Re-indexing requested for every page changed since 14 September. Esher demolition case study written and published as soon as the facts arrive. |
+| October | Business Profile filled out: photos, services, description, first review requests. Lead measurement set up so sent forms and calls are counted with their source. Re-indexing requested for every page changed since 14 September. Esher demolition case study written and published as soon as the facts arrive. |
 | November | Demolition page rewritten for commercial buyers, using the Esher case study as its proof. Two further case studies from your forms. Guildford landscaping project replaced by a groundworks job so the Guildford page has the right evidence. |
 | December | Earthworks page rewritten. Fourth case study. Town pages refreshed with the new proof. Review against the targets in section 9, and the plan for the new year agreed. |
 
@@ -99,7 +99,7 @@ Not planned: any further location pages until there is real work in those towns 
 
 | By | Target | How measured |
 |---|---|---|
-| 10 Oct | Business Profile public on Google, asbestos wording live, lead definition agreed, call tracking decided | Visible on Google and on the site |
+| 10 Oct | Business Profile public on Google, lead definition agreed, call tracking decided | Visible on Google and on the site |
 | 31 Oct | Every enquiry counted, forms and calls if tracking is on, with source. First monthly report | Report |
 | 30 Nov | Esher and two further case studies live. Demolition page rewritten. Surrey Contracting in the local pack for at least one core term from Woking | Live pages, Google |
 | 31 Jan | Page one organic for at least two of: groundworks contractor Surrey, demolition contractors Surrey, groundworks Woking, groundworks Guildford | Search Console, report |
