@@ -513,4 +513,45 @@ PR opened for Ed to merge. Not merged unprompted: it changes a live claim.
 - PR #16 squash-merged as 2dcdc55 (deploy run 75). Live validation at 06:25 UTC: 26 sitemap URLs, no old asbestos claim on any page, /demolition new heading and FAQ question present, 4 JSON-LD blocks parse, FAQ parity 7 of 7, homepage card, /about, llms.txt and llms-full.txt all on the coordination wording. All pass.
 - Branch reset onto main after the merge. Docs committed since: meeting pack (tasks/meeting-pack-surrey-contracting-2026-09-30.md and PDF) and the September update email (tasks/sc-september-update-email.txt), both marking the asbestos change as live 30 Sep.
 - Google Business Profile: the old profile (Effingham address, unverified since the 20 Aug re-verification request) was removed by Google on or about 24 Sep, most likely as a duplicate of the verified SHS profile at the same address. Ed created a new profile at Unit 3, Tannery House on 29 Sep, verified by email. Only Ed and Jason have access. Awaiting publication on Google.
-- Not ours: Surrey Contracting's Google Ads moved to Jason's other agency on 9 Sep. Meeting pack covers website, search and profile only.
+- Not ours: Surrey Contracting's Google Ads moved to Jason's other agency on 9 Sep. Meeting pack covers website, search and profile only. (Superseded 2026-10-01: the Ads account is back with Cumulus, see below.)
+
+## 2026-10-01 - Google Ads back with Cumulus
+
+Confirmed by Ed on 1 Oct 2026. Jason has moved the Google Ads account
+(customer ID 437-958-2050) back to Cumulus Digital and removed Tom's agency.
+The 30 Sep note above that the Ads are "not ours" no longer applies.
+
+Standing decisions:
+- No Performance Max. Ed's call: it wasted budget. The PMax campaign
+  (id 24151952815) stays paused. Do not re-enable it or propose it.
+
+Interim Search setup, done today through the Adspirer connector:
+- Search campaign (id 24119537454): Maximise Clicks, max CPC cap lowered from
+  £7.00 to £4.00 (Google read the new value back as £4.00). Daily budget £50.
+  Campaign is still PAUSED.
+- Final URLs on all 6 enabled ads moved to the new landing pages: the
+  groundworks ad group to https://surreycontracting.co.uk/lp/groundworks,
+  demolition to /lp/demolition, earthworks to /lp/earthworks. They had pointed
+  at contact.surreycontracting.co.uk/<service> (Tom's landing pages) or the
+  main-site service pages. All 6 read back as changed; in Google review.
+- The paused "commercial surfacing" ad group still points to /groundworks.
+  Left as is while it is paused.
+
+Open:
+- [ ] Conversions: 88 of the 99 conversions in the last 30 days were the GA4
+      `phone_click` event, plus 6 `form_start`; only about 5 were real leads.
+      Set `phone_click` and `form_start` to secondary so bidding and reporting
+      count real enquiries only.
+- [ ] Negatives: about £220 of the visible Search spend went on competitor
+      brand names (e.g. cj groundworks, daniel lake groundworks, dlm
+      groundworks, rs groundworks, reynolds groundworks, kenward groundworks,
+      d&k groundworks). Add competitor-name negatives, plus "consultant",
+      "consultancy" and "structural engineer".
+- [ ] Retire contact.surreycontracting.co.uk: nginx redirect vhost added in
+      `deploy/nginx-contact-redirect.conf` (each old service path 301s to its
+      /lp/ page, query string kept). Live only after Ed's manual steps in
+      DEPLOY.md: DNS A record for `contact` to 187.77.180.148, install the
+      vhost, certbot, curl checks. Until then the subdomain is still served by
+      157.53.227.1, which we do not control.
+- [ ] Adspirer free plan: 13 of 15 calls used this month. Plan the remaining
+      two calls, or upgrade, before the next round of changes.

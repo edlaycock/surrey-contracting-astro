@@ -70,12 +70,18 @@ requires it. Solve entity-separation problems with what Google actually uses
 to tell profiles apart: distinct names, phone numbers, categories, websites
 and prompt verification, not by hiding legal identity.
 
-## Report only on what we are responsible for (29 Sep 2026)
+## Report only on what we are responsible for (29 Sep 2026, updated 1 Oct 2026)
 
 The first draft of the 30 September meeting pack had a full Google Ads
 section, because I had pulled the account data to answer Ed's question about
-the surfacing campaign. Surrey Contracting's Google Ads moved to another
-agency on 9 September and are not ours. Rule: a client-facing update covers
-the work we are engaged for. Data gathered to answer an internal question
-stays internal unless Ed asks for it to go in. Check the scope of the
+the surfacing campaign. At the time Surrey Contracting's Google Ads had moved
+to another agency (9 September) and were not ours. Rule: a client-facing
+update covers the work we are engaged for. Data gathered to answer an internal
+question stays internal unless Ed asks for it to go in. Check the scope of the
 engagement before writing the scope of the report.
+
+Update, 1 Oct 2026: Jason moved the Ads account back to Cumulus, so Google Ads
+is in scope again. Ownership can change in either direction, so do not rely on
+an earlier note either way. Before including or leaving out Google Ads (or any
+channel), check the latest dated entry in tasks/todo.md for who currently runs
+the account, and confirm with Ed if it is unclear.
