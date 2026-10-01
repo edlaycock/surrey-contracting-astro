@@ -192,11 +192,9 @@
   .steps { list-style: none; counter-reset: steps; margin: 16px 0 24px; }
   .steps li {
     counter-increment: steps;
-    display: flex;
-    gap: 14px;
-    align-items: flex-start;
+    position: relative;
     margin-bottom: 12px;
-    padding: 12px 16px;
+    padding: 12px 16px 12px 54px;
     background: var(--bg);
     border-radius: var(--radius);
     border-left: 3px solid var(--yellow);
@@ -213,8 +211,9 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    flex-shrink: 0;
-    margin-top: 1px;
+    position: absolute;
+    left: 16px;
+    top: 13px;
   }
 
   /* ── Field reference table ── */
