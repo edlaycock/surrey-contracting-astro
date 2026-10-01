@@ -1466,3 +1466,13 @@ Follow-ups for Ed:
       needs Ed's say-so (lessons.md, 1 Oct). Not changed here.
 - [ ] After deploy: validator.schema.org on the live URL, and one marked test
       enquiry from the live page.
+
+### Update 1 Oct 2026 (later): surfacing-commercial redirect approved
+
+Ed approved sending contact.surreycontracting.co.uk/surfacing-commercial to
+/lp/commercial-surfacing. Rule added to deploy/nginx-contact-redirect.conf
+(nginx -t and curl tested locally). Other surfacing paths on the subdomain
+still fall through to the homepage.
+- [ ] Apply on the VPS after PR #20 is deployed (sed insert in chat), then
+      `sudo nginx -t && sudo systemctl reload nginx` and curl check.
+
