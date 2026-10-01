@@ -1,0 +1,306 @@
+---
+/**
+ * /lp/earthworks-2: B variant of /lp/earthworks for the paid-traffic A/B test.
+ * Same skeleton as /lp/demolition-2 (plan: tasks/todo.md, "Landing page v2"),
+ * plus a Recent work section of published projects.
+ * noindex, out of the sitemap (astro.config filter on "/lp/"), not linked from
+ * nav or footer. Guarded post-build by scripts/check-lp.mjs.
+ *
+ * FAQS is the single source for both the visible FAQ and the FAQPage JSON-LD,
+ * so the two cannot drift.
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ServiceSchema from '../../components/ServiceSchema.astro';
+import { ACCREDITATION_LOGOS } from '../../data/homepage';
+import { getProjects } from '../../lib/sanity';
+
+const LEAD_SOURCE = 'lp_earthworks_2';
+const PHONE_LABEL = 'Call 01483 323568';
+const PHONE_HREF = 'tel:01483323568';
+const QUOTE_LABEL = 'Get a free quote';
+
+const SERVICES = [
+  {
+    title: 'Bulk earthworks',
+    img: '/assets/img/bulk-earthworks-640.webp',
+    alt: 'Excavator and dumper moving material on a bulk earthworks site',
+    text: 'Cut and fill, topsoil strip, stockpiling and removal of surplus material, working to your drawings and levels.',
+  },
+  {
+    title: 'Commercial site clearance',
+    img: '/assets/img/services/earthworks-clearance-640.webp',
+    alt: 'Commercial site being cleared of vegetation and structures',
+    text: 'Structures, vegetation and waste cleared from commercial and domestic sites, with waste segregated and disposed of responsibly.',
+  },
+  {
+    title: 'Bulk excavation',
+    img: '/assets/img/services/earthworks-excavations-640.webp',
+    alt: 'Large excavation in progress with a tracked excavator',
+    text: 'Excavation for foundations and basements, and for ponds, lakes and swimming pools, with accurate level control.',
+  },
+  {
+    title: 'Land levelling and remediation support',
+    img: '/assets/img/services/earthworks-levelling-640.webp',
+    alt: 'Land being graded and levelled for development',
+    text: 'Slope adjustment, development platforms and garden re-grading, with remediation support to prepare land for the next phase.',
+  },
+];
+
+const WHY = [
+  { fig: '15+ years', text: 'Delivering earthworks, groundworks and demolition across Surrey, London and the South East.' },
+  { fig: 'Accredited', text: 'CHAS, SafeContractor, SSIP and SMAS schemes, with CSCS-carded operators on site.' },
+  { fig: 'Safety first', text: 'Written risk assessments and method statements for every job, in place before work starts.' },
+  { fig: 'Own plant', text: 'Tracked excavators, dumpers and support plant from 1.5 to 30 tonnes, run by our own operators.' },
+];
+
+const STEPS = [
+  { title: 'Free site visit', text: 'A contracts manager is in touch within one working day to arrange a visit and check levels, access and ground conditions.' },
+  { title: 'Quotation', text: 'We price the works from the site visit and your drawings or levels, and send you our quote.' },
+  { title: 'Cut and fill to your drawings and levels', text: 'Material is cut, moved and placed to your approved drawings and levels, and reused on site where it can be.' },
+  { title: 'Muck away, compaction and handover', text: 'Surplus is taken away, the platform is compacted, and one point of contact takes the job through to handover.' },
+];
+
+// Wanted project cards, in display order. Only the ones Sanity currently
+// publishes are rendered, so unpublishing a project drops its card instead
+// of leaving a link to a page that no longer builds.
+const PROJECT_CARDS = [
+  {
+    slug: 'site-clearance-earthworks',
+    tag: 'Earthworks',
+    title: 'Site Clearance and Earthworks, Farnham',
+    img: '/assets/img/projects/site-clearance-earthworks-2-640.webp',
+    alt: 'Cleared and levelled land at a residential site in Farnham',
+    text: 'Overgrown land cleared after building works, with around 80 tonnes of green waste removed and 100 tonnes of topsoil brought in.',
+  },
+  {
+    slug: 'domestic-earthworks',
+    tag: 'Earthworks',
+    title: 'Domestic Earthworks, Horsell, Woking',
+    img: '/assets/img/projects/domestic-earthworks-3-640.webp',
+    alt: 'Garden earthworks after a swimming pool was filled in, Horsell',
+    text: 'Swimming pool broken out and filled in, with 220 tonnes of material moved to set finished garden levels ready for turfing.',
+  },
+];
+
+const published = new Set((await getProjects()).map((p) => p.slug));
+const PROJECTS = PROJECT_CARDS.filter((p) => published.has(p.slug));
+
+const FAQS = [
+  {
+    q: 'What areas do you cover for bulk earthworks?',
+    a: 'Surrey, London and the South East, from our base at Send, near Woking. Areas served include Guildford, Woking, Reigate, Epsom, Leatherhead and the surrounding towns.',
+  },
+  {
+    q: 'Do you handle commercial site clearance as well as residential?',
+    a: 'Yes. We clear commercial plots, development sites and private land, removing structures, vegetation and waste, with waste segregated and disposed of responsibly.',
+  },
+  {
+    q: 'What is included in bulk earthworks?',
+    a: 'Bulk earthworks, often called cut and fill, covers the excavation, movement and placement of large volumes of soil, stone or rock to prepare land for construction. It typically includes topsoil stripping and stockpiling, cut and fill to design levels, removal of surplus material and site levelling.',
+  },
+  {
+    q: 'Are you accredited for excavation work?',
+    a: 'Yes. Surrey Contracting holds CHAS, SafeContractor and SSIP accreditation, and our operators carry CSCS cards. Written risk assessments and method statements are prepared for every job.',
+  },
+  {
+    q: 'How do I get a quote for earthworks or site clearance?',
+    a: 'Call 01483 323568 or send the form on this page with your project postcode, a description of the works and any drawings or levels you have. A contracts manager will be in touch within one working day to arrange a free site visit.',
+  },
+];
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: FAQS.map(({ q, a }) => ({
+    '@type': 'Question',
+    name: q,
+    acceptedAnswer: { '@type': 'Answer', text: a },
+  })),
+};
+---
+<BaseLayout
+  title="Bulk Earthworks Contractors Surrey | Cut and Fill, Site Clearance"
+  description="Bulk earthworks, cut and fill, site levelling, excavation and site clearance across Surrey, London and the South East. CHAS, SafeContractor and SSIP accredited. Call 01483 323568."
+  path="/lp/earthworks-2"
+>
+  <meta name="robots" content="noindex,follow" slot="head" />
+  <ServiceSchema slot="head" name="Bulk Earthworks" slug="lp/earthworks-2" description="Bulk earthworks, cut and fill, site levelling, excavation and site clearance across Surrey, London and the South East." />
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify(faqSchema)} />
+
+<section class="page-hero lp2-hero">
+  <div class="page-hero-bg" aria-hidden="true">
+    <div class="page-hero-img" style="background-image:url('/assets/img/services/earthworks-hero.jpg')"></div>
+    <div class="page-hero-vignette"></div>
+  </div>
+  <div class="container page-hero-inner">
+    <h1 class="page-title">Surrey earthworks contractors</h1>
+    <p class="page-lede">Bulk earthworks, site levelling, land clearance and excavation for developers, contractors and homeowners. Free site visit, one working day response.</p>
+    <div class="hero-ctas">
+      <a href="#quoteForm" class="btn btn-yellow">{QUOTE_LABEL}</a>
+      <a href={PHONE_HREF} class="btn btn-ghost-light">{PHONE_LABEL}</a>
+    </div>
+  </div>
+</section>
+
+<section class="lp2-trust" aria-label="Accreditations">
+  <div class="container">
+    <ul class="lp2-trust-logos">
+      {ACCREDITATION_LOGOS.map(({ logo, alt }) => (
+        <li class="acc-badge lp2-badge"><img src={logo} alt={alt} width="160" height="80" decoding="async" /></li>
+      ))}
+    </ul>
+    <p class="lp2-trust-line">CHAS, SafeContractor and SSIP accredited. CSCS-carded operators. Excavators from 1.5 to 30 tonnes.</p>
+  </div>
+</section>
+
+<section class="page-section lp2-services">
+  <div class="container">
+    <div class="section-head">
+      <h2 class="section-title">Our earthworks and site clearance services</h2>
+      <p class="section-lede">Bulk earthworks and excavation for developers, contractors and homeowners across the South East.</p>
+    </div>
+    <ul class="lp2-tiles">
+      {SERVICES.map(({ title, img, alt, text }) => (
+        <li class="lp2-tile">
+          <img class="lp2-tile-img" src={img} alt={alt} width="320" height="240" loading="lazy" decoding="async" />
+          <div class="lp2-tile-body">
+            <h3>{title}</h3>
+            <p>{text}</p>
+          </div>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<section class="lp2-why">
+  <div class="container">
+    <div class="section-head">
+      <h2 class="section-title light">Why choose Surrey Contracting for earthworks</h2>
+    </div>
+    <ul class="lp2-why-grid">
+      {WHY.map(({ fig, text }) => (
+        <li><strong>{fig}</strong><p>{text}</p></li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<section class="page-section page-section-grey lp2-steps">
+  <div class="container">
+    <div class="section-head">
+      <h2 class="section-title">How an earthworks job runs with us</h2>
+    </div>
+    <ol class="lp2-steps-row">
+      {STEPS.map(({ title, text }, i) => (
+        <li>
+          <span class="lp2-step-num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+          <h3>{title}</h3>
+          <p>{text}</p>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>
+
+{PROJECTS.length > 0 && (
+<section class="page-section lp2-work">
+  <div class="container">
+    <div class="section-head">
+      <h2 class="section-title">Earthworks we have delivered</h2>
+    </div>
+    <div class="lp2-proj-grid">
+      {PROJECTS.map(({ slug, tag, title, img, alt, text }) => (
+        <a class="proj" href={`/projects/${slug}`}>
+          <div class="proj-photo"><img src={img} alt={alt} width="640" height="480" loading="lazy" decoding="async" /></div>
+          <div class="proj-meta">
+            <span class="proj-tag">{tag}</span>
+            <h3>{title}</h3>
+            <p>{text}</p>
+          </div>
+        </a>
+      ))}
+      <div class={PROJECTS.length % 2 === 0 ? 'lp2-proj-all lp2-proj-all-wide' : 'lp2-proj-all'}>
+        <h3>More of our work</h3>
+        <p>Groundworks, earthworks and drainage projects across Surrey and the South East.</p>
+        <a href="/projects" class="btn btn-ghost-light">View all projects</a>
+      </div>
+    </div>
+  </div>
+</section>
+)}
+
+<section class="page-section page-section-grey">
+  <div class="container">
+    <div class="section-head">
+      <h2 class="section-title">Bulk earthworks FAQs</h2>
+    </div>
+    <div class="faq-list">
+      {FAQS.map(({ q, a }) => (
+        <details class="faq-item">
+          <summary>{q}</summary>
+          <p>{a}</p>
+        </details>
+      ))}
+    </div>
+  </div>
+</section>
+
+<section class="page-section">
+  <div class="container contact-grid">
+    <div class="contact-info">
+      <span class="eyebrow eyebrow-yellow">Get your earthworks quote</span>
+      <h2 class="section-title">Ready to start your earthworks project?</h2>
+      <p>Send us the details and a contracts manager will be in touch within one working day to arrange a free site visit. One point of contact from quote to handover.</p>
+      <div class="contact-cards">
+        <div class="contact-card">
+          <div class="contact-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.86 19.86 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.86 19.86 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div>
+          <div>
+            <span class="contact-label">Phone</span>
+            <a class="contact-value" href={PHONE_HREF}>01483 323568</a>
+          </div>
+        </div>
+        <div class="contact-card">
+          <div class="contact-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg></div>
+          <div>
+            <span class="contact-label">Response</span>
+            <span class="contact-value">Within one working day</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <form class="quote-form contact-form" id="quoteForm" data-ytq-form data-lead-source={LEAD_SOURCE} novalidate>
+      <div style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden;" aria-hidden="true">
+        <label>Company website<input type="text" name="_honeypot" tabindex="-1" autocomplete="off"></label>
+      </div>
+      <h3 class="form-title">Get a free earthworks quote</h3>
+      <div class="qf-row">
+        <label><span>Name</span><input required name="name" type="text" placeholder="Your full name"></label>
+        <label><span>Phone</span><input required name="phone" type="tel" placeholder="01483 323568"></label>
+      </div>
+      <label><span>Email</span><input required name="email" type="email" placeholder="you@email.com"></label>
+      <label><span>Company / organisation</span><input name="company" type="text" placeholder="Optional"></label>
+      <fieldset class="qf-checks">
+        <legend>What do you need?</legend>
+        <label class="check"><input type="checkbox" name="svc" value="Demolition"><span>Demolition</span></label>
+        <label class="check"><input type="checkbox" name="svc" value="Groundworks"><span>Groundworks</span></label>
+        <label class="check"><input type="checkbox" name="svc" value="Bulk Earthworks"><span>Bulk Earthworks</span></label>
+        <label class="check"><input type="checkbox" name="svc" value="Other"><span>Other</span></label>
+      </fieldset>
+      <label><span>Project postcode</span><input name="postcode" type="text" placeholder="GU1 1AA"></label>
+      <label><span>Tell us about the job</span><textarea name="message" rows="5" placeholder="Site type, scale, target start date"></textarea></label>
+      <button type="submit" class="btn btn-yellow btn-block">Send enquiry</button>
+      <p class="qf-success" id="qfSuccess" hidden>Thanks, we've got it. A contracts manager will be in touch within one working day.</p>
+    </form>
+  </div>
+</section>
+
+<div class="lp-sticky-cta lp2-sticky">
+  <div class="container lp-sticky-cta-row">
+    <p class="lp-sticky-cta-text">Cut and fill or muck away?<span>Free site visit, one working day response.</span></p>
+    <a href={PHONE_HREF} class="btn btn-ghost-light">{PHONE_LABEL}</a>
+    <a href="#quoteForm" class="btn btn-yellow">{QUOTE_LABEL}</a>
+  </div>
+</div>
+</BaseLayout>
