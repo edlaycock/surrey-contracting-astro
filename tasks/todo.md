@@ -602,10 +602,10 @@ Before going live
 Retire the old landing pages (details in DEPLOY.md)
 - [x] 8. DNS A record for `contact.surreycontracting.co.uk` set to
       187.77.180.148 (Ed, 1 Oct). Remove any AAAA or CNAME for `contact`.
-- [ ] 9. On the VPS: copy `deploy/nginx-contact-redirect.conf` to
+- [x] 9. (Done by Ed 1 Oct, as user cumulus with sudo.) On the VPS: copy `deploy/nginx-contact-redirect.conf` to
       `/etc/nginx/conf.d/`, `sudo nginx -t && sudo systemctl reload nginx`,
       then `sudo certbot --nginx --no-redirect -d contact.surreycontracting.co.uk`.
-- [ ] 10. Check: `curl -sI 'https://contact.surreycontracting.co.uk/groundworks?gclid=test'`
+- [x] 10. (Verified 1 Oct: http and https 301 to /lp/ with query kept; other paths 301 to home; cert served is *.surreycontracting.co.uk, expires 31 Oct 2026, check renewal with `sudo certbot certificates`.) Check: `curl -sI 'https://contact.surreycontracting.co.uk/groundworks?gclid=test'`
       returns 301 to /lp/groundworks?gclid=test.
 
 First two weeks live
