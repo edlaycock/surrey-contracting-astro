@@ -56,3 +56,40 @@ body `{"event_type":"sanity-publish"}`.
 Push to `main`. The workflow builds, rsyncs to `releases/<sha>`, runs
 `npm ci --omit=dev`, points `current` at it, and `pm2 reload`s. PM2 boot
 persistence: `pm2 startup && pm2 save`.
+
+## Retiring contact.surreycontracting.co.uk (Ed, manual)
+
+`contact.surreycontracting.co.uk` hosted the previous agency's landing pages on
+another server (157.53.227.1). `deploy/nginx-contact-redirect.conf` 301s its
+paths to the new pages on this VPS, keeping the query string (gclid, UTMs):
+`/groundworks`, `/demolition`, `/earthworks`, `/drainage`, `/agricultural`
+(with or without a trailing slash) go to the matching `/lp/` page; the root and
+any other path go to the homepage. Nothing happens until DNS points here.
+
+```bash
+# 1. DNS: change the A record for `contact` to 187.77.180.148 (remove any AAAA
+#    or CNAME for `contact`). Wait until this returns 187.77.180.148:
+dig +short contact.surreycontracting.co.uk
+
+# 2. Install the vhost (a separate file, so the live main-site config and its
+#    certbot TLS sections are untouched)
+sudo cp deploy/nginx-contact-redirect.conf /etc/nginx/conf.d/contact-surreycontracting.conf
+sudo nginx -t && sudo systemctl reload nginx
+
+# 3. Certificate. --no-redirect keeps the one-hop redirect on plain HTTP too;
+#    certbot adds the 443 listener and cert paths to the same server block.
+sudo certbot --nginx --no-redirect -d contact.surreycontracting.co.uk
+sudo nginx -t && sudo systemctl reload nginx
+
+# 4. Checks. Each should be a 301 with the Location shown.
+curl -sI 'https://contact.surreycontracting.co.uk/groundworks?gclid=test' | grep -iE '^(HTTP|location)'
+#   location: https://surreycontracting.co.uk/lp/groundworks?gclid=test
+curl -sI 'http://contact.surreycontracting.co.uk/demolition/?utm_source=google' | grep -iE '^(HTTP|location)'
+#   location: https://surreycontracting.co.uk/lp/demolition?utm_source=google
+curl -sI 'https://contact.surreycontracting.co.uk/anything-else' | grep -iE '^(HTTP|location)'
+#   location: https://surreycontracting.co.uk/
+sudo certbot renew --dry-run
+```
+
+Until step 1 is done, the old subdomain still serves whatever the other server
+returns, so do not point any ad or link at it.

@@ -513,7 +513,7 @@ PR opened for Ed to merge. Not merged unprompted: it changes a live claim.
 - PR #16 squash-merged as 2dcdc55 (deploy run 75). Live validation at 06:25 UTC: 26 sitemap URLs, no old asbestos claim on any page, /demolition new heading and FAQ question present, 4 JSON-LD blocks parse, FAQ parity 7 of 7, homepage card, /about, llms.txt and llms-full.txt all on the coordination wording. All pass.
 - Branch reset onto main after the merge. Docs committed since: meeting pack (tasks/meeting-pack-surrey-contracting-2026-09-30.md and PDF) and the September update email (tasks/sc-september-update-email.txt), both marking the asbestos change as live 30 Sep.
 - Google Business Profile: the old profile (Effingham address, unverified since the 20 Aug re-verification request) was removed by Google on or about 24 Sep, most likely as a duplicate of the verified SHS profile at the same address. Ed created a new profile at Unit 3, Tannery House on 29 Sep, verified by email. Only Ed and Jason have access. Awaiting publication on Google.
-- Not ours: Surrey Contracting's Google Ads moved to Jason's other agency on 9 Sep. Meeting pack covers website, search and profile only.
+- Not ours: Surrey Contracting's Google Ads moved to Jason's other agency on 9 Sep. Meeting pack covers website, search and profile only. (Superseded 2026-10-01: the Ads account is back with Cumulus, see below.)
 
 ## Unverified claims removed and v1 landing page FAQ schema parity (30 Sep 2026)
 
@@ -1231,3 +1231,248 @@ Evidence, demolition-2 only (30 Sep, first pass, this sandbox, node 22):
 3. Should the v1 /lp pages' CCDO wording and FAQ schema drift, and the
    homepage FAQ's Constructionline sentence, be fixed in a separate small
    PR? They contradict the v2 rules but are outside this brief.
+
+
+## 2026-10-01 - Google Ads back with Cumulus
+
+Confirmed by Ed on 1 Oct 2026. Jason has moved the Google Ads account
+(customer ID 437-958-2050) back to Cumulus Digital and removed Tom's agency.
+The 30 Sep note above that the Ads are "not ours" no longer applies.
+
+Standing decisions:
+- No Performance Max. Ed's call: it wasted budget. The PMax campaign
+  (id 24151952815) stays paused. Do not re-enable it or propose it.
+
+Interim Search setup, done today through the Adspirer connector:
+- Search campaign (id 24119537454): Maximise Clicks, max CPC cap lowered from
+  £7.00 to £4.00 (Google read the new value back as £4.00). Daily budget £50.
+  Campaign is still PAUSED.
+- Final URLs on all 6 enabled ads moved to the new landing pages: the
+  groundworks ad group to https://surreycontracting.co.uk/lp/groundworks,
+  demolition to /lp/demolition, earthworks to /lp/earthworks. They had pointed
+  at contact.surreycontracting.co.uk/<service> (Tom's landing pages) or the
+  main-site service pages. All 6 read back as changed; in Google review.
+- The paused "commercial surfacing" ad group still points to /groundworks.
+  Left as is while it is paused.
+
+Open:
+- [ ] Conversions: 88 of the 99 conversions in the last 30 days were the GA4
+      `phone_click` event, plus 6 `form_start`; only about 5 were real leads.
+      Set `phone_click` and `form_start` to secondary so bidding and reporting
+      count real enquiries only.
+- [x] Negatives (done 1 Oct, see update below): about £220 of the visible Search spend went on competitor
+      brand names (e.g. cj groundworks, daniel lake groundworks, dlm
+      groundworks, rs groundworks, reynolds groundworks, kenward groundworks,
+      d&k groundworks). Add competitor-name negatives, plus "consultant",
+      "consultancy" and "structural engineer".
+- [ ] Retire contact.surreycontracting.co.uk: nginx redirect vhost added in
+      `deploy/nginx-contact-redirect.conf` (each old service path 301s to its
+      /lp/ page, query string kept). Live only after Ed's manual steps in
+      DEPLOY.md: DNS A record for `contact` to 187.77.180.148, install the
+      vhost, certbot, curl checks. Until then the subdomain is still served by
+      157.53.227.1, which we do not control.
+- [x] Adspirer free plan: 13 of 15 calls used this month (now 14, see update below). Plan the remaining
+      two calls, or upgrade, before the next round of changes.
+
+### Update later on 1 Oct 2026
+
+- 41 phrase-match negatives added to the Search campaign (Adspirer confirmed
+  all 41). Competitors: cj groundworks, daniel lake, john stacey, rs
+  groundworks, dlm groundworks, reynolds groundworks, ddg groundworks,
+  stonehouse groundworks, parchow, phil dalby, groundworks 360, kenward, pj
+  brown, lg groundworks, lucas groundworks, dna groundworks, orange civils,
+  d&k groundworks, d & k groundworks, dk groundworks, dj groundworks, joyce
+  groundworks, paul watts, axtell, blue rock demolition, redhammer, bts paving,
+  cds group, llynch, lynch plant, t j hunt, strabag, wates, cappagh, conway
+  construction, checkatrade. Intent: consultant, consultants, consultancy,
+  structural engineer, manchester. "leigh" deliberately left out (Leigh near
+  Reigate is in the service area).
+- Conversions NOT changed: it needs two Adspirer calls (look up the ID, then
+  update) and only one was left. Item 1 below.
+- Adspirer: 14 of 15 free calls used this month. One kept in reserve.
+- DNS: Ed changed the `contact` A record to 187.77.180.148. Cloudflare's
+  resolver already returns it (TTL 14400); Google's still had the old IP.
+  The VPS currently answers `contact.` with a 404 because the redirect vhost
+  is not installed yet (no SSH access from the Claude session; the deploy
+  workflow only rsyncs and rebuilds the container, it does not touch host
+  nginx). Items 8 to 10 below.
+
+### Surrey Contracting Google Ads checklist
+
+Before going live
+- [ ] 1. Downgrade junk conversions: Goals > Conversions > Summary. Set
+      `Phone call lead (Google Analytics event phone_click)` and
+      `Surrey Contracting (web) form_start` to Secondary. Keep `Form` and
+      `Calls from ads (1)` as Primary. If Secondary is greyed out (GA4
+      imports), change it in GA4 (Admin > Key events) or via the goal.
+- [ ] 2. Check `Form` fires on a real submission (thank-you page or submit
+      event), not on form load.
+- [ ] 3. Check the six ads changed on 1 Oct show Eligible (approved).
+- [ ] 4. Open /lp/groundworks, /lp/demolition, /lp/earthworks with
+      `?gclid=test`, submit one form, confirm the enquiry arrives with page
+      and source recorded.
+- [ ] 5. Confirm Search settings: Maximise Clicks, max CPC £4.00, £50/day,
+      location Presence, Search Partners off, Display off.
+- [ ] 6. Keep PMax (24151952815) paused. Do not remove yet.
+- [ ] 7. Enable the Search campaign. Leave the "commercial surfacing" ad
+      group paused (surfacing no longer offered).
+
+Retire the old landing pages (details in DEPLOY.md)
+- [x] 8. DNS A record for `contact.surreycontracting.co.uk` set to
+      187.77.180.148 (Ed, 1 Oct). Remove any AAAA or CNAME for `contact`.
+- [x] 9. (Done by Ed 1 Oct, as user cumulus with sudo.) On the VPS: copy `deploy/nginx-contact-redirect.conf` to
+      `/etc/nginx/conf.d/`, `sudo nginx -t && sudo systemctl reload nginx`,
+      then `sudo certbot --nginx --no-redirect -d contact.surreycontracting.co.uk`.
+- [x] 10. (Verified 1 Oct: http and https 301 to /lp/ with query kept; other paths 301 to home; cert served is *.surreycontracting.co.uk, expires 31 Oct 2026, check renewal with `sudo certbot certificates`.) Check: `curl -sI 'https://contact.surreycontracting.co.uk/groundworks?gclid=test'`
+      returns 301 to /lp/groundworks?gclid=test.
+
+A/B split (v1 vs v2 landing pages, added 1 Oct)
+- [ ] 7a. In each enabled ad group one ad goes to v1, the other to v2.
+      Adspirer's monthly allowance ran out (15/15, resets 1 Nov), so this is
+      a manual change in Google Ads > Ads, edit Final URL:
+      - groundworks: ad 820491033987 stays /lp/groundworks; ad 820520176693
+        to https://surreycontracting.co.uk/lp/groundworks-2
+      - demolition: ad 820480117560 stays /lp/demolition; ad 820736264141 to
+        https://surreycontracting.co.uk/lp/demolition-2
+      - earthworks: ad 820732703942 stays /lp/earthworks; ad 820479666189 to
+        https://surreycontracting.co.uk/lp/earthworks-2 (this ad had POOR ad
+        strength, so pair it with the v2 page rather than the EXCELLENT one)
+- [ ] 7b. Campaign settings > Ad rotation: "Do not optimise: rotate ads
+      indefinitely", so Google does not starve one variant.
+- [ ] 7c. Read the result per page, not per ad: GA4 generate_lead by page
+      path (/lp/x vs /lp/x-2) and the Page line in enquiry emails. Run at
+      least 4 weeks or until each page has about 100 clicks before calling it.
+- [x] 7d. Withdrawn 1 Oct: Ed does not want surfacing sent to /groundworks.
+      contact./surfacing-commercial stays on the catch-all (301 to the
+      homepage). The rule was never applied on the VPS.
+
+First two weeks live
+- [ ] 11. Day 2 to 3: Insights and reports > Search terms. Add any new
+      competitor or irrelevant terms as phrase negatives.
+- [ ] 12. Day 7: if average CPC is well under £4 and budget runs out early,
+      leave it. If impression share lost to budget is above 40%, raise the
+      budget or cut the broadest phrase keywords (`groundworks company`,
+      `demolition company`, `groundworks contractor`).
+- [ ] 13. Day 14: count genuine enquiries (forms received plus calls from
+      ads) and work out cost per real lead. Consider Maximise Conversions only
+      at roughly 15 or more real conversions a month.
+- [ ] 14. Monthly: review search terms for new competitor names. Adspirer's
+      15 free calls a month is too few for ongoing management; upgrade it or
+      finish the Cumulus app MCP connector.
+
+## 2026-10-01 - Commercial surfacing landing page
+
+Decision (Ed, 1 Oct 2026): Jason confirmed that commercial and public-sector
+surfacing belongs to Surrey Contracting (SC). Residential surfacing belongs to
+Surrey Hills Surfacing (SHS), a separate client. SC advertises commercial
+surfacing only. It stays off the main site: no nav, footer, homepage,
+services or sitemap entry. The /surfacing and /lp/surfacing redirects to
+/groundworks and the homepage guard (scripts/check-homepage.mjs) are not
+changed. The lessons.md rule on surfacing redirects still applies.
+
+Built (branch claude/tender-hawking-bxjkd0, PR #20):
+- src/pages/lp/commercial-surfacing.astro. Same skeleton and .lp2 styles as
+  /lp/demolition-2, built from tasks/source-pages/surfacing-commercial.md.
+  Sections: hero, accreditation strip with the eight logos, six service tiles
+  (tarmac; car parks and service yards; block paving and paving; kerbs and
+  edgings; footpaths and access routes; groundworks and drainage packages),
+  a "Sites we surface" list from the source's sector list, why choose, four
+  steps, a Southbank Centre project card (Sanity-filtered, like groundworks-2),
+  five FAQs (one says SC handles commercial and public-sector schemes only and
+  does not take on domestic work), one quote form with the honeypot and the
+  success message. data-lead-source="lp_commercial_surfacing". noindex,follow,
+  out of the sitemap (existing "/lp/" filter), not linked from any page.
+  Phone 01483 323568, the same as the scraped page and the other /lp pages.
+- Dropped from the source: Constructionline Gold (badge, text, footer); the
+  client logo wall (Coin Street, DHL, Gratte Brothers and the rest; the v2
+  plan allows no client names beyond published projects, and there are no
+  logos in assets); the "Environment Agency Registered Waste Carrier" badge
+  (not verified, no logo in assets); the "Commercial resin" tile and all resin
+  and Breedon gravel mentions (resin is not supported by anything we can
+  stand behind and stays forbidden); "private estates" (reworded "managed
+  estates" to avoid residential reading); the duplicate SSIP line. The
+  source's offer ("discuss when preparing the quotation") is held to v1's
+  free site visit and one working day response.
+- public/styles.css: .lp2-sector-list added inside the LP v2 block (tokens
+  only), single-column under 700px.
+- scripts/check-lp.mjs: page added to the list. Only lp/commercial-surfacing
+  may use "surfacing" and "tarmac" (allowTerms). The guard exits if any other
+  page gets allowTerms, or if any page tries to allow "resin" or
+  "surreyhillssurfacing". This page also forbids driveway, residential,
+  homeowner and patio. All other checks apply. The sitemap check now covers
+  every dist sitemap*.xml plus llms.txt and llms-full.txt, for all /lp v2
+  pages.
+- New resized images (sharp, webp q72): commercial-2-1600.webp (hero, from
+  "CAommercial 2.jpg"), commercial-640.webp, hotel-and-leisure-640.webp,
+  block-paving-640.webp, schools-640.webp. Originals untouched.
+
+Verification (this sandbox, node 22.22):
+- npm ci, then npm run build: exit 0. check-homepage, check-locations,
+  check-guides and check-lp all passed;
+  "lp/commercial-surfacing: ok (5 FAQ questions, 17 assets checked)".
+- Guard mutations (all reverted, then the build was clean again):
+  "Surfacing" in demolition-2 failed with 'forbidden term "surfacing"'.
+  resin, driveway and surreyhillssurfacing in this page each failed. An em
+  dash failed. In the built HTML, removing noindex, adding a second
+  quoteForm, changing one FAQ answer, using a missing image and adding the
+  URL to sitemap-0.xml all failed. allowTerms on demolition-2 and allowing
+  "resin" both aborted the guard.
+- Built page: noindex,follow 1; id="quoteForm" 1; dashes 0; resin,
+  residential, driveway, Constructionline, CCDO, external image hosts 0. No
+  sitemap or llms file names the page. No other built page links to it (the
+  only other dist hits are Astro's server route manifest).
+- Playwright (node dist/server/entry.mjs): at 375x812 and 1440x900, H1 is 2
+  lines, both hero CTAs are in the first viewport, scrollWidth equals the
+  viewport, 1 eyebrow, 5 FAQ items, no broken images, no HTTP errors.
+  Screenshots are in tasks/screenshots/lp-commercial-surfacing-{375,1440}-{fold,full}.jpg.
+- Form, with SMTP2GO stubbed by a fetch preload: /api/contact returned 200,
+  the success message showed, generate_lead fired with event_label
+  lp_commercial_surfacing, and the stubbed email listed "Services: Commercial
+  Surfacing" and "Page: /lp/commercial-surfacing?gclid=test". A honeypot
+  submission returned ok and sent no email. The success message shows app.js's
+  existing runtime em dash (site-wide, noted 30 Sep).
+
+Images needing replacement (stand-ins until Ed sends SC's own commercial
+surfacing photos):
+- Hero and car park image: "CAommercial 2.jpg" (new tarmac car park with
+  lined bays at an office building). It is suitable, but we cannot confirm it
+  is SC's job. It is also used on /sectors.
+- Tarmac tile: projects/southbank-centre-3.jpg (SC's own, Southbank).
+- Yards: Commercial.jpg. Paving: Hotel-and-Leisure.jpg. Kerbs:
+  block-paving.jpeg. Footpaths: Schools.jpeg. Drainage:
+  surface-water-drainage-640.webp. Project card: southbank-centre-4.jpg.
+- Ask Ed for photos of SC's own work: a finished car park (wide, landscape,
+  1600px+, for the hero), tarmac laying, kerb lines, a school or public
+  footpath, and a service yard. Avoid anything residential.
+- Not used: paving.jpg, hard-landscaping*.jpg, projects/landscape-guildford
+  and complete-landscape (all residential).
+
+Follow-ups for Ed:
+- [ ] (a) Google Ads: by hand (Adspirer quota is used up until 1 Nov), set
+      the final URL of the paused "commercial surfacing" ad group (id
+      201874780713, ad 825454172281) to
+      https://surreycontracting.co.uk/lp/commercial-surfacing. It still points
+      to /groundworks.
+- [ ] (b) Review that ad group's keywords and ad copy for residential terms
+      (driveway, resin driveway, home, domestic, patio) and remove them.
+- [ ] (c) Cross-negatives, because of Google's unfair-advantage policy and the
+      shared address: SHS's account (701-983-7498) should not bid on
+      commercial, public-sector or car park terms (commercial, car park,
+      school, council, industrial, yard). SC's account should not bid on
+      residential or driveway terms (driveway, resin, home, domestic,
+      patio, garden).
+- [ ] contact.surreycontracting.co.uk/surfacing-commercial still 301s to the
+      homepage via the catch-all. Redirecting it to /lp/commercial-surfacing
+      needs Ed's say-so (lessons.md, 1 Oct). Not changed here.
+- [ ] After deploy: validator.schema.org on the live URL, and one marked test
+      enquiry from the live page.
+
+### Update 1 Oct 2026 (later): surfacing-commercial redirect approved
+
+Ed approved sending contact.surreycontracting.co.uk/surfacing-commercial to
+/lp/commercial-surfacing. Rule added to deploy/nginx-contact-redirect.conf
+(nginx -t and curl tested locally). Other surfacing paths on the subdomain
+still fall through to the homepage.
+- [ ] Apply on the VPS after PR #20 is deployed (sed insert in chat), then
+      `sudo nginx -t && sudo systemctl reload nginx` and curl check.
+

@@ -21,9 +21,21 @@
  *     an <img> or a CSS url()
  *   - the hero carries an eyebrow (Ed, 30 Sep: v2 heroes have none)
  *   - a /projects/<slug> link points at a page that was not built
- *   - the URL appears in sitemap-0.xml
+ *   - the URL appears in any sitemap*.xml, llms.txt or llms-full.txt
+ *
+ * Surfacing exception (Ed, 1 Oct 2026): Jason confirmed that commercial and
+ * public-sector surfacing belongs to Surrey Contracting; residential
+ * surfacing belongs to Surrey Hills Surfacing, a separate client. Surrey
+ * Contracting advertises commercial surfacing only; it stays off the main
+ * site (nav, footer, homepage, services, sitemap). So exactly one
+ * page, lp/commercial-surfacing, may use "surfacing" and "tarmac" (its
+ * allowTerms below). "resin" stays forbidden there too (the claim is not
+ * supported by anything the repo can stand behind), and
+ * "surreyhillssurfacing" stays forbidden everywhere. That page also carries
+ * extra forbidden terms so it cannot drift into residential or driveway
+ * wording. Every other check applies to it unchanged.
  */
-import { readFileSync, existsSync } from 'node:fs';
+import { readFileSync, existsSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 
 const DIST = 'dist/client';
@@ -33,7 +45,30 @@ const V2_PAGES = [
   { slug: 'lp/demolition-2', leadSource: 'lp_demolition_2' },
   { slug: 'lp/groundworks-2', leadSource: 'lp_groundworks_2' },
   { slug: 'lp/earthworks-2', leadSource: 'lp_earthworks_2' },
+  {
+    slug: 'lp/commercial-surfacing',
+    leadSource: 'lp_commercial_surfacing',
+    // Ed, 1 Oct 2026: the only page allowed these two terms. Do not widen.
+    allowTerms: ['surfacing', 'tarmac'],
+    // Commercial and public sector only; residential belongs to SHS.
+    extraForbidden: ['driveway', 'residential', 'homeowner', 'patio'],
+  },
 ];
+
+// Terms that no allowTerms entry may ever lift.
+const NEVER_ALLOWED = ['resin', 'surreyhillssurfacing'];
+for (const { slug, allowTerms = [] } of V2_PAGES) {
+  for (const t of allowTerms) {
+    if (NEVER_ALLOWED.includes(t)) {
+      console.error(`check-lp: ${slug} tries to allow "${t}", which is forbidden on every page`);
+      process.exit(1);
+    }
+  }
+  if (allowTerms.length && slug !== 'lp/commercial-surfacing') {
+    console.error(`check-lp: ${slug} has allowTerms; only lp/commercial-surfacing may (Ed, 1 Oct 2026)`);
+    process.exit(1);
+  }
+}
 
 const FORBIDDEN = [
   'surfacing',
@@ -71,7 +106,7 @@ const visibleText = (html) =>
       .replace(/<[^>]+>/g, ' '),
   ).replace(/\s+/g, ' ');
 
-for (const { slug, leadSource } of V2_PAGES) {
+for (const { slug, leadSource, allowTerms = [], extraForbidden = [] } of V2_PAGES) {
   const before = failures.length;
   const file = join(DIST, slug, 'index.html');
   if (!existsSync(file)) {
@@ -107,7 +142,10 @@ for (const { slug, leadSource } of V2_PAGES) {
     if (!existsSync(join(DIST, 'projects', m[1], 'index.html'))) failures.push(`${slug}: links to /projects/${m[1]}, which was not built`);
   }
 
-  for (const term of FORBIDDEN) {
+  // "surreyhillssurfacing" contains "surfacing", so it is checked on its own
+  // and an allowed "surfacing" never masks it.
+  const forbidden = FORBIDDEN.filter((t) => !allowTerms.includes(t)).concat(extraForbidden);
+  for (const term of forbidden) {
     if (lower.includes(term)) failures.push(`${slug}: forbidden term "${term}"`);
   }
 
@@ -156,14 +194,16 @@ for (const { slug, leadSource } of V2_PAGES) {
   if (failures.length === before) console.log(`${slug}: ok (${faq ? faq.mainEntity.length : 0} FAQ questions, ${assets.size} assets checked)`);
 }
 
-const sitemap = join(DIST, 'sitemap-0.xml');
-if (existsSync(sitemap)) {
-  const xml = readFileSync(sitemap, 'utf8');
+if (!existsSync(join(DIST, 'sitemap-0.xml'))) failures.push('sitemap-0.xml was not generated');
+// Every sitemap file plus the llms files: none may list a landing page.
+const indexFiles = readdirSync(DIST)
+  .filter((f) => /^sitemap.*\.xml$/.test(f))
+  .concat(['llms.txt', 'llms-full.txt'].filter((f) => existsSync(join(DIST, f))));
+for (const f of indexFiles) {
+  const text = readFileSync(join(DIST, f), 'utf8');
   for (const { slug } of V2_PAGES) {
-    if (xml.includes(`/${slug}`)) failures.push(`${slug}: listed in sitemap-0.xml, it must stay out`);
+    if (text.includes(`/${slug}`)) failures.push(`${slug}: listed in ${f}, it must stay out`);
   }
-} else {
-  failures.push('sitemap-0.xml was not generated');
 }
 
 if (failures.length) {
