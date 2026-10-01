@@ -1342,10 +1342,9 @@ A/B split (v1 vs v2 landing pages, added 1 Oct)
 - [ ] 7c. Read the result per page, not per ad: GA4 generate_lead by page
       path (/lp/x vs /lp/x-2) and the Page line in enquiry emails. Run at
       least 4 weeks or until each page has about 100 clicks before calling it.
-- [ ] 7d. contact. subdomain: /surfacing-commercial and /surfacing now 301 to
-      /groundworks (repo file updated 1 Oct, nginx -t and curl tested
-      locally). Apply on the VPS with the sed insert in the chat, then
-      `sudo nginx -t && sudo systemctl reload nginx`.
+- [x] 7d. Withdrawn 1 Oct: Ed does not want surfacing sent to /groundworks.
+      contact./surfacing-commercial stays on the catch-all (301 to the
+      homepage). The rule was never applied on the VPS.
 
 First two weeks live
 - [ ] 11. Day 2 to 3: Insights and reports > Search terms. Add any new

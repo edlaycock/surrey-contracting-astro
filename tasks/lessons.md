@@ -85,3 +85,14 @@ is in scope again. Ownership can change in either direction, so do not rely on
 an earlier note either way. Before including or leaving out Google Ads (or any
 channel), check the latest dated entry in tasks/todo.md for who currently runs
 the account, and confirm with Ed if it is unclear.
+
+## Surfacing redirects need Ed's say-so (1 Oct 2026)
+
+Mistake: I added a contact. subdomain rule sending /surfacing-commercial to
+/groundworks, copying the main site's /surfacing redirect, after Ed only said
+"add the redirect". Ed does not want surfacing traffic landing on
+groundworks.
+Rule: do not route surfacing URLs to any service page by analogy with an
+existing redirect. Ask Ed where surfacing traffic should go before adding or
+changing any surfacing redirect.
+
