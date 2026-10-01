@@ -508,6 +508,41 @@ returns nothing.
 
 PR opened for Ed to merge. Not merged unprompted: it changes a live claim.
 
+## 30 Sep 2026: PR #16 merged, asbestos wording live, meeting pack
+
+- PR #16 squash-merged as 2dcdc55 (deploy run 75). Live validation at 06:25 UTC: 26 sitemap URLs, no old asbestos claim on any page, /demolition new heading and FAQ question present, 4 JSON-LD blocks parse, FAQ parity 7 of 7, homepage card, /about, llms.txt and llms-full.txt all on the coordination wording. All pass.
+- Branch reset onto main after the merge. Docs committed since: meeting pack (tasks/meeting-pack-surrey-contracting-2026-09-30.md and PDF) and the September update email (tasks/sc-september-update-email.txt), both marking the asbestos change as live 30 Sep.
+- Google Business Profile: the old profile (Effingham address, unverified since the 20 Aug re-verification request) was removed by Google on or about 24 Sep, most likely as a duplicate of the verified SHS profile at the same address. Ed created a new profile at Unit 3, Tannery House on 29 Sep, verified by email. Only Ed and Jason have access. Awaiting publication on Google.
+- Not ours: Surrey Contracting's Google Ads moved to Jason's other agency on 9 Sep. Meeting pack covers website, search and profile only.
+
+## Unverified claims removed and v1 landing page FAQ schema parity (30 Sep 2026)
+
+Branch claude/lp-v1-claims-fix, cut from origin/main so it merges independently
+of the v2 work. Ed ruled Constructionline, an HSE asbestos licence and CCDO
+qualified operatives unverified; none of them may appear on the site.
+
+Changed:
+- CCDO: /lp/demolition (meta description, hero trust item, body copy, feature
+  list, FAQ answer and its JSON-LD) and /demolition (feature list, FAQ answer
+  and its JSON-LD) now say "CSCS cards" or "CSCS carded operatives".
+- Constructionline: homepage meta description (now "CHAS and SafeContractor
+  accredited") and two homepage FAQ answers in src/data/homepage.ts, which feed
+  both the visible FAQ and the FAQPage schema.
+- llms.txt and llms-full.txt: CCDO and the "Constructionline Gold" line removed.
+- FAQPage JSON-LD on all five /lp pages rewritten to the visible answer text
+  word for word (12 answers changed: demolition 3, groundworks 2, earthworks 1,
+  agricultural 2, drainage 4). Visible copy only changed where it held CCDO.
+Not changed: asbestos wording, which already matches the approved
+coordination wording from the 22 Sep change on every page and in llms files.
+
+Verified: npm run build green with all three postbuild guards; grep of
+dist/client for Constructionline and CCDO returns nothing, and every
+"licensed asbestos" hit is the approved coordination wording; parity script
+on the built HTML shows all 4 of 4 questions and answers identical on each
+/lp page and 10 of 10 on the homepage. /demolition: 7 of 7 questions, 6
+answers identical, the cost answer's schema text is the visible answer minus
+its follow-on guide link paragraph (left as is).
+
 ## Landing page v2 (A/B) - demolition, groundworks, earthworks (30 Sep 2026)
 
 STATUS (30 Sep): plan approved by Ed as written; H1s "Surrey demolition
