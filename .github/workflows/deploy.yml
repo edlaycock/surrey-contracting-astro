@@ -62,3 +62,27 @@ jobs:
             export BUILD_ID="${{ github.sha }}"
             docker compose up -d --build
             docker compose ps
+
+      # Confirm the public site serves after the restart: key pages return 200 and an
+      # unknown path returns the branded 404. Retries for ~90s while the container starts.
+      - name: Verify key pages are live
+        if: ${{ env.SSH_HOST != '' }}
+        env:
+          BASE: https://surreycontracting.co.uk
+          MISSING: /this-page-does-not-exist-${{ github.run_id }}
+        run: |
+          check() {
+            ok=0
+            for p in / /lp/demolition-2 /lp/groundworks-2 /lp/earthworks-2 /lp/demolition /lp/groundworks /lp/earthworks; do
+              code=$(curl -sS -o /dev/null -w '%{http_code}' --max-time 10 "$BASE$p") || true
+              echo "$code $p"; [ "$code" = 200 ] || ok=1
+            done
+            code=$(curl -sS -o nf.html -w '%{http_code}' --max-time 10 "$BASE$MISSING") || true
+            grep -q 'This page took a wrong turn' nf.html 2>/dev/null && body=branded || body=unbranded
+            echo "$code $MISSING ($body)"; [ "$code" = 404 ] && [ "$body" = branded ] || ok=1
+            return $ok
+          }
+          for i in $(seq 1 9); do
+            echo "Attempt $i"; check && exit 0; sleep 10
+          done
+          echo "Post-deploy page checks failed"; exit 1
