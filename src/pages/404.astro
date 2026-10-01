@@ -1,0 +1,53 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+<BaseLayout
+  title="Page Not Found | Surrey Contracting Limited"
+  description="The page you're looking for doesn't exist or may have been moved. Head back to the Surrey Contracting homepage or call 01483 323568."
+  path="/404"
+>
+  <meta slot="head" name="robots" content="noindex" />
+
+<!-- ============ 404 ============ -->
+<section class="nf" aria-labelledby="nf-title">
+  <div class="container nf-inner">
+    <img
+      src="/assets/logo-transparent.png"
+      alt="Surrey Contracting Limited"
+      width="948"
+      height="253"
+      class="nf-logo"
+    />
+    <p class="nf-numeral" aria-hidden="true">404</p>
+    <h1 class="nf-title" id="nf-title">This page took a wrong turn</h1>
+    <p class="nf-lede">The page you're looking for doesn't exist or may have been moved. Let's get you back on track.</p>
+    <div class="nf-actions">
+      <a href="/" class="btn btn-yellow">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V20a1 1 0 0 0 1 1h4v-6h4v6h4a1 1 0 0 0 1-1V9.5"/></svg>
+        Go home
+      </a>
+      <a href="/" class="btn btn-ghost-light" id="nfBack">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg>
+        Go back
+      </a>
+    </div>
+    <p class="nf-call">Need a hand finding something? <a href="tel:01483323568">Call 01483 323568</a></p>
+  </div>
+</section>
+
+<script is:inline>
+  (function () {
+    var back = document.getElementById('nfBack');
+    if (!back) return;
+    var ref = document.referrer;
+    var sameOrigin = false;
+    try { sameOrigin = !!ref && new URL(ref).origin === location.origin; } catch (e) {}
+    if (!sameOrigin || history.length < 2) return;
+    back.addEventListener('click', function (e) {
+      e.preventDefault();
+      history.back();
+    });
+  })();
+</script>
+
+</BaseLayout>
