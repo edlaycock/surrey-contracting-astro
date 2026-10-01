@@ -542,7 +542,7 @@ Open:
       `phone_click` event, plus 6 `form_start`; only about 5 were real leads.
       Set `phone_click` and `form_start` to secondary so bidding and reporting
       count real enquiries only.
-- [ ] Negatives: about £220 of the visible Search spend went on competitor
+- [x] Negatives (done 1 Oct, see update below): about £220 of the visible Search spend went on competitor
       brand names (e.g. cj groundworks, daniel lake groundworks, dlm
       groundworks, rs groundworks, reynolds groundworks, kenward groundworks,
       d&k groundworks). Add competitor-name negatives, plus "consultant",
@@ -553,5 +553,71 @@ Open:
       DEPLOY.md: DNS A record for `contact` to 187.77.180.148, install the
       vhost, certbot, curl checks. Until then the subdomain is still served by
       157.53.227.1, which we do not control.
-- [ ] Adspirer free plan: 13 of 15 calls used this month. Plan the remaining
+- [x] Adspirer free plan: 13 of 15 calls used this month (now 14, see update below). Plan the remaining
       two calls, or upgrade, before the next round of changes.
+
+### Update later on 1 Oct 2026
+
+- 41 phrase-match negatives added to the Search campaign (Adspirer confirmed
+  all 41). Competitors: cj groundworks, daniel lake, john stacey, rs
+  groundworks, dlm groundworks, reynolds groundworks, ddg groundworks,
+  stonehouse groundworks, parchow, phil dalby, groundworks 360, kenward, pj
+  brown, lg groundworks, lucas groundworks, dna groundworks, orange civils,
+  d&k groundworks, d & k groundworks, dk groundworks, dj groundworks, joyce
+  groundworks, paul watts, axtell, blue rock demolition, redhammer, bts paving,
+  cds group, llynch, lynch plant, t j hunt, strabag, wates, cappagh, conway
+  construction, checkatrade. Intent: consultant, consultants, consultancy,
+  structural engineer, manchester. "leigh" deliberately left out (Leigh near
+  Reigate is in the service area).
+- Conversions NOT changed: it needs two Adspirer calls (look up the ID, then
+  update) and only one was left. Item 1 below.
+- Adspirer: 14 of 15 free calls used this month. One kept in reserve.
+- DNS: Ed changed the `contact` A record to 187.77.180.148. Cloudflare's
+  resolver already returns it (TTL 14400); Google's still had the old IP.
+  The VPS currently answers `contact.` with a 404 because the redirect vhost
+  is not installed yet (no SSH access from the Claude session; the deploy
+  workflow only rsyncs and rebuilds the container, it does not touch host
+  nginx). Items 8 to 10 below.
+
+### Surrey Contracting Google Ads checklist
+
+Before going live
+- [ ] 1. Downgrade junk conversions: Goals > Conversions > Summary. Set
+      `Phone call lead (Google Analytics event phone_click)` and
+      `Surrey Contracting (web) form_start` to Secondary. Keep `Form` and
+      `Calls from ads (1)` as Primary. If Secondary is greyed out (GA4
+      imports), change it in GA4 (Admin > Key events) or via the goal.
+- [ ] 2. Check `Form` fires on a real submission (thank-you page or submit
+      event), not on form load.
+- [ ] 3. Check the six ads changed on 1 Oct show Eligible (approved).
+- [ ] 4. Open /lp/groundworks, /lp/demolition, /lp/earthworks with
+      `?gclid=test`, submit one form, confirm the enquiry arrives with page
+      and source recorded.
+- [ ] 5. Confirm Search settings: Maximise Clicks, max CPC £4.00, £50/day,
+      location Presence, Search Partners off, Display off.
+- [ ] 6. Keep PMax (24151952815) paused. Do not remove yet.
+- [ ] 7. Enable the Search campaign. Leave the "commercial surfacing" ad
+      group paused (surfacing no longer offered).
+
+Retire the old landing pages (details in DEPLOY.md)
+- [x] 8. DNS A record for `contact.surreycontracting.co.uk` set to
+      187.77.180.148 (Ed, 1 Oct). Remove any AAAA or CNAME for `contact`.
+- [ ] 9. On the VPS: copy `deploy/nginx-contact-redirect.conf` to
+      `/etc/nginx/conf.d/`, `sudo nginx -t && sudo systemctl reload nginx`,
+      then `sudo certbot --nginx --no-redirect -d contact.surreycontracting.co.uk`.
+- [ ] 10. Check: `curl -sI 'https://contact.surreycontracting.co.uk/groundworks?gclid=test'`
+      returns 301 to /lp/groundworks?gclid=test.
+
+First two weeks live
+- [ ] 11. Day 2 to 3: Insights and reports > Search terms. Add any new
+      competitor or irrelevant terms as phrase negatives.
+- [ ] 12. Day 7: if average CPC is well under £4 and budget runs out early,
+      leave it. If impression share lost to budget is above 40%, raise the
+      budget or cut the broadest phrase keywords (`groundworks company`,
+      `demolition company`, `groundworks contractor`).
+- [ ] 13. Day 14: count genuine enquiries (forms received plus calls from
+      ads) and work out cost per real lead. Consider Maximise Conversions only
+      at roughly 15 or more real conversions a month.
+- [ ] 14. Monthly: review search terms for new competitor names. Adspirer's
+      15 free calls a month is too few for ongoing management; upgrade it or
+      finish the Cumulus app MCP connector.
