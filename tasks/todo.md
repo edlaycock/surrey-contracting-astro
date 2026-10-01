@@ -1359,3 +1359,110 @@ First two weeks live
 - [ ] 14. Monthly: review search terms for new competitor names. Adspirer's
       15 free calls a month is too few for ongoing management; upgrade it or
       finish the Cumulus app MCP connector.
+
+## 2026-10-01 - Commercial surfacing landing page
+
+Decision (Ed, 1 Oct 2026): Jason confirmed that commercial and public-sector
+surfacing belongs to Surrey Contracting (SC). Residential surfacing belongs to
+Surrey Hills Surfacing (SHS), a separate client. SC advertises commercial
+surfacing only. It stays off the main site: no nav, footer, homepage,
+services or sitemap entry. The /surfacing and /lp/surfacing redirects to
+/groundworks and the homepage guard (scripts/check-homepage.mjs) are not
+changed. The lessons.md rule on surfacing redirects still applies.
+
+Built (branch claude/tender-hawking-bxjkd0, PR #20):
+- src/pages/lp/commercial-surfacing.astro. Same skeleton and .lp2 styles as
+  /lp/demolition-2, built from tasks/source-pages/surfacing-commercial.md.
+  Sections: hero, accreditation strip with the eight logos, six service tiles
+  (tarmac; car parks and service yards; block paving and paving; kerbs and
+  edgings; footpaths and access routes; groundworks and drainage packages),
+  a "Sites we surface" list from the source's sector list, why choose, four
+  steps, a Southbank Centre project card (Sanity-filtered, like groundworks-2),
+  five FAQs (one says SC handles commercial and public-sector schemes only and
+  does not take on domestic work), one quote form with the honeypot and the
+  success message. data-lead-source="lp_commercial_surfacing". noindex,follow,
+  out of the sitemap (existing "/lp/" filter), not linked from any page.
+  Phone 01483 323568, the same as the scraped page and the other /lp pages.
+- Dropped from the source: Constructionline Gold (badge, text, footer); the
+  client logo wall (Coin Street, DHL, Gratte Brothers and the rest; the v2
+  plan allows no client names beyond published projects, and there are no
+  logos in assets); the "Environment Agency Registered Waste Carrier" badge
+  (not verified, no logo in assets); the "Commercial resin" tile and all resin
+  and Breedon gravel mentions (resin is not supported by anything we can
+  stand behind and stays forbidden); "private estates" (reworded "managed
+  estates" to avoid residential reading); the duplicate SSIP line. The
+  source's offer ("discuss when preparing the quotation") is held to v1's
+  free site visit and one working day response.
+- public/styles.css: .lp2-sector-list added inside the LP v2 block (tokens
+  only), single-column under 700px.
+- scripts/check-lp.mjs: page added to the list. Only lp/commercial-surfacing
+  may use "surfacing" and "tarmac" (allowTerms). The guard exits if any other
+  page gets allowTerms, or if any page tries to allow "resin" or
+  "surreyhillssurfacing". This page also forbids driveway, residential,
+  homeowner and patio. All other checks apply. The sitemap check now covers
+  every dist sitemap*.xml plus llms.txt and llms-full.txt, for all /lp v2
+  pages.
+- New resized images (sharp, webp q72): commercial-2-1600.webp (hero, from
+  "CAommercial 2.jpg"), commercial-640.webp, hotel-and-leisure-640.webp,
+  block-paving-640.webp, schools-640.webp. Originals untouched.
+
+Verification (this sandbox, node 22.22):
+- npm ci, then npm run build: exit 0. check-homepage, check-locations,
+  check-guides and check-lp all passed;
+  "lp/commercial-surfacing: ok (5 FAQ questions, 17 assets checked)".
+- Guard mutations (all reverted, then the build was clean again):
+  "Surfacing" in demolition-2 failed with 'forbidden term "surfacing"'.
+  resin, driveway and surreyhillssurfacing in this page each failed. An em
+  dash failed. In the built HTML, removing noindex, adding a second
+  quoteForm, changing one FAQ answer, using a missing image and adding the
+  URL to sitemap-0.xml all failed. allowTerms on demolition-2 and allowing
+  "resin" both aborted the guard.
+- Built page: noindex,follow 1; id="quoteForm" 1; dashes 0; resin,
+  residential, driveway, Constructionline, CCDO, external image hosts 0. No
+  sitemap or llms file names the page. No other built page links to it (the
+  only other dist hits are Astro's server route manifest).
+- Playwright (node dist/server/entry.mjs): at 375x812 and 1440x900, H1 is 2
+  lines, both hero CTAs are in the first viewport, scrollWidth equals the
+  viewport, 1 eyebrow, 5 FAQ items, no broken images, no HTTP errors.
+  Screenshots are in tasks/screenshots/lp-commercial-surfacing-{375,1440}-{fold,full}.jpg.
+- Form, with SMTP2GO stubbed by a fetch preload: /api/contact returned 200,
+  the success message showed, generate_lead fired with event_label
+  lp_commercial_surfacing, and the stubbed email listed "Services: Commercial
+  Surfacing" and "Page: /lp/commercial-surfacing?gclid=test". A honeypot
+  submission returned ok and sent no email. The success message shows app.js's
+  existing runtime em dash (site-wide, noted 30 Sep).
+
+Images needing replacement (stand-ins until Ed sends SC's own commercial
+surfacing photos):
+- Hero and car park image: "CAommercial 2.jpg" (new tarmac car park with
+  lined bays at an office building). It is suitable, but we cannot confirm it
+  is SC's job. It is also used on /sectors.
+- Tarmac tile: projects/southbank-centre-3.jpg (SC's own, Southbank).
+- Yards: Commercial.jpg. Paving: Hotel-and-Leisure.jpg. Kerbs:
+  block-paving.jpeg. Footpaths: Schools.jpeg. Drainage:
+  surface-water-drainage-640.webp. Project card: southbank-centre-4.jpg.
+- Ask Ed for photos of SC's own work: a finished car park (wide, landscape,
+  1600px+, for the hero), tarmac laying, kerb lines, a school or public
+  footpath, and a service yard. Avoid anything residential.
+- Not used: paving.jpg, hard-landscaping*.jpg, projects/landscape-guildford
+  and complete-landscape (all residential).
+
+Follow-ups for Ed:
+- [ ] (a) Google Ads: by hand (Adspirer quota is used up until 1 Nov), set
+      the final URL of the paused "commercial surfacing" ad group (id
+      201874780713, ad 825454172281) to
+      https://surreycontracting.co.uk/lp/commercial-surfacing. It still points
+      to /groundworks.
+- [ ] (b) Review that ad group's keywords and ad copy for residential terms
+      (driveway, resin driveway, home, domestic, patio) and remove them.
+- [ ] (c) Cross-negatives, because of Google's unfair-advantage policy and the
+      shared address: SHS's account (701-983-7498) should not bid on
+      commercial, public-sector or car park terms (commercial, car park,
+      school, council, industrial, yard). SC's account should not bid on
+      residential or driveway terms (driveway, resin, home, domestic,
+      patio, garden).
+- [ ] contact.surreycontracting.co.uk/surfacing-commercial still 301s to the
+      homepage via the catch-all. Redirecting it to /lp/commercial-surfacing
+      needs Ed's say-so (lessons.md, 1 Oct). Not changed here.
+- [ ] After deploy: validator.schema.org on the live URL, and one marked test
+      enquiry from the live page.

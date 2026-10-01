@@ -1,0 +1,340 @@
+---
+/**
+ * /lp/commercial-surfacing: paid-traffic landing page for commercial and
+ * public-sector surfacing. Ads only (Ed, 1 Oct 2026): Jason confirmed that
+ * commercial and public-sector surfacing belongs to Surrey Contracting, while
+ * residential surfacing belongs to Surrey Hills Surfacing, a separate client.
+ * Surfacing stays off the main site: no nav, footer, homepage, services or
+ * sitemap entry, and the /surfacing and /lp/surfacing redirects are unchanged.
+ *
+ * Same skeleton and scoped .lp2 styles as /lp/demolition-2 (plan:
+ * tasks/todo.md, "Landing page v2"), plus a short sectors list from the
+ * source page. noindex, out of the sitemap (astro.config filter on "/lp/"),
+ * not linked from anywhere on the site. Guarded post-build by
+ * scripts/check-lp.mjs, which allows "surfacing" and "tarmac" on this page
+ * only and forbids residential and driveway wording here.
+ *
+ * FAQS is the single source for both the visible FAQ and the FAQPage JSON-LD,
+ * so the two cannot drift.
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ServiceSchema from '../../components/ServiceSchema.astro';
+import { ACCREDITATION_LOGOS } from '../../data/homepage';
+import { getProjects } from '../../lib/sanity';
+
+const LEAD_SOURCE = 'lp_commercial_surfacing';
+const PHONE_LABEL = 'Call 01483 323568';
+const PHONE_HREF = 'tel:01483323568';
+const QUOTE_LABEL = 'Get a free quote';
+
+// Images: placeholders from public/assets/img until Ed supplies photos of
+// Surrey Contracting's own commercial surfacing jobs (see tasks/todo.md,
+// "2026-10-01 - Commercial surfacing landing page").
+const SERVICES = [
+  {
+    title: 'Tarmac surfacing',
+    img: '/assets/img/projects/southbank-centre-3.jpg',
+    alt: 'Operatives laying a new tarmac surface on a London external works project',
+    text: 'Hard-wearing tarmac for access roads, circulation routes and high-use areas.',
+  },
+  {
+    title: 'Car parks and service yards',
+    img: '/assets/img/commercial-640.webp',
+    alt: 'Surfaced service yard outside a commercial unit',
+    text: 'Surfacing planned around vehicle movements, working zones and day-to-day wear.',
+  },
+  {
+    title: 'Block paving and paving',
+    img: '/assets/img/hotel-and-leisure-640.webp',
+    alt: 'Paved entrance approach at a leisure venue',
+    text: 'Paved surfaces for entrances, courtyards, routes and public-facing spaces.',
+  },
+  {
+    title: 'Kerbs and edgings',
+    img: '/assets/img/block-paving-640.webp',
+    alt: 'Kerb line and block paving being laid',
+    text: 'Kerb lines and edgings that define access routes, parking bays, footways and planted edges.',
+  },
+  {
+    title: 'Footpaths and access routes',
+    img: '/assets/img/schools-640.webp',
+    alt: 'Footpath across the grounds of a school',
+    text: 'Tarmac, paved and gravel footpaths for schools, parks, nature reserves and public routes.',
+  },
+  {
+    title: 'Groundworks and drainage packages',
+    img: '/assets/img/surface-water-drainage-640.webp',
+    alt: 'Surface water drainage being installed below a new surface',
+    text: 'Excavation, sub-base, drainage and surfacing coordinated by one delivery team.',
+  },
+];
+
+const SECTORS = [
+  'Schools and education campuses',
+  'Councils and public-sector sites',
+  'Healthcare, leisure and hospitality',
+  'Commercial premises and business parks',
+  'Service yards and managed estates',
+  'Country parks, nature reserves and public areas',
+];
+
+const WHY = [
+  { fig: '15+ years', text: 'Delivering groundworks, drainage and external works across Surrey, London and the South East.' },
+  { fig: 'Accredited', text: 'CHAS, SafeContractor, SSIP and SMAS schemes, with CSCS-carded operatives on site.' },
+  { fig: 'Safety first', text: 'Written risk assessments and method statements for every job, in place before work starts.' },
+  { fig: 'Live sites', text: 'Work phased around access windows, users and vehicle movements, so your site keeps running.' },
+];
+
+const STEPS = [
+  { title: 'Free site visit', text: 'A contracts manager is in touch within one working day to arrange a visit and look at access, levels, drainage and use.' },
+  { title: 'Quotation', text: 'We price the job from what we saw on site and send you our quote.' },
+  { title: 'Programme agreed around your site', text: 'Access windows, phasing and pedestrian and vehicle routes are agreed with you before work starts.' },
+  { title: 'Groundworks, surfacing and handover', text: 'One point of contact runs the job from excavation and sub-base through kerbs, drainage and surfacing to handover.' },
+];
+
+// Wanted project cards. Only the ones Sanity currently publishes are rendered,
+// so unpublishing a project drops its card instead of leaving a dead link.
+const PROJECT_CARDS = [
+  {
+    slug: 'southbank-centre',
+    tag: 'Public realm',
+    title: 'Southbank Centre, London SE1',
+    img: '/assets/img/projects/southbank-centre-4.jpg',
+    alt: 'Reinstated footway during external works at the Southbank Centre',
+    text: 'External works and drainage delivered around live cultural-venue operations, with footways and crossings reinstated.',
+  },
+];
+const published = new Set((await getProjects()).map((p) => p.slug));
+const PROJECTS = PROJECT_CARDS.filter((p) => published.has(p.slug));
+
+const FAQS = [
+  {
+    q: 'What kind of sites do you surface?',
+    a: 'Surrey Contracting handles commercial and public-sector surfacing schemes only: schools and colleges, councils, healthcare, leisure and hospitality sites, commercial premises and business parks, service yards, managed estates and public areas. We do not take on domestic work.',
+  },
+  {
+    q: 'Can work be phased around a live site?',
+    a: 'Yes. We plan access windows, route management and sequencing with you, and set them out when we prepare the quotation, so pedestrians, vehicles and deliveries can keep moving while the work is done.',
+  },
+  {
+    q: 'Do you coordinate groundworks, drainage and kerbs with the surfacing?',
+    a: 'Yes. Excavation, sub-base, drainage, kerbs and edgings and the finished surface can run as one package through one delivery team, so the build-up below the surface is planned together with the finish above it.',
+  },
+  {
+    q: 'Which surfaces suit paths and public areas?',
+    a: 'It depends on use, setting and maintenance. We work with tarmac, block paving, paving and gravel, and recommend a finish once we have seen the site and understood how it is used.',
+  },
+  {
+    q: 'How do I get a quote for commercial surfacing?',
+    a: 'Call 01483 323568 or send the form on this page with your site postcode and a description of the works. We cover Surrey, London and the South East. A contracts manager will be in touch within one working day to arrange a free site visit.',
+  },
+];
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: FAQS.map(({ q, a }) => ({
+    '@type': 'Question',
+    name: q,
+    acceptedAnswer: { '@type': 'Answer', text: a },
+  })),
+};
+---
+<BaseLayout
+  title="Commercial Surfacing Contractors Surrey | Free Site Visit"
+  description="Tarmac, paving, kerbs and drainage for car parks, access roads, yards, schools and public-sector sites across Surrey, London and the South East. CHAS, SafeContractor and SSIP accredited. Call 01483 323568."
+  path="/lp/commercial-surfacing"
+>
+  <meta name="robots" content="noindex,follow" slot="head" />
+  <ServiceSchema slot="head" name="Commercial surfacing" slug="lp/commercial-surfacing" description="Tarmac, paving, kerbs and drainage for commercial and public-sector sites across Surrey, London and the South East." />
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify(faqSchema)} />
+
+<section class="page-hero lp2-hero">
+  <div class="page-hero-bg" aria-hidden="true">
+    <div class="page-hero-img" style="background-image:url('/assets/img/commercial-2-1600.webp')"></div>
+    <div class="page-hero-vignette"></div>
+  </div>
+  <div class="container page-hero-inner">
+    <h1 class="page-title">Surrey commercial surfacing</h1>
+    <p class="page-lede">Tarmac, paving, kerbs and drainage for car parks, yards, schools and public sites. Free site visit, one working day response.</p>
+    <div class="hero-ctas">
+      <a href="#quoteForm" class="btn btn-yellow">{QUOTE_LABEL}</a>
+      <a href={PHONE_HREF} class="btn btn-ghost-light">{PHONE_LABEL}</a>
+    </div>
+  </div>
+</section>
+
+<section class="lp2-trust" aria-label="Accreditations">
+  <div class="container">
+    <ul class="lp2-trust-logos">
+      {ACCREDITATION_LOGOS.map(({ logo, alt }) => (
+        <li class="acc-badge lp2-badge"><img src={logo} alt={alt} width="160" height="80" decoding="async" /></li>
+      ))}
+    </ul>
+    <p class="lp2-trust-line">CHAS, SafeContractor and SSIP accredited. CSCS-carded operatives. Written risk assessments and method statements on every job.</p>
+  </div>
+</section>
+
+<section class="page-section lp2-services">
+  <div class="container">
+    <div class="section-head">
+      <h2 class="section-title">Our commercial surfacing services</h2>
+      <p class="section-lede">Access, drainage and a surface chosen for its job, from one team and one point of contact.</p>
+    </div>
+    <ul class="lp2-tiles">
+      {SERVICES.map(({ title, img, alt, text }) => (
+        <li class="lp2-tile">
+          <img class="lp2-tile-img" src={img} alt={alt} width="320" height="240" loading="lazy" decoding="async" />
+          <div class="lp2-tile-body">
+            <h3>{title}</h3>
+            <p>{text}</p>
+          </div>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<section class="page-section page-section-grey lp2-sectors">
+  <div class="container">
+    <div class="section-head">
+      <h2 class="section-title">Sites we surface</h2>
+      <p class="section-lede">Commercial and public-sector schemes, scoped around access, users, vehicle movements and maintenance.</p>
+    </div>
+    <ul class="lp2-sector-list">
+      {SECTORS.map((s) => <li>{s}</li>)}
+    </ul>
+  </div>
+</section>
+
+<section class="lp2-why">
+  <div class="container">
+    <div class="section-head">
+      <h2 class="section-title light">Why choose Surrey Contracting for surfacing</h2>
+    </div>
+    <ul class="lp2-why-grid">
+      {WHY.map(({ fig, text }) => (
+        <li><strong>{fig}</strong><p>{text}</p></li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<section class="page-section page-section-grey lp2-steps">
+  <div class="container">
+    <div class="section-head">
+      <h2 class="section-title">How a surfacing job runs with us</h2>
+    </div>
+    <ol class="lp2-steps-row">
+      {STEPS.map(({ title, text }, i) => (
+        <li>
+          <span class="lp2-step-num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+          <h3>{title}</h3>
+          <p>{text}</p>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>
+
+{PROJECTS.length > 0 && (
+<section class="page-section">
+  <div class="container">
+    <div class="section-head">
+      <h2 class="section-title">Public realm work we have delivered</h2>
+    </div>
+    <div class="lp2-proj-grid">
+      {PROJECTS.map(({ slug, tag, title, img, alt, text }) => (
+        <a class="proj" href={`/projects/${slug}`}>
+          <div class="proj-photo"><img src={img} alt={alt} width="640" height="480" loading="lazy" decoding="async" /></div>
+          <div class="proj-meta">
+            <span class="proj-tag">{tag}</span>
+            <h3>{title}</h3>
+            <p>{text}</p>
+          </div>
+        </a>
+      ))}
+      <div class={PROJECTS.length % 2 === 0 ? 'lp2-proj-all lp2-proj-all-wide' : 'lp2-proj-all'}>
+        <h3>More of our work</h3>
+        <p>Groundworks, drainage and external works projects across Surrey, London and the South East.</p>
+        <a href="/projects" class="btn btn-ghost-light">View all projects</a>
+      </div>
+    </div>
+  </div>
+</section>
+)}
+
+<section class="page-section">
+  <div class="container">
+    <div class="section-head">
+      <h2 class="section-title">Commercial surfacing FAQs</h2>
+    </div>
+    <div class="faq-list">
+      {FAQS.map(({ q, a }) => (
+        <details class="faq-item">
+          <summary>{q}</summary>
+          <p>{a}</p>
+        </details>
+      ))}
+    </div>
+  </div>
+</section>
+
+<section class="page-section page-section-grey">
+  <div class="container contact-grid">
+    <div class="contact-info">
+      <span class="eyebrow eyebrow-yellow">Get your surfacing quote</span>
+      <h2 class="section-title">Planning a commercial surfacing scheme?</h2>
+      <p>Send us the details and a contracts manager will be in touch within one working day to arrange a free site visit. One point of contact from quote to handover.</p>
+      <div class="contact-cards">
+        <div class="contact-card">
+          <div class="contact-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.86 19.86 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.86 19.86 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div>
+          <div>
+            <span class="contact-label">Phone</span>
+            <a class="contact-value" href={PHONE_HREF}>01483 323568</a>
+          </div>
+        </div>
+        <div class="contact-card">
+          <div class="contact-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg></div>
+          <div>
+            <span class="contact-label">Response</span>
+            <span class="contact-value">Within one working day</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <form class="quote-form contact-form" id="quoteForm" data-ytq-form data-lead-source={LEAD_SOURCE} novalidate>
+      <div style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden;" aria-hidden="true">
+        <label>Company website<input type="text" name="_honeypot" tabindex="-1" autocomplete="off"></label>
+      </div>
+      <h3 class="form-title">Get a free surfacing quote</h3>
+      <div class="qf-row">
+        <label><span>Name</span><input required name="name" type="text" placeholder="Your full name"></label>
+        <label><span>Phone</span><input required name="phone" type="tel" placeholder="01483 323568"></label>
+      </div>
+      <label><span>Email</span><input required name="email" type="email" placeholder="you@email.com"></label>
+      <label><span>Company / organisation</span><input name="company" type="text" placeholder="Optional"></label>
+      <fieldset class="qf-checks">
+        <legend>What do you need?</legend>
+        <label class="check"><input type="checkbox" name="svc" value="Commercial Surfacing"><span>Commercial Surfacing</span></label>
+        <label class="check"><input type="checkbox" name="svc" value="Kerbs and Drainage"><span>Kerbs and Drainage</span></label>
+        <label class="check"><input type="checkbox" name="svc" value="Groundworks"><span>Groundworks</span></label>
+        <label class="check"><input type="checkbox" name="svc" value="Other"><span>Other</span></label>
+      </fieldset>
+      <label><span>Site postcode</span><input name="postcode" type="text" placeholder="GU1 1AA"></label>
+      <label><span>Tell us about the job</span><textarea name="message" rows="5" placeholder="Site type, approximate area, access constraints, target start date"></textarea></label>
+      <button type="submit" class="btn btn-yellow btn-block">Send enquiry</button>
+      <p class="qf-success" id="qfSuccess" hidden>Thanks, we've got it. A contracts manager will be in touch within one working day.</p>
+    </form>
+  </div>
+</section>
+
+<div class="lp-sticky-cta lp2-sticky">
+  <div class="container lp-sticky-cta-row">
+    <p class="lp-sticky-cta-text">Car park, yard or footpath?<span>Free site visit, one working day response.</span></p>
+    <a href={PHONE_HREF} class="btn btn-ghost-light">{PHONE_LABEL}</a>
+    <a href="#quoteForm" class="btn btn-yellow">{QUOTE_LABEL}</a>
+  </div>
+</div>
+</BaseLayout>
