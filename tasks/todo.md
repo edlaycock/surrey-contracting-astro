@@ -1326,6 +1326,27 @@ Retire the old landing pages (details in DEPLOY.md)
 - [x] 10. (Verified 1 Oct: http and https 301 to /lp/ with query kept; other paths 301 to home; cert served is *.surreycontracting.co.uk, expires 31 Oct 2026, check renewal with `sudo certbot certificates`.) Check: `curl -sI 'https://contact.surreycontracting.co.uk/groundworks?gclid=test'`
       returns 301 to /lp/groundworks?gclid=test.
 
+A/B split (v1 vs v2 landing pages, added 1 Oct)
+- [ ] 7a. In each enabled ad group one ad goes to v1, the other to v2.
+      Adspirer's monthly allowance ran out (15/15, resets 1 Nov), so this is
+      a manual change in Google Ads > Ads, edit Final URL:
+      - groundworks: ad 820491033987 stays /lp/groundworks; ad 820520176693
+        to https://surreycontracting.co.uk/lp/groundworks-2
+      - demolition: ad 820480117560 stays /lp/demolition; ad 820736264141 to
+        https://surreycontracting.co.uk/lp/demolition-2
+      - earthworks: ad 820732703942 stays /lp/earthworks; ad 820479666189 to
+        https://surreycontracting.co.uk/lp/earthworks-2 (this ad had POOR ad
+        strength, so pair it with the v2 page rather than the EXCELLENT one)
+- [ ] 7b. Campaign settings > Ad rotation: "Do not optimise: rotate ads
+      indefinitely", so Google does not starve one variant.
+- [ ] 7c. Read the result per page, not per ad: GA4 generate_lead by page
+      path (/lp/x vs /lp/x-2) and the Page line in enquiry emails. Run at
+      least 4 weeks or until each page has about 100 clicks before calling it.
+- [ ] 7d. contact. subdomain: /surfacing-commercial and /surfacing now 301 to
+      /groundworks (repo file updated 1 Oct, nginx -t and curl tested
+      locally). Apply on the VPS with the sed insert in the chat, then
+      `sudo nginx -t && sudo systemctl reload nginx`.
+
 First two weeks live
 - [ ] 11. Day 2 to 3: Insights and reports > Search terms. Add any new
       competitor or irrelevant terms as phrase negatives.
