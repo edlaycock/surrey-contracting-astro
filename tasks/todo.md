@@ -1476,3 +1476,96 @@ still fall through to the homepage.
 - [ ] Apply on the VPS after PR #20 is deployed (sed insert in chat), then
       `sudo nginx -t && sudo systemctl reload nginx` and curl check.
 
+
+## 2 Oct 2026: SEO audit handoff review
+
+Plan agreed from the SEO audit handoff. Each item was checked against the
+repo before being listed. Nothing here breaks lessons.md: UK English, no em
+or en dashes, no register links, no named people, no accreditation numbers,
+no author or date credits, homepage layout unchanged.
+
+### Verified and being fixed
+- [ ] Copy expansion on /services, /sectors, /health-safety and /earthworks
+      (thin body copy).
+- [ ] Town links on /demolition: Guildford, Woking, Epsom and Weybridge in
+      the "What areas does Surrey Contracting cover for demolition?" FAQ
+      answer link to their /groundworks-[town] pages (JSON-LD answer stays
+      plain text, same words), plus one sentence in the intro linking to
+      /areas.
+- [ ] Town links on /earthworks to the same four town pages and /areas.
+- [ ] /projects og:title matched to the <title> ("Our Projects | Surrey
+      Contracting Limited") by removing the separate ogTitle prop.
+      /projects/[slug] already passes identical title and ogTitle; no change.
+- [ ] "Fully DBS-checked team" credential, previously only on /sectors,
+      added as one sentence to the homepage FAQ answer "Are you
+      accredited?" (src/data/homepage.ts). FAQ text only; no new FAQ or
+      section. Schema answer is derived from the same string, so parity
+      holds.
+
+### ALREADY PRESENT (no change needed)
+- [x] Response-time commitment on the contact CTA and homepage: "We respond
+      to every enquiry within one working day" (contact.astro, index.astro
+      quote panel) and the "How do I get a quote?" FAQ.
+- [x] Quote form inline confirmation message: `#qfSuccess` ("Thanks, we've
+      got it. A contracts manager will be in touch within one working
+      day.") on both contact.astro and index.astro.
+
+### Held for Ed (conflicts with lessons.md or needs information only Ed has)
+- [ ] Named director biography: conflicts with the 11 Sep rule that the
+      company is the author and commercial pages carry no personal
+      biographies. Only if Ed asks for it.
+- [ ] Client testimonials: need real, attributable quotes and the clients'
+      permission. Nothing to be invented or paraphrased.
+- [ ] Register links on accreditations: conflicts with the 11 Sep rule (no
+      links to accreditation or company registers anywhere on the site).
+      Not to be built.
+- [ ] "15+ years" substantiation: the claim appears on /about and the /lp/
+      pages with nothing on the site to back it. Ed needs to confirm what the
+      15 years refers to (the company, the team's experience, a predecessor
+      business) and how it should be worded.
+- [ ] Side finding, not SEO: src/layouts/BaseLayout.astro contains a
+      "YourTradeQuotes Enquiry Connector" script that posts quote form data
+      to an external Google Cloud Function
+      (europe-west2-yourtradequotes.cloudfunctions.net/submitEnquiry) with
+      a demo API key (`ytq_live_demo_key_12345`). Ed to confirm whether this
+      is wanted, live and covered by the privacy notice, and whether the
+      key should be real or the script removed.
+
+### Review
+- Build: `npm run build` exit 0 (Astro 6, node standalone adapter). All four
+  postbuild guards passed: check-homepage (homepage body 1041 words, limit
+  1200; FAQPage 10 questions all matched to visible text), check-locations
+  (4 town pages plus /areas ok), check-guides (2 guides ok), check-lp (4
+  landing pages ok).
+- FAQ parity: visible answers and FAQPage JSON-LD carry identical plain text
+  on /demolition and /earthworks (7 questions each, checked by script after
+  stripping tags). Homepage FAQ and schema both come from homepage.ts.
+- Sourcing: every claim in the new copy was grepped against src/ and
+  public/llms*.txt. Three sentences were reworded or cut because the repo
+  did not back them (see edits below). No em or en dashes in the changed
+  files, no "surfacing" in added text, no register links, people, numbers or
+  credits, no new homepage sections.
+- Word counts (built HTML, body only, header, nav and footer stripped):
+  services 727, sectors 530, health-safety 473, earthworks 1348.
+- Screenshots (1280px wide, full page, FAQs expanded) in
+  tasks/review-2026-10-02/: services.png, sectors.png, health-safety.png,
+  earthworks.png, demolition.png. No horizontal overflow on any page, cards
+  on /sectors and /health-safety hold the extra paragraph, every in-prose
+  link renders in the gold underline style.
+- Edits made in review:
+  - health-safety: "RAMS are issued when the job mobilises and briefed to
+    the team at the site induction" became "RAMS are issued when the job
+    mobilises, before work starts on site" (induction was unsourced).
+  - health-safety: "trained, qualified and insured for the machines they
+    use" became "trained and qualified for the machines they use".
+  - health-safety: the "RAMS and accreditation packs" sentence became "If
+    you need to see our accreditations or risk assessments and method
+    statements for a pre-qualification check, contact our team."
+  - earthworks: removed the sentence on adjusting an existing lake or pond
+    (unsourced, vague); the Farnham example now links to
+    /projects/site-clearance-earthworks rather than the projects index.
+  - sectors: "need settling before work starts" became "need agreeing".
+  - demolition: added the same page-scoped link style the other pages use;
+    without it the new lede and FAQ links showed as plain text (global `a`
+    has no underline).
+  - services: 16px gap under the "Sectors, safety and coverage" heading.

@@ -90,7 +90,7 @@ export const FAQS: Faq[] = [
   },
   {
     q: 'Are you accredited?',
-    a: 'Yes. Surrey Contracting holds CHAS, SafeContractor, SSIP and SMAS Worksafe registrations, and our operatives carry CITB, CSCS, NPORS and IPAF cards. Each scheme is shown in the <a href="#accreditations">accreditations strip</a> on this page, and the SSIP register can be searched by company name.',
+    a: 'Yes. Surrey Contracting holds CHAS, SafeContractor, SSIP and SMAS Worksafe registrations, and our operatives carry CITB, CSCS, NPORS and IPAF cards. The team is fully DBS-checked for work at schools and nurseries. Each scheme is shown in the <a href="#accreditations">accreditations strip</a> on this page, and the SSIP register can be searched by company name.',
   },
   {
     q: 'How do I get a quote?',

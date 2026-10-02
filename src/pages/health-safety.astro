@@ -31,6 +31,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       <h2 class="section-title">Safety is our number one priority.</h2>
       <p class="lede-dark">At Surrey Contracting, health and safety is such an important element of what we do. This is why we are always working hard to find new ways to improve our policies and systems, backed up by our project-specific risk assessments and method statements that are continuously monitored and updated.</p>
       <p>We are constantly rolling out training courses for our team, including First Aid at Work and new safety training, so our team can always be up to date on current policies and procedures.</p>
+      <p>Surrey Contracting holds CHAS, SafeContractor and SSIP accreditation and SMAS Worksafe registration, and is CITB registered. Our operatives carry CSCS cards, and plant operators hold CPCS or NPORS qualifications. The same standard applies across every discipline we self-deliver, from <a href="/demolition">demolition</a> and site clearance to <a href="/groundworks">groundworks</a> and <a href="/earthworks">bulk earthworks</a>; the <a href="/services">services page</a> summarises each one.</p>
+      <p>If you need to see our accreditations or risk assessments and method statements for a pre-qualification check, <a href="/contact">contact our team</a>.</p>
       <a href="/contact" class="btn btn-yellow">Speak to our team →</a>
     </div>
     <div class="hs-intro-visual">
@@ -50,21 +52,25 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         <div class="hs-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
         <h3>Project-specific RAMS</h3>
         <p>Risk assessments and method statements written for the job, not pulled from a template. Reviewed weekly while works are live.</p>
+        <p>RAMS are issued when the job mobilises, before work starts on site. On demolition work they follow the refurbishment and demolition asbestos survey, and any licensed removal is sequenced ahead of the demolition and carried out by an HSE-licensed specialist.</p>
       </article>
       <article>
         <div class="hs-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 12l3 3 6-6 6 6 3-3"/><path d="M3 18l3 3 6-6 6 6 3-3"/></svg></div>
         <h3>Continuous training</h3>
         <p>First Aid at Work, CSCS, CPCS / NPORS, asbestos awareness and SMSTS rolled out across the team on an ongoing basis.</p>
+        <p>Plant is run by our own operators, who are trained and qualified for the machines they use. Machines are matched to the site, from small tracked excavators for restricted access to larger excavators and dumpers on an organised haul route.</p>
       </article>
       <article>
         <div class="hs-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M9 12l2 2 4-4"/></svg></div>
         <h3>Daily site checks</h3>
         <p>Plant pre-use, scaffold and excavation checks recorded daily. Toolbox talks delivered by the supervisor on the ground.</p>
+        <p>Every job has on-site supervision. Before demolition or construction starts, the site is secured with hoarding, Harris fencing or gates as the job requires, installed to meet health and safety requirements.</p>
       </article>
       <article>
         <div class="hs-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4h16v12H5.5L4 18z"/><path d="M8 9h8M8 12h5"/></svg></div>
         <h3>Open reporting</h3>
         <p>Near-misses and observations logged and reviewed by management. We learn from incidents the industry would rather hide.</p>
+        <p>Clients receive weekly progress reports while works are live. At handover we walk the site to agree any snags and provide an O&amp;M pack, so the record of what was built stays with the client.</p>
       </article>
     </div>
   </div>
@@ -116,3 +122,10 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   </div>
 </section>
 </BaseLayout>
+
+<style>
+  /* Page-scoped only. In-prose links, never the .btn CTAs. */
+  p a:not(.btn) { color: var(--yellow-700); text-decoration: underline; }
+  p a:not(.btn):hover { color: var(--ink); }
+  .hs-pillars p + p { margin-top: 10px; }
+</style>

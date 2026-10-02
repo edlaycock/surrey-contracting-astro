@@ -38,6 +38,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         <div class="sector-body">
           <h3>Schools</h3>
           <p>Complete solutions for schools and nurseries across Surrey, London and the South East. As a fully DBS-checked team, we work closely with educational facilities providing groundworks, earthworks and demolition services.</p>
+          <p>School and nursery sites stay occupied, so works usually need phasing around the school day, with working areas and access routes kept separate from pupils and staff. Drainage, external works and foundations for new buildings are covered on our <a href="/groundworks">groundworks page</a>, and strip-out and clearance ahead of a rebuild on our <a href="/demolition">demolition page</a>.</p>
+          <a href="/groundworks" class="sector-link" style="margin-right:18px">Groundworks services →</a>
           <a href="/contact" class="sector-link">Discuss a schools project →</a>
         </div>
       </article>
@@ -47,6 +49,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         <div class="sector-body">
           <h3>Hotel & Leisure</h3>
           <p>External services for hotel and leisure facilities, from repairs to complete project delivery.</p>
+          <p>Hotels usually keep trading during works, so access, deliveries and parking have to be planned around guests. Typical work is drainage, concrete bases and external groundworks, such as the reinforced concrete base for a new water tank we delivered for <a href="/projects/concrete-base-cobham">Premier Inn Cobham</a> within three days of the initial site visit.</p>
+          <a href="/groundworks" class="sector-link" style="margin-right:18px">Groundworks services →</a>
           <a href="/contact" class="sector-link">Discuss a hotel & leisure project →</a>
         </div>
       </article>
@@ -56,6 +60,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         <div class="sector-body">
           <h3>Retail</h3>
           <p>Car-park refurbishments, service yards and shopfront access works, phased so footfall keeps moving and tenants stay trading.</p>
+          <p>Retail sites usually need works split into phases so part of the car park or yard stays open, with drainage and reinstatement finished before each area is handed back. Our <a href="/groundworks">groundworks page</a> covers the drainage and below-ground side of this work.</p>
+          <a href="/groundworks" class="sector-link" style="margin-right:18px">Groundworks services →</a>
           <a href="/contact" class="sector-link">Discuss a retail project →</a>
         </div>
       </article>
@@ -65,6 +71,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         <div class="sector-body">
           <h3>Residential</h3>
           <p>From a small groundworks project to a full-scale self-build, we're small enough to care and large enough to cope.</p>
+          <p>Homeowners and self-builders typically need foundations and build to DPC, drainage, or excavation and garden re-grading, often with restricted access behind an occupied house. See our <a href="/groundworks">groundworks</a> and <a href="/earthworks">earthworks</a> pages for what each involves.</p>
+          <a href="/earthworks" class="sector-link" style="margin-right:18px">Earthworks services →</a>
           <a href="/contact" class="sector-link">Discuss a residential project →</a>
         </div>
       </article>
@@ -74,6 +82,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         <div class="sector-body">
           <h3>Public Sector</h3>
           <p>We work with various public sectors, providing complete project solutions from site-enabling works right through to completion.</p>
+          <p>Public-sector sites often stay open to the public, so hoarding, working areas and access routes need agreeing before work starts. Every job runs to project-specific risk assessments and method statements. Our <a href="/health-safety">health and safety page</a> sets out how we work on site.</p>
+          <a href="/demolition" class="sector-link" style="margin-right:18px">Demolition services →</a>
           <a href="/contact" class="sector-link">Discuss a public sector project →</a>
         </div>
       </article>
@@ -83,6 +93,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         <div class="sector-body">
           <h3>Commercial</h3>
           <p>We serve the commercial sector from demolition through to final handover, working closely with clients to keep project delivery simple from start to finish.</p>
+          <p>Commercial clients often need demolition, site clearance, groundworks and bulk earthworks on the same site, and we can run them as one contract with one site team. Phased external works delivered for the <a href="/projects/southbank-centre">Southbank Centre</a> were carried out around live programming with public access maintained.</p>
+          <a href="/demolition" class="sector-link" style="margin-right:18px">Demolition services →</a>
           <a href="/contact" class="sector-link">Discuss a commercial project →</a>
         </div>
       </article>
@@ -102,3 +114,9 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   </div>
 </section>
 </BaseLayout>
+
+<style>
+  /* Page-scoped only. In-prose links, never the .btn CTAs. */
+  p a:not(.btn) { color: var(--yellow-700); text-decoration: underline; }
+  p a:not(.btn):hover { color: var(--ink); }
+</style>

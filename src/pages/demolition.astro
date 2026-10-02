@@ -76,7 +76,7 @@ const faqSchema = {
     <div class="section-head">
       <span class="eyebrow">Demolition</span>
       <h2 class="section-title">Comprehensive demolition services, safely delivered.</h2>
-      <p class="section-lede">Surrey Contracting delivers comprehensive demolition services to commercial and residential clients across Surrey, London and the South East. Our highly experienced team ensures every project is meticulously planned and executed with safety and precision. From initial site surveys through to final clearance, we manage every stage of the demolition process, committed to safety, quality and customer satisfaction.</p>
+      <p class="section-lede">Surrey Contracting delivers comprehensive demolition services to commercial and residential clients across Surrey, London and the South East. Our highly experienced team ensures every project is meticulously planned and executed with safety and precision. From initial site surveys through to final clearance, we manage every stage of the demolition process, committed to safety, quality and customer satisfaction. The towns we work in, with distances from our yard at Send, are listed on our <a href="/areas">areas we cover</a> page.</p>
     </div>
   </div>
 </section>
@@ -220,7 +220,7 @@ const faqSchema = {
       </details>
       <details class="faq-item">
         <summary>What areas does Surrey Contracting cover for demolition?</summary>
-        <p>Surrey Contracting covers Surrey, London and the South East, operating from its base at Send, near Woking. Areas served include Guildford, Woking, Esher, Epsom, Weybridge, Reigate, Dorking, Kingston and the wider M25 corridor.</p>
+        <p>Surrey Contracting covers Surrey, London and the South East, operating from its base at Send, near Woking. Areas served include <a href="/groundworks-guildford">Guildford</a>, <a href="/groundworks-woking">Woking</a>, Esher, <a href="/groundworks-epsom">Epsom</a>, <a href="/groundworks-weybridge">Weybridge</a>, Reigate, Dorking, Kingston and the wider M25 corridor.</p>
       </details>
       <details class="faq-item">
         <summary>How much does demolition cost in Surrey?</summary>
@@ -247,3 +247,9 @@ const faqSchema = {
   </div>
 </section>
 </BaseLayout>
+
+<style>
+  /* Page-scoped only. In-prose links, never the .btn CTAs. */
+  p a:not(.btn) { color: var(--yellow-700); text-decoration: underline; }
+  p a:not(.btn):hover { color: var(--ink); }
+</style>

@@ -31,6 +31,10 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       <h2 class="section-title">A full-service contractor for any site.</h2>
       <p class="section-lede">From the first survey to the final reinstatement, three core disciplines under one roof. Self-delivered, properly priced, properly programmed.</p>
     </div>
+    <div class="page-prose" style="margin-top:24px">
+      <p>Each discipline is carried out by our own teams, plant and operators rather than passed down a chain of subcontractors. Where a job needs more than one, for example demolition, site clearance and then groundworks, it can run as one contract with one site team, so there is no gap in the programme while a cleared site waits for the next trade.</p>
+      <p>Every job starts the same way. We respond to enquiries within one working day and offer a free measured site visit within five working days to capture levels, access, services and constraints. The quotation that follows is fixed-price and itemised. We work directly for clients and as a subcontractor to main contractors.</p>
+    </div>
   </div>
 </section>
 
@@ -50,6 +54,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         <li>Site hoarding &amp; security</li>
         <li>Waste management &amp; disposal</li>
       </ul>
+      <p>Demolition covers full structural demolition, partial demolition for renovation and soft strip-out of non-structural elements ahead of a refurbishment or fit-out, including work inside occupied buildings. Where asbestos may be present, the refurbishment and demolition survey comes first, and any licensed removal is carried out by an HSE-licensed specialist that we sequence into the programme. Arisings can be crushed on site for reuse as sub-base or fill where space allows. The <a href="/demolition">demolition page</a> sets out each stage.</p>
       <a href="/demolition" class="btn btn-yellow">Learn more about demolition →</a>
     </div>
   </div>
@@ -71,6 +76,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         <li>Retaining walls &amp; gabion structures</li>
         <li>Site clearance, reduce dig &amp; muck-away</li>
       </ul>
+      <p>Groundworks is the constructed below-ground package between site clearance and the building itself. Typical projects run from extensions and self-builds to commercial developments. Foundation type and depth come from the approved drawings and the engineer's specification, and drainage runs and duct routes are agreed against the foundation layout before the first trench is opened. The <a href="/groundworks">groundworks page</a> covers each stage, how to compare quotations and the information we need to price a job.</p>
+      <p>Examples include phased external works delivered for the <a href="/projects/southbank-centre">Southbank Centre</a> around live programming, and a reinforced concrete base for a new water tank delivered for <a href="/projects/concrete-base-cobham">Premier Inn Cobham</a> within three days of the initial site visit. More examples are on our <a href="/projects">projects page</a>.</p>
       <a href="/groundworks" class="btn btn-yellow">Learn more about groundworks →</a>
     </div>
   </div>
@@ -92,7 +99,19 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         <li>Attenuation basins, ponds &amp; bunds</li>
         <li>Plant: tracked excavators 1.5T-35T, dozers, dumpers, rollers</li>
       </ul>
+      <p>Bulk earthworks moves large volumes of soil, stone or rock to bring a site to its design levels. The work is cut and fill to approved drawings and levels, topsoil strip and stockpiling, land clearance, site levelling and muck-away, as well as excavation for ponds, lakes and swimming pools. Suitable material is reused on site wherever it can be, which reduces both muck-away and imported fill. Plant is matched to the access and the volume, from garden re-grading to development platforms. The <a href="/earthworks">earthworks page</a> explains each service in more detail.</p>
       <a href="/earthworks" class="btn btn-yellow">Learn more about earthworks →</a>
+    </div>
+  </div>
+</section>
+
+<section class="page-section">
+  <div class="container">
+    <div class="page-prose">
+      <h2 class="section-title">Sectors, safety and coverage</h2>
+      <p>We work for schools, hotel and leisure operators, retailers, homeowners, commercial clients and public-sector bodies, and the <a href="/sectors">sectors page</a> sets out what each typically needs. Our team is fully DBS-checked, so we can work on school and nursery sites and other public-sector premises where that check is required.</p>
+      <p>Every job is backed by project-specific risk assessments and method statements, toolbox talks and on-site supervision, and we hold CHAS, SafeContractor and SSIP accreditation. Our <a href="/health-safety">health and safety page</a> explains how that works on site.</p>
+      <p>We work from our yard at Send, near Woking, across Surrey, London and the South East; see the <a href="/areas">areas we cover</a>.</p>
     </div>
   </div>
 </section>
@@ -109,3 +128,10 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   </div>
 </section>
 </BaseLayout>
+
+<style>
+  /* Page-scoped only. In-prose links, never the .btn CTAs. */
+  p a:not(.btn) { color: var(--yellow-700); text-decoration: underline; }
+  p a:not(.btn):hover { color: var(--ink); }
+  .page-prose .section-title { margin-bottom: 16px; }
+</style>
