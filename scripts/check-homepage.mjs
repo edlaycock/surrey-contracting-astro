@@ -5,13 +5,15 @@
  *
  * Fails the build if:
  *   - any built HTML page still contains an unfilled {{PLACEHOLDER}}
+ *   - any built HTML page, llms.txt or llms-full.txt names SafeContractor or
+ *     Alcumus (Ed, 2 Oct 2026: the company is not approved for SafeContractor)
  *   - the homepage mentions surfacing, tarmac, resin or surreyhillssurfacing
  *   - the homepage contains an em dash
  *   - homepage body copy exceeds 1,200 words
  *   - the first <p> after the <h1> is not the direct-answer paragraph
  *   - any FAQPage question or answer in the JSON-LD is missing from the visible text
  */
-import { readFileSync, readdirSync, statSync } from 'node:fs';
+import { readFileSync, readdirSync, statSync, existsSync } from 'node:fs';
 import { join } from 'node:path';
 
 const DIST = 'dist/client';
@@ -29,6 +31,14 @@ const walk = (dir) =>
 for (const file of walk(DIST)) {
   const n = (readFileSync(file, 'utf8').match(/\{\{/g) || []).length;
   if (n) failures.push(`${file}: ${n} unfilled {{placeholder}} occurrence(s)`);
+}
+
+/* 1b. Site-wide: SafeContractor must never appear (Ed, 2 Oct 2026) */
+const SITE_FORBIDDEN = /safe[\s-]?contractor|alcumus/gi;
+const llms = ['llms.txt', 'llms-full.txt'].map((f) => join(DIST, f)).filter((f) => existsSync(f));
+for (const file of [...walk(DIST), ...llms]) {
+  const n = (readFileSync(file, 'utf8').match(SITE_FORBIDDEN) || []).length;
+  if (n) failures.push(`${file}: SafeContractor or Alcumus appears ${n} time(s)`);
 }
 
 const html = readFileSync(HOME, 'utf8');

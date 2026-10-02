@@ -108,3 +108,19 @@ superseded. The 11 Sep rules still apply to it: no membership number and no
 link to the Constructionline register. The asbestos licence and CCDO rulings
 are not affected. If a claim's status changes again, check the latest dated
 entry in tasks/todo.md rather than an older ruling.
+
+## SafeContractor must never appear (2 Oct 2026)
+
+SafeContractor was on the site from the start (logo, copy, FAQ answers,
+schema, llms files) and had been carried into every new page because the
+existing site showed it. Ed: Surrey Contracting is not approved for
+SafeContractor. A logo or claim that is already live is not proof that it is
+held.
+Rule: SafeContractor (and Alcumus, its operator) must never appear anywhere on
+the site, in copy, alt text, schema, meta or llms files. The postbuild guard
+enforces it: check-homepage scans every built page and the llms files, and
+check-lp lists the terms in FORBIDDEN. Do not remove those guard entries
+without Ed's written say-so. Older notes in tasks/todo.md and the 11 Sep
+entry above that list SafeContractor are history, not approval. When adding
+an accreditation claim to a new page, use only what the latest dated todo.md
+entry confirms.

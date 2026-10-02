@@ -86,11 +86,11 @@ export const FAQS: Faq[] = [
   },
   {
     q: 'How do you check a groundworks or demolition contractor is legitimate?',
-    a: 'Check four things: SSIP accreditation (CHAS or SafeContractor) against the public register, current public liability insurance, an Environment Agency waste carrier registration for muck away, and an active Companies House record. Surrey Contracting Limited is company number 15877451, is a Constructionline Gold member and holds SSIP accreditation, shown in the <a href="#accreditations">accreditations strip</a> on this page.',
+    a: 'Check four things: SSIP accreditation (for example CHAS) against the public register, current public liability insurance, an Environment Agency waste carrier registration for muck away, and an active Companies House record. Surrey Contracting Limited is company number 15877451, is a Constructionline Gold member and holds SSIP accreditation, shown in the <a href="#accreditations">accreditations strip</a> on this page.',
   },
   {
     q: 'Are you accredited?',
-    a: 'Yes. Surrey Contracting is a Constructionline Gold member and holds CHAS, SafeContractor, SSIP and SMAS Worksafe registrations, and our operatives carry CITB, CSCS, NPORS and IPAF cards. Each scheme is shown in the <a href="#accreditations">accreditations strip</a> on this page, and the SSIP register can be searched by company name.',
+    a: 'Yes. Surrey Contracting is a Constructionline Gold member and holds CHAS, SSIP and SMAS Worksafe registrations, and our operatives carry CITB, CSCS, NPORS and IPAF cards. Each scheme is shown in the <a href="#accreditations">accreditations strip</a> on this page, and the SSIP register can be searched by company name.',
   },
   {
     q: 'How do I get a quote?',
@@ -108,7 +108,6 @@ export const ACCREDITATION_LOGOS = [
   // Constructionline Gold leads (Ed, 2 Oct 2026: confirmed by Jason, official logo supplied).
   { logo: '/assets/acc/constructionline-gold.webp', alt: 'Constructionline Gold Member' },
   { logo: '/assets/acc/chas.webp', alt: 'CHAS Accredited Contractor' },
-  { logo: '/assets/acc/safe-contractor.webp', alt: 'SafeContractor by Alcumus' },
   { logo: '/assets/acc/ssip.webp', alt: 'SSIP, Safety Schemes in Procurement' },
   { logo: '/assets/acc/smas.webp', alt: 'SMAS Worksafe' },
   { logo: '/assets/acc/citb.webp', alt: 'CITB Registered' },

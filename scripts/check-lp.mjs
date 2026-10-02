@@ -78,6 +78,10 @@ const FORBIDDEN = [
   // 'constructionline' removed 2 Oct 2026: Ed reversed the 30 Sep ruling after
   // Jason confirmed Constructionline Gold membership.
   'ccdo',
+  // Ed, 2 Oct 2026: Surrey Contracting is not approved for SafeContractor.
+  'safecontractor',
+  'safe contractor',
+  'alcumus',
   'asbestos removal licen',
   'fully licensed',
   'aggregaterating',

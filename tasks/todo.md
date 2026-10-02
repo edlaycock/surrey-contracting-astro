@@ -115,7 +115,7 @@ P0 and P1 shipped in PR #9, merged 14 Sep 08:57 UTC and live. Verified against t
 ## NOT Claude Code tasks (Ed)
 1. Google Business Profile at the Send address, categories Excavating Contractor and Demolition Contractor, real site photos.
 2. Review pipeline: tier-1 PM, Cobham homeowner, developer contact, then every handover.
-3. Citations: CHAS, Constructionline, SafeContractor directory profiles with matching NAP.
+3. Citations: CHAS, Constructionline, SafeContractor directory profiles with matching NAP. (2 Oct 2026: SafeContractor dropped, the company is not approved for it; see the 2 Oct entries at the end.)
 4. One link earn per month.
 
 ## Manual (Ed, cannot be done in code)
@@ -581,7 +581,9 @@ from nav or footer.
 - Dropped from the source: Constructionline Gold, "Licensed Asbestos
   Removal", CCDO-qualified operatives. Accreditations shown are the eight
   with logos in public/assets/acc/ (CHAS, SafeContractor, SSIP, SMAS, CITB,
-  CSCS, NPORS, IPAF). Asbestos wording is the coordination copy approved on
+  CSCS, NPORS, IPAF). (Superseded 2 Oct 2026: Constructionline Gold added,
+  SafeContractor removed as not approved; still eight logos.) Asbestos
+  wording is the coordination copy approved on
   the live /demolition page in PR #16 (2dcdc55), after Jason's written
   confirmation on 22 Sep that the company is not licensed to remove asbestos.
   (The brief said PR #13; #13 was the building-control fix, #16 is the
@@ -899,7 +901,7 @@ site; no client names except those already on the published project pages.
 | "Licensed Asbestos Removal", "holds full asbestos removal licences" | demolition | Replaced with the PR #16 coordination wording: survey first, removal by an HSE-licensed specialist, Surrey Contracting sequences it. Tile, FAQ 2 and the services FAQ list all use it. |
 | CCDO qualified operatives | demolition | Dropped. CSCS kept (logo exists). v1 /lp/demolition and live /demolition still say CCDO; unchanged here, flagged for Ed. |
 | "15+ Years Experience", "over 15 years", "decade and a half" | all three | Retained as "15+ years": already on the homepage hero trust bar, About page and all v1 /lp pages. |
-| CHAS Accredited, SafeContractor Approved, SSIP Certified | all three | Retained, worded "CHAS, SafeContractor and SSIP accredited" as the live site does. SMAS added because its logo exists. |
+| CHAS Accredited, SafeContractor Approved, SSIP Certified | all three | Retained, worded "CHAS, SafeContractor and SSIP accredited" as the live site does. SMAS added because its logo exists. (Superseded 2 Oct 2026: SafeContractor removed, not approved.) |
 | CSCS Qualified Operatives | all three | Retained as "CSCS-carded". CITB, NPORS, IPAF named on groundworks-2 because the homepage FAQ already says operatives carry those cards and the logos exist. |
 | "Fully insured", "Qualified & Insured" | groundworks, earthworks | Retained as "insured on every project": the live /earthworks FAQ already says operators are "fully trained, qualified and insured". |
 | "Safe, efficient and fully accredited" | demolition | "fully accredited" replaced by the named schemes. |
@@ -1536,3 +1538,53 @@ Verification (2 Oct 2026):
 - [ ] Ed to review the branch and screenshots, then merge.
 - [ ] After deploy: live check of the homepage marquee, one v2 page and
       validator.schema.org on the homepage FAQ.
+
+## 2026-10-02 - SafeContractor removed: not approved (Ed's instruction)
+
+Ed: Surrey Contracting is NOT approved for SafeContractor, so it is removed
+from the site completely. Second commit on branch constructionline-gold, on
+top of 898dcb0. Not pushed, no PR. Every older note in this file that lists
+SafeContractor as held (11 Sep brief notes, the v2 plan's eight logos, the v2
+claims table, the citations list, and the 2 Oct Constructionline entry above)
+is superseded by this one.
+
+Changed:
+- public/assets/acc/safe-contractor.webp deleted. Removed from
+  ACCREDITATION_LOGOS (homepage marquee and the four v2 strips) and from both
+  marquee sets on /groundworks and /health-safety. Eight logos remain,
+  Constructionline Gold first.
+- Copy: homepage FAQ (2 answers), /groundworks buyer-advice paragraph,
+  /demolition, /lp/groundworks and /lp/demolition FAQ (visible and JSON-LD,
+  identical), v2 tiles, trust lines, FAQ answers (groundworks-2,
+  earthworks-2), guides/demolition-cost-uk ("SSIP membership through a scheme
+  such as CHAS"), llms.txt and llms-full.txt (Alcumus line removed).
+- v2 meta descriptions now read "Constructionline Gold, CHAS and SSIP
+  accredited" (SSIP restored with the freed characters).
+- public/styles.css: .lp2-trust-logos back to 8 columns, 4 under 900px.
+- Guards: check-lp FORBIDDEN gains 'safecontractor', 'safe contractor',
+  'alcumus'. check-homepage gains a site-wide scan of every built HTML page
+  plus dist/client/llms.txt and llms-full.txt for /safe[\s-]?contractor|alcumus/i
+  and fails the build on any hit (check-homepage had no site-wide term list,
+  only homepage terms).
+- Sanity: the build reads project documents (title, summary, services,
+  client, location, body and so on) from Sanity project mhqgpyb9. A read-only
+  query of every public published document (7 projects, 38 image assets) on
+  2 Oct found no SafeContractor or Alcumus text. Drafts and unpublished
+  documents are not visible without a token and were not checked. The new
+  build guard will fail any rebuild if CMS content ever adds the term.
+
+Verification (2 Oct 2026):
+- [x] npm run build green, all postbuild checks passed (homepage 1041 words).
+- [x] grep -rniI "safe.\?contractor\|alcumus" over src/, public/, scripts/ and
+      dist/ returns nothing outside the two guard scripts.
+- [x] Guard negative test: appending "SafeContractor" to dist/client/llms.txt
+      made check-homepage exit 1; restored file passes.
+- [x] FAQ parity on built HTML: / 10/10, /demolition 7/7, /groundworks 6/6,
+      /lp/groundworks 4/4, /lp/demolition 4/4, all four v2 pages 5/5,
+      guides/demolition-cost-uk 6/6.
+- [x] Marquee sets 8 and 8 logos, 1728px each, track 3456px (seamless -50%
+      loop); v2 strip 8 in one row at 1366px, 4 and 4 at 800 and 390px.
+- [x] No em or en dash in the added lines.
+- [ ] Ed to review the branch, then merge.
+- [ ] Off-site: remove any SafeContractor mention from the Google Business
+      Profile, directory citations and ad copy if present (not checked here).

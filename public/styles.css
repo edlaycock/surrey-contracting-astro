@@ -2946,9 +2946,9 @@ a.contact-value:hover { color: var(--yellow-700); }
   margin: 0;
   padding: 0;
   display: grid;
-  /* Nine logos (Constructionline Gold added 2 Oct 2026): one row on
-     desktop, a 3 by 3 grid under 900px, so no row ends with a lone logo. */
-  grid-template-columns: repeat(9, minmax(0, 1fr));
+  /* Eight logos (2 Oct 2026): one row on desktop, two rows of 4 under
+     900px, so no row ends with a lone logo. */
+  grid-template-columns: repeat(8, minmax(0, 1fr));
   gap: 12px;
 }
 .lp2-badge.acc-badge { height: 76px; padding: 10px; }
@@ -3065,7 +3065,7 @@ a.contact-value:hover { color: var(--yellow-700); }
 }
 
 @media (max-width: 900px) {
-  .lp2-trust-logos { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .lp2-trust-logos { grid-template-columns: repeat(4, minmax(0, 1fr)); }
   .lp2-steps-row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 @media (max-width: 700px) {
