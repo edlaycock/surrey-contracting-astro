@@ -520,6 +520,9 @@ PR opened for Ed to merge. Not merged unprompted: it changes a live claim.
 Branch claude/lp-v1-claims-fix, cut from origin/main so it merges independently
 of the v2 work. Ed ruled Constructionline, an HSE asbestos licence and CCDO
 qualified operatives unverified; none of them may appear on the site.
+(Reversed 2 Oct 2026 for Constructionline only: Jason confirmed Constructionline
+Gold membership, see the 2 Oct 2026 entry at the end of this file. The
+asbestos licence and CCDO rulings stand.)
 
 Changed:
 - CCDO: /lp/demolition (meta description, hero trust item, body copy, feature
@@ -1476,3 +1479,60 @@ still fall through to the homepage.
 - [ ] Apply on the VPS after PR #20 is deployed (sed insert in chat), then
       `sudo nginx -t && sudo systemctl reload nginx` and curl check.
 
+## 2026-10-02 - Ed reversed the 30 Sep ruling: Constructionline Gold confirmed by Jason; official logo supplied
+
+Branch constructionline-gold, cut from origin/main (a0ed199). Not pushed, no PR:
+Ed reviews first (a push to main deploys). The 30 Sep ruling (PR #18, 8801000)
+removed Constructionline as unverified. Jason has now confirmed Constructionline
+Gold membership and Ed supplied the official logo, so it goes back on, leading
+every accreditation list. No membership number and no link to Constructionline
+(lessons.md, 11 Sep rules unchanged). Asbestos licence and CCDO stay off.
+
+Files changed:
+- public/assets/acc/constructionline-gold.webp: new, from the supplied logo
+  (1181x594), resized to 600x302 with ImageMagick, quality 88, 6.9 KB. Artwork
+  unchanged.
+- src/data/homepage.ts: Constructionline Gold first in ACCREDITATION_LOGOS
+  (alt "Constructionline Gold Member"), so it leads the homepage marquee and
+  the four v2 trust strips. Meta description and two FAQ answers (visible and
+  FAQPage schema share one source).
+- src/pages/index.astro: hero trust item "CHAS / accredited" to
+  "Constructionline Gold / member".
+- src/pages/groundworks.astro and src/pages/health-safety.astro: logo added
+  first in both marquee sets (duplicate aria-hidden set keeps alt=""); the
+  /groundworks buyer-advice paragraph; /health-safety meta description.
+- src/pages/demolition.astro (FAQ visible and JSON-LD, kept identical; meta),
+  src/pages/services.astro (meta).
+- src/pages/lp/groundworks.astro and lp/demolition.astro (trust item, FAQ
+  visible and JSON-LD); lp/earthworks, lp/agricultural, lp/drainage (trust
+  item "Constructionline / Gold & CHAS", short so the four trust items stay
+  on one row at desktop).
+- v2 pages lp/groundworks-2, demolition-2, earthworks-2, commercial-surfacing:
+  "Accredited" tile, trust line, meta description; FAQ answer on groundworks-2
+  and earthworks-2 (one array feeds visible text and schema).
+- public/styles.css: .lp2-trust-logos 9 columns on desktop (one row), 3 under
+  900px (3 by 3), so no orphan logo.
+- public/llms.txt, public/llms-full.txt: Constructionline Gold added to the
+  accreditation lists. The £10m public liability lines were not touched (open
+  question, separate).
+- scripts/check-lp.mjs: 'constructionline' removed from FORBIDDEN, nothing else.
+- Not changed: src/pages/guides/demolition-cost-uk.astro (generic buyer advice,
+  not a list of our schemes).
+
+Verification (2 Oct 2026):
+- [x] npm ci, npm run build: green; check-homepage (1042 words of 1200, FAQPage
+      10 of 10 matched), check-locations, check-guides, check-lp all passed.
+- [x] dist/client: "Constructionline Gold" on /, /groundworks, /health-safety,
+      /services, /demolition, all five v1 /lp pages, all four v2 pages,
+      llms.txt and llms-full.txt; logo file referenced on /, /groundworks,
+      /health-safety and the four v2 pages. No href to Constructionline.
+- [x] FAQ parity on built HTML: / 10 of 10, /demolition 7 of 7,
+      /lp/groundworks 4 of 4, /lp/demolition 4 of 4, groundworks-2 and
+      earthworks-2 5 of 5.
+- [x] No em or en dash in the added lines of the diff.
+- [x] Playwright screenshots: marquee sets 9 and 9 logos, both 1944px, track
+      3888px, so the -50% loop stays seamless; v2 strip rows 9 (1366 and 1000px)
+      and 3/3/3 (800 and 390px).
+- [ ] Ed to review the branch and screenshots, then merge.
+- [ ] After deploy: live check of the homepage marquee, one v2 page and
+      validator.schema.org on the homepage FAQ.

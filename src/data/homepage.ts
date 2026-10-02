@@ -26,7 +26,7 @@ export const META = {
   // The brief's wording ran to 161 characters against its own 155 limit;
   // "south west London" is shortened to "SW London" to bring it under.
   description:
-    'Groundworks, earthworks and demolition contractor in Send, near Woking. Self-delivered across Surrey and SW London. CHAS and SafeContractor accredited.',
+    'Groundworks, earthworks and demolition contractor in Send, near Woking. Self-delivered across Surrey and SW London. Constructionline Gold and CHAS accredited.',
 };
 
 /* ── Direct answer (first <p> after the <h1>) ─────────────────────────────── */
@@ -86,11 +86,11 @@ export const FAQS: Faq[] = [
   },
   {
     q: 'How do you check a groundworks or demolition contractor is legitimate?',
-    a: 'Check four things: SSIP accreditation (CHAS or SafeContractor) against the public register, current public liability insurance, an Environment Agency waste carrier registration for muck away, and an active Companies House record. Surrey Contracting Limited is company number 15877451 and holds SSIP accreditation, shown in the <a href="#accreditations">accreditations strip</a> on this page.',
+    a: 'Check four things: SSIP accreditation (CHAS or SafeContractor) against the public register, current public liability insurance, an Environment Agency waste carrier registration for muck away, and an active Companies House record. Surrey Contracting Limited is company number 15877451, is a Constructionline Gold member and holds SSIP accreditation, shown in the <a href="#accreditations">accreditations strip</a> on this page.',
   },
   {
     q: 'Are you accredited?',
-    a: 'Yes. Surrey Contracting holds CHAS, SafeContractor, SSIP and SMAS Worksafe registrations, and our operatives carry CITB, CSCS, NPORS and IPAF cards. Each scheme is shown in the <a href="#accreditations">accreditations strip</a> on this page, and the SSIP register can be searched by company name.',
+    a: 'Yes. Surrey Contracting is a Constructionline Gold member and holds CHAS, SafeContractor, SSIP and SMAS Worksafe registrations, and our operatives carry CITB, CSCS, NPORS and IPAF cards. Each scheme is shown in the <a href="#accreditations">accreditations strip</a> on this page, and the SSIP register can be searched by company name.',
   },
   {
     q: 'How do I get a quote?',
@@ -105,6 +105,8 @@ export const plainText = (html: string) => html.replace(/<[^>]+>/g, '').replace(
 // The strip stands alone. No registration numbers, no supporting list beneath
 // it, and no links to external registers anywhere on the page (Ed, 11 Sep 2026).
 export const ACCREDITATION_LOGOS = [
+  // Constructionline Gold leads (Ed, 2 Oct 2026: confirmed by Jason, official logo supplied).
+  { logo: '/assets/acc/constructionline-gold.webp', alt: 'Constructionline Gold Member' },
   { logo: '/assets/acc/chas.webp', alt: 'CHAS Accredited Contractor' },
   { logo: '/assets/acc/safe-contractor.webp', alt: 'SafeContractor by Alcumus' },
   { logo: '/assets/acc/ssip.webp', alt: 'SSIP, Safety Schemes in Procurement' },

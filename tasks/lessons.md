@@ -96,3 +96,15 @@ Rule: do not route surfacing URLs to any service page by analogy with an
 existing redirect. Ask Ed where surfacing traffic should go before adding or
 changing any surfacing redirect.
 
+## Constructionline Gold is confirmed: do not strip it again (2 Oct 2026)
+
+On 30 Sep Ed ruled Constructionline unverified and it was removed everywhere
+and added to the check-lp forbidden list. On 2 Oct Jason confirmed
+Constructionline Gold membership and Ed supplied the official logo, so the
+ruling was reversed: it now leads the logo strips and accreditation copy.
+Rule: Constructionline Gold is an approved claim. Older notes in todo.md that
+say to drop it (30 Sep ruling, v2 plan "Dropped from the source") are
+superseded. The 11 Sep rules still apply to it: no membership number and no
+link to the Constructionline register. The asbestos licence and CCDO rulings
+are not affected. If a claim's status changes again, check the latest dated
+entry in tasks/todo.md rather than an older ruling.

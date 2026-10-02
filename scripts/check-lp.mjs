@@ -75,7 +75,8 @@ const FORBIDDEN = [
   'tarmac',
   'resin',
   'surreyhillssurfacing',
-  'constructionline',
+  // 'constructionline' removed 2 Oct 2026: Ed reversed the 30 Sep ruling after
+  // Jason confirmed Constructionline Gold membership.
   'ccdo',
   'asbestos removal licen',
   'fully licensed',
