@@ -21,6 +21,8 @@ jobs:
       SSH_HOST: ${{ secrets.SSH_HOST }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
 
       - uses: actions/setup-node@v4
         with:
@@ -37,7 +39,7 @@ jobs:
       # --exclude=.env protects the server-only secrets file from --delete.
       - name: Rsync source to VPS
         if: ${{ env.SSH_HOST != '' }}
-        uses: burnett01/rsync-deployments@7.0.2
+        uses: burnett01/rsync-deployments@fcf16a05b8650e3704a3871139dce6dde00aa472 # 7.0.2
         with:
           switches: -avzr --delete --exclude=.git --exclude=node_modules --exclude=dist --exclude=.astro --exclude=studio --exclude=.env
           path: ./
@@ -48,7 +50,7 @@ jobs:
 
       - name: Build & (re)start the isolated container
         if: ${{ env.SSH_HOST != '' }}
-        uses: appleboy/ssh-action@v1.0.3
+        uses: appleboy/ssh-action@029f5b4aeeeb58fdfe1410a5d17f967dacf36262 # v1.0.3
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
