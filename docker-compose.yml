@@ -6,7 +6,7 @@ services:
     build:
       context: .
       args:
-        # Set per deploy (the workflow exports the commit SHA) so the Astro build
+        # Set per deploy (the workflow exports SHA-run_id-run_attempt) so the Astro build
         # layer always re-runs and picks up current CMS content.
         BUILD_ID: "${BUILD_ID:-dev}"
     container_name: surrey-contracting

@@ -61,7 +61,9 @@ jobs:
             # Passed through to the Dockerfile's BUILD_ID arg so the Astro build layer
             # is never served from cache — otherwise a deploy with no source change
             # rebuilds the container from a stale dist and CMS edits never appear.
-            export BUILD_ID="${{ github.sha }}"
+            # Must be unique per run, not per commit: Sanity webhook and manual runs
+            # reuse the last commit SHA, so the SHA alone still hits the cache.
+            export BUILD_ID="${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}"
             docker compose up -d --build
             docker compose ps
 
