@@ -1,6 +1,6 @@
 import { defineType, defineField, defineArrayMember } from 'sanity';
 
-const CATEGORY_OPTIONS = ['Drainage', 'Earthworks', 'Groundworks', 'Hard Landscaping', 'Demolition'];
+const CATEGORY_OPTIONS = ['Drainage', 'Earthworks', 'Groundworks', 'Hard Landscaping', 'Demolition', 'Enabling Works'];
 
 export default defineType({
   name: 'project',
