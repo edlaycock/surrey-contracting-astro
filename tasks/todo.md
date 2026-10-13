@@ -1588,3 +1588,20 @@ Verification (2 Oct 2026):
 - [ ] Ed to review the branch, then merge.
 - [ ] Off-site: remove any SafeContractor mention from the Google Business
       Profile, directory citations and ad copy if present (not checked here).
+
+## Cookie and Privacy policy accuracy (13 Oct 2026)
+
+- src/pages/cookies.astro and src/pages/privacy.astro no longer say the site
+  is hosted on Netlify, uses no analytics or advertising cookies, or loads
+  Google Fonts (fonts are self-hosted). They now describe Hostinger VPS
+  hosting, Google Tag Manager, CookieYes, Google Analytics 4, TruConversion
+  and Google Ads conversion tracking by purpose and category (no cookie names
+  or retention periods), Consent Mode defaults, Sanity image requests, and
+  where enquiry form data goes (SMTP2GO email, copy to Cumulus Digital,
+  YourTradeQuotes connector). "Last updated" set to 13 October 2026.
+- [ ] Ed to review legal wording on the PR, then merge.
+- [ ] Ed to confirm: TruConversion form-field masking is on; whether the
+      CookieYes revisit/settings button is enabled (copy currently says clear
+      cookies and revisit); the YTQ connector key is 'ytq_live_demo_key_12345'
+      (looks like a demo key); GA4/Ads/CookieYes are configured in GTM only,
+      not visible in the repo.
