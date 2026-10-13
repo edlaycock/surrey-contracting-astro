@@ -233,11 +233,11 @@ export const SERVICE_PAGES = {
       },
       {
         "q": "How do you deal with asbestos?",
-        "a": "Suitable asbestos information and surveys must be available before works take place this can be arranged by your contractor or by yourself as the homeowner or developer. Where asbestos is found we can coordinate the work through appropriately HSE-licensed specialist contractors."
+        "a": "Suitable asbestos information and surveys must be available before works take place. This can be arranged by your contractor or by yourself as the homeowner or developer. Where asbestos is found we can coordinate the work through appropriately HSE-licensed specialist contractors."
       },
       {
         "q": "What happens to demolition waste?",
-        "a": "Materials are segregated on site, with suitable waste directed for recycling or recovery. Remaining waste is transferred through authorised waste management routes, supported by the appropriate documentation, we can carry out on site recycling on site also."
+        "a": "Materials are segregated on site, with suitable waste directed for recycling or recovery. Remaining waste is transferred through authorised waste management routes, supported by the appropriate documentation. We can also carry out recycling on site."
       },
       {
         "q": "How much does residential or commercial demolition cost?",
@@ -883,6 +883,7 @@ export const SERVICE_PAGES = {
       {
         "t": "Education",
         "d": "We support schools, colleges and universities with demolition, site enabling, earthworks and groundworks, working to programme and with minimal disruption to live environments.",
+        "href": "/projects",
         "img": {
           "src": "/assets/img/services/sectors/sectors-education.webp",
           "w": 1000,
@@ -896,6 +897,7 @@ export const SERVICE_PAGES = {
       {
         "t": "Hotels & Leisure",
         "d": "We work with hotel operators and leisure providers on demolition, site preparation and groundworks, helping to create safe, efficient sites ready for redevelopment or refurbishment.",
+        "href": "/soft-strip-out",
         "img": {
           "src": "/assets/img/services/sectors/sectors-hotels-leisure.webp",
           "w": 989,
@@ -909,6 +911,7 @@ export const SERVICE_PAGES = {
       {
         "t": "Retail & High Street",
         "d": "We undertake demolition and enabling works for retail units, high street premises and mixed-use developments, with careful planning around access, public safety and neighbouring businesses.",
+        "href": "/demolition",
         "img": {
           "src": "/assets/img/services/sectors/sectors-retail-high-street.webp",
           "w": 1000,
@@ -922,6 +925,7 @@ export const SERVICE_PAGES = {
       {
         "t": "Housebuilders & Residential",
         "d": "From individual plots to multi-unit developments, we provide demolition, site enabling, bulk earthworks and groundworks for housebuilders and residential developers.",
+        "href": "/groundworks",
         "img": {
           "src": "/assets/img/services/sectors/sectors-housebuilders-residential.webp",
           "w": 988,
@@ -935,6 +939,7 @@ export const SERVICE_PAGES = {
       {
         "t": "Local Authority & Public Sector",
         "d": "We deliver demolition, site enabling and groundworks for local authorities and public sector bodies, working to strict compliance, H&S and environmental requirements.",
+        "href": "/projects",
         "img": {
           "src": "/assets/img/services/sectors/sectors-public-sector.webp",
           "w": 1000,
@@ -948,6 +953,7 @@ export const SERVICE_PAGES = {
       {
         "t": "Commercial & Industrial",
         "d": "We support commercial and industrial clients with demolition, site preparation, earthworks and groundworks for new builds, extensions and redevelopment projects.",
+        "href": "/site-enabling-works",
         "img": {
           "src": "/assets/img/services/sectors/sectors-commercial-industrial.webp",
           "w": 989,

@@ -3246,6 +3246,13 @@ a.contact-value:hover { color: var(--yellow-700); }
 .sp-card-link:hover .sp-card-arrow,
 .sp-core-card:hover .sp-card-arrow { transform: translateX(4px); }
 .sp-card-link:hover h3 { color: var(--yellow-700); }
+.sp-card-link:focus-visible,
+.sp-core-card:focus-visible {
+  outline: 3px solid var(--yellow-700);
+  outline-offset: 4px;
+  border-radius: var(--radius);
+}
+.sp-core-card:focus-visible { outline-color: var(--yellow); }
 .sp-cards-grey .sp-card { background: var(--grey-50); border-radius: var(--radius); overflow: hidden; }
 .sp-cards-grey .sp-card-media { border-radius: 0; }
 .sp-cards-grey .sp-card-body { padding: 18px 22px 22px; }
