@@ -78,8 +78,17 @@ const accLogos = ACC_SHOWN.map((key) => {
   return { ...logo, w, h };
 });
 
-const srcset = (img: ServiceImage) =>
-  img.w > img.w640 ? `${img.src640} ${img.w640}w, ${img.src} ${img.w}w` : undefined;
+// Responsive sources. Images wider than 1280px also have a -1280.webp
+// variant. Cards, intro, split and panel images are capped at 1280w (they
+// never display wider than ~620 CSS px); only the hero offers the full file.
+const src1280 = (img: ServiceImage) => (img.w > 1280 ? img.src.replace(/\.webp$/, '-1280.webp') : null);
+const srcset = (img: ServiceImage, full = false) => {
+  const set = [`${img.src640} ${img.w640}w`];
+  const mid = src1280(img);
+  if (mid) set.push(`${mid} 1280w`);
+  if (img.w > img.w640 && (full || !mid)) set.push(`${img.src} ${img.w}w`);
+  return set.length > 1 ? set.join(', ') : undefined;
+};
 
 const faqSchema = p.faqs.length
   ? {
@@ -129,7 +138,7 @@ const breadcrumbOnly = service
   <div class="sp-hero-media" aria-hidden="true">
     <img
       src={p.hero.img.src}
-      srcset={srcset(p.hero.img)}
+      srcset={srcset(p.hero.img, true)}
       sizes="(max-width: 820px) 100vw, 64vw"
       alt=""
       width={p.hero.img.w}
@@ -150,7 +159,7 @@ const breadcrumbOnly = service
       ))}
     </nav>
     {showEyebrow && <span class="sp-eyebrow sp-eyebrow-light">{p.hero.eyebrow}</span>}
-    <h1 class="sp-hero-title">{p.hero.a}<br /><span>{p.hero.b}</span></h1>
+    <h1 class="sp-hero-title">{p.hero.a} <br /><span>{p.hero.b}</span></h1>
     {p.hero.tag && <p class="sp-hero-tag">{p.hero.tag}</p>}
     <p class="sp-hero-text">{p.hero.text}</p>
     <div class="sp-hero-ctas">
