@@ -129,6 +129,39 @@ const canonical = path === '/' ? SITE : SITE + path;
   <link rel="icon" type="image/x-icon" href="/favicon.ico" />
   <link rel="stylesheet" href="/styles.css" />
   <slot name="head" />
+  <!-- TruConversion: loaded only after CookieYes analytics consent (PECR).
+       Listens for cookieyes_banner_load (returning visitors) and
+       cookieyes_consent_update (in-session choice); never loads otherwise. -->
+  <script is:inline>
+  (function () {
+    var loaded = false;
+    function loadTruConversion() {
+      if (loaded) return;
+      loaded = true;
+      window._tip = window._tip || [];
+      var d = document, id = 'ti-js';
+      if (d.getElementById(id)) return;
+      var tjs = d.getElementsByTagName('script')[0];
+      var js = d.createElement('script');
+      js.id = id;
+      js.async = true;
+      js.src = 'https://app.truconversion.com/ti-js/64315/df27a.js';
+      tjs.parentNode.insertBefore(js, tjs);
+    }
+    function analyticsGranted(c) {
+      if (!c || typeof c !== 'object') return false;
+      if (Array.isArray(c.accepted)) return c.accepted.indexOf('analytics') !== -1;
+      if (c.categories && typeof c.categories === 'object') {
+        return c.categories.analytics === true && c.isUserActionCompleted !== false;
+      }
+      return false;
+    }
+    function check(c) { if (analyticsGranted(c)) loadTruConversion(); }
+    document.addEventListener('cookieyes_banner_load', function (e) { check(e && e.detail); });
+    document.addEventListener('cookieyes_consent_update', function (e) { check(e && e.detail); });
+    try { if (typeof window.getCkyConsent === 'function') check(window.getCkyConsent()); } catch (err) {}
+  })();
+  </script>
 </head>
 <body>
   <!-- Google Tag Manager (noscript) -->
