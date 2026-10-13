@@ -1970,3 +1970,16 @@ redirects; no /lp/* changes.
   script "all six pages passed"; fresh 375 and 1440 screenshots of all
   six, scrollWidth equals viewport, 0 broken images. Commits cc79938
   (images, srcsets, H1 space) and d10d9ad (grid fill, dead CSS).
+
+### Ed approved the screenshots (13 Oct 2026): final changes before the PR
+- [x] Sectors cards are links (visible focus ring): Education -> /projects,
+      Hotels & Leisure -> /soft-strip-out, Retail & High Street ->
+      /demolition, Housebuilders & Residential -> /groundworks, Local
+      Authority & Public Sector -> /projects, Commercial & Industrial ->
+      /site-enabling-works. All targets are built pages.
+- [x] Demolition FAQ answers corrected (asbestos run-on split; "on site"
+      no longer repeated in the waste answer). The wording does not appear
+      on the soft-strip-out or site-hoarding FAQs.
+- Evidence: `npm run build` exit 0, all four guards passed; six-page check
+  "all six pages passed" (FAQ 7/7 on /demolition, answers visible);
+  fresh 375 and 1440 screenshots of /sectors and /demolition. Commit bbe5a99.
