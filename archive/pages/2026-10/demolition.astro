@@ -1,0 +1,249 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ServiceSchema from '../components/ServiceSchema.astro';
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What demolition services does Surrey Contracting offer?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Surrey Contracting provides full structural demolition, partial demolition for renovation, soft strip-out, site clearance, concrete crushing, site hoarding and security, and coordination of licensed asbestos removal by specialist contractors, for residential and commercial clients across Surrey, London and the South East." }
+    },
+    {
+      "@type": "Question",
+      "name": "Who carries out asbestos removal before a demolition?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Licensed asbestos removal can only be carried out by an HSE-licensed contractor, and Surrey Contracting brings in a licensed specialist for that work. What we do is make sure the refurbishment and demolition survey is in place first, sequence the removal ahead of the demolition, and handle the site access and handover so the two programmes run together rather than as separate packages." }
+    },
+    {
+      "@type": "Question",
+      "name": "Do you provide site hoarding for demolition projects?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Yes. Surrey Contracting installs surface-mounted and dug-in hoarding, Harris fencing, vehicle and pedestrian gates, and works with specialist partners to provide site alarm systems and CCTV monitoring." }
+    },
+    {
+      "@type": "Question",
+      "name": "Are Surrey Contracting's demolition operatives qualified?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Yes. All operatives hold CSCS cards. Surrey Contracting produces full risk assessments and method statements for every demolition project and holds Constructionline Gold, CHAS and SSIP accreditation." }
+    },
+    {
+      "@type": "Question",
+      "name": "What areas does Surrey Contracting cover for demolition?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Surrey Contracting covers Surrey, London and the South East, operating from its base at Send, near Woking. Areas served include Guildford, Woking, Esher, Epsom, Weybridge, Reigate, Dorking, Kingston and the wider M25 corridor." }
+    },
+    {
+      "@type": "Question",
+      "name": "How much does demolition cost in Surrey?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Demolition in Surrey is quoted per project, because the price depends on the size and construction of the building, whether asbestos is present, waste volumes and site access. On-site concrete crushing can reduce disposal and haulage costs where space allows. Surrey Contracting provides a free measured site visit and a fixed-price itemised quotation before any work starts." }
+    },
+    {
+      "@type": "Question",
+      "name": "Do I need planning permission to demolish a house?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Not always. Demolishing a house usually falls under permitted development, but most projects need a prior approval application to the local planning authority covering the method of demolition and site restoration, and the council must be notified under Section 80 of the Building Act 1984 before work starts. Listed buildings and buildings in conservation areas need consent. Surrey Contracting advises on notifications as part of project planning." }
+    }
+  ]
+};
+---
+<BaseLayout
+  title="Demolition Contractor Surrey | Soft Strip & Clearance"
+  description="Soft strip out, structural demolition, on-site crushing and coordinated asbestos removal across Surrey. Constructionline Gold, CHAS and SSIP accredited."
+  path="/demolition"
+  active="services"
+>
+  <ServiceSchema slot="head" name="Demolition" slug="demolition" description="Commercial and residential demolition services across Surrey, site clearance, soft strip, concrete crushing and site hoarding." />
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify(faqSchema)} />
+
+<section class="page-hero">
+  <div class="page-hero-bg" aria-hidden="true">
+    <div class="page-hero-img" style="background-image:url('/assets/img/demolition.jpg')"></div>
+    <div class="page-hero-vignette"></div>
+  </div>
+  <div class="container page-hero-inner">
+    <nav class="crumbs" aria-label="Breadcrumb">
+      <a href="/">Home</a>
+      <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 6l6 6-6 6"/></svg>
+      <a href="/services">Services</a>
+      <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 6l6 6-6 6"/></svg>
+      <span>Demolition</span>
+    </nav>
+    <h1 class="page-title">Demolition Contractors in Surrey &amp; the Home Counties</h1>
+    <p class="page-lede">Commercial and residential demolition services across Surrey, London and the South East.</p>
+  </div>
+</section>
+
+<section class="page-section">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow">Demolition</span>
+      <h2 class="section-title">Comprehensive demolition services, safely delivered.</h2>
+      <p class="section-lede">Surrey Contracting delivers comprehensive demolition services to commercial and residential clients across Surrey, London and the South East. Our highly experienced team ensures every project is meticulously planned and executed with safety and precision. From initial site surveys through to final clearance, we manage every stage of the demolition process, committed to safety, quality and customer satisfaction.</p>
+    </div>
+  </div>
+</section>
+
+<section class="svc-detail">
+  <div class="container svc-detail-grid">
+    <div class="svc-detail-media">
+      <div class="svc-detail-photo" style="background-image:url('/assets/img/demolition.jpg')"></div>
+    </div>
+    <div class="svc-detail-copy">
+      <h2 class="section-title">Complete Residential &amp; Commercial Site Demolition</h2>
+      <p class="lede-dark">Surrey Contracting boasts years of experience delivering extensive demolition services to commercial and self-build residential clients. Our highly skilled demolition operatives have extensive experience across projects of varying sizes and complexities, positioning us as a reliable partner for any demolition requirement. Whether it's a complete structural demolition, partial demolition for renovation, or selective demolition to preserve specific elements, our team delivers safely and efficiently. We carry out full risk assessments and method statements for every project, and our operatives hold all necessary CSCS and CPCS qualifications.</p>
+      <ul class="feature-list">
+        <li>Full structural demolition</li>
+        <li>Partial demolition for renovation</li>
+        <li>Residential and Commercial demolition undertaken</li>
+        <li>Risk assessments &amp; method statements</li>
+        <li>CSCS carded operatives</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="svc-detail svc-detail-alt">
+  <div class="container svc-detail-grid svc-detail-reverse">
+    <div class="svc-detail-media">
+      <div class="svc-detail-photo" style="background-image:url('/assets/img/services/demolition-clearance.webp')"></div>
+    </div>
+    <div class="svc-detail-copy">
+      <h2 class="section-title">Site Clearance</h2>
+      <p class="lede-dark">Site clearance is an essential step from the completion of demolition through to site preparation for the next phase of construction. Surrey Contracting offers cost-effective site clearance solutions to prepare your land for subsequent project stages. We remove all debris, vegetation, redundant structures and waste materials, leaving your site clean and ready for development. Our team works efficiently to minimise programme delays, and we ensure all waste is disposed of responsibly in accordance with current environmental regulations. Our team brings a wealth of knowledge and experience to ensure your project is completed on schedule and on budget.</p>
+      <ul class="feature-list">
+        <li>Post-demolition clearance</li>
+        <li>Vegetation &amp; tree removal</li>
+        <li>Redundant structure removal</li>
+        <li>Waste segregation &amp; disposal</li>
+        <li>Environmental compliance</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="svc-detail">
+  <div class="container svc-detail-grid">
+    <div class="svc-detail-media">
+      <div class="svc-detail-photo" style="background-image:url('/assets/img/services/demolition-softstrip.webp')"></div>
+    </div>
+    <div class="svc-detail-copy">
+      <h2 class="section-title">Complete Soft Strip-Out Solutions</h2>
+      <p class="lede-dark">Our soft strip demolition service focuses on removing all non-structural elements from a building, including fixtures, fittings, suspended ceilings, partition walls, mechanical and electrical installations, floor coverings and decorative finishes, while maintaining the structural framework throughout. This is often the first phase of a refurbishment or fit-out project, and requires careful planning to avoid damage to the retained structure. Our operatives are experienced in working within occupied buildings and live environments where noise, dust and disruption must be carefully managed.</p>
+      <ul class="feature-list">
+        <li>Fixtures &amp; fittings removal</li>
+        <li>Suspended ceiling strip</li>
+        <li>M&amp;E removal</li>
+        <li>Floor covering removal</li>
+        <li>Working in occupied buildings</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="svc-detail svc-detail-alt">
+  <div class="container svc-detail-grid svc-detail-reverse">
+    <div class="svc-detail-media">
+      <div class="svc-detail-photo" style="background-image:url('/assets/img/services/demolition-crushing.jpg')"></div>
+    </div>
+    <div class="svc-detail-copy">
+      <h2 class="section-title">Concrete Crushing</h2>
+      <p class="lede-dark">Concrete crushing provides an efficient and sustainable way to process demolition arisings into reusable aggregate, reducing landfill, haulage movements and overall project costs. Surrey Contracting offers concrete crushing solutions for commercial, industrial and development sites, with options for on-site mobile crushing or off-site processing depending on project scale, site access and programme requirements. Where suitable, on-site crushing can reduce muck-away costs and limit the need to import new aggregates. Processed material can then be reused as sub-base, general fill or drainage aggregate, supporting a more cost-effective and environmentally responsible approach to site preparation.</p>
+      <ul class="feature-list">
+        <li>Onsite mobile crushing</li>
+        <li>Offsite processing</li>
+        <li>Aggregate recycling</li>
+        <li>Sub-base production</li>
+        <li>Reduced landfill &amp; transport costs</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="svc-detail">
+  <div class="container svc-detail-grid">
+    <div class="svc-detail-media">
+      <div class="svc-detail-photo" style="background-image:url('/assets/img/services/demolition-hoarding.webp')"></div>
+    </div>
+    <div class="svc-detail-copy">
+      <h2 class="section-title">Site Hoarding &amp; Security</h2>
+      <p class="lede-dark">Securing your site is critical before any demolition or construction work begins. Surrey Contracting provides a full range of site hoarding and security solutions including surface-mounted hoarding, dug-in hoarding, temporary Harris fencing, and vehicle and pedestrian gates. We also work with specialist partners to provide site alarm systems and CCTV monitoring for added security during the project duration. All hoarding is installed to meet health and safety requirements and can be branded with your company signage if required.</p>
+      <ul class="feature-list">
+        <li>Surface-mounted hoarding</li>
+        <li>Dug-in hoarding</li>
+        <li>Harris fencing</li>
+        <li>Vehicle &amp; pedestrian gates</li>
+        <li>CCTV &amp; alarm partnerships</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="svc-detail svc-detail-alt">
+  <div class="container svc-detail-grid svc-detail-reverse">
+    <div class="svc-detail-media">
+      <div class="svc-detail-photo" style="background-image:url('/assets/img/Asbestos.jpg')"></div>
+    </div>
+    <div class="svc-detail-copy">
+      <h2 class="section-title">Asbestos Surveys and Licensed Removal Coordination</h2>
+      <p class="lede-dark">Before any soft strip or structural demolition, a refurbishment and demolition asbestos survey has to be in place where asbestos may be present. Where the survey finds licensed work, that removal is carried out by an HSE-licensed specialist contractor before the affected demolition proceeds. Surrey Contracting sequences the survey, the specialist removal and the demolition programme so they run as one package rather than three.</p>
+      <ul class="feature-list">
+        <li>Refurbishment and demolition surveys coordinated</li>
+        <li>Licensed removal by HSE-licensed specialists</li>
+        <li>Encapsulation and make-safe where specified</li>
+        <li>Certified waste disposal records</li>
+        <li>Sequenced with the demolition programme</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="page-section page-section-grey">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow">Common questions</span>
+      <h2 class="section-title">Demolition FAQs</h2>
+    </div>
+    <div class="faq-list">
+      <details class="faq-item">
+        <summary>What demolition services does Surrey Contracting offer?</summary>
+        <p>Surrey Contracting provides full structural demolition, partial demolition for renovation, soft strip-out, site clearance, concrete crushing, site hoarding and security, and coordination of licensed asbestos removal by specialist contractors, for residential and commercial clients across Surrey, London and the South East.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Who carries out asbestos removal before a demolition?</summary>
+        <p>Licensed asbestos removal can only be carried out by an HSE-licensed contractor, and Surrey Contracting brings in a licensed specialist for that work. What we do is make sure the refurbishment and demolition survey is in place first, sequence the removal ahead of the demolition, and handle the site access and handover so the two programmes run together rather than as separate packages.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Do you provide site hoarding for demolition projects?</summary>
+        <p>Yes. Surrey Contracting installs surface-mounted and dug-in hoarding, Harris fencing, vehicle and pedestrian gates, and works with specialist partners to provide site alarm systems and CCTV monitoring.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Are Surrey Contracting's demolition operatives qualified?</summary>
+        <p>Yes. All operatives hold CSCS cards. Surrey Contracting produces full risk assessments and method statements for every demolition project and holds Constructionline Gold, CHAS and SSIP accreditation.</p>
+      </details>
+      <details class="faq-item">
+        <summary>What areas does Surrey Contracting cover for demolition?</summary>
+        <p>Surrey Contracting covers Surrey, London and the South East, operating from its base at Send, near Woking. Areas served include Guildford, Woking, Esher, Epsom, Weybridge, Reigate, Dorking, Kingston and the wider M25 corridor.</p>
+      </details>
+      <details class="faq-item">
+        <summary>How much does demolition cost in Surrey?</summary>
+        <p>Demolition in Surrey is quoted per project, because the price depends on the size and construction of the building, whether asbestos is present, waste volumes and site access. On-site concrete crushing can reduce disposal and haulage costs where space allows. Surrey Contracting provides a free measured site visit and a fixed-price itemised quotation before any work starts.</p>
+        <p><a href="/guides/demolition-cost-uk">Our guide to what drives demolition cost</a> breaks a quotation down line by line and sets out how to compare two of them.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Do I need planning permission to demolish a house?</summary>
+        <p>Not always. Demolishing a house usually falls under permitted development, but most projects need a prior approval application to the local planning authority covering the method of demolition and site restoration, and the council must be notified under Section 80 of the Building Act 1984 before work starts. Listed buildings and buildings in conservation areas need consent. Surrey Contracting advises on notifications as part of project planning.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<section class="cta-strip">
+  <div class="container cta-strip-row">
+    <div>
+      <h3>Got a demolition project to discuss?</h3>
+    </div>
+    <div class="cta-strip-ctas">
+      <a href="/contact" class="btn btn-yellow">Request a quote</a>
+      <a href="tel:01483323568" class="btn btn-ghost-light">01483 323568</a>
+    </div>
+  </div>
+</section>
+</BaseLayout>

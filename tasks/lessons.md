@@ -124,3 +124,31 @@ without Ed's written say-so. Older notes in tasks/todo.md and the 11 Sep
 entry above that list SafeContractor are history, not approval. When adding
 an accreditation claim to a new page, use only what the latest dated todo.md
 entry confirms.
+
+## Check a CSS prefix is free before using it (13 Oct 2026)
+
+For the new service pages I first namespaced the styles `.svc-*`, but
+`.svc-intro`, `.svc-card` and others already existed for the homepage and
+/services, so the new rules would have restyled those pages. Rule: before
+adding a block of new classes to public/styles.css, grep the stylesheet and
+src/ for the prefix (`grep -o "\.prefix-[a-z-]*" public/styles.css`) and
+pick one with no hits.
+
+## Full-page screenshots and smooth scrolling (13 Oct 2026)
+
+styles.css sets `html { scroll-behavior: smooth }`, so `window.scrollTo(0, 0)`
+in a Playwright script animates and the sticky nav was captured half way
+down the page. Rule: in screenshot scripts use
+`window.scrollTo({ top: 0, behavior: 'instant' })`, and wait for every image
+to have `complete && naturalWidth > 0` before a full-page capture (lazy
+images and Sanity CDN images otherwise show as grey boxes).
+
+## An arrow on a card promises a link (13 Oct 2026)
+
+The design showed arrows on the Sectors cards. I shipped them as plain
+cards with decorative arrows, then made them links to the nearest service
+page. Ed's ruling: the sector cards must not link, so the arrows had to go,
+because an arrow on a card that does not link is a misleading affordance.
+Rule: when a design shows an arrow (or chevron) on a card, confirm whether
+that card links, and where, before shipping. Never ship an arrow without a
+link; if the card does not link, remove the arrow.

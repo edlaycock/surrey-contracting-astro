@@ -1842,3 +1842,174 @@ pages). Phase 2 rolls out to the other pages once Ed approves.
   viewport (no horizontal scroll).
 - No longer referenced by any page, left in place: concrete-base-cobham-3-640.webp,
   domestic-earthworks-3-640.webp, site-clearance-earthworks-640.webp.
+
+## 2026-10-13 - Service pages from the design handoff (demolition, sectors, H&S replaced; three new pages)
+
+Source: design handoff bundle "design_handoff_service_pages" (README +
+Surrey Contracting Service Pages.dc.html). Ed's decisions: execute the
+README as written; slugs /soft-strip-out, /site-hoarding,
+/site-enabling-works confirmed; site tokens (not the mock's #F6B800,
+Archivo, square corners); case studies from Sanity by category; no
+redirects; no /lp/* changes.
+
+### Plan
+- [x] Archive src/pages/demolition.astro, sectors.astro, health-safety.astro
+      with git mv to archive/pages/2026-10/ (repo root), archive/README.md,
+      `archive` in tsconfig exclude. Own commit, first.
+- [x] Images: 1920 WebP pack where it exists, extracted JPGs otherwise
+      (converted to WebP, screenshot borders and caption text cropped),
+      -640.webp variants, public/assets/img/services/<page>/, descriptive
+      file names and alt text. Slots per IMGS in the design file.
+- [x] src/data/servicePages.ts: copy parsed (not executed) from the design's
+      PAGES object, so it is verbatim; FAQs client-approved, unedited.
+- [x] src/components/ServicePage.astro: one template, design section order
+      (hero, intro, cards, core services, process, accreditation strip,
+      split, H&S extras, case studies, FAQs, CTA band). FAQS array drives
+      the visible <details> (first open) and the FAQPage JSON-LD.
+- [x] src/components/ProjectsByCategory.astro: getProjects(), filter by
+      category (omit = all), Sanity order, limit 6, .proj card markup,
+      "View all projects" card, same-tab links, nothing if 0 matches.
+      Demolition on /demolition, /soft-strip-out, /site-hoarding; Enabling
+      Works on /site-enabling-works; all on /sectors; none on /health-safety.
+- [x] New .sp-* rules in public/styles.css only (the .svc- prefix is taken
+      by existing homepage/services classes).
+- [x] Accreditations: Constructionline Gold, CHAS, SSIP from
+      ACCREDITATION_LOGOS (/assets/acc/*.webp), logos only.
+- [x] Wire: Nav dropdown + mobile drawer, Footer, /services, hasOfferCatalog,
+      llms.txt, llms-full.txt, Sectors core-services links.
+- [x] Build + guards, per-page checks, Playwright screenshots at 375 and 1440.
+
+### Acceptance criteria
+- `npm run build` exits 0 with check-homepage, check-locations, check-guides
+  and check-lp passing (no guard weakened).
+- No dist output from archive/; sitemap-0.xml lists the six routes and no
+  archive path.
+- Each of the six pages: one <h1>, unique <title>, canonical, no noindex;
+  FAQPage question count and wording equal the visible <details>.
+- Case-study section on the five pages, absent on /health-safety; every
+  /projects/<slug> link built.
+- No SafeContractor/Alcumus; no registration numbers or register links; no
+  quote form (CTAs go to /contact); no em or en dashes in built pages.
+- No horizontal scroll at 375px; no broken images.
+
+### Decisions and assumptions (for Ed)
+- Card images: IMGS in the design file is followed where the README
+  differs (Demolition "Waste Management" card uses 06_concrete_crushing,
+  not the extracted demolition-waste-management.jpg).
+- Hero eyebrow is dropped where it only repeats the breadcrumb: Sectors
+  ("Sectors"), Health & Safety ("Health & safety") and Site Enabling Works
+  (eyebrow was literally "Home / Services / Site Enabling Works"). The
+  breadcrumb itself is the existing nav.crumbs markup.
+- H&S hero button "Our approach" jumps to the intro section (#our-approach)
+  rather than /contact; all "Request a quote" buttons go to /contact.
+- Card arrows are decorative as in the mock. Enabling cards with an
+  existing page are links: Demolition & Soft Strip -> /demolition, Hoarding
+  & Temporary Access -> /site-hoarding, Ground Preparation -> /groundworks.
+- Sectors and H&S get BreadcrumbList JSON-LD only (no Service node); the
+  four service pages get Service + BreadcrumbList via ServiceSchema, which
+  now takes an optional multi-level `parents` trail.
+- Page titles and meta descriptions were not in the design; written new.
+- FAQ text is verbatim including two client-copy slips worth Ed's eye:
+  demolition "How do you deal with asbestos?" ("before works take place
+  this can be arranged", missing punctuation) and "What happens to
+  demolition waste?" ("on site recycling on site also").
+- /services gained a Site Enabling Works block (copy from the enabling
+  page's hero text and card titles) and text links to the two Demolition
+  sub-pages.
+
+### Review (13 Oct 2026, this container)
+- Commits: af76a3d archive; 0e8c2f3 images; f896877 pages, components,
+  styles; 5b42c4a nav, footer, /services, offer catalog, llms files.
+- `npm run build`: exit 0; check-homepage (FAQPage 10, 1041 words),
+  check-locations, check-guides and check-lp ("9 landing pages checked")
+  all passed.
+- Verification script over dist/client: all six pages one <h1>, unique
+  title, canonical https://surreycontracting.co.uk/<slug>, no noindex,
+  0 quoteForm, 0 SafeContractor/Alcumus, 0 em/en dashes, 0 missing local
+  images, 0 images without alt. FAQPage vs visible <details>: demolition
+  7/7, soft-strip-out 5/5, site-hoarding 5/5, site-enabling-works 5/5,
+  wording identical and in order, answers visible, first item open.
+- Sitemap: all six routes present, 0 archive paths; 0 HTML files from
+  archive/ in dist.
+- Case studies (Sanity at build time): /demolition, /soft-strip-out and
+  /site-hoarding: house-demolition-esher, soft-strip-demolition-chiswick,
+  house-demolition-hampshire, steel-outbuilding-demolition-byfleet,
+  site-clearance-crushing-portsmouth. /site-enabling-works:
+  enabling-works-car-park-sutton, site-clearance-crushing-portsmouth.
+  /sectors: house-demolition-esher, southbank-centre,
+  site-clearance-earthworks, domestic-earthworks, drainage-ascot,
+  landscape-guildford. /health-safety: none. All links built.
+- Playwright (Chromium, astro preview, non-local requests blocked except
+  cdn.sanity.io): 375 and 1440 full-page shots of all six pages,
+  scrollWidth equals viewport, 0 broken images. Fixed after review: hero
+  breadcrumb and eyebrow sharing a line, card copy misaligned across a
+  row, orphan logo dividers when logos wrap on mobile.
+- Not done here: deploy and Search Console sitemap resubmission (per
+  DEPLOY.md, after Ed approves the screenshots).
+
+### Review follow-up (13 Oct 2026): fixes after independent review
+- [x] /sectors orphan card: ProjectsByCategory sets data-rem3 / data-rem2
+      ((cards + View all) mod 3 and mod 2); the View all card spans the
+      empty cells (full row or 2 columns), at 3 and 2 columns. Checked:
+      sectors-1440 shows six cards then a full-width View all card; at
+      1000px the View all card is full width on /sectors and
+      /site-enabling-works and half width (paired) on /demolition.
+- [x] Image weight: -1280.webp for every image over 1280px wide; card,
+      intro, split and panel srcsets capped at 640w + 1280w; only the hero
+      offers 1920w. 1920 files re-encoded (q66; enabling hero q45, 241 KB).
+      Heroes: demolition 182 KB, soft-strip-out 85, site-hoarding 90,
+      site-enabling-works 241, sectors 104, health-safety 173.
+      /health-safety image bytes (Playwright, full scroll): 1440 DPR2
+      2536 KB -> 1439 KB; 375 DPR3 2536 KB -> 1266 KB.
+- [x] H1 accessible name: space before <br>; Playwright aria snapshot reads
+      "Site Enabling Works", "Health & Safety".
+- [x] Dead CSS: .hs-ico, .hs-image, .hs-intro(-copy, -visual), .hs-pillars,
+      .sector-body/-card/-grid/-link/-photo/-num removed after grep showed
+      no use in src/, public/ or scripts/ outside styles.css.
+- Evidence: `npm run build` exit 0, all four guards passed; six-page check
+  script "all six pages passed"; fresh 375 and 1440 screenshots of all
+  six, scrollWidth equals viewport, 0 broken images. Commits cc79938
+  (images, srcsets, H1 space) and d10d9ad (grid fill, dead CSS).
+
+### Ed approved the screenshots (13 Oct 2026): final changes before the PR
+- [x] Sectors cards are links (visible focus ring): Education -> /projects,
+      Hotels & Leisure -> /soft-strip-out, Retail & High Street ->
+      /demolition, Housebuilders & Residential -> /groundworks, Local
+      Authority & Public Sector -> /projects, Commercial & Industrial ->
+      /site-enabling-works. All targets are built pages.
+- [x] Demolition FAQ answers corrected (asbestos run-on split; "on site"
+      no longer repeated in the waste answer). The wording does not appear
+      on the soft-strip-out or site-hoarding FAQs.
+- Evidence: `npm run build` exit 0, all four guards passed; six-page check
+  "all six pages passed" (FAQ 7/7 on /demolition, answers visible);
+  fresh 375 and 1440 screenshots of /sectors and /demolition. Commit bbe5a99.
+
+### Ed's follow-ups on PR #29 (13 Oct 2026)
+- [x] Sectors cards no longer link and have no arrows (Ed: no link, and no
+      arrow without a link). The focus-ring CSS stays: it still serves the
+      linked Site Enabling Works cards and the Sectors core-services cards.
+- [x] Titles standardised to " | Surrey Contracting": /demolition "Demolition
+      Contractors Surrey | Surrey Contracting", /sectors "Sectors We Work In |
+      Surrey Contracting", /health-safety "Health & Safety | Surrey
+      Contracting". Built titles still unique site-wide.
+- Arrow audit (not changed, for Ed): /demolition's four cards show arrows
+  but do not link; on /site-enabling-works, Site Clearance, Service
+  Coordination and Crushing & Waste Management show arrows without links
+  (the other three link). Sectors core-services cards all link.
+- [x] Ed approved removing the 7 unlinked arrows. Now structural: a card
+      shows an arrow only when it has an href (ServicePage.astro); the
+      per-page `arrows` flags are gone from servicePages.ts. Built check:
+      0 arrows outside an <a>; remaining arrows: /site-enabling-works 3
+      (/demolition, /site-hoarding, /groundworks), /sectors core services 4
+      (/demolition, /site-enabling-works, /earthworks, /groundworks).
+      Build exit 0, all four guards passed, six-page check passed.
+- [x] Ed approved deleting unused images. 19 non-hero 1920px WebPs removed
+      with git rm (3,844,062 bytes, about 3.7 MB). The count is 19, not ~25:
+      25 images were wider than 1280px, and the 6 hero files are still
+      served. Each basename had 0 references in src/, public/, scripts/ and
+      astro.config.mjs once their data entries' `src`/w/h pointed at the
+      -1280 file (the largest size their srcset offered already; the built
+      image markup on all six pages and /services is byte-identical before
+      and after). Build exit 0, all four guards passed, six-page check
+      passed, 140 distinct /assets/img/services/ URLs in dist HTML/CSS with
+      0 missing, 1440 screenshots of all six pages with 0 broken images.
