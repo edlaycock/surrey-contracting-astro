@@ -1842,3 +1842,25 @@ pages). Phase 2 rolls out to the other pages once Ed approves.
   viewport (no horizontal scroll).
 - No longer referenced by any page, left in place: concrete-base-cobham-3-640.webp,
   domestic-earthworks-3-640.webp, site-clearance-earthworks-640.webp.
+
+### Deployed (13 Oct 2026)
+- [x] Ed reviewed the phase 2 screenshots: "merge 28". PR #28 merged with a
+      merge commit pinned to head 1095f96; merge commit db7df50.
+- Deploy run 38434973445 succeeded:
+  https://github.com/edlaycock/surrey-contracting-astro/actions/runs/38434973445
+  - Runner guards: check-homepage, check-locations, check-guides passed;
+    check-lp "9 landing pages checked", "all checks passed".
+  - Verify step, attempt 1: 200 for / and the 6 v1/v2 LPs it lists; 200
+    for all 9 /lp/<slug>/thanks; 6 data-tc-masked on /lp/groundworks and
+    /lp/groundworks-2; branded 404 for the unknown path.
+- `git merge-base --is-ancestor db7df50 origin/main`: exit 0 (merged).
+- Live curl afterwards (no forms submitted):
+  - All 8 card pages 200, each with the 3 expected /projects/<slug> card
+    links in Ed's order, all target="_blank" rel="noopener"; View all link
+    in a new tab on each; 0 cdn.sanity.io on each.
+  - /lp/agricultural 200 with no cards section.
+  - All 12 linked /projects/<slug> pages 200.
+  - All 9 new /assets/img/projects/*-640.webp files 200 image/webp, sizes
+    matching the repo; Farnham, Ascot and Southbank images 200.
+  - All 9 /lp/<slug>/thanks pages 200.
+- Rollback if needed: `git revert -m 1 db7df50`, then PR and merge.
