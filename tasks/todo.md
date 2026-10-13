@@ -1791,14 +1791,19 @@ pages). Phase 2 rolls out to the other pages once Ed approves.
   author or date credits; one quoteForm per page.
 - No horizontal scroll at 390px.
 
-### Phase 2 (after Ed approves the screenshots)
-- [ ] groundworks, groundworks-2 (replace the three existing cards).
-- [ ] earthworks, earthworks-2 (replace Horsell, keep Farnham).
-- [ ] drainage.
-- [ ] commercial-surfacing (Southbank plus Redhill and Sutton; add the
-      Southbank card to src/data/projectCards.ts with its current text).
-- [ ] Remove the per-page PROJECT_CARDS blocks now served by the component.
-- [ ] Build, guards, grep, screenshots, PR.
+### Phase 2 (Ed approved the phase 1 screenshots, 13 Oct 2026: "go phase 2";
+### Chiswick photo and white background unchanged; earthworks-2 confirmed as
+### Hampshire levelling, Portsmouth, Farnham, Horsell removed)
+- [x] groundworks, groundworks-2 (replace the three existing cards).
+- [x] earthworks, earthworks-2 (replace Horsell, keep Farnham).
+- [x] drainage.
+- [x] commercial-surfacing (Southbank first with its current image and
+      text, then Redhill and Sutton; heading "Recent commercial projects").
+- [x] Remove the per-page PROJECT_CARDS blocks now served by the component.
+- [x] check-lp: on every LP (v1 too), each /projects/<slug> link must be
+      built, and each card link plus the View all link in the cards section
+      must carry target="_blank" rel="noopener".
+- [x] Build, guards, grep, screenshots, PR.
 
 ### Evidence, phase 1 (13 Oct 2026, this container)
 - `NODE_USE_ENV_PROXY=1 npm run build`: exit 0; check-homepage,
@@ -1813,3 +1818,27 @@ pages). Phase 2 rolls out to the other pages once Ed approves.
   non-local request aborted): 3 cards, images 640x480, no horizontal scroll
   at 390 (scrollWidth 390) or 1280 on either page.
 - Images: 9 new 640x480 webp files in public/assets/img/projects/.
+
+### Evidence, phase 2 (13 Oct 2026, this container)
+- origin/main still 777dfae; nothing to merge.
+- Headings: "Groundworks projects we have delivered", "Earthworks projects
+  we have delivered", "Drainage projects we have delivered" (v1 with the
+  "Recent work" eyebrow, v2 without), "Recent commercial projects" on
+  commercial-surfacing.
+- `NODE_USE_ENV_PROXY=1 npm run build`: exit 0; all four guards passed;
+  check-lp "thanks pages and form masking: 9 landing pages checked".
+- Planted faults on a copy of dist (card target removed on lp/groundworks,
+  card href changed to /projects/not-a-real-project on lp/drainage, rel
+  removed from View all on lp/earthworks-2): check-lp exit 1 with exactly
+  those three failures. The clean copy passes.
+- Grep of the 8 card pages: 3 card links each, all target="_blank"
+  rel="noopener", View all link the same; 0 external images or CSS url();
+  0 em or en dashes; 1 id="quoteForm" each; 0 SafeContractor or Alcumus.
+  agricultural: no cards. commercial-surfacing: 0 driveway, residential,
+  homeowner, patio, resin, surreyhillssurfacing; 0 surfacing or tarmac in
+  the cards section.
+- Playwright at 390 for all six pages and 1280 for groundworks-2 and
+  commercial-surfacing: 3 cards, images 640x480, scrollWidth equals the
+  viewport (no horizontal scroll).
+- No longer referenced by any page, left in place: concrete-base-cobham-3-640.webp,
+  domestic-earthworks-3-640.webp, site-clearance-earthworks-640.webp.

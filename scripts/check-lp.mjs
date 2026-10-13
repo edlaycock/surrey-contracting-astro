@@ -28,6 +28,8 @@
  *   - lp/<slug>/thanks is missing, not noindex,nofollow, has a dash or a
  *     quote form, or does not link back to the LP
  *   - a /thanks URL appears in any sitemap*.xml or llms file
+ *   - a /projects/<slug> link points at a page that was not built, or a
+ *     case-study card link lacks target="_blank" rel="noopener"
  *
  * Surfacing exception (Ed, 1 Oct 2026): Jason confirmed that commercial and
  * public-sector surfacing belongs to Surrey Contracting; residential
@@ -235,6 +237,20 @@ for (const s of lpSlugs) {
     const field = (lpHtml.match(new RegExp(`<(?:input|textarea)\\b[^>]*\\bname="${n}"[^>]*>`)) || [''])[0];
     if (!field) failures.push(`lp/${s}: form field "${n}" not found`);
     else if (!/\sdata-tc-masked(?=[\s=>])/.test(field)) failures.push(`lp/${s}: field "${n}" lacks data-tc-masked`);
+  }
+  // Case-study cards (Ed, 13 Oct 2026): every /projects/<slug> link must point
+  // at a built page, and every card link, plus the View all projects link in
+  // the cards section, opens in a new tab with rel="noopener".
+  for (const m of lpHtml.matchAll(/href="\/projects\/([^"\/#?]+)"/g)) {
+    if (!existsSync(join(DIST, 'projects', m[1], 'index.html'))) failures.push(`lp/${s}: links to /projects/${m[1]}, which was not built`);
+  }
+  const cardsSection = (lpHtml.match(/<section class="page-section lp2-work">[\s\S]*?<\/section>/) || [''])[0];
+  const cardLinks = [...lpHtml.matchAll(/<a\b[^>]*\bclass="proj"[^>]*>/g)].map((m) => m[0])
+    .concat([...cardsSection.matchAll(/<a\b[^>]*>/g)].map((m) => m[0]));
+  for (const a of new Set(cardLinks)) {
+    if (!/\btarget="_blank"/.test(a) || !/\brel="[^"]*\bnoopener\b[^"]*"/.test(a)) {
+      failures.push(`lp/${s}: card link lacks target="_blank" rel="noopener": ${a}`);
+    }
   }
   const thanksFile = join(DIST, 'lp', s, 'thanks', 'index.html');
   if (!existsSync(thanksFile)) {

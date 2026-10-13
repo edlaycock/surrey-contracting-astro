@@ -98,6 +98,15 @@ const CARDS: Record<string, ProjectCard> = {
     alt: 'New foul drainage pipework and couplings in an open trench at a residential property in Guildford',
     text: 'Collapsed underground pipework replaced with new foul drainage, new connections made and the affected areas reinstated.',
   },
+  // Text and image as on /lp/commercial-surfacing before the component (13 Oct 2026).
+  'southbank-centre': {
+    slug: 'southbank-centre',
+    tag: 'Public realm',
+    title: 'Southbank Centre, London SE1',
+    img: '/assets/img/projects/southbank-centre-4.jpg',
+    alt: 'Reinstated footway during external works at the Southbank Centre',
+    text: 'External works and drainage delivered around live cultural-venue operations, with footways and crossings reinstated.',
+  },
   'drainage-ascot': {
     slug: 'drainage-ascot',
     tag: 'Drainage',

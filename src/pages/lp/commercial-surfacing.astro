@@ -20,7 +20,8 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import ServiceSchema from '../../components/ServiceSchema.astro';
 import { ACCREDITATION_LOGOS } from '../../data/homepage';
-import { getProjects } from '../../lib/sanity';
+import ProjectCards from '../../components/ProjectCards.astro';
+import { projectCards } from '../../data/projectCards';
 
 const LEAD_SOURCE = 'lp_commercial_surfacing';
 const PHONE_LABEL = 'Call 01483 323568';
@@ -91,21 +92,6 @@ const STEPS = [
   { title: 'Programme agreed around your site', text: 'Access windows, phasing and pedestrian and vehicle routes are agreed with you before work starts.' },
   { title: 'Groundworks, surfacing and handover', text: 'One point of contact runs the job from excavation and sub-base through kerbs, drainage and surfacing to handover.' },
 ];
-
-// Wanted project cards. Only the ones Sanity currently publishes are rendered,
-// so unpublishing a project drops its card instead of leaving a dead link.
-const PROJECT_CARDS = [
-  {
-    slug: 'southbank-centre',
-    tag: 'Public realm',
-    title: 'Southbank Centre, London SE1',
-    img: '/assets/img/projects/southbank-centre-4.jpg',
-    alt: 'Reinstated footway during external works at the Southbank Centre',
-    text: 'External works and drainage delivered around live cultural-venue operations, with footways and crossings reinstated.',
-  },
-];
-const published = new Set((await getProjects()).map((p) => p.slug));
-const PROJECTS = PROJECT_CARDS.filter((p) => published.has(p.slug));
 
 const FAQS = [
   {
@@ -237,32 +223,11 @@ const faqSchema = {
   </div>
 </section>
 
-{PROJECTS.length > 0 && (
-<section class="page-section">
-  <div class="container">
-    <div class="section-head">
-      <h2 class="section-title">Public realm work we have delivered</h2>
-    </div>
-    <div class="lp2-proj-grid">
-      {PROJECTS.map(({ slug, tag, title, img, alt, text }) => (
-        <a class="proj" href={`/projects/${slug}`}>
-          <div class="proj-photo"><img src={img} alt={alt} width="640" height="480" loading="lazy" decoding="async" /></div>
-          <div class="proj-meta">
-            <span class="proj-tag">{tag}</span>
-            <h3>{title}</h3>
-            <p>{text}</p>
-          </div>
-        </a>
-      ))}
-      <div class={PROJECTS.length % 2 === 0 ? 'lp2-proj-all lp2-proj-all-wide' : 'lp2-proj-all'}>
-        <h3>More of our work</h3>
-        <p>Groundworks, drainage and external works projects across Surrey, London and the South East.</p>
-        <a href="/projects" class="btn btn-ghost-light">View all projects</a>
-      </div>
-    </div>
-  </div>
-</section>
-)}
+<ProjectCards
+  heading="Recent commercial projects"
+  cards={projectCards(['southbank-centre', 'drainage-concrete-works-redhill', 'enabling-works-car-park-sutton'])}
+  allText="Groundworks, drainage and external works projects across Surrey, London and the South East."
+/>
 
 <section class="page-section">
   <div class="container">

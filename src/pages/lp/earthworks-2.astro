@@ -12,7 +12,8 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import ServiceSchema from '../../components/ServiceSchema.astro';
 import { ACCREDITATION_LOGOS } from '../../data/homepage';
-import { getProjects } from '../../lib/sanity';
+import ProjectCards from '../../components/ProjectCards.astro';
+import { projectCards } from '../../data/projectCards';
 
 const LEAD_SOURCE = 'lp_earthworks_2';
 const PHONE_LABEL = 'Call 01483 323568';
@@ -59,31 +60,6 @@ const STEPS = [
   { title: 'Cut and fill to your drawings and levels', text: 'Material is cut, moved and placed to your approved drawings and levels, and reused on site where it can be.' },
   { title: 'Muck away, compaction and handover', text: 'Surplus is taken away, the platform is compacted, and one point of contact takes the job through to handover.' },
 ];
-
-// Wanted project cards, in display order. Only the ones Sanity currently
-// publishes are rendered, so unpublishing a project drops its card instead
-// of leaving a link to a page that no longer builds.
-const PROJECT_CARDS = [
-  {
-    slug: 'site-clearance-earthworks',
-    tag: 'Earthworks',
-    title: 'Site Clearance and Earthworks, Farnham',
-    img: '/assets/img/projects/site-clearance-earthworks-2-640.webp',
-    alt: 'Cleared and levelled land at a residential site in Farnham',
-    text: 'Overgrown land cleared after building works, with around 80 tonnes of green waste removed and 100 tonnes of topsoil brought in.',
-  },
-  {
-    slug: 'domestic-earthworks',
-    tag: 'Earthworks',
-    title: 'Domestic Earthworks, Horsell, Woking',
-    img: '/assets/img/projects/domestic-earthworks-3-640.webp',
-    alt: 'Garden earthworks after a swimming pool was filled in, Horsell',
-    text: 'Swimming pool broken out and filled in, with 220 tonnes of material moved to set finished garden levels ready for turfing.',
-  },
-];
-
-const published = new Set((await getProjects()).map((p) => p.slug));
-const PROJECTS = PROJECT_CARDS.filter((p) => published.has(p.slug));
 
 const FAQS = [
   {
@@ -203,32 +179,11 @@ const faqSchema = {
   </div>
 </section>
 
-{PROJECTS.length > 0 && (
-<section class="page-section lp2-work">
-  <div class="container">
-    <div class="section-head">
-      <h2 class="section-title">Earthworks we have delivered</h2>
-    </div>
-    <div class="lp2-proj-grid">
-      {PROJECTS.map(({ slug, tag, title, img, alt, text }) => (
-        <a class="proj" href={`/projects/${slug}`}>
-          <div class="proj-photo"><img src={img} alt={alt} width="640" height="480" loading="lazy" decoding="async" /></div>
-          <div class="proj-meta">
-            <span class="proj-tag">{tag}</span>
-            <h3>{title}</h3>
-            <p>{text}</p>
-          </div>
-        </a>
-      ))}
-      <div class={PROJECTS.length % 2 === 0 ? 'lp2-proj-all lp2-proj-all-wide' : 'lp2-proj-all'}>
-        <h3>More of our work</h3>
-        <p>Groundworks, earthworks and drainage projects across Surrey and the South East.</p>
-        <a href="/projects" class="btn btn-ghost-light">View all projects</a>
-      </div>
-    </div>
-  </div>
-</section>
-)}
+<ProjectCards
+  heading="Earthworks projects we have delivered"
+  cards={projectCards(['site-levelling-earthworks-hampshire', 'site-clearance-crushing-portsmouth', 'site-clearance-earthworks'])}
+  allText="Groundworks, earthworks and drainage projects across Surrey and the South East."
+/>
 
 <section class="page-section page-section-grey">
   <div class="container">
