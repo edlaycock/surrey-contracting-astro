@@ -1983,3 +1983,16 @@ redirects; no /lp/* changes.
 - Evidence: `npm run build` exit 0, all four guards passed; six-page check
   "all six pages passed" (FAQ 7/7 on /demolition, answers visible);
   fresh 375 and 1440 screenshots of /sectors and /demolition. Commit bbe5a99.
+
+### Ed's follow-ups on PR #29 (13 Oct 2026)
+- [x] Sectors cards no longer link and have no arrows (Ed: no link, and no
+      arrow without a link). The focus-ring CSS stays: it still serves the
+      linked Site Enabling Works cards and the Sectors core-services cards.
+- [x] Titles standardised to " | Surrey Contracting": /demolition "Demolition
+      Contractors Surrey | Surrey Contracting", /sectors "Sectors We Work In |
+      Surrey Contracting", /health-safety "Health & Safety | Surrey
+      Contracting". Built titles still unique site-wide.
+- Arrow audit (not changed, for Ed): /demolition's four cards show arrows
+  but do not link; on /site-enabling-works, Site Clearance, Service
+  Coordination and Crushing & Waste Management show arrows without links
+  (the other three link). Sectors core-services cards all link.
