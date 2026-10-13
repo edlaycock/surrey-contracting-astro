@@ -187,11 +187,11 @@ const faqSchema = {
       </div>
       <h3 class="form-title">Get a free demolition quote</h3>
       <div class="qf-row">
-        <label><span>Name</span><input required name="name" type="text" placeholder="Your full name"></label>
-        <label><span>Phone</span><input required name="phone" type="tel" placeholder="01483 323568"></label>
+        <label><span>Name</span><input required data-tc-masked name="name" type="text" placeholder="Your full name"></label>
+        <label><span>Phone</span><input required data-tc-masked name="phone" type="tel" placeholder="01483 323568"></label>
       </div>
-      <label><span>Email</span><input required name="email" type="email" placeholder="you@email.com"></label>
-      <label><span>Company / organisation</span><input name="company" type="text" placeholder="Optional"></label>
+      <label><span>Email</span><input required data-tc-masked name="email" type="email" placeholder="you@email.com"></label>
+      <label><span>Company / organisation</span><input data-tc-masked name="company" type="text" placeholder="Optional"></label>
       <fieldset class="qf-checks">
         <legend>What do you need?</legend>
         <label class="check"><input type="checkbox" name="svc" value="Demolition"><span>Demolition</span></label>
@@ -199,8 +199,8 @@ const faqSchema = {
         <label class="check"><input type="checkbox" name="svc" value="Bulk Earthworks"><span>Bulk Earthworks</span></label>
         <label class="check"><input type="checkbox" name="svc" value="Other"><span>Other</span></label>
       </fieldset>
-      <label><span>Project postcode</span><input name="postcode" type="text" placeholder="GU1 1AA"></label>
-      <label><span>Tell us about the job</span><textarea name="message" rows="5" placeholder="Site type, scale, target start date…"></textarea></label>
+      <label><span>Project postcode</span><input data-tc-masked name="postcode" type="text" placeholder="GU1 1AA"></label>
+      <label><span>Tell us about the job</span><textarea data-tc-masked name="message" rows="5" placeholder="Site type, scale, target start date…"></textarea></label>
       <button type="submit" class="btn btn-yellow btn-block">Send enquiry</button>
       <p class="qf-success" id="qfSuccess" hidden>Thanks, we've got it. A contracts manager will be in touch within one working day.</p>
     </form>

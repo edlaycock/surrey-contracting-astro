@@ -156,6 +156,9 @@ if (tTrack && tDots.length) {
 // ---------- Quote form ----------
 const form = document.getElementById('quoteForm');
 const success = document.getElementById('qfSuccess');
+// Landing pages only (/lp/<slug>): a successful send goes on to
+// /lp/<slug>/thanks. The homepage and /contact keep the in-page message.
+const lpMatch = location.pathname.match(/^\/lp\/([a-z0-9-]+)$/);
 if (form) {
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -188,12 +191,28 @@ if (form) {
         success.style.color = '';
         success.textContent = "Thanks — we've got it. A contracts manager will be in touch within one working day.";
       }
+      // On a landing page, navigate once GTM has processed generate_lead
+      // (GTM honours gtag's event_callback; the GA4 tag reads eventModel.*, so
+      // this stays a gtag() call). The timer covers a blocked or slow GTM, so
+      // the redirect always happens. The Ads conversion stays on this event.
+      let redirected = false;
+      const toThanks = () => {
+        if (redirected || !lpMatch) return;
+        redirected = true;
+        location.assign(`/lp/${lpMatch[1]}/thanks${location.search}`);
+      };
+      const leadParams = {
+        event_category: 'form',
+        event_label: form.dataset.leadSource || 'quote_enquiry',
+        form_id: form.id || 'quoteForm',
+      };
+      if (lpMatch) {
+        leadParams.event_callback = toThanks;
+        leadParams.event_timeout = 1200;
+        setTimeout(toThanks, 1500);
+      }
       if (typeof gtag === 'function') {
-        gtag('event', 'generate_lead', {
-          event_category: 'form',
-          event_label: form.dataset.leadSource || 'quote_enquiry',
-          form_id: form.id || 'quoteForm',
-        });
+        gtag('event', 'generate_lead', leadParams);
       }
       btn.textContent = 'Sent ✓';
       form.reset();
@@ -209,6 +228,18 @@ if (form) {
       }
     }
   });
+  // Back from /lp/<slug>/thanks can restore the landing page from the
+  // back/forward cache with the button still disabled; make it usable again.
+  if (lpMatch) {
+    const btn = form.querySelector('button[type=submit]');
+    const label = btn ? btn.textContent : '';
+    window.addEventListener('pageshow', (e) => {
+      if (!e.persisted || !btn) return;
+      btn.disabled = false;
+      btn.textContent = label;
+      if (success) success.hidden = true;
+    });
+  }
 }
 
 // ---------- Phone & email click tracking ----------
