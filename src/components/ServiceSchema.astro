@@ -11,10 +11,13 @@ interface Props {
   /** Second breadcrumb. Defaults to Services. Location pages sit under their
    *  service page instead. */
   parent?: { name: string; slug: string };
+  /** Full trail between Home and this page, for pages more than one level
+   *  down (e.g. Services > Demolition > Soft Strip-Out). Overrides `parent`. */
+  parents?: { name: string; slug: string }[];
 }
-const { name, slug, description, areaServedTown, crumbName, parent } = Astro.props;
+const { name, slug, description, areaServedTown, crumbName, parent, parents } = Astro.props;
 const site = 'https://surreycontracting.co.uk';
-const up = parent ?? { name: 'Services', slug: 'services' };
+const trail = parents ?? [parent ?? { name: 'Services', slug: 'services' }];
 
 const service = {
   '@context': 'https://schema.org',
@@ -35,8 +38,8 @@ const breadcrumb = {
   '@type': 'BreadcrumbList',
   itemListElement: [
     { '@type': 'ListItem', position: 1, name: 'Home', item: `${site}/` },
-    { '@type': 'ListItem', position: 2, name: up.name, item: `${site}/${up.slug}` },
-    { '@type': 'ListItem', position: 3, name: crumbName ?? name, item: `${site}/${slug}` },
+    ...trail.map((t, i) => ({ '@type': 'ListItem', position: i + 2, name: t.name, item: `${site}/${t.slug}` })),
+    { '@type': 'ListItem', position: trail.length + 2, name: crumbName ?? name, item: `${site}/${slug}` },
   ],
 };
 ---

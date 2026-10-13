@@ -321,6 +321,13 @@ h1, h2, h3, h4, h5 {
   background: rgba(230,169,26,0.12);
   color: var(--yellow);
 }
+/* Demolition sub-pages, indented under Demolition. */
+.nav-dropdown a.nav-sub-link {
+  padding-left: 30px;
+  font-weight: 500;
+  color: var(--grey-200);
+}
+.nav-dropdown a.nav-sub-link:hover { color: var(--yellow); }
 
 .nav-cta { display: flex; }
 
@@ -403,6 +410,7 @@ h1, h2, h3, h4, h5 {
   border-top: 1px solid rgba(255,255,255,0.05);
 }
 .drawer-sub a:first-child { border-top: 0; }
+.drawer-sub a.drawer-sub-child { padding-left: calc(var(--gutter) + 32px); font-size: 13.5px; color: var(--grey-300); }
 
 /* ============ Hero ============ */
 .hero {
@@ -3194,3 +3202,374 @@ a.contact-value:hover { color: var(--yellow-700); }
 @media (prefers-reduced-motion: reduce) {
   .nf-numeral { animation: none; }
 }
+
+/* ============ Service pages (.sp-*), Oct 2026 design handoff ============
+   /demolition, /soft-strip-out, /site-hoarding, /site-enabling-works,
+   /sectors, /health-safety (src/components/ServicePage.astro). Layout and
+   section order follow the design; colours, type and radius use the site
+   tokens. --yellow only on dark surfaces or as a decorative rule; yellow
+   text on light surfaces uses --yellow-700. */
+.sp-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink);
+  margin-bottom: 14px;
+}
+.sp-eyebrow::after {
+  content: "";
+  width: 48px;
+  height: 2px;
+  background: var(--yellow);
+  flex: none;
+}
+.sp-eyebrow-light { color: var(--white); }
+.sp-h2 {
+  font-size: clamp(28px, 3.4vw, 42px);
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  text-wrap: balance;
+  margin: 0 0 16px;
+}
+.sp-h2-light { color: var(--white); }
+.sp-h2-light span { color: var(--yellow); }
+.sp-h2-sm { font-size: clamp(24px, 2.4vw, 32px); }
+.sp-rule {
+  display: block;
+  width: 36px;
+  height: 3px;
+  background: var(--yellow);
+  border-radius: 2px;
+}
+
+/* Hero: image on the right ~64%, fading into the dark band. */
+.sp-hero {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  background: var(--grey-900);
+  color: var(--white);
+}
+.sp-hero-media {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 64%;
+  z-index: 0;
+}
+.sp-hero-media img { width: 100%; height: 100%; object-fit: cover; }
+.sp-hero-fade {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(90deg, var(--grey-900) 34%, rgba(27,27,27,0.85) 46%, rgba(27,27,27,0) 72%);
+}
+.sp-hero-inner {
+  position: relative;
+  z-index: 2;
+  padding-top: clamp(48px, 6vw, 72px);
+  padding-bottom: clamp(56px, 7vw, 84px);
+}
+.sp-hero-inner > * { max-width: 600px; }
+.sp-hero .crumbs { display: flex; flex-wrap: wrap; max-width: 760px; }
+.sp-hero-title {
+  font-size: clamp(36px, 5vw, 62px);
+  font-weight: 800;
+  line-height: 1.04;
+  letter-spacing: -0.025em;
+  color: var(--white);
+  text-wrap: balance;
+  margin: 0;
+}
+.sp-hero-title span { color: var(--yellow); }
+.sp-hero-tag {
+  margin: 18px 0 0;
+  font-size: clamp(18px, 1.8vw, 22px);
+  font-weight: 700;
+  line-height: 1.25;
+  color: var(--white);
+  text-wrap: balance;
+}
+.sp-hero-text {
+  margin: 16px 0 0;
+  max-width: 470px;
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--grey-200);
+  text-wrap: pretty;
+}
+.sp-hero-ctas { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 26px; }
+
+/* Intro: text | image, stacking on narrow screens. */
+.sp-intro { padding: clamp(48px, 7vw, 72px) 0 clamp(24px, 4vw, 40px); }
+.sp-intro-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: clamp(32px, 5vw, 56px);
+  align-items: center;
+}
+.sp-intro-full .sp-intro-grid { grid-template-columns: minmax(0, 1fr); }
+.sp-intro-copy p,
+.sp-split-copy p,
+.sp-faq-intro p,
+.sp-asbestos-copy p {
+  margin: 0 0 14px;
+  font-size: 16px;
+  line-height: 1.65;
+  color: var(--text-mute);
+  max-width: 72ch;
+  text-wrap: pretty;
+}
+.sp-intro-media,
+.sp-split-media { height: 380px; border-radius: var(--radius); overflow: hidden; background: var(--grey-100); }
+.sp-split-media { height: 400px; }
+.sp-intro-media img,
+.sp-split-media img,
+.sp-card-media img,
+.sp-core-media img,
+.sp-asbestos-media img { width: 100%; height: 100%; object-fit: cover; }
+
+/* Service cards: 2 columns (230px images) or 3 columns (210px). */
+.sp-cards { padding: 16px 0 clamp(56px, 7vw, 80px); }
+.sp-card-grid { display: grid; gap: 36px 28px; }
+.sp-card-grid-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.sp-card-grid-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.sp-card { display: flex; flex-direction: column; color: inherit; }
+.sp-card-media { height: 210px; border-radius: var(--radius); overflow: hidden; background: var(--grey-100); }
+.sp-card-grid-2 .sp-card-media { height: 230px; }
+.sp-card-body { display: flex; gap: 20px; align-items: flex-start; padding-top: 18px; flex: 1; }
+.sp-card-body .sp-card-arrow { align-self: center; }
+.sp-card-copy { display: flex; flex-direction: column; gap: 10px; flex: 1; min-width: 0; }
+.sp-card h3,
+.sp-core-card h3 { font-size: 19px; font-weight: 800; line-height: 1.25; margin: 0; }
+.sp-card p,
+.sp-core-card p { margin: 0; font-size: 14.5px; line-height: 1.55; color: var(--text-mute); text-wrap: pretty; }
+.sp-card-arrow { flex: none; font-size: 22px; line-height: 1; color: var(--ink); transition: transform 0.2s ease; }
+.sp-card-link:hover .sp-card-arrow,
+.sp-core-card:hover .sp-card-arrow { transform: translateX(4px); }
+.sp-card-link:hover h3 { color: var(--yellow-700); }
+.sp-cards-grey .sp-card { background: var(--grey-50); border-radius: var(--radius); overflow: hidden; }
+.sp-cards-grey .sp-card-media { border-radius: 0; }
+.sp-cards-grey .sp-card-body { padding: 18px 22px 22px; }
+
+/* Sectors: core services band. */
+.sp-core { background: var(--grey-900); color: var(--white); padding: clamp(48px, 6vw, 64px) 0 40px; }
+.sp-core-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 32px;
+  flex-wrap: wrap;
+  margin-bottom: 36px;
+}
+.sp-core-head .sp-h2 { margin: 0; }
+.sp-core-head p { margin: 0; max-width: 500px; font-size: 16px; line-height: 1.55; color: var(--grey-200); }
+.sp-core-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px; }
+.sp-core-card {
+  display: flex;
+  flex-direction: column;
+  background: var(--white);
+  color: var(--ink);
+  border-radius: var(--radius);
+  overflow: hidden;
+  transition: transform 0.2s ease;
+}
+.sp-core-card:hover { transform: translateY(-3px); }
+.sp-core-card .sp-card-body { padding: 18px; align-items: flex-end; }
+.sp-core-card h3 { font-size: 17px; }
+.sp-core-card p { font-size: 14px; }
+.sp-core-media { height: 180px; }
+.sp-core-links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 12px 24px;
+  margin-top: 36px;
+  padding-top: 22px;
+  border-top: 1px solid var(--border-dark);
+  font-size: 15px;
+}
+.sp-core-links a { color: var(--white); text-decoration: underline; text-decoration-color: rgba(255,255,255,0.3); text-underline-offset: 4px; }
+.sp-core-links a:hover { color: var(--yellow); text-decoration-color: var(--yellow); }
+.sp-core-links span { color: var(--grey-500); }
+
+/* Process: dark band, four numbered steps. */
+.sp-process { background: var(--grey-900); color: var(--white); padding: clamp(48px, 6vw, 60px) 0; }
+.sp-process .sp-h2 { margin-bottom: 36px; }
+.sp-steps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 28px;
+}
+.sp-steps li { display: flex; gap: 16px; align-items: flex-start; }
+.sp-step-icon {
+  flex: none;
+  width: 58px;
+  height: 58px;
+  border: 2.5px solid var(--yellow);
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  color: var(--yellow);
+}
+.sp-step-num { display: block; font-size: 26px; font-weight: 800; line-height: 1; color: var(--yellow); margin-bottom: 8px; }
+.sp-steps h3 { font-size: 16px; font-weight: 700; color: var(--white); margin: 0 0 6px; }
+.sp-steps p { margin: 0; font-size: 14px; line-height: 1.55; color: var(--grey-300); }
+
+/* Accreditation logos: logos only (no text, numbers or register links). */
+.sp-acc-strip { background: var(--grey-50); padding: 18px var(--gutter); }
+.sp-acc-logos {
+  list-style: none;
+  margin: 0 auto;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 16px 36px;
+}
+.sp-acc-logos li { display: flex; align-items: center; height: 60px; }
+.sp-acc-logos li + li { padding-left: 36px; border-left: 1px solid var(--grey-300); }
+.sp-acc-logos img { height: 100%; width: auto; max-width: 170px; object-fit: contain; }
+.sp-acc-logos-inline { justify-content: flex-start; margin: 10px 0 0; gap: 16px 24px; }
+.sp-acc-logos-inline li { height: 56px; }
+.sp-acc-logos-inline li + li { padding-left: 24px; }
+
+/* Split: image + text. */
+.sp-split { padding: clamp(48px, 7vw, 72px) 0 32px; }
+.sp-split-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: clamp(32px, 5vw, 56px);
+  align-items: center;
+}
+.sp-split-btn { margin-top: 10px; }
+
+/* Health & Safety extras: asbestos panel and accreditations panel. */
+.sp-hs-extras { padding: 40px 0 16px; }
+.sp-hs-extras-inner { display: flex; flex-direction: column; gap: 24px; }
+.sp-panel { background: var(--grey-50); border-radius: var(--radius); }
+.sp-asbestos {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+  gap: 36px;
+  padding: 20px;
+  align-items: center;
+}
+.sp-asbestos-media { height: 220px; border-radius: var(--radius); overflow: hidden; }
+.sp-asbestos-copy p { margin: 0; }
+.sp-hs-acc {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px 32px;
+  padding: 28px 32px;
+}
+.sp-hs-acc .sp-h2 { margin-bottom: 6px; }
+.sp-hs-acc p { margin: 0; font-size: 14px; color: var(--text-mute); }
+.sp-hs-acc .sp-acc-logos { margin: 0; }
+.sp-hs-acc .sp-acc-logos li { height: 64px; }
+
+/* Case studies on the service pages: three columns on desktop. */
+.sp-proj-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+
+/* FAQs: intro left, accordion right. */
+.sp-faq { padding: clamp(48px, 6vw, 64px) 0 clamp(56px, 7vw, 80px); }
+.sp-faq-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr);
+  gap: clamp(32px, 5vw, 48px);
+  align-items: start;
+}
+.sp-faq-list { margin-top: 0; gap: 6px; }
+.sp-faq-list .faq-item {
+  background: var(--grey-50);
+  border: 0;
+  border-left: 3px solid transparent;
+  border-radius: var(--radius);
+}
+.sp-faq-list .faq-item[open] { border-left-color: var(--yellow); }
+.sp-faq-list .faq-item summary { font-weight: 500; font-size: 15px; line-height: 1.4; color: var(--ink); gap: 16px; }
+.sp-faq-list .faq-item[open] summary { font-weight: 700; }
+.sp-faq-list .faq-item summary::after { color: var(--ink); margin-left: 0; }
+.sp-faq-list .faq-item summary:hover { background: var(--grey-100); }
+.sp-faq-list .faq-item p { font-size: 15px; line-height: 1.6; color: var(--text-mute); padding: 0 20px 18px; }
+
+/* CTA band: dark, hero image faint behind. */
+.sp-cta { position: relative; overflow: hidden; isolation: isolate; background: var(--grey-900); color: var(--white); }
+.sp-cta-bg { position: absolute; inset: 0; z-index: 0; opacity: 0.3; }
+.sp-cta-bg img { width: 100%; height: 100%; object-fit: cover; }
+.sp-cta-row {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 36px;
+  flex-wrap: wrap;
+  padding-top: clamp(40px, 5vw, 52px);
+  padding-bottom: clamp(40px, 5vw, 52px);
+}
+.sp-cta-copy .sp-h2 { margin-bottom: 10px; }
+.sp-cta-copy p { margin: 0; max-width: 560px; font-size: 16px; line-height: 1.5; color: var(--grey-200); }
+.sp-cta-actions { display: flex; flex-direction: column; align-items: flex-start; gap: 14px; }
+.sp-cta-contact { display: inline-flex; align-items: center; gap: 10px; font-weight: 700; font-size: 17px; color: var(--white); overflow-wrap: anywhere; }
+.sp-cta-contact svg { flex: none; color: var(--yellow); }
+.sp-cta-phone { font-size: 19px; }
+.sp-cta-contact:hover { color: var(--yellow); }
+
+@media (max-width: 1100px) {
+  .sp-card-grid-3 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .sp-core-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .sp-steps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .sp-proj-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 880px) {
+  .sp-intro-grid,
+  .sp-split-grid,
+  .sp-faq-grid,
+  .sp-asbestos { grid-template-columns: minmax(0, 1fr); }
+  .sp-intro-media { height: 300px; }
+  .sp-split-media { height: 300px; }
+}
+@media (max-width: 820px) {
+  .sp-hero-media { width: 100%; }
+  .sp-hero-fade { background: linear-gradient(180deg, rgba(27,27,27,0.72) 0%, rgba(27,27,27,0.88) 60%, var(--grey-900) 100%); }
+}
+@media (max-width: 760px) {
+  .sp-card-grid-2,
+  .sp-card-grid-3,
+  .sp-core-grid,
+  .sp-steps,
+  .sp-proj-grid { grid-template-columns: minmax(0, 1fr); }
+  .sp-card-media,
+  .sp-card-grid-2 .sp-card-media { height: 200px; }
+  .sp-acc-logos { gap: 12px 18px; }
+  .sp-acc-logos li { height: 48px; }
+  /* No dividers on small screens: a wrapped logo would start with an orphan rule. */
+  .sp-acc-logos li + li,
+  .sp-acc-logos-inline li + li { padding-left: 0; border-left: 0; }
+  .sp-acc-logos img { max-width: 110px; }
+  .sp-hs-acc { padding: 22px 20px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sp-card-arrow, .sp-core-card { transition: none; }
+  .sp-core-card:hover, .sp-card-link:hover .sp-card-arrow, .sp-core-card:hover .sp-card-arrow { transform: none; }
+}
+
+/* /services: text links from the Demolition block to its sub-pages. */
+.sp-related-links { margin: 16px 0 0; font-size: 14.5px; line-height: 1.6; color: var(--text-mute); }
+.sp-related-links a { color: var(--yellow-700); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
+.sp-related-links a:hover { color: var(--ink); }

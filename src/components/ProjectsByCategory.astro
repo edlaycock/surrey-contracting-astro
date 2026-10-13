@@ -1,0 +1,84 @@
+---
+/**
+ * Case-study cards for the main service pages, driven by Sanity categories.
+ *
+ * Lists published projects (getProjects(), Sanity order) whose `categories`
+ * include `category`, or every project when `category` is omitted, up to
+ * `limit`, plus the dark "View all projects" card. A new case study tagged
+ * with the right category in Sanity appears on the next build with no code
+ * change. With no matches (or Sanity unreachable) nothing is rendered.
+ *
+ * Same visual markup as ProjectCards.astro (.proj cards in .lp2-proj-grid,
+ * .lp2-proj-all), but links open in the same tab: these are main-site pages,
+ * not landing pages with a quote form to keep.
+ */
+import { getProjects, urlFor } from '../lib/sanity';
+
+interface Props {
+  heading: string;
+  /** Sanity project category, e.g. "Demolition". Omit to list all categories. */
+  category?: string;
+  eyebrow?: string;
+  limit?: number;
+  /** Text on the dark "View all projects" card. */
+  allText?: string;
+}
+
+const {
+  heading,
+  category,
+  eyebrow,
+  limit = 6,
+  allText = 'Demolition, enabling works, earthworks and groundworks projects across Surrey, London and the South East.',
+} = Astro.props;
+
+const SUMMARY_MAX = 160;
+const clamp = (s = '') => {
+  const t = s.replace(/\s+/g, ' ').trim();
+  if (t.length <= SUMMARY_MAX) return t;
+  const cut = t.slice(0, SUMMARY_MAX);
+  return cut.slice(0, cut.lastIndexOf(' ')).replace(/[,;:.]$/, '') + '…';
+};
+
+const shown = (await getProjects())
+  .filter((p) => p.slug && p.heroImage && (!category || p.categories?.includes(category)))
+  .slice(0, limit)
+  .map((p) => {
+    const hero = p.heroImage as { alt?: string } | undefined;
+    return {
+      slug: p.slug,
+      title: p.title,
+      tag: category ?? p.categories?.[0] ?? 'Project',
+      text: clamp(p.summary),
+      img: urlFor(p.heroImage).width(640).height(480).fit('crop').auto('format').url(),
+      alt: hero?.alt || p.title,
+    };
+  });
+---
+{shown.length > 0 && (
+<section class="page-section lp2-work sp-projects" data-projects-category={category ?? 'all'}>
+  <div class="container">
+    <div class="section-head">
+      {eyebrow && <span class="sp-eyebrow">{eyebrow}</span>}
+      <h2 class="section-title">{heading}</h2>
+    </div>
+    <div class="lp2-proj-grid sp-proj-grid">
+      {shown.map(({ slug, tag, title, img, alt, text }) => (
+        <a class="proj" href={`/projects/${slug}`}>
+          <div class="proj-photo"><img src={img} alt={alt} width="640" height="480" loading="lazy" decoding="async" /></div>
+          <div class="proj-meta">
+            <span class="proj-tag">{tag}</span>
+            <h3>{title}</h3>
+            {text && <p>{text}</p>}
+          </div>
+        </a>
+      ))}
+      <div class="lp2-proj-all">
+        <h3>More of our work</h3>
+        <p>{allText}</p>
+        <a href="/projects" class="btn btn-ghost-light">View all projects</a>
+      </div>
+    </div>
+  </div>
+</section>
+)}
