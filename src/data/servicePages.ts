@@ -12,6 +12,9 @@
  * Images live in public/assets/img/services/<page>/, each with a -640.webp
  * variant for cards and small screens. Image slots follow IMGS in the design
  * file.
+ * Images wider than 1280px also have a -1280.webp variant. Only heroes keep
+ * the full 1920px file; for other slots `src` (and w/h) point at the -1280
+ * file, which is the largest size their srcset offers.
  */
 
 export type ServiceImage = {
@@ -99,9 +102,9 @@ export const SERVICE_PAGES = {
         "We manage each project from initial assessment through to completion, working safely, efficiently and in full compliance with current regulations. Our experienced team, modern equipment and structured approach ensure every demolition project is completed on time, on budget and with minimal disruption."
       ],
       "img": {
-        "src": "/assets/img/services/demolition/demolition-excavator-skip.webp",
-        "w": 1920,
-        "h": 776,
+        "src": "/assets/img/services/demolition/demolition-excavator-skip-1280.webp",
+        "w": 1280,
+        "h": 517,
         "src640": "/assets/img/services/demolition/demolition-excavator-skip-640.webp",
         "w640": 640,
         "h640": 259,
@@ -154,9 +157,9 @@ export const SERVICE_PAGES = {
         "t": "Demolition Waste Management",
         "d": "We manage and remove all demolition waste, with segregation and recycling wherever possible. Waste is taken to authorised facilities with full documentation, ensuring an environmentally responsible approach.",
         "img": {
-          "src": "/assets/img/services/demolition/demolition-crushing-recycling.webp",
-          "w": 1920,
-          "h": 748,
+          "src": "/assets/img/services/demolition/demolition-crushing-recycling-1280.webp",
+          "w": 1280,
+          "h": 499,
           "src640": "/assets/img/services/demolition/demolition-crushing-recycling-640.webp",
           "w640": 640,
           "h640": 249,
@@ -673,9 +676,9 @@ export const SERVICE_PAGES = {
         "Working with developers, main contractors and commercial clients, we provide practical, cost-effective solutions with a strong focus on safety, compliance and minimal disruption."
       ],
       "img": {
-        "src": "/assets/img/services/site-enabling-works/site-enabling-excavator.webp",
-        "w": 1920,
-        "h": 777,
+        "src": "/assets/img/services/site-enabling-works/site-enabling-excavator-1280.webp",
+        "w": 1280,
+        "h": 518,
         "src640": "/assets/img/services/site-enabling-works/site-enabling-excavator-640.webp",
         "w640": 640,
         "h640": 259,
@@ -689,9 +692,9 @@ export const SERVICE_PAGES = {
         "t": "Site Clearance",
         "d": "Vegetation, structures and obstructions removed to leave a clear, safe and workable site.",
         "img": {
-          "src": "/assets/img/services/site-enabling-works/site-enabling-site-clearance.webp",
-          "w": 1920,
-          "h": 694,
+          "src": "/assets/img/services/site-enabling-works/site-enabling-site-clearance-1280.webp",
+          "w": 1280,
+          "h": 463,
           "src640": "/assets/img/services/site-enabling-works/site-enabling-site-clearance-640.webp",
           "w640": 640,
           "h640": 231,
@@ -702,9 +705,9 @@ export const SERVICE_PAGES = {
         "t": "Demolition & Soft Strip",
         "d": "Controlled demolition and soft strip, coordinated with accredited and licensed partners where required.",
         "img": {
-          "src": "/assets/img/services/site-enabling-works/site-enabling-demolition.webp",
-          "w": 1920,
-          "h": 696,
+          "src": "/assets/img/services/site-enabling-works/site-enabling-demolition-1280.webp",
+          "w": 1280,
+          "h": 464,
           "src640": "/assets/img/services/site-enabling-works/site-enabling-demolition-640.webp",
           "w640": 640,
           "h640": 232,
@@ -716,9 +719,9 @@ export const SERVICE_PAGES = {
         "t": "Hoarding & Temporary Access",
         "d": "Secure site hoarding, gates and temporary access solutions to keep sites safe and operational.",
         "img": {
-          "src": "/assets/img/services/site-enabling-works/site-enabling-hoarding-access.webp",
-          "w": 1920,
-          "h": 693,
+          "src": "/assets/img/services/site-enabling-works/site-enabling-hoarding-access-1280.webp",
+          "w": 1280,
+          "h": 462,
           "src640": "/assets/img/services/site-enabling-works/site-enabling-hoarding-access-640.webp",
           "w640": 640,
           "h640": 231,
@@ -730,9 +733,9 @@ export const SERVICE_PAGES = {
         "t": "Service Coordination",
         "d": "We coordinate utility diversions and disconnections with specialist, accredited contractors.",
         "img": {
-          "src": "/assets/img/services/site-enabling-works/site-enabling-service-trench.webp",
-          "w": 1920,
-          "h": 713,
+          "src": "/assets/img/services/site-enabling-works/site-enabling-service-trench-1280.webp",
+          "w": 1280,
+          "h": 475,
           "src640": "/assets/img/services/site-enabling-works/site-enabling-service-trench-640.webp",
           "w640": 640,
           "h640": 238,
@@ -743,9 +746,9 @@ export const SERVICE_PAGES = {
         "t": "Crushing & Waste Management",
         "d": "On-site crushing, waste removal and responsible disposal to reduce cost and environmental impact.",
         "img": {
-          "src": "/assets/img/services/site-enabling-works/site-enabling-crushing.webp",
-          "w": 1920,
-          "h": 714,
+          "src": "/assets/img/services/site-enabling-works/site-enabling-crushing-1280.webp",
+          "w": 1280,
+          "h": 476,
           "src640": "/assets/img/services/site-enabling-works/site-enabling-crushing-640.webp",
           "w640": 640,
           "h640": 238,
@@ -756,9 +759,9 @@ export const SERVICE_PAGES = {
         "t": "Ground Preparation",
         "d": "Final trim, grading and preparation to take the site through to groundworks and construction.",
         "img": {
-          "src": "/assets/img/services/site-enabling-works/site-enabling-ground-preparation.webp",
-          "w": 1920,
-          "h": 714,
+          "src": "/assets/img/services/site-enabling-works/site-enabling-ground-preparation-1280.webp",
+          "w": 1280,
+          "h": 476,
           "src640": "/assets/img/services/site-enabling-works/site-enabling-ground-preparation-640.webp",
           "w640": 640,
           "h640": 238,
@@ -802,9 +805,9 @@ export const SERVICE_PAGES = {
           "We work on a range of developments across Surrey, London and the South East, delivering enabling works as a stand-alone package or as part of a full groundworks solution. Take a look at some of our recent projects."
         ],
         "img": {
-          "src": "/assets/img/services/site-enabling-works/site-enabling-cleared-site.webp",
-          "w": 1920,
-          "h": 699,
+          "src": "/assets/img/services/site-enabling-works/site-enabling-cleared-site-1280.webp",
+          "w": 1280,
+          "h": 466,
           "src640": "/assets/img/services/site-enabling-works/site-enabling-cleared-site-640.webp",
           "w640": 640,
           "h640": 233,
@@ -988,9 +991,9 @@ export const SERVICE_PAGES = {
         "Our team works in accordance with current legislation, industry guidance and best practice, with clear planning, competent supervision and a strong safety culture across all our sites."
       ],
       "img": {
-        "src": "/assets/img/services/health-safety/health-safety-supervision.webp",
-        "w": 1920,
-        "h": 1027,
+        "src": "/assets/img/services/health-safety/health-safety-supervision-1280.webp",
+        "w": 1280,
+        "h": 685,
         "src640": "/assets/img/services/health-safety/health-safety-supervision-640.webp",
         "w640": 640,
         "h640": 342,
@@ -1004,9 +1007,9 @@ export const SERVICE_PAGES = {
         "t": "Project Planning & CDM Compliance",
         "d": "We plan our works in line with the CDM Regulations, with project-specific risk assessments, method statements and site arrangements in place from the outset.",
         "img": {
-          "src": "/assets/img/services/health-safety/health-safety-planning-cdm.webp",
-          "w": 1920,
-          "h": 950,
+          "src": "/assets/img/services/health-safety/health-safety-planning-cdm-1280.webp",
+          "w": 1280,
+          "h": 633,
           "src640": "/assets/img/services/health-safety/health-safety-planning-cdm-640.webp",
           "w640": 640,
           "h640": 317,
@@ -1017,9 +1020,9 @@ export const SERVICE_PAGES = {
         "t": "Demolition & Structural Safety",
         "d": "Our demolition works are carefully planned and methodically controlled, with consideration for structural stability, neighbouring properties and site-specific risks.",
         "img": {
-          "src": "/assets/img/services/health-safety/health-safety-demolition.webp",
-          "w": 1920,
-          "h": 1004,
+          "src": "/assets/img/services/health-safety/health-safety-demolition-1280.webp",
+          "w": 1280,
+          "h": 669,
           "src640": "/assets/img/services/health-safety/health-safety-demolition-640.webp",
           "w640": 640,
           "h640": 335,
@@ -1030,9 +1033,9 @@ export const SERVICE_PAGES = {
         "t": "Plant, Excavations & Site Safety",
         "d": "We maintain safe systems of work for all plant and excavation activities, including exclusion zones, bank stability or support, and regular inspections.",
         "img": {
-          "src": "/assets/img/services/health-safety/health-safety-excavation-support.webp",
-          "w": 1920,
-          "h": 998,
+          "src": "/assets/img/services/health-safety/health-safety-excavation-support-1280.webp",
+          "w": 1280,
+          "h": 665,
           "src640": "/assets/img/services/health-safety/health-safety-excavation-support-640.webp",
           "w640": 640,
           "h640": 333,
@@ -1043,9 +1046,9 @@ export const SERVICE_PAGES = {
         "t": "Occupational Health & Environmental Controls",
         "d": "We manage dust, noise, vibration and other site-related risks, with suitable control measures to protect our workforce, nearby occupiers and the wider environment.",
         "img": {
-          "src": "/assets/img/services/health-safety/health-safety-dust-suppression.webp",
-          "w": 1920,
-          "h": 1022,
+          "src": "/assets/img/services/health-safety/health-safety-dust-suppression-1280.webp",
+          "w": 1280,
+          "h": 681,
           "src640": "/assets/img/services/health-safety/health-safety-dust-suppression-640.webp",
           "w640": 640,
           "h640": 341,
@@ -1056,9 +1059,9 @@ export const SERVICE_PAGES = {
         "t": "Training, Competence & Supervision",
         "d": "Our team receive relevant training and induction, with competent supervision to ensure they can carry out their roles safely and effectively.",
         "img": {
-          "src": "/assets/img/services/health-safety/health-safety-training-supervision.webp",
-          "w": 1920,
-          "h": 1081,
+          "src": "/assets/img/services/health-safety/health-safety-training-supervision-1280.webp",
+          "w": 1280,
+          "h": 721,
           "src640": "/assets/img/services/health-safety/health-safety-training-supervision-640.webp",
           "w640": 640,
           "h640": 360,
@@ -1069,9 +1072,9 @@ export const SERVICE_PAGES = {
         "t": "Monitoring, Reporting & Improvement",
         "d": "We carry out regular inspections, audits and reviews, learning from feedback, near misses and incidents to continually improve our performance.",
         "img": {
-          "src": "/assets/img/services/health-safety/health-safety-inspection-checklist.webp",
-          "w": 1920,
-          "h": 1074,
+          "src": "/assets/img/services/health-safety/health-safety-inspection-checklist-1280.webp",
+          "w": 1280,
+          "h": 716,
           "src640": "/assets/img/services/health-safety/health-safety-inspection-checklist-640.webp",
           "w640": 640,
           "h640": 358,
@@ -1116,9 +1119,9 @@ export const SERVICE_PAGES = {
           "Our aim is to deliver safe, efficient and compliant projects with minimal disruption to the surrounding area."
         ],
         "img": {
-          "src": "/assets/img/services/health-safety/health-safety-public-protection.webp",
-          "w": 1920,
-          "h": 945,
+          "src": "/assets/img/services/health-safety/health-safety-public-protection-1280.webp",
+          "w": 1280,
+          "h": 630,
           "src640": "/assets/img/services/health-safety/health-safety-public-protection-640.webp",
           "w640": 640,
           "h640": 315,
@@ -1132,9 +1135,9 @@ export const SERVICE_PAGES = {
       "t": "Talk to our team about how we manage health and safety on your project."
     },
     "asbestosImg": {
-      "src": "/assets/img/services/health-safety/health-safety-asbestos-waste.webp",
-      "w": 1920,
-      "h": 888,
+      "src": "/assets/img/services/health-safety/health-safety-asbestos-waste-1280.webp",
+      "w": 1280,
+      "h": 592,
       "src640": "/assets/img/services/health-safety/health-safety-asbestos-waste-640.webp",
       "w640": 640,
       "h640": 296,

@@ -2003,3 +2003,13 @@ redirects; no /lp/* changes.
       (/demolition, /site-hoarding, /groundworks), /sectors core services 4
       (/demolition, /site-enabling-works, /earthworks, /groundworks).
       Build exit 0, all four guards passed, six-page check passed.
+- [x] Ed approved deleting unused images. 19 non-hero 1920px WebPs removed
+      with git rm (3,844,062 bytes, about 3.7 MB). The count is 19, not ~25:
+      25 images were wider than 1280px, and the 6 hero files are still
+      served. Each basename had 0 references in src/, public/, scripts/ and
+      astro.config.mjs once their data entries' `src`/w/h pointed at the
+      -1280 file (the largest size their srcset offered already; the built
+      image markup on all six pages and /services is byte-identical before
+      and after). Build exit 0, all four guards passed, six-page check
+      passed, 140 distinct /assets/img/services/ URLs in dist HTML/CSS with
+      0 missing, 1440 screenshots of all six pages with 0 broken images.
