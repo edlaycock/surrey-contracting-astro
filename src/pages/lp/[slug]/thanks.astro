@@ -1,0 +1,52 @@
+---
+/**
+ * /lp/<slug>/thanks: the page a visitor lands on after a successful quote
+ * enquiry from /lp/<slug>. One template for every landing page: the slugs come
+ * from the LP files in src/pages/lp/ themselves, so a new LP gets its thanks
+ * page with no list to maintain (Ed, 13 Oct 2026: all LPs, including
+ * commercial-surfacing).
+ *
+ * noindex,nofollow; out of the sitemap via the "/lp/" filter in
+ * astro.config.mjs; guarded post-build by scripts/check-lp.mjs. The redirect
+ * lives in the quote handler in src/scripts/app.js, which only fires it on
+ * /lp/<slug>. This page does not fire generate_lead: the conversion stays on
+ * the form event, not on this page view.
+ *
+ * Reuses the 404 page's .nf styles; no form here (one quoteForm per page).
+ */
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+
+export function getStaticPaths() {
+  return Object.keys(import.meta.glob('../*.astro')).map((file) => ({
+    params: { slug: file.replace(/^\.\.\//, '').replace(/\.astro$/, '') },
+  }));
+}
+
+const { slug } = Astro.params;
+const back = `/lp/${slug}`;
+---
+<BaseLayout
+  title="Thanks, we've got your enquiry | Surrey Contracting Limited"
+  description="Your enquiry has reached Surrey Contracting. A contracts manager will be in touch within one working day."
+  path={`${back}/thanks`}
+>
+  <meta slot="head" name="robots" content="noindex,nofollow" />
+
+<section class="nf" aria-labelledby="thanks-title">
+  <div class="container nf-inner">
+    <img
+      src="/assets/logo-transparent.png"
+      alt="Surrey Contracting Limited"
+      width="948"
+      height="253"
+      class="nf-logo"
+    />
+    <h1 class="nf-title" id="thanks-title">Thanks, we've got your enquiry</h1>
+    <p class="nf-lede">A contracts manager will be in touch within one working day.</p>
+    <div class="nf-actions">
+      <a href="tel:01483323568" class="btn btn-yellow">Call 01483 323568</a>
+      <a href={back} class="btn btn-ghost-light">Back to the page</a>
+    </div>
+  </div>
+</section>
+</BaseLayout>

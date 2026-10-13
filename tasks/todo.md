@@ -1605,3 +1605,117 @@ Verification (2 Oct 2026):
       cookies and revisit); the YTQ connector key is 'ytq_live_demo_key_12345'
       (looks like a demo key); GA4/Ads/CookieYes are configured in GTM only,
       not visible in the repo.
+
+## 2026-10-13 - LP thank-you pages, success redirect, TruConversion masking
+
+Brief: Ed, 13 Oct 2026. Plan approved by Ed ("ok") with these answers:
+- Thanks pages for all 9 LPs, generated from the LP files (glob), including
+  agricultural and commercial-surfacing. `/lp/commercial-surfacing/thanks` is
+  allowed even though its URL and back link contain "surfacing".
+- The bfcache Back-button fix (item 3) is in.
+- Keep the `gtag()` call and add `event_callback`/`event_timeout` (not a plain
+  `dataLayer.push`): GTM honours gtag's event_callback (tested on the live LP),
+  and the GA4 tag reads `eventModel.event_label`/`eventModel.form_id`, which a
+  plain push would leave blank.
+- No real test enquiry. GTM and the YourTradeQuotes connector are not touched.
+
+Facts checked against the repo and live site (13 Oct):
+- The form is inline on 11 pages (/, /contact, 9 LPs); there is no shared
+  component. The handler is `src/scripts/app.js`, bundled by BaseLayout, not a
+  script inside BaseLayout. The homepage form has no `company` field.
+- GTM-TR97QJZB v11 has no Google Ads conversion tag. On generate_lead only
+  the GA4 event tag (G-VNBJHFDZRM) fires; its hit sends a
+  pagead2 measurement/conversion ping, so the Ads conversion counts through
+  GA4 / the Google tag. It is still on the event (item 4 of the brief holds).
+- TruConversion's tracker (tc-app-v455.js) masks an input only when the
+  element itself has `data-tc-masked` (KB screenshot VR-02.jpg says the same).
+
+### Files
+- NEW `src/pages/lp/[slug]/thanks.astro`: one template; slugs from
+  `import.meta.glob('../*.astro')`; reuses the 404 page's `.nf` styles
+- `src/scripts/app.js`: redirect on success on /lp/<slug> only, plus bfcache fix
+- 11 form pages: `data-tc-masked` on name, phone, email, company, postcode, message
+- `scripts/check-lp.mjs`: thanks and masking checks on every LP
+- `.github/workflows/deploy.yml`: post-deploy checks for thanks URLs and masking
+- Not touched: BaseLayout (GTM, YTQ connector and key, TruConversion loader),
+  the GTM container, `astro.config.mjs` (the "/lp/" sitemap filter already
+  excludes thanks pages)
+
+### Items
+- [x] 1. Thanks page template: noindex,nofollow, H1 "Thanks, we've got your
+      enquiry", call button for 01483 323568, link back to `/lp/<slug>`. No
+      form, no generate_lead, no dashes.
+      Evidence: the build wrote 9 `lp/<slug>/thanks/index.html` files; all 9
+      have `content="noindex,nofollow"`; check-lp passes.
+- [x] 2. app.js: on /lp/<slug> only, `generate_lead` carries
+      `event_callback` plus `event_timeout: 1200`, with a `setTimeout(1500)`
+      fallback; both go once-guarded to `/lp/<slug>/thanks` + `location.search`.
+      On / and /contact the gtag parameters are exactly what they were before.
+      The error path is unchanged.
+      Evidence: Playwright cases 1-6 under Verification.
+- [x] 3. bfcache: on `pageshow` with `persisted` (LPs only), the button is
+      re-enabled with its label restored and the message hidden.
+      Evidence: case 1 Back gives navigation type `back_forward`, button
+      enabled, label "Send enquiry", message hidden.
+- [x] 4. `data-tc-masked` on every input/textarea for the six fields on all
+      11 forms (the homepage has 5, since it has no company field).
+      Evidence: per-file grep of the built HTML, below.
+- [x] 5. check-lp: every LP in src/pages/lp has a thanks page (noindex,nofollow,
+      no dash, no quoteForm, a back link) and all six fields masked; no
+      `/thanks` URL in any sitemap or llms file.
+      Evidence: on a dist copy, removing one attribute, changing one robots meta
+      and deleting one thanks page each failed check-lp with a specific message.
+- [x] 6. deploy.yml verify step: curl each `/lp/<slug>/thanks` (from
+      src/pages/lp/*.astro) for 200; `data-tc-masked` count >= 6 on
+      /lp/groundworks and /lp/groundworks-2.
+      Evidence: runs on the next deploy (record the result here).
+- [x] 7. Screenshots for Ed (outside the repo): thanks-desktop.png (1280),
+      thanks-mobile.png (390), thanks-groundworks-2-mobile.png (390); no
+      horizontal scroll (scrollWidth equals the viewport).
+- [ ] 8. Ed reviews the screenshots and the PR, then merges (do not merge before).
+- [ ] 9. After deploy: workflow verify step green; record the curl output here.
+
+### Verification (13 Oct 2026, on the branch rebuilt from origin/main d3e9494)
+1. `NODE_USE_ENV_PROXY=1 npm run build`: exit 0. All four guards passed;
+   check-lp printed "thanks pages and form masking: 9 landing pages checked".
+2. Static checks on dist/client:
+   - 9 thanks directories, all `noindex,nofollow`
+   - sitemap files: 0 `/lp/` entries, 0 `/thanks` entries
+   - every LP and /contact: all six fields carry `data-tc-masked`
+   - homepage: five fields (it has no company field)
+3. `node dist/server/entry.mjs`: every `/lp/<slug>/thanks` returns 200;
+   `/lp/groundworks/thanks/` 301s to `/lp/groundworks/thanks`.
+4. Playwright (chromium from /opt/pw-browsers):
+   - Setup: no proxy; `/api/contact` stubbed; every non-local request aborted
+     (YTQ beacon included, and confirmed intercepted); the GTM container and
+     Google tag libraries served from saved copies.
+   - Case 1: `/lp/groundworks?gclid=test` ended on
+     `/lp/groundworks/thanks?gclid=test`. dataLayer at pagehide was consent
+     default, gtm.js, gtm.dom, gtm.load, generate_lead. Back restored the LP
+     from bfcache with the button usable.
+   - Timing: 46 ms from submit to navigation with GTM and the Google tag
+     libraries loaded (the event_callback path).
+   - Case 2: GTM blocked, `/lp/groundworks-2?gclid=test&utm_source=x` ended on
+     `/lp/groundworks-2/thanks?gclid=test&utm_source=x`; 1523 ms (the fallback
+     timer); generate_lead was in dataLayer.
+   - Case 3: stubbed 502 failure; no redirect; message shown in
+     rgb(255, 107, 107).
+   - Cases 4 and 5: `/` and `/contact` success; URL unchanged; green in-page
+     message.
+   - Case 6: `/lp/commercial-surfacing` ended on its thanks page.
+
+### Deploy and rollback
+- Deploy: merge the PR to main. deploy.yml builds on the runner (guards run),
+  rsyncs to the VPS, runs `docker compose up -d --build`, then the verify step.
+  Confirm with `git merge-base --is-ancestor <merge sha> origin/main`.
+- Rollback: `git revert -m 1 <merge sha>` on a branch, then PR and merge; the
+  same workflow redeploys. Nothing external links to the thanks URLs and GTM
+  is unchanged.
+
+### Open items for Ed (outside this change)
+- [ ] GTM: the Google Ads call-from-website tag (`__awcc`, conversion label
+      4zbLCI2q7tscEOrr7ZdE) is set to swap 01932 932650, which is not on the
+      site. The site number is 01483 323568, so call tracking never matches.
+      Ed to fix in GTM (this change does not touch GTM).
+- [ ] TruConversion has no session recordings configured (the live tracker
+      config shows `"sr":[]`). The masking takes effect once recordings are set up.

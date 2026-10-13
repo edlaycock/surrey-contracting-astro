@@ -81,6 +81,17 @@ jobs:
               code=$(curl -sS -o /dev/null -w '%{http_code}' --max-time 10 "$BASE$p") || true
               echo "$code $p"; [ "$code" = 200 ] || ok=1
             done
+            # Thank-you page for every landing page (generated from src/pages/lp/*.astro).
+            for f in src/pages/lp/*.astro; do
+              p="/lp/$(basename "$f" .astro)/thanks"
+              code=$(curl -sS -o /dev/null -w '%{http_code}' --max-time 10 "$BASE$p") || true
+              echo "$code $p"; [ "$code" = 200 ] || ok=1
+            done
+            # TruConversion masking is on the live landing-page forms.
+            for p in /lp/groundworks /lp/groundworks-2; do
+              n=$(curl -sS --max-time 10 "$BASE$p" | grep -o 'data-tc-masked' | wc -l) || true
+              echo "$n data-tc-masked on $p"; [ "$n" -ge 6 ] || ok=1
+            done
             code=$(curl -sS -o nf.html -w '%{http_code}' --max-time 10 "$BASE$MISSING") || true
             grep -q 'This page took a wrong turn' nf.html 2>/dev/null && body=branded || body=unbranded
             echo "$code $MISSING ($body)"; [ "$code" = 404 ] && [ "$body" = branded ] || ok=1

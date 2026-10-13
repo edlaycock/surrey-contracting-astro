@@ -23,6 +23,12 @@
  *   - a /projects/<slug> link points at a page that was not built
  *   - the URL appears in any sitemap*.xml, llms.txt or llms-full.txt
  *
+ * And on every landing page in src/pages/lp/ (v1 and v2):
+ *   - name, phone, email, company, postcode and message lack data-tc-masked
+ *   - lp/<slug>/thanks is missing, not noindex,nofollow, has a dash or a
+ *     quote form, or does not link back to the LP
+ *   - a /thanks URL appears in any sitemap*.xml or llms file
+ *
  * Surfacing exception (Ed, 1 Oct 2026): Jason confirmed that commercial and
  * public-sector surfacing belongs to Surrey Contracting; residential
  * surfacing belongs to Surrey Hills Surfacing, a separate client. Surrey
@@ -210,6 +216,41 @@ for (const f of indexFiles) {
     if (text.includes(`/${slug}`)) failures.push(`${slug}: listed in ${f}, it must stay out`);
   }
 }
+
+// Every landing page (v1 and v2 alike, Ed 13 Oct 2026): a thanks page that is
+// noindex,nofollow and dash-free, TruConversion masking on the six personal
+// fields of the form, and no thanks URL in any sitemap or llms file.
+// TruConversion only masks an element that itself carries data-tc-masked.
+const MASKED_FIELDS = ['name', 'phone', 'email', 'company', 'postcode', 'message'];
+// Slugs from the LP source files, the same source as src/pages/lp/[slug]/thanks.astro
+// (dist/client/lp also holds redirect stubs such as lp/surfacing, which are not LPs).
+const lpSlugs = readdirSync('src/pages/lp').filter((f) => f.endsWith('.astro')).map((f) => f.slice(0, -'.astro'.length));
+for (const s of lpSlugs) {
+  if (!existsSync(join(DIST, 'lp', s, 'index.html'))) {
+    failures.push(`lp/${s}: not built`);
+    continue;
+  }
+  const lpHtml = readFileSync(join(DIST, 'lp', s, 'index.html'), 'utf8');
+  for (const n of MASKED_FIELDS) {
+    const field = (lpHtml.match(new RegExp(`<(?:input|textarea)\\b[^>]*\\bname="${n}"[^>]*>`)) || [''])[0];
+    if (!field) failures.push(`lp/${s}: form field "${n}" not found`);
+    else if (!/\sdata-tc-masked(?=[\s=>])/.test(field)) failures.push(`lp/${s}: field "${n}" lacks data-tc-masked`);
+  }
+  const thanksFile = join(DIST, 'lp', s, 'thanks', 'index.html');
+  if (!existsSync(thanksFile)) {
+    failures.push(`lp/${s}/thanks: not built (${thanksFile} missing)`);
+    continue;
+  }
+  const t = readFileSync(thanksFile, 'utf8');
+  if (!t.includes('<meta name="robots" content="noindex,nofollow">')) failures.push(`lp/${s}/thanks: missing <meta name="robots" content="noindex,nofollow">`);
+  if (t.includes(EM_DASH) || t.includes(EN_DASH)) failures.push(`lp/${s}/thanks: em or en dash present`);
+  if (t.includes('id="quoteForm"')) failures.push(`lp/${s}/thanks: carries a quote form, it must not`);
+  if (!t.includes(`href="/lp/${s}"`)) failures.push(`lp/${s}/thanks: no link back to /lp/${s}`);
+}
+for (const f of indexFiles) {
+  if (readFileSync(join(DIST, f), 'utf8').includes('/thanks')) failures.push(`${f}: lists a /thanks page, it must stay out`);
+}
+if (lpSlugs.length) console.log(`thanks pages and form masking: ${lpSlugs.length} landing pages checked`);
 
 if (failures.length) {
   console.error('\ncheck-lp: FAILED');
