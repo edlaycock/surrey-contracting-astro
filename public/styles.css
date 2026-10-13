@@ -3043,6 +3043,18 @@ a.contact-value:hover { color: var(--yellow-700); }
 .lp2-proj-all h3 { color: var(--white); font-size: 22px; font-weight: 700; }
 .lp2-proj-all p { margin: 0; font-size: 15px; line-height: 1.55; color: var(--grey-200); }
 .lp2-proj-all-wide { grid-column: 1 / -1; }
+/* Screen-reader-only text, e.g. "(opens in a new tab)" on the LP project cards. */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
 
 /* Sectors list (commercial surfacing landing page only, 1 Oct 2026). Two columns, text only. */
 .lp2-sector-list {

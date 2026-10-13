@@ -1736,3 +1736,80 @@ Facts checked against the repo and live site (13 Oct):
       Ed to fix in GTM (this change does not touch GTM).
 - [ ] TruConversion has no session recordings configured (the live tracker
       config shows `"sr":[]`). The masking takes effect once recordings are set up.
+
+## 2026-10-13 - LP case-study cards (phase 1: component, demolition v1 and v2)
+
+Goal: case-study cards on the Google Ads landing pages, linking to the
+published case studies on /projects/<slug>. Phase 1 builds the shared
+component and puts it on /lp/demolition and /lp/demolition-2 only, with
+screenshots for Ed (lessons: mock-up before the full build on commercial
+pages). Phase 2 rolls out to the other pages once Ed approves.
+
+### Ed's decisions (13 Oct 2026)
+- demolition and demolition-2: house-demolition-esher,
+  soft-strip-demolition-chiswick, steel-outbuilding-demolition-byfleet.
+- groundworks and groundworks-2: drainage-concrete-works-redhill,
+  excavation-foundations-hampshire, enabling-works-car-park-sutton. On
+  groundworks-2 these replace drainage-ascot, concrete-base-cobham and
+  site-clearance-earthworks.
+- earthworks and earthworks-2: site-levelling-earthworks-hampshire,
+  site-clearance-crushing-portsmouth, site-clearance-earthworks (Farnham).
+  On earthworks-2 this replaces Horsell (domestic-earthworks) and keeps
+  Farnham (default; Ed did not say otherwise).
+- drainage: drainage-concrete-works-redhill, foul-drainage-guildford,
+  drainage-ascot.
+- commercial-surfacing: keep Southbank, add drainage-concrete-works-redhill
+  and enabling-works-car-park-sutton. Text describes car park drainage,
+  baseworks and enabling works only, never surfacing, and passes that
+  page's extra forbidden terms (driveway, residential, homeowner, patio).
+- agricultural: no cards.
+- Every card link, and the dark "View all projects" card, opens in a new
+  tab (target="_blank" rel="noopener").
+- v1 and v2 of each page get the same cards (A/B fairness); v1 gains the
+  "View all projects" card too.
+
+### Phase 1
+- [x] src/data/projectCards.ts: one card per project (tag, title, local
+      image, alt, text from the published summary); projectCards(slugs)
+      picks them in order and fails the build on an unknown slug.
+- [x] src/components/ProjectCards.astro: renders only slugs Sanity
+      publishes (getProjects), new-tab links with screen-reader text,
+      "View all projects" card; reuses .proj / .lp2-proj-grid /
+      .lp2-proj-all. Only new CSS: a .sr-only utility.
+- [x] Local 640x480 webp (q72, sharp, centre crop of the Sanity hero) for
+      all nine new projects, so phase 2 needs no image work.
+- [x] /lp/demolition (after the last svc-detail, before the FAQ) and
+      /lp/demolition-2 (after the steps, before the FAQ).
+- [x] Build with all postbuild guards; grep built pages; screenshots at
+      1280 and 390 for Ed.
+
+### Acceptance criteria
+- Both demolition pages show the same three cards plus "View all projects".
+- Every card and the View all link carry target="_blank" rel="noopener".
+- No image from another host; every /projects/<slug> link was built.
+- No em or en dash; no client names beyond the published project pages; no
+  author or date credits; one quoteForm per page.
+- No horizontal scroll at 390px.
+
+### Phase 2 (after Ed approves the screenshots)
+- [ ] groundworks, groundworks-2 (replace the three existing cards).
+- [ ] earthworks, earthworks-2 (replace Horsell, keep Farnham).
+- [ ] drainage.
+- [ ] commercial-surfacing (Southbank plus Redhill and Sutton; add the
+      Southbank card to src/data/projectCards.ts with its current text).
+- [ ] Remove the per-page PROJECT_CARDS blocks now served by the component.
+- [ ] Build, guards, grep, screenshots, PR.
+
+### Evidence, phase 1 (13 Oct 2026, this container)
+- `NODE_USE_ENV_PROXY=1 npm run build`: exit 0; check-homepage,
+  check-locations, check-guides and check-lp all passed
+  (lp/demolition-2: 5 FAQ questions, 19 assets checked).
+- Built /lp/demolition and /lp/demolition-2: 3 `<a class="proj">` links,
+  each `target="_blank" rel="noopener"`, plus the View all projects button
+  with the same; all three /projects/<slug> pages built; 0 external images
+  or CSS url(); 0 em or en dashes; 0 SafeContractor or Alcumus; one
+  id="quoteForm".
+- Playwright (chromium, built site served by dist/server/entry.mjs, every
+  non-local request aborted): 3 cards, images 640x480, no horizontal scroll
+  at 390 (scrollWidth 390) or 1280 on either page.
+- Images: 9 new 640x480 webp files in public/assets/img/projects/.
