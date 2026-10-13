@@ -1,6 +1,8 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import ServiceSchema from '../../components/ServiceSchema.astro';
+import ProjectCards from '../../components/ProjectCards.astro';
+import { projectCards } from '../../data/projectCards';
 
 const faqSchema = {
   "@context": "https://schema.org",
@@ -129,6 +131,13 @@ const faqSchema = {
     </div>
   </div>
 </section>
+
+<ProjectCards
+  eyebrow="Recent work"
+  heading="Groundworks projects we have delivered"
+  cards={projectCards(['drainage-concrete-works-redhill', 'excavation-foundations-hampshire', 'enabling-works-car-park-sutton'])}
+  allText="Groundworks, earthworks and drainage projects across Surrey and the South East."
+/>
 
 <section class="page-section page-section-grey">
   <div class="container">

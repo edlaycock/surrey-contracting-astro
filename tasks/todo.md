@@ -1672,8 +1672,25 @@ Facts checked against the repo and live site (13 Oct):
 - [x] 7. Screenshots for Ed (outside the repo): thanks-desktop.png (1280),
       thanks-mobile.png (390), thanks-groundworks-2-mobile.png (390); no
       horizontal scroll (scrollWidth equals the viewport).
-- [ ] 8. Ed reviews the screenshots and the PR, then merges (do not merge before).
-- [ ] 9. After deploy: workflow verify step green; record the curl output here.
+- [x] 8. Ed reviews the screenshots and the PR, then merges (do not merge before).
+      Evidence: Ed saw the screenshots and said "merge 27". PR #27 was merged
+      with a merge commit pinned to head 0b09785; merge commit is 777dfae.
+- [x] 9. After deploy: workflow verify step green; record the curl output here.
+      Evidence (13 Oct 2026):
+      - Deploy run 38431351058 succeeded:
+        https://github.com/edlaycock/surrey-contracting-astro/actions/runs/38431351058
+      - check-lp on the runner: "thanks pages and form masking: 9 landing
+        pages checked", "check-lp: all checks passed".
+      - Verify step, attempt 1: 200 for /, the 6 v1/v2 LPs and all 9
+        /lp/<slug>/thanks; "6 data-tc-masked on /lp/groundworks";
+        "6 data-tc-masked on /lp/groundworks-2"; branded 404 for the unknown path.
+      - Separate live curl afterwards: all 9 thanks pages 200 with
+        `content="noindex,nofollow"`; data-tc-masked count 6 on /lp/groundworks
+        and 6 on /lp/groundworks-2; sitemap-index.xml lists only sitemap-0.xml,
+        which has 0 `/lp/` and 0 `/thanks` entries.
+      - `git merge-base --is-ancestor 777dfae origin/main` exit 0 (merged).
+      - No form was submitted on the live site.
+      - Rollback if needed: `git revert -m 1 777dfae`, then PR and merge.
 
 ### Verification (13 Oct 2026, on the branch rebuilt from origin/main d3e9494)
 1. `NODE_USE_ENV_PROXY=1 npm run build`: exit 0. All four guards passed;
@@ -1719,3 +1736,109 @@ Facts checked against the repo and live site (13 Oct):
       Ed to fix in GTM (this change does not touch GTM).
 - [ ] TruConversion has no session recordings configured (the live tracker
       config shows `"sr":[]`). The masking takes effect once recordings are set up.
+
+## 2026-10-13 - LP case-study cards (phase 1: component, demolition v1 and v2)
+
+Goal: case-study cards on the Google Ads landing pages, linking to the
+published case studies on /projects/<slug>. Phase 1 builds the shared
+component and puts it on /lp/demolition and /lp/demolition-2 only, with
+screenshots for Ed (lessons: mock-up before the full build on commercial
+pages). Phase 2 rolls out to the other pages once Ed approves.
+
+### Ed's decisions (13 Oct 2026)
+- demolition and demolition-2: house-demolition-esher,
+  soft-strip-demolition-chiswick, steel-outbuilding-demolition-byfleet.
+- groundworks and groundworks-2: drainage-concrete-works-redhill,
+  excavation-foundations-hampshire, enabling-works-car-park-sutton. On
+  groundworks-2 these replace drainage-ascot, concrete-base-cobham and
+  site-clearance-earthworks.
+- earthworks and earthworks-2: site-levelling-earthworks-hampshire,
+  site-clearance-crushing-portsmouth, site-clearance-earthworks (Farnham).
+  On earthworks-2 this replaces Horsell (domestic-earthworks) and keeps
+  Farnham (default; Ed did not say otherwise).
+- drainage: drainage-concrete-works-redhill, foul-drainage-guildford,
+  drainage-ascot.
+- commercial-surfacing: keep Southbank, add drainage-concrete-works-redhill
+  and enabling-works-car-park-sutton. Text describes car park drainage,
+  baseworks and enabling works only, never surfacing, and passes that
+  page's extra forbidden terms (driveway, residential, homeowner, patio).
+- agricultural: no cards.
+- Every card link, and the dark "View all projects" card, opens in a new
+  tab (target="_blank" rel="noopener").
+- v1 and v2 of each page get the same cards (A/B fairness); v1 gains the
+  "View all projects" card too.
+
+### Phase 1
+- [x] src/data/projectCards.ts: one card per project (tag, title, local
+      image, alt, text from the published summary); projectCards(slugs)
+      picks them in order and fails the build on an unknown slug.
+- [x] src/components/ProjectCards.astro: renders only slugs Sanity
+      publishes (getProjects), new-tab links with screen-reader text,
+      "View all projects" card; reuses .proj / .lp2-proj-grid /
+      .lp2-proj-all. Only new CSS: a .sr-only utility.
+- [x] Local 640x480 webp (q72, sharp, centre crop of the Sanity hero) for
+      all nine new projects, so phase 2 needs no image work.
+- [x] /lp/demolition (after the last svc-detail, before the FAQ) and
+      /lp/demolition-2 (after the steps, before the FAQ).
+- [x] Build with all postbuild guards; grep built pages; screenshots at
+      1280 and 390 for Ed.
+
+### Acceptance criteria
+- Both demolition pages show the same three cards plus "View all projects".
+- Every card and the View all link carry target="_blank" rel="noopener".
+- No image from another host; every /projects/<slug> link was built.
+- No em or en dash; no client names beyond the published project pages; no
+  author or date credits; one quoteForm per page.
+- No horizontal scroll at 390px.
+
+### Phase 2 (Ed approved the phase 1 screenshots, 13 Oct 2026: "go phase 2";
+### Chiswick photo and white background unchanged; earthworks-2 confirmed as
+### Hampshire levelling, Portsmouth, Farnham, Horsell removed)
+- [x] groundworks, groundworks-2 (replace the three existing cards).
+- [x] earthworks, earthworks-2 (replace Horsell, keep Farnham).
+- [x] drainage.
+- [x] commercial-surfacing (Southbank first with its current image and
+      text, then Redhill and Sutton; heading "Recent commercial projects").
+- [x] Remove the per-page PROJECT_CARDS blocks now served by the component.
+- [x] check-lp: on every LP (v1 too), each /projects/<slug> link must be
+      built, and each card link plus the View all link in the cards section
+      must carry target="_blank" rel="noopener".
+- [x] Build, guards, grep, screenshots, PR.
+
+### Evidence, phase 1 (13 Oct 2026, this container)
+- `NODE_USE_ENV_PROXY=1 npm run build`: exit 0; check-homepage,
+  check-locations, check-guides and check-lp all passed
+  (lp/demolition-2: 5 FAQ questions, 19 assets checked).
+- Built /lp/demolition and /lp/demolition-2: 3 `<a class="proj">` links,
+  each `target="_blank" rel="noopener"`, plus the View all projects button
+  with the same; all three /projects/<slug> pages built; 0 external images
+  or CSS url(); 0 em or en dashes; 0 SafeContractor or Alcumus; one
+  id="quoteForm".
+- Playwright (chromium, built site served by dist/server/entry.mjs, every
+  non-local request aborted): 3 cards, images 640x480, no horizontal scroll
+  at 390 (scrollWidth 390) or 1280 on either page.
+- Images: 9 new 640x480 webp files in public/assets/img/projects/.
+
+### Evidence, phase 2 (13 Oct 2026, this container)
+- origin/main still 777dfae; nothing to merge.
+- Headings: "Groundworks projects we have delivered", "Earthworks projects
+  we have delivered", "Drainage projects we have delivered" (v1 with the
+  "Recent work" eyebrow, v2 without), "Recent commercial projects" on
+  commercial-surfacing.
+- `NODE_USE_ENV_PROXY=1 npm run build`: exit 0; all four guards passed;
+  check-lp "thanks pages and form masking: 9 landing pages checked".
+- Planted faults on a copy of dist (card target removed on lp/groundworks,
+  card href changed to /projects/not-a-real-project on lp/drainage, rel
+  removed from View all on lp/earthworks-2): check-lp exit 1 with exactly
+  those three failures. The clean copy passes.
+- Grep of the 8 card pages: 3 card links each, all target="_blank"
+  rel="noopener", View all link the same; 0 external images or CSS url();
+  0 em or en dashes; 1 id="quoteForm" each; 0 SafeContractor or Alcumus.
+  agricultural: no cards. commercial-surfacing: 0 driveway, residential,
+  homeowner, patio, resin, surreyhillssurfacing; 0 surfacing or tarmac in
+  the cards section.
+- Playwright at 390 for all six pages and 1280 for groundworks-2 and
+  commercial-surfacing: 3 cards, images 640x480, scrollWidth equals the
+  viewport (no horizontal scroll).
+- No longer referenced by any page, left in place: concrete-base-cobham-3-640.webp,
+  domestic-earthworks-3-640.webp, site-clearance-earthworks-640.webp.

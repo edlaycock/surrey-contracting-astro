@@ -1,0 +1,63 @@
+---
+/**
+ * Case-study cards for the landing pages (v1 and v2), plus the dark
+ * "View all projects" card. Every link opens in a new tab so the visitor
+ * keeps the landing page and its quote form (Ed, 13 Oct 2026).
+ *
+ * Only cards whose slug Sanity currently publishes are rendered, so
+ * unpublishing a project drops its card instead of leaving a link to a page
+ * that no longer builds. With none published the section is not rendered.
+ *
+ * Styles: .proj (public/styles.css, Projects) and .lp2-proj-grid /
+ * .lp2-proj-all (Recent work), both global, so v1 pages need nothing extra.
+ */
+import { getProjects } from '../lib/sanity';
+import type { ProjectCard } from '../data/projectCards';
+
+interface Props {
+  cards: ProjectCard[];
+  heading: string;
+  /** Small label above the heading. v1 section heads use one, v2 do not. */
+  eyebrow?: string;
+  /** Text on the dark "View all projects" card. */
+  allText?: string;
+}
+
+const {
+  cards,
+  heading,
+  eyebrow,
+  allText = 'Groundworks, earthworks, demolition and drainage projects across Surrey, London and the South East.',
+} = Astro.props;
+
+const published = new Set((await getProjects()).map((p) => p.slug));
+const shown = cards.filter((c) => published.has(c.slug));
+---
+{shown.length > 0 && (
+<section class="page-section lp2-work">
+  <div class="container">
+    <div class="section-head">
+      {eyebrow && <span class="eyebrow">{eyebrow}</span>}
+      <h2 class="section-title">{heading}</h2>
+    </div>
+    <div class="lp2-proj-grid">
+      {shown.map(({ slug, tag, title, img, alt, text }) => (
+        <a class="proj" href={`/projects/${slug}`} target="_blank" rel="noopener">
+          <div class="proj-photo"><img src={img} alt={alt} width="640" height="480" loading="lazy" decoding="async" /></div>
+          <div class="proj-meta">
+            <span class="proj-tag">{tag}</span>
+            <h3>{title}</h3>
+            <p>{text}</p>
+            <span class="sr-only">(opens in a new tab)</span>
+          </div>
+        </a>
+      ))}
+      <div class={shown.length % 2 === 0 ? 'lp2-proj-all lp2-proj-all-wide' : 'lp2-proj-all'}>
+        <h3>More of our work</h3>
+        <p>{allText}</p>
+        <a href="/projects" class="btn btn-ghost-light" target="_blank" rel="noopener">View all projects<span class="sr-only"> (opens in a new tab)</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+)}
