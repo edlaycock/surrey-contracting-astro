@@ -1672,8 +1672,25 @@ Facts checked against the repo and live site (13 Oct):
 - [x] 7. Screenshots for Ed (outside the repo): thanks-desktop.png (1280),
       thanks-mobile.png (390), thanks-groundworks-2-mobile.png (390); no
       horizontal scroll (scrollWidth equals the viewport).
-- [ ] 8. Ed reviews the screenshots and the PR, then merges (do not merge before).
-- [ ] 9. After deploy: workflow verify step green; record the curl output here.
+- [x] 8. Ed reviews the screenshots and the PR, then merges (do not merge before).
+      Evidence: Ed saw the screenshots and said "merge 27". PR #27 was merged
+      with a merge commit pinned to head 0b09785; merge commit is 777dfae.
+- [x] 9. After deploy: workflow verify step green; record the curl output here.
+      Evidence (13 Oct 2026):
+      - Deploy run 38431351058 succeeded:
+        https://github.com/edlaycock/surrey-contracting-astro/actions/runs/38431351058
+      - check-lp on the runner: "thanks pages and form masking: 9 landing
+        pages checked", "check-lp: all checks passed".
+      - Verify step, attempt 1: 200 for /, the 6 v1/v2 LPs and all 9
+        /lp/<slug>/thanks; "6 data-tc-masked on /lp/groundworks";
+        "6 data-tc-masked on /lp/groundworks-2"; branded 404 for the unknown path.
+      - Separate live curl afterwards: all 9 thanks pages 200 with
+        `content="noindex,nofollow"`; data-tc-masked count 6 on /lp/groundworks
+        and 6 on /lp/groundworks-2; sitemap-index.xml lists only sitemap-0.xml,
+        which has 0 `/lp/` and 0 `/thanks` entries.
+      - `git merge-base --is-ancestor 777dfae origin/main` exit 0 (merged).
+      - No form was submitted on the live site.
+      - Rollback if needed: `git revert -m 1 777dfae`, then PR and merge.
 
 ### Verification (13 Oct 2026, on the branch rebuilt from origin/main d3e9494)
 1. `NODE_USE_ENV_PROXY=1 npm run build`: exit 0. All four guards passed;
