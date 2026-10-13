@@ -1951,115 +1951,6 @@ a.qd-val:hover { color: var(--yellow); }
   color: var(--white);
 }
 
-/* ============ Health & Safety intro ============ */
-.hs-intro {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: clamp(40px, 6vw, 72px);
-  align-items: center;
-}
-.hs-intro-copy p { margin: 18px 0; font-size: 15.5px; line-height: 1.7; color: var(--text-mute); }
-.hs-intro-visual {
-  position: relative;
-  border-radius: var(--radius-lg);
-  overflow: hidden;
-  border: 1px solid var(--border);
-  box-shadow: var(--shadow-md);
-  background: #2186e8;
-}
-.hs-image {
-  display: block;
-  width: 100%;
-  height: auto;
-}
-@media (max-width: 860px) {
-  .hs-intro { grid-template-columns: 1fr; }
-}
-
-.hs-pillars {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 18px;
-}
-.hs-pillars article {
-  background: var(--white);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  padding: 26px;
-  transition: border-color 0.2s ease, transform 0.2s ease;
-}
-.hs-pillars article:hover { border-color: var(--yellow); transform: translateY(-3px); }
-.hs-ico {
-  width: 44px; height: 44px;
-  border-radius: 10px;
-  background: var(--yellow-soft);
-  color: var(--yellow-700);
-  display: grid; place-items: center;
-  margin-bottom: 18px;
-}
-.hs-ico svg { width: 22px; height: 22px; }
-.hs-pillars h3 { font-size: 17px; font-weight: 700; margin-bottom: 8px; }
-.hs-pillars p { margin: 0; font-size: 14px; line-height: 1.55; color: var(--text-mute); }
-@media (max-width: 980px) { .hs-pillars { grid-template-columns: repeat(2, 1fr); } }
-@media (max-width: 540px) { .hs-pillars { grid-template-columns: 1fr; } }
-
-/* ============ Sector cards ============ */
-.sector-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 22px;
-}
-.sector-card {
-  background: var(--white);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  transition: border-color 0.2s ease, transform 0.25s ease, box-shadow 0.25s ease;
-}
-.sector-card:hover { border-color: var(--yellow); transform: translateY(-4px); box-shadow: var(--shadow-md); }
-.sector-photo {
-  position: relative;
-  aspect-ratio: 4 / 3;
-  background-color: var(--grey-700);
-  background-size: cover;
-  background-position: center;
-}
-.sector-photo::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(180deg, rgba(0,0,0,0) 50%, rgba(0,0,0,0.55) 100%);
-}
-.sector-num {
-  position: absolute;
-  top: 14px;
-  left: 14px;
-  z-index: 1;
-  background: var(--yellow);
-  color: var(--grey-900);
-  font-size: 11px;
-  font-weight: 800;
-  letter-spacing: 0.14em;
-  padding: 6px 10px;
-  border-radius: 6px;
-}
-.sector-body { padding: 22px 24px 26px; }
-.sector-body h3 { font-size: 21px; font-weight: 700; margin-bottom: 10px; letter-spacing: -0.015em; }
-.sector-body p { margin: 0 0 16px; font-size: 14.5px; line-height: 1.6; color: var(--text-mute); }
-.sector-link {
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  color: var(--yellow-700);
-  transition: transform 0.2s ease;
-  display: inline-block;
-}
-.sector-link:hover { transform: translateX(4px); }
-@media (max-width: 980px) { .sector-grid { grid-template-columns: repeat(2, 1fr); } }
-@media (max-width: 560px) { .sector-grid { grid-template-columns: 1fr; } }
-
 /* ============ Projects gallery ============ */
 .filter-bar {
   display: flex;
@@ -3484,6 +3375,9 @@ a.contact-value:hover { color: var(--yellow-700); }
 
 /* Case studies on the service pages: three columns on desktop. */
 .sp-proj-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+/* Fill the last row: the dark "View all" card spans the empty cells. */
+.sp-proj-grid[data-rem3="1"] .lp2-proj-all { grid-column: 1 / -1; }
+.sp-proj-grid[data-rem3="2"] .lp2-proj-all { grid-column: span 2; }
 
 /* FAQs: intro left, accordion right. */
 .sp-faq { padding: clamp(48px, 6vw, 64px) 0 clamp(56px, 7vw, 80px); }
@@ -3535,6 +3429,8 @@ a.contact-value:hover { color: var(--yellow-700); }
   .sp-core-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .sp-steps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .sp-proj-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .sp-proj-grid[data-rem3] .lp2-proj-all { grid-column: auto; }
+  .sp-proj-grid[data-rem2="1"] .lp2-proj-all { grid-column: 1 / -1; }
 }
 @media (max-width: 880px) {
   .sp-intro-grid,
@@ -3554,6 +3450,7 @@ a.contact-value:hover { color: var(--yellow-700); }
   .sp-core-grid,
   .sp-steps,
   .sp-proj-grid { grid-template-columns: minmax(0, 1fr); }
+  .sp-proj-grid[data-rem3] .lp2-proj-all { grid-column: auto; }
   .sp-card-media,
   .sp-card-grid-2 .sp-card-media { height: 200px; }
   .sp-acc-logos { gap: 12px 18px; }
