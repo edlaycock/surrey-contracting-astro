@@ -217,7 +217,8 @@ const breadcrumbOnly = service
               <span class="sp-rule" aria-hidden="true"></span>
               <p>{c.d}</p>
             </div>
-            {p.arrows && <span class="sp-card-arrow" aria-hidden="true">→</span>}
+            {/* Arrow only on linked cards: never an arrow without a link. */}
+            {c.href && <span class="sp-card-arrow" aria-hidden="true">→</span>}
           </div>
         </Tag>
       );

@@ -1996,3 +1996,10 @@ redirects; no /lp/* changes.
   but do not link; on /site-enabling-works, Site Clearance, Service
   Coordination and Crushing & Waste Management show arrows without links
   (the other three link). Sectors core-services cards all link.
+- [x] Ed approved removing the 7 unlinked arrows. Now structural: a card
+      shows an arrow only when it has an href (ServicePage.astro); the
+      per-page `arrows` flags are gone from servicePages.ts. Built check:
+      0 arrows outside an <a>; remaining arrows: /site-enabling-works 3
+      (/demolition, /site-hoarding, /groundworks), /sectors core services 4
+      (/demolition, /site-enabling-works, /earthworks, /groundworks).
+      Build exit 0, all four guards passed, six-page check passed.

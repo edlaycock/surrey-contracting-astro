@@ -40,7 +40,6 @@ export type ServicePageContent = {
   };
   intro: { eyebrow: string; h: string; paras: string[]; img?: ServiceImage };
   cols: 2 | 3;
-  arrows: boolean;
   grey: boolean;
   cards: { t: string; d: string; img: ServiceImage; href?: string }[];
   process?: { eyebrow: string; h: string; steps: { t: string; d: string; icon: ProcessIcon }[] };
@@ -110,7 +109,6 @@ export const SERVICE_PAGES = {
       }
     },
     "cols": 2,
-    "arrows": true,
     "grey": false,
     "cards": [
       {
@@ -291,7 +289,6 @@ export const SERVICE_PAGES = {
       }
     },
     "cols": 3,
-    "arrows": false,
     "grey": false,
     "cards": [
       {
@@ -489,7 +486,6 @@ export const SERVICE_PAGES = {
       }
     },
     "cols": 3,
-    "arrows": false,
     "grey": false,
     "cards": [
       {
@@ -687,7 +683,6 @@ export const SERVICE_PAGES = {
       }
     },
     "cols": 3,
-    "arrows": true,
     "grey": false,
     "cards": [
       {
@@ -877,7 +872,6 @@ export const SERVICE_PAGES = {
       ]
     },
     "cols": 2,
-    "arrows": false,
     "grey": true,
     "cards": [
       {
@@ -1004,7 +998,6 @@ export const SERVICE_PAGES = {
       }
     },
     "cols": 3,
-    "arrows": false,
     "grey": false,
     "cards": [
       {
