@@ -1842,3 +1842,107 @@ pages). Phase 2 rolls out to the other pages once Ed approves.
   viewport (no horizontal scroll).
 - No longer referenced by any page, left in place: concrete-base-cobham-3-640.webp,
   domestic-earthworks-3-640.webp, site-clearance-earthworks-640.webp.
+
+## 2026-10-13 - Service pages from the design handoff (demolition, sectors, H&S replaced; three new pages)
+
+Source: design handoff bundle "design_handoff_service_pages" (README +
+Surrey Contracting Service Pages.dc.html). Ed's decisions: execute the
+README as written; slugs /soft-strip-out, /site-hoarding,
+/site-enabling-works confirmed; site tokens (not the mock's #F6B800,
+Archivo, square corners); case studies from Sanity by category; no
+redirects; no /lp/* changes.
+
+### Plan
+- [x] Archive src/pages/demolition.astro, sectors.astro, health-safety.astro
+      with git mv to archive/pages/2026-10/ (repo root), archive/README.md,
+      `archive` in tsconfig exclude. Own commit, first.
+- [x] Images: 1920 WebP pack where it exists, extracted JPGs otherwise
+      (converted to WebP, screenshot borders and caption text cropped),
+      -640.webp variants, public/assets/img/services/<page>/, descriptive
+      file names and alt text. Slots per IMGS in the design file.
+- [x] src/data/servicePages.ts: copy parsed (not executed) from the design's
+      PAGES object, so it is verbatim; FAQs client-approved, unedited.
+- [x] src/components/ServicePage.astro: one template, design section order
+      (hero, intro, cards, core services, process, accreditation strip,
+      split, H&S extras, case studies, FAQs, CTA band). FAQS array drives
+      the visible <details> (first open) and the FAQPage JSON-LD.
+- [x] src/components/ProjectsByCategory.astro: getProjects(), filter by
+      category (omit = all), Sanity order, limit 6, .proj card markup,
+      "View all projects" card, same-tab links, nothing if 0 matches.
+      Demolition on /demolition, /soft-strip-out, /site-hoarding; Enabling
+      Works on /site-enabling-works; all on /sectors; none on /health-safety.
+- [x] New .sp-* rules in public/styles.css only (the .svc- prefix is taken
+      by existing homepage/services classes).
+- [x] Accreditations: Constructionline Gold, CHAS, SSIP from
+      ACCREDITATION_LOGOS (/assets/acc/*.webp), logos only.
+- [x] Wire: Nav dropdown + mobile drawer, Footer, /services, hasOfferCatalog,
+      llms.txt, llms-full.txt, Sectors core-services links.
+- [x] Build + guards, per-page checks, Playwright screenshots at 375 and 1440.
+
+### Acceptance criteria
+- `npm run build` exits 0 with check-homepage, check-locations, check-guides
+  and check-lp passing (no guard weakened).
+- No dist output from archive/; sitemap-0.xml lists the six routes and no
+  archive path.
+- Each of the six pages: one <h1>, unique <title>, canonical, no noindex;
+  FAQPage question count and wording equal the visible <details>.
+- Case-study section on the five pages, absent on /health-safety; every
+  /projects/<slug> link built.
+- No SafeContractor/Alcumus; no registration numbers or register links; no
+  quote form (CTAs go to /contact); no em or en dashes in built pages.
+- No horizontal scroll at 375px; no broken images.
+
+### Decisions and assumptions (for Ed)
+- Card images: IMGS in the design file is followed where the README
+  differs (Demolition "Waste Management" card uses 06_concrete_crushing,
+  not the extracted demolition-waste-management.jpg).
+- Hero eyebrow is dropped where it only repeats the breadcrumb: Sectors
+  ("Sectors"), Health & Safety ("Health & safety") and Site Enabling Works
+  (eyebrow was literally "Home / Services / Site Enabling Works"). The
+  breadcrumb itself is the existing nav.crumbs markup.
+- H&S hero button "Our approach" jumps to the intro section (#our-approach)
+  rather than /contact; all "Request a quote" buttons go to /contact.
+- Card arrows are decorative as in the mock. Enabling cards with an
+  existing page are links: Demolition & Soft Strip -> /demolition, Hoarding
+  & Temporary Access -> /site-hoarding, Ground Preparation -> /groundworks.
+- Sectors and H&S get BreadcrumbList JSON-LD only (no Service node); the
+  four service pages get Service + BreadcrumbList via ServiceSchema, which
+  now takes an optional multi-level `parents` trail.
+- Page titles and meta descriptions were not in the design; written new.
+- FAQ text is verbatim including two client-copy slips worth Ed's eye:
+  demolition "How do you deal with asbestos?" ("before works take place
+  this can be arranged", missing punctuation) and "What happens to
+  demolition waste?" ("on site recycling on site also").
+- /services gained a Site Enabling Works block (copy from the enabling
+  page's hero text and card titles) and text links to the two Demolition
+  sub-pages.
+
+### Review (13 Oct 2026, this container)
+- Commits: af76a3d archive; 0e8c2f3 images; f896877 pages, components,
+  styles; 5b42c4a nav, footer, /services, offer catalog, llms files.
+- `npm run build`: exit 0; check-homepage (FAQPage 10, 1041 words),
+  check-locations, check-guides and check-lp ("9 landing pages checked")
+  all passed.
+- Verification script over dist/client: all six pages one <h1>, unique
+  title, canonical https://surreycontracting.co.uk/<slug>, no noindex,
+  0 quoteForm, 0 SafeContractor/Alcumus, 0 em/en dashes, 0 missing local
+  images, 0 images without alt. FAQPage vs visible <details>: demolition
+  7/7, soft-strip-out 5/5, site-hoarding 5/5, site-enabling-works 5/5,
+  wording identical and in order, answers visible, first item open.
+- Sitemap: all six routes present, 0 archive paths; 0 HTML files from
+  archive/ in dist.
+- Case studies (Sanity at build time): /demolition, /soft-strip-out and
+  /site-hoarding: house-demolition-esher, soft-strip-demolition-chiswick,
+  house-demolition-hampshire, steel-outbuilding-demolition-byfleet,
+  site-clearance-crushing-portsmouth. /site-enabling-works:
+  enabling-works-car-park-sutton, site-clearance-crushing-portsmouth.
+  /sectors: house-demolition-esher, southbank-centre,
+  site-clearance-earthworks, domestic-earthworks, drainage-ascot,
+  landscape-guildford. /health-safety: none. All links built.
+- Playwright (Chromium, astro preview, non-local requests blocked except
+  cdn.sanity.io): 375 and 1440 full-page shots of all six pages,
+  scrollWidth equals viewport, 0 broken images. Fixed after review: hero
+  breadcrumb and eyebrow sharing a line, card copy misaligned across a
+  row, orphan logo dividers when logos wrap on mobile.
+- Not done here: deploy and Search Console sitemap resubmission (per
+  DEPLOY.md, after Ed approves the screenshots).
