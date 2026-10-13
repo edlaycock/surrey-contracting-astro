@@ -1946,3 +1946,27 @@ redirects; no /lp/* changes.
   row, orphan logo dividers when logos wrap on mobile.
 - Not done here: deploy and Search Console sitemap resubmission (per
   DEPLOY.md, after Ed approves the screenshots).
+
+### Review follow-up (13 Oct 2026): fixes after independent review
+- [x] /sectors orphan card: ProjectsByCategory sets data-rem3 / data-rem2
+      ((cards + View all) mod 3 and mod 2); the View all card spans the
+      empty cells (full row or 2 columns), at 3 and 2 columns. Checked:
+      sectors-1440 shows six cards then a full-width View all card; at
+      1000px the View all card is full width on /sectors and
+      /site-enabling-works and half width (paired) on /demolition.
+- [x] Image weight: -1280.webp for every image over 1280px wide; card,
+      intro, split and panel srcsets capped at 640w + 1280w; only the hero
+      offers 1920w. 1920 files re-encoded (q66; enabling hero q45, 241 KB).
+      Heroes: demolition 182 KB, soft-strip-out 85, site-hoarding 90,
+      site-enabling-works 241, sectors 104, health-safety 173.
+      /health-safety image bytes (Playwright, full scroll): 1440 DPR2
+      2536 KB -> 1439 KB; 375 DPR3 2536 KB -> 1266 KB.
+- [x] H1 accessible name: space before <br>; Playwright aria snapshot reads
+      "Site Enabling Works", "Health & Safety".
+- [x] Dead CSS: .hs-ico, .hs-image, .hs-intro(-copy, -visual), .hs-pillars,
+      .sector-body/-card/-grid/-link/-photo/-num removed after grep showed
+      no use in src/, public/ or scripts/ outside styles.css.
+- Evidence: `npm run build` exit 0, all four guards passed; six-page check
+  script "all six pages passed"; fresh 375 and 1440 screenshots of all
+  six, scrollWidth equals viewport, 0 broken images. Commits cc79938
+  (images, srcsets, H1 space) and d10d9ad (grid fill, dead CSS).
