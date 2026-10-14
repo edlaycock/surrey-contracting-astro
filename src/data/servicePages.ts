@@ -119,11 +119,11 @@ export const SERVICE_PAGES = {
         "d": "Demolition of houses, bungalows, garages and outbuildings. We work with homeowners, developers and main contractors to safely remove residential properties and prepare sites for future development.",
         "img": {
           "src": "/assets/img/services/demolition/demolition-residential.webp",
-          "w": 990,
-          "h": 305,
+          "w": 989,
+          "h": 307,
           "src640": "/assets/img/services/demolition/demolition-residential-640.webp",
           "w640": 640,
-          "h640": 197,
+          "h640": 199,
           "alt": "Excavator demolishing a brick-built detached house"
         }
       },
@@ -132,11 +132,11 @@ export const SERVICE_PAGES = {
         "d": "Demolition of commercial buildings including offices, retail units, industrial units and public buildings. We deliver controlled demolition solutions tailored to each project and site environment.",
         "img": {
           "src": "/assets/img/services/demolition/demolition-commercial.webp",
-          "w": 984,
-          "h": 300,
+          "w": 1000,
+          "h": 326,
           "src640": "/assets/img/services/demolition/demolition-commercial-640.webp",
           "w640": 640,
-          "h640": 195,
+          "h640": 209,
           "alt": "Excavator taking down a steel-framed commercial building"
         }
       },
@@ -145,11 +145,11 @@ export const SERVICE_PAGES = {
         "d": "Careful removal of specific elements within a building, including extensions, single-storey sections and structural alterations, working to engineer specifications where required.",
         "img": {
           "src": "/assets/img/services/demolition/demolition-partial-selective.webp",
-          "w": 990,
-          "h": 293,
+          "w": 1000,
+          "h": 318,
           "src640": "/assets/img/services/demolition/demolition-partial-selective-640.webp",
           "w640": 640,
-          "h640": 189,
+          "h640": 204,
           "alt": "Excavator removing one section of a building during partial demolition"
         }
       },
@@ -205,10 +205,10 @@ export const SERVICE_PAGES = {
         "img": {
           "src": "/assets/img/services/demolition/demolition-safety-compliance.webp",
           "w": 1000,
-          "h": 423,
+          "h": 451,
           "src640": "/assets/img/services/demolition/demolition-safety-compliance-640.webp",
           "w640": 640,
-          "h640": 271,
+          "h640": 289,
           "alt": "Excavator sorting timber and rubble on a residential demolition site"
         },
         "accred": true
@@ -265,11 +265,11 @@ export const SERVICE_PAGES = {
       },
       "img": {
         "src": "/assets/img/services/soft-strip-out/soft-strip-out-hero.webp",
-        "w": 1620,
-        "h": 1034,
+        "w": 1920,
+        "h": 1025,
         "src640": "/assets/img/services/soft-strip-out/soft-strip-out-hero-640.webp",
         "w640": 640,
-        "h640": 408,
+        "h640": 342,
         "alt": "Operatives in hi-vis clearing partitions and ceiling materials during an internal strip-out"
       }
     },
@@ -283,11 +283,11 @@ export const SERVICE_PAGES = {
       ],
       "img": {
         "src": "/assets/img/services/soft-strip-out/soft-strip-out-office-floor.webp",
-        "w": 988,
-        "h": 525,
+        "w": 1000,
+        "h": 538,
         "src640": "/assets/img/services/soft-strip-out/soft-strip-out-office-floor-640.webp",
         "w640": 640,
-        "h640": 340,
+        "h640": 344,
         "alt": "Office floor stripped back to the ceiling grid, with a skip of strip-out waste"
       }
     },
@@ -299,11 +299,11 @@ export const SERVICE_PAGES = {
         "d": "Removal of internal partitions, ceilings, floor coverings, fixtures and fittings from offices, commercial units and industrial buildings.",
         "img": {
           "src": "/assets/img/services/soft-strip-out/soft-strip-out-commercial-office.webp",
-          "w": 993,
-          "h": 455,
+          "w": 1000,
+          "h": 502,
           "src640": "/assets/img/services/soft-strip-out/soft-strip-out-commercial-office-640.webp",
           "w640": 640,
-          "h640": 293,
+          "h640": 321,
           "alt": "Open-plan office stripped back to columns and an exposed ceiling grid"
         }
       },
@@ -312,11 +312,11 @@ export const SERVICE_PAGES = {
         "d": "Strip-out services for shops, restaurants, pubs and leisure facilities, including bar areas, kitchens, partitions and specialist fixtures.",
         "img": {
           "src": "/assets/img/services/soft-strip-out/soft-strip-out-retail-hospitality.webp",
-          "w": 981,
-          "h": 452,
+          "w": 1000,
+          "h": 498,
           "src640": "/assets/img/services/soft-strip-out/soft-strip-out-retail-hospitality-640.webp",
           "w640": 640,
-          "h640": 295,
+          "h640": 319,
           "alt": "Restaurant interior part way through strip-out, with the counter and pendant lights still in place"
         }
       },
@@ -325,11 +325,11 @@ export const SERVICE_PAGES = {
         "d": "Internal strip-out for houses, apartments and residential developments, preparing properties for refurbishment or extension.",
         "img": {
           "src": "/assets/img/services/soft-strip-out/soft-strip-out-residential.webp",
-          "w": 990,
-          "h": 462,
+          "w": 993,
+          "h": 510,
           "src640": "/assets/img/services/soft-strip-out/soft-strip-out-residential-640.webp",
           "w640": 640,
-          "h640": 299,
+          "h640": 329,
           "alt": "Residential kitchen and interior being stripped out ahead of refurbishment"
         }
       },
@@ -338,11 +338,11 @@ export const SERVICE_PAGES = {
         "d": "Careful removal of non-loadbearing stud walls, glass partitions, suspended ceilings and associated finishes.",
         "img": {
           "src": "/assets/img/services/soft-strip-out/soft-strip-out-partitions-ceilings.webp",
-          "w": 993,
-          "h": 435,
+          "w": 1000,
+          "h": 494,
           "src640": "/assets/img/services/soft-strip-out/soft-strip-out-partitions-ceilings-640.webp",
           "w640": 640,
-          "h640": 280,
+          "h640": 316,
           "alt": "Metal stud partition framing and ceiling grid left exposed after the boards are removed"
         }
       },
@@ -351,11 +351,11 @@ export const SERVICE_PAGES = {
         "d": "Safe removal of redundant mechanical and electrical services, including ductwork, pipework, cabling and equipment.",
         "img": {
           "src": "/assets/img/services/soft-strip-out/soft-strip-out-mechanical-electrical.webp",
-          "w": 981,
-          "h": 431,
+          "w": 1000,
+          "h": 490,
           "src640": "/assets/img/services/soft-strip-out/soft-strip-out-mechanical-electrical-640.webp",
           "w640": 640,
-          "h640": 281,
+          "h640": 314,
           "alt": "Redundant ductwork and cabling in an open ceiling void"
         }
       },
@@ -364,11 +364,11 @@ export const SERVICE_PAGES = {
         "d": "Internal strip-out ahead of full structural demolition, ensuring the safe removal of non-structural elements.",
         "img": {
           "src": "/assets/img/services/soft-strip-out/soft-strip-out-pre-demolition.webp",
-          "w": 989,
-          "h": 438,
+          "w": 1000,
+          "h": 502,
           "src640": "/assets/img/services/soft-strip-out/soft-strip-out-pre-demolition-640.webp",
           "w640": 640,
-          "h640": 283,
+          "h640": 321,
           "alt": "Building interior stripped to its structure, with debris piled ahead of demolition"
         }
       }
@@ -411,11 +411,11 @@ export const SERVICE_PAGES = {
         ],
         "img": {
           "src": "/assets/img/services/soft-strip-out/soft-strip-out-waste-segregation.webp",
-          "w": 994,
-          "h": 400,
+          "w": 1000,
+          "h": 425,
           "src640": "/assets/img/services/soft-strip-out/soft-strip-out-waste-segregation-640.webp",
           "w640": 640,
-          "h640": 258,
+          "h640": 272,
           "alt": "Stripped-out ceiling grid and boards stacked separately for recycling"
         }
       }
@@ -463,11 +463,11 @@ export const SERVICE_PAGES = {
       },
       "img": {
         "src": "/assets/img/services/site-hoarding/site-hoarding-hero.webp",
-        "w": 1916,
+        "w": 1920,
         "h": 1027,
         "src640": "/assets/img/services/site-hoarding/site-hoarding-hero-640.webp",
         "w640": 640,
-        "h640": 343,
+        "h640": 342,
         "alt": "Black timber hoarding around a house being demolished, with an excavator behind"
       }
     },
@@ -480,11 +480,11 @@ export const SERVICE_PAGES = {
       ],
       "img": {
         "src": "/assets/img/services/site-hoarding/site-hoarding-demolition-site.webp",
-        "w": 980,
-        "h": 453,
+        "w": 1000,
+        "h": 469,
         "src640": "/assets/img/services/site-hoarding/site-hoarding-demolition-site-640.webp",
         "w640": 640,
-        "h640": 296,
+        "h640": 300,
         "alt": "Black timber site hoarding along the pavement in front of a house under demolition"
       }
     },
@@ -496,11 +496,11 @@ export const SERVICE_PAGES = {
         "d": "Robust timber hoarding to secure demolition sites, prevent unauthorised access and maintain a clean, professional appearance.",
         "img": {
           "src": "/assets/img/services/site-hoarding/site-hoarding-solid-timber.webp",
-          "w": 991,
-          "h": 432,
+          "w": 994,
+          "h": 474,
           "src640": "/assets/img/services/site-hoarding/site-hoarding-solid-timber-640.webp",
           "w640": 640,
-          "h640": 279,
+          "h640": 305,
           "alt": "Solid black timber hoarding running along a pavement"
         }
       },
@@ -509,11 +509,11 @@ export const SERVICE_PAGES = {
         "d": "Hoarding installed to existing hard surfaces using appropriate mounting systems, ideal for urban and restricted sites.",
         "img": {
           "src": "/assets/img/services/site-hoarding/site-hoarding-surface-mounted.webp",
-          "w": 965,
-          "h": 420,
+          "w": 1000,
+          "h": 461,
           "src640": "/assets/img/services/site-hoarding/site-hoarding-surface-mounted-640.webp",
           "w640": 640,
-          "h640": 279,
+          "h640": 295,
           "alt": "Black hoarding mounted on concrete blocks beside a road"
         }
       },
@@ -522,11 +522,11 @@ export const SERVICE_PAGES = {
         "d": "Timber hoarding installed into the ground for maximum stability on sites where surface mounting is not suitable.",
         "img": {
           "src": "/assets/img/services/site-hoarding/site-hoarding-dug-in-timber.webp",
-          "w": 963,
-          "h": 414,
+          "w": 1000,
+          "h": 455,
           "src640": "/assets/img/services/site-hoarding/site-hoarding-dug-in-timber-640.webp",
           "w640": 640,
-          "h640": 275,
+          "h640": 291,
           "alt": "Black timber hoarding fixed to timber posts set into the ground"
         }
       },
@@ -535,11 +535,11 @@ export const SERVICE_PAGES = {
         "d": "Heras fencing and temporary barriers for short-term security, phase works and areas outside the main hoarding line.",
         "img": {
           "src": "/assets/img/services/site-hoarding/site-hoarding-temporary-fencing.webp",
-          "w": 991,
-          "h": 421,
+          "w": 1000,
+          "h": 474,
           "src640": "/assets/img/services/site-hoarding/site-hoarding-temporary-fencing-640.webp",
           "w640": 640,
-          "h640": 272,
+          "h640": 303,
           "alt": "Temporary mesh security fencing around a cleared site"
         }
       },
@@ -548,11 +548,11 @@ export const SERVICE_PAGES = {
         "d": "Secure access gates for controlled entry and exit, including pedestrian and vehicle gates to suit your site requirements.",
         "img": {
           "src": "/assets/img/services/site-hoarding/site-hoarding-gates.webp",
-          "w": 965,
-          "h": 409,
+          "w": 1000,
+          "h": 461,
           "src640": "/assets/img/services/site-hoarding/site-hoarding-gates-640.webp",
           "w640": 640,
-          "h640": 271,
+          "h640": 295,
           "alt": "Double vehicle gates set into black timber hoarding"
         }
       },
@@ -561,11 +561,11 @@ export const SERVICE_PAGES = {
         "d": "CCTV and alarm systems to monitor and protect your site, arranged via our trusted specialist partners.",
         "img": {
           "src": "/assets/img/services/site-hoarding/site-hoarding-cctv.webp",
-          "w": 966,
-          "h": 403,
+          "w": 1000,
+          "h": 455,
           "src640": "/assets/img/services/site-hoarding/site-hoarding-cctv-640.webp",
           "w640": 640,
-          "h640": 267,
+          "h640": 291,
           "alt": "CCTV camera mounted on black site hoarding"
         }
       }
@@ -609,10 +609,10 @@ export const SERVICE_PAGES = {
         "img": {
           "src": "/assets/img/services/site-hoarding/site-hoarding-street-signage.webp",
           "w": 1000,
-          "h": 394,
+          "h": 455,
           "src640": "/assets/img/services/site-hoarding/site-hoarding-street-signage-640.webp",
           "w640": 640,
-          "h640": 252,
+          "h640": 291,
           "alt": "Black site hoarding with safety signage along a residential street"
         }
       }
@@ -858,11 +858,11 @@ export const SERVICE_PAGES = {
       "cta": "Request a quote",
       "img": {
         "src": "/assets/img/services/sectors/sectors-hero.webp",
-        "w": 1620,
+        "w": 1920,
         "h": 924,
         "src640": "/assets/img/services/sectors/sectors-hero-640.webp",
         "w640": 640,
-        "h640": 365,
+        "h640": 308,
         "alt": "Excavator demolishing a brick house behind temporary fencing"
       }
     },
@@ -883,10 +883,10 @@ export const SERVICE_PAGES = {
         "img": {
           "src": "/assets/img/services/sectors/sectors-education.webp",
           "w": 1000,
-          "h": 261,
+          "h": 291,
           "src640": "/assets/img/services/sectors/sectors-education-640.webp",
           "w640": 640,
-          "h640": 167,
+          "h640": 186,
           "alt": "Modern school building in brick and grey cladding"
         }
       },
@@ -895,11 +895,11 @@ export const SERVICE_PAGES = {
         "d": "We work with hotel operators and leisure providers on demolition, site preparation and groundworks, helping to create safe, efficient sites ready for redevelopment or refurbishment.",
         "img": {
           "src": "/assets/img/services/sectors/sectors-hotels-leisure.webp",
-          "w": 989,
-          "h": 259,
+          "w": 1000,
+          "h": 289,
           "src640": "/assets/img/services/sectors/sectors-hotels-leisure-640.webp",
           "w640": 640,
-          "h640": 168,
+          "h640": 185,
           "alt": "Hotel and leisure building in stone and dark timber cladding"
         }
       },
@@ -909,10 +909,10 @@ export const SERVICE_PAGES = {
         "img": {
           "src": "/assets/img/services/sectors/sectors-retail-high-street.webp",
           "w": 1000,
-          "h": 262,
+          "h": 303,
           "src640": "/assets/img/services/sectors/sectors-retail-high-street-640.webp",
           "w640": 640,
-          "h640": 168,
+          "h640": 194,
           "alt": "Row of high street shops with flats above"
         }
       },
@@ -921,11 +921,11 @@ export const SERVICE_PAGES = {
         "d": "From individual plots to multi-unit developments, we provide demolition, site enabling, bulk earthworks and groundworks for housebuilders and residential developers.",
         "img": {
           "src": "/assets/img/services/sectors/sectors-housebuilders-residential.webp",
-          "w": 988,
-          "h": 259,
+          "w": 1000,
+          "h": 301,
           "src640": "/assets/img/services/sectors/sectors-housebuilders-residential-640.webp",
           "w640": 640,
-          "h640": 168,
+          "h640": 193,
           "alt": "New-build brick detached houses on a residential development"
         }
       },
@@ -935,10 +935,10 @@ export const SERVICE_PAGES = {
         "img": {
           "src": "/assets/img/services/sectors/sectors-public-sector.webp",
           "w": 1000,
-          "h": 234,
+          "h": 288,
           "src640": "/assets/img/services/sectors/sectors-public-sector-640.webp",
           "w640": 640,
-          "h640": 150,
+          "h640": 184,
           "alt": "Modern public sector building in brick and grey cladding"
         }
       },
@@ -947,11 +947,11 @@ export const SERVICE_PAGES = {
         "d": "We support commercial and industrial clients with demolition, site preparation, earthworks and groundworks for new builds, extensions and redevelopment projects.",
         "img": {
           "src": "/assets/img/services/sectors/sectors-commercial-industrial.webp",
-          "w": 989,
-          "h": 232,
+          "w": 1000,
+          "h": 286,
           "src640": "/assets/img/services/sectors/sectors-commercial-industrial-640.webp",
           "w640": 640,
-          "h640": 150,
+          "h640": 183,
           "alt": "Clad industrial unit with roller shutter doors"
         }
       }
@@ -1154,11 +1154,11 @@ export const SECTORS_CORE_SERVICES: { t: string; d: string; href: string; img: S
     "href": "/demolition",
     "img": {
       "src": "/assets/img/services/sectors/sectors-service-demolition.webp",
-      "w": 990,
-      "h": 398,
+      "w": 995,
+      "h": 432,
       "src640": "/assets/img/services/sectors/sectors-service-demolition-640.webp",
       "w640": 640,
-      "h640": 257,
+      "h640": 278,
       "alt": "Excavator demolishing a brick house"
     }
   },
@@ -1168,11 +1168,11 @@ export const SECTORS_CORE_SERVICES: { t: string; d: string; href: string; img: S
     "href": "/site-enabling-works",
     "img": {
       "src": "/assets/img/services/sectors/sectors-service-site-enabling.webp",
-      "w": 990,
-      "h": 401,
+      "w": 1000,
+      "h": 446,
       "src640": "/assets/img/services/sectors/sectors-service-site-enabling-640.webp",
       "w640": 640,
-      "h640": 259,
+      "h640": 285,
       "alt": "Cleared site enclosed by temporary mesh fencing"
     }
   },
@@ -1183,10 +1183,10 @@ export const SECTORS_CORE_SERVICES: { t: string; d: string; href: string; img: S
     "img": {
       "src": "/assets/img/services/sectors/sectors-service-earthworks.webp",
       "w": 990,
-      "h": 401,
+      "h": 405,
       "src640": "/assets/img/services/sectors/sectors-service-earthworks-640.webp",
       "w640": 640,
-      "h640": 259,
+      "h640": 262,
       "alt": "Excavator beside a stockpile of excavated soil"
     }
   },
@@ -1196,11 +1196,11 @@ export const SECTORS_CORE_SERVICES: { t: string; d: string; href: string; img: S
     "href": "/groundworks",
     "img": {
       "src": "/assets/img/services/sectors/sectors-service-groundworks.webp",
-      "w": 990,
-      "h": 398,
+      "w": 985,
+      "h": 456,
       "src640": "/assets/img/services/sectors/sectors-service-groundworks-640.webp",
       "w640": 640,
-      "h640": 257,
+      "h640": 296,
       "alt": "Blockwork foundations and substructure on a residential site"
     }
   }

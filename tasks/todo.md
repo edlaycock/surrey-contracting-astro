@@ -2013,3 +2013,33 @@ redirects; no /lp/* changes.
       and after). Build exit 0, all four guards passed, six-page check
       passed, 140 distinct /assets/img/services/ URLs in dist HTML/CSS with
       0 missing, 1440 screenshots of all six pages with 0 broken images.
+
+### Enhanced images for four service pages (14 Oct 2026)
+- [x] Ed's approved subset replaced from the enhanced-images pack, keeping
+      repo filenames: /soft-strip-out all 9, /site-hoarding all 9,
+      /sectors all 11 (incl. the 4 core-services cards), /demolition 4
+      (residential, commercial, partial-selective, safety-compliance).
+      Not touched: the demolition hero, intro and waste card; anything on
+      /health-safety, /site-enabling-works or /services.
+- [x] Each pair was checked side by side against the live file before
+      replacing. All were the same scene.
+- [x] Crops: demolition-residential white border (top 20, left 7, right 4,
+      bottom 4 px); demolition-partial-selective 3-4 px white rows top and
+      bottom; strip-out hero 9 px black bar at top; strip-out residential
+      7 px white left edge; hoarding solid 6 px light left edge.
+- [x] Sectors core-services cards were cropped to the live framing, found by
+      aligning each new image to the live file. The generated extra area
+      was mostly foreground at the bottom, plus 5-50 px at the top, not a
+      28% top band. The new images are also stretched vertically about
+      0-15%, so the crops are 985-1000 x 405-456, not 990x398.
+- Encoding: Pillow WebP, metadata stripped, no upscaling. Heroes 1920 at
+  q66 with -1280 and -640 variants at q72. Other images are full size
+  (<=1000w) plus -640, at q72. w/h in servicePages.ts updated for all 33.
+  No alt or code changes. 0 orphans.
+- Bytes for the four pages' images: 2,484,358 -> 5,276,676 (the new images
+  are sharper and carry more detail at the same quality settings).
+  Heroes: soft-strip-out 203 KB, site-hoarding 219 KB, sectors 248 KB.
+- Evidence: build exit 0, all four guards passed; six-page check passed;
+  131 /assets/img/services/ URLs in dist with 0 missing; the width/height
+  of all 33 replaced images match their files; 1440 and 375 screenshots
+  show 0 broken images and no horizontal scroll.

@@ -1,61 +1,141 @@
 # Deploying to the Hostinger VPS
 
-Static pages are served by nginx; one Node process (PM2) handles `/api/contact`.
-Pushing to `main` (or a Sanity publish) triggers GitHub Actions → build → rsync →
-PM2 reload.
+The site runs as a single Docker container (Astro's standalone Node server)
+on the VPS. The container listens only on `127.0.0.1:4321`; the system nginx
+proxies `surreycontracting.co.uk` to it and handles TLS. Deploys run from
+GitHub Actions (`.github/workflows/deploy.yml`, "Build & deploy to VPS").
+
+## What triggers a deploy
+
+- A push to `main`.
+- A Sanity publish: a Sanity webhook sends a `repository_dispatch` event of
+  type `sanity-publish` (setup below).
+- A manual run (`workflow_dispatch`).
+
+Runs share a concurrency group per branch, so a new run cancels one still in
+progress.
+
+## What a run does
+
+1. **Build check in Actions.** Checks out the repo, installs Node 22, runs
+   `npm ci` and `npm run build` against the Sanity `production` dataset.
+   `npm run build` also runs the `postbuild` guards, and any failure stops
+   the run before anything reaches the server:
+   - `scripts/check-homepage.mjs`: no unfilled `{{PLACEHOLDER}}` on any page,
+     no SafeContractor or Alcumus anywhere (pages and llms files), no
+     surfacing terms or em dashes on the homepage, the homepage word limit,
+     the direct-answer paragraph and FAQ schema matching visible text.
+   - `scripts/check-locations.mjs`: every location page is built with a
+     unique title and description, one `<h1>`, the direct answer, the case
+     study card, matching FAQ and Service schema, and no em dashes.
+   - `scripts/check-guides.mjs`: every guide page is built with a unique
+     title and description, one `<h1>`, matching FAQ schema, a breadcrumb,
+     no em dashes, no prices, and is listed in the sitemap.
+   - `scripts/check-lp.mjs`: the v2 landing pages are `noindex,follow`, have
+     one `<h1>` and one quote form with the right lead source, contain no em
+     or en dashes or forbidden terms, and reference only assets that exist.
+2. **Rsync the source to the VPS** into the `DEPLOY_PATH` directory, with
+   `--delete`. Excluded: `.git`, `node_modules`, `dist`, `.astro`, `studio`
+   and `.env`, so the server's `.env` is never overwritten or deleted.
+3. **Rebuild and restart the container** over SSH:
+   `cd "$DEPLOY_PATH"`, export a unique `BUILD_ID`, then
+   `docker compose up -d --build` and `docker compose ps`. The Docker build
+   runs `npm run build` again (guards included), fetching current Sanity
+   content. `BUILD_ID` changes on every run so that layer is never served
+   from cache; without it, a Sanity publish or manual run with no code
+   change would ship the old content.
+4. **Smoke checks** against `https://surreycontracting.co.uk`, retried up to
+   9 times, 10 seconds apart:
+   - `/` and `/lp/demolition`, `/lp/groundworks`, `/lp/earthworks` plus their
+     `-2` variants return 200;
+   - `/lp/<page>/thanks` returns 200 for every file in `src/pages/lp/`;
+   - `/lp/groundworks` and `/lp/groundworks-2` each contain at least 6
+     `data-tc-masked` attributes (TruConversion masking on the forms);
+   - an unknown path returns 404 with the branded page ("This page took a
+     wrong turn").
+
+   If they still fail after the last attempt, the run fails.
+
+Steps 2 to 4 only run when the `SSH_HOST` secret is set; without it a run is
+a build check only.
+
+## GitHub Actions secrets
+
+Repo, Settings, Secrets and variables, Actions. Names only; values live in
+GitHub, never in the repo.
+
+| Secret | Purpose |
+|---|---|
+| `SSH_HOST` | VPS address |
+| `SSH_USER` | deploy user on the VPS |
+| `SSH_KEY` | private SSH key for that user |
+| `DEPLOY_PATH` | directory on the VPS holding the source and `docker-compose.yml` |
+
+The Sanity project ID and dataset are public and set in the workflow, not as
+secrets.
 
 ## One-time VPS setup
 
+The server needs Docker with the Compose plugin, nginx and certbot. Node and
+PM2 are not needed on the server: the build runs inside the container.
+
 ```bash
-# 1. Node 22 (via nvm or NodeSource), PM2, nginx, certbot
-sudo apt update && sudo apt install -y nginx
-curl -fsSL https://deb.nodesource.com/setup_22.x | sudo -E bash - && sudo apt install -y nodejs
-sudo npm i -g pm2
+# 1. Deploy directory, owned by the deploy user. That user runs
+#    `docker compose` over SSH without sudo, so it needs Docker access.
+mkdir -p "$DEPLOY_PATH"
 
-# 2. Directories (app user, not root)
-sudo mkdir -p /var/www/surrey-contracting/{releases,shared}
-sudo chown -R $USER:$USER /var/www/surrey-contracting
-
-# 3. Server-only secrets (NOT in git) — chmod 600
-cat > /var/www/surrey-contracting/shared/.env <<'EOF'
+# 2. Server-only secrets (NOT in git), read by docker-compose.yml (env_file).
+#    Keys as in .env.example.
+cat > "$DEPLOY_PATH/.env" <<'ENV'
 SMTP2GO_API_KEY=api-XXXXXXXXXXXXXXXX
 CONTACT_TO=info@surreycontracting.co.uk
 CONTACT_FROM=Surrey Contracting Website <website@surreycontracting.co.uk>
-EOF
-chmod 600 /var/www/surrey-contracting/shared/.env
+ENV
+chmod 600 "$DEPLOY_PATH/.env"
 
-# 4. nginx site (see deploy/nginx.conf) + TLS
-sudo cp deploy/nginx.conf /etc/nginx/sites-available/surreycontracting
-sudo ln -sf /etc/nginx/sites-available/surreycontracting /etc/nginx/sites-enabled/
-sudo nginx -t && sudo systemctl reload nginx
+# 3. nginx vhost (deploy/nginx.conf proxies to 127.0.0.1:4321) + TLS
+sudo cp deploy/nginx.conf /etc/nginx/conf.d/surreycontracting.conf
+sudo nginx -t && sudo nginx -s reload
 sudo certbot --nginx -d surreycontracting.co.uk -d www.surreycontracting.co.uk
 
-# 5. Hardening
+# 4. Hardening
 sudo ufw allow OpenSSH && sudo ufw allow 'Nginx Full' && sudo ufw enable
 # SSH keys only (disable password auth), install fail2ban.
 ```
 
-## GitHub Actions secrets (repo → Settings → Secrets → Actions)
+certbot manages the TLS sections of the live nginx config; do not edit them
+by hand. The container has `restart: unless-stopped`, so it comes back after
+a reboot once Docker starts.
 
-| Secret | Value |
-|---|---|
-| `SSH_HOST` | VPS IP |
-| `SSH_USER` | deploy user |
-| `SSH_KEY`  | private key for that user |
-| `DEPLOY_PATH` | `/var/www/surrey-contracting` |
+## Rebuild when the client publishes in Sanity
 
-## Auto-rebuild when the client publishes a project
-
-Sanity → API → Webhooks → add:
+Sanity, API, Webhooks, add:
 `https://api.github.com/repos/<owner>/<repo>/dispatches`
 POST, header `Authorization: Bearer <GitHub PAT with repo scope>`,
 body `{"event_type":"sanity-publish"}`.
 
-## First deploy
+## Running and checking a deploy
 
-Push to `main`. The workflow builds, rsyncs to `releases/<sha>`, runs
-`npm ci --omit=dev`, points `current` at it, and `pm2 reload`s. PM2 boot
-persistence: `pm2 startup && pm2 save`.
+- **Run manually:** GitHub, Actions, "Build & deploy to VPS", Run workflow
+  on `main`. Or `gh workflow run deploy.yml --ref main`.
+- **Check a run:** the Actions tab, or `gh run list --workflow=deploy.yml`
+  then `gh run watch <run-id>`. The "Verify key pages are live" step prints
+  each checked path with its status code.
+- **On the server:** in `DEPLOY_PATH`, `docker compose ps` and
+  `docker compose logs surrey-contracting`.
+
+## Rollback
+
+There is no release history on the server: each deploy rebuilds from the
+source rsynced from `main`. To roll back, revert the commit on `main`
+(`git revert <sha>`, then push or merge); the push redeploys. Page content
+from Sanity is fetched at build time, so a CMS mistake is fixed in Sanity,
+which redeploys through the webhook.
+
+## After a deploy
+
+When routes are added, removed or renamed, resubmit
+`https://surreycontracting.co.uk/sitemap-index.xml` in Google Search Console.
 
 ## Retiring contact.surreycontracting.co.uk (Ed, manual)
 
@@ -63,8 +143,9 @@ persistence: `pm2 startup && pm2 save`.
 another server (157.53.227.1). `deploy/nginx-contact-redirect.conf` 301s its
 paths to the new pages on this VPS, keeping the query string (gclid, UTMs):
 `/groundworks`, `/demolition`, `/earthworks`, `/drainage`, `/agricultural`
-(with or without a trailing slash) go to the matching `/lp/` page; the root and
-any other path go to the homepage. Nothing happens until DNS points here.
+(with or without a trailing slash) go to the matching `/lp/` page;
+`/surfacing-commercial` goes to `/lp/commercial-surfacing`; the root and any
+other path go to the homepage. Nothing happens until DNS points here.
 
 ```bash
 # 1. DNS: change the A record for `contact` to 187.77.180.148 (remove any AAAA
