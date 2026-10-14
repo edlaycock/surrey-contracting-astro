@@ -28,20 +28,23 @@ const SERVICES = [
   },
   {
     title: 'Soft strip-out',
-    img: '/assets/img/services/demolition-softstrip-640.webp',
-    alt: 'Interior soft strip-out with fixtures and fittings removed',
+    img: '/assets/img/services/soft-strip-out/soft-strip-out-hero-640.webp',
+    img2x: '/assets/img/services/soft-strip-out/soft-strip-out-hero-1280.webp',
+    alt: 'Operatives in hi-vis clearing partitions and ceiling materials during an internal strip-out',
     text: 'Fixtures, fittings, ceilings, partitions and M&E removed while the structural frame stays in place.',
   },
   {
     title: 'Site clearance',
-    img: '/assets/img/services/demolition-clearance-640.webp',
-    alt: 'Cleared demolition site ready for the next phase of works',
+    img: '/assets/img/services/demolition/demolition-excavator-skip-640.webp',
+    img2x: '/assets/img/services/demolition/demolition-excavator-skip-1280.webp',
+    alt: 'Surrey Contracting excavator clearing rubble beside a part-demolished house and a waste skip',
     text: 'Debris, vegetation and redundant structures cleared and waste disposed of responsibly, ready for the next phase.',
   },
   {
     title: 'Concrete crushing',
-    img: '/assets/img/services/demolition-crushing-640.webp',
-    alt: 'Mobile crusher processing demolition arisings into aggregate',
+    img: '/assets/img/services/demolition/demolition-crushing-recycling-640.webp',
+    img2x: '/assets/img/services/demolition/demolition-crushing-recycling-1280.webp',
+    alt: 'Surrey Contracting tracked crusher turning demolition rubble into recycled aggregate',
     text: 'On-site mobile crushing or off-site processing turns arisings into reusable sub-base, fill and drainage aggregate.',
   },
   {
@@ -116,7 +119,7 @@ const faqSchema = {
 
 <section class="page-hero lp2-hero">
   <div class="page-hero-bg" aria-hidden="true">
-    <div class="page-hero-img" style="background-image:url('/assets/img/services/demolition-hero.jpg')"></div>
+    <div class="page-hero-img" style="background-image:url('/assets/img/services/demolition/demolition-hero.webp')"></div>
     <div class="page-hero-vignette"></div>
   </div>
   <div class="container page-hero-inner">
@@ -147,9 +150,9 @@ const faqSchema = {
       <p class="section-lede">From first survey to a cleared site, one team and one point of contact.</p>
     </div>
     <ul class="lp2-tiles">
-      {SERVICES.map(({ title, img, alt, text }) => (
+      {SERVICES.map(({ title, img, img2x, alt, text }) => (
         <li class="lp2-tile">
-          <img class="lp2-tile-img" src={img} alt={alt} width="320" height="240" loading="lazy" decoding="async" />
+          <img class="lp2-tile-img" src={img} srcset={img2x ? `${img} 1x, ${img2x} 2x` : undefined} alt={alt} width="320" height="240" loading="lazy" decoding="async" />
           <div class="lp2-tile-body">
             <h3>{title}</h3>
             <p>{text}</p>
