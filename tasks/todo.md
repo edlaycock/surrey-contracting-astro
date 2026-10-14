@@ -2060,3 +2060,24 @@ redirects; no /lp/* changes.
 - Evidence: build exit 0, four guards passed; six-page check passed; 140
   /assets/img/services/ URLs in dist with 0 missing; w/h match for all 7;
   1440/375 screenshots show 0 broken images and no horizontal scroll.
+
+### Guide hero, demolition LP images, /services cards, project og:image (14 Oct 2026)
+- [x] /guides/demolition-cost-uk hero pointed at `/assets/img/demolition.webp`
+      (404 on Linux; only `Demolition.webp` exists). Now the branded
+      `services/demolition/demolition-hero.webp`. Repo-wide scan found no other
+      case-mismatched /assets/img reference. The guide's og:image is the
+      default and was already valid.
+- [x] /lp/demolition and /lp/demolition-2: hero, soft strip, site clearance
+      and crushing slots now use the branded demolition/ and soft-strip-out/
+      images (tiles on -2 get a 1x/2x srcset). Kept: demolition-640 (full
+      structural tile), hoarding and asbestos tiles, which have no branded
+      equivalent in those folders. No copy, form, tracking or layout changes.
+- [x] /services: Site Enabling card now `site-enabling-card-800.webp`
+      (800x600, q72, 4:3 crop of the approved v2 site-enabling-main source,
+      the same image as site-enabling-excavator-1280; downscaled only).
+      Demolition card swapped from stock `demolition.jpg` to the branded
+      demolition hero. Not changed: bulk-earthworks.jpg (800x533) is
+      upscaled about 1.6x in its 4:3 box on 2x screens.
+- [x] Project pages: og:image is the Sanity heroImage at 1200x630 jpg with
+      og:image:width/height; BaseLayout now passes absolute URLs through
+      untouched (every other page's og/twitter tags are byte-identical).
