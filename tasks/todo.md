@@ -2043,3 +2043,20 @@ redirects; no /lp/* changes.
   131 /assets/img/services/ URLs in dist with 0 missing; the width/height
   of all 33 replaced images match their files; 1440 and 375 screenshots
   show 0 broken images and no horizontal scroll.
+
+### Brand-corrected H&S and Site Enabling images (14 Oct 2026)
+- [x] Ed's approved 7 replaced from the v2 pack, keeping repo filenames:
+      H&S hero (1920 + -1280 + -640), training-supervision, inspection-checklist
+      (now a generic blank site inspection form, no company record or claims);
+      site-enabling excavator (also the /services card), demolition, crushing,
+      cleared-site (-1280 + -640). Corrected SC monogram on the hi-vis/plant.
+- [x] Each pair checked against the live file: same scene and aspect
+      (grey correlation 0.985-0.9997). Dimensions unchanged, so no
+      servicePages.ts edits; alt text unchanged and still accurate.
+- Held back for supplier rework: the 9 unchanged v2 exports, plus the
+  site-enabling hero, H&S planning-cdm and H&S supervision (approach-main).
+- Encoding: Pillow WebP, metadata stripped, LANCZOS, no upscaling; 1920 hero
+  q66, -1280/-640 q72. Existing variant sets only (15 files).
+- Evidence: build exit 0, four guards passed; six-page check passed; 140
+  /assets/img/services/ URLs in dist with 0 missing; w/h match for all 7;
+  1440/375 screenshots show 0 broken images and no horizontal scroll.
