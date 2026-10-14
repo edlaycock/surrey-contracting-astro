@@ -17,6 +17,11 @@ const allProjects = await getProjects();
 const hero = project.heroImage
   ? urlFor(project.heroImage).width(1600).height(900).fit('crop').url()
   : '/assets/img/groundworks.webp';
+// og:image: the project's own hero at the 1.91:1 size social cards use,
+// falling back to the BaseLayout default when the project has no hero.
+const ogImage = project.heroImage
+  ? urlFor(project.heroImage).width(1200).height(630).fit('crop').format('jpg').url()
+  : undefined;
 const bodyHtml = project.body ? toHTML(project.body as never) : '';
 const gallery = (project.gallery ?? []).map((g) => ({
   src: urlFor(g.asset).width(900).height(700).fit('crop').url(),
@@ -76,6 +81,9 @@ const projectSchema = {
   description={metaDescription}
   path={`/projects/${project.slug}`}
   ogTitle={`${project.title} | Surrey Contracting Limited`}
+  ogImage={ogImage}
+  ogImageWidth={ogImage ? 1200 : undefined}
+  ogImageHeight={ogImage ? 630 : undefined}
   active="projects"
 >
   <script type="application/ld+json" slot="head" set:html={JSON.stringify(projectSchema)} />
