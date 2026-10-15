@@ -2108,3 +2108,6 @@ redirects; no /lp/* changes.
 
 ## H&S dust-suppression and Site Enabling cleared-site images, SC branding fix (15 Oct 2026)
 - [x] health-safety-dust-suppression (vest) and site-enabling-cleared-site (boom), -1280 + -640 each (no full-size file or other variant), replaced with the reviewed branding fixes. Dimensions unchanged (1280x681 / 640x341, 1280x466 / 640x233), servicePages.ts untouched
+
+## Site Enabling cleared-site image: cab badge correction (2026-10-15)
+- [x] Replaced `site-enabling-cleared-site-1280.webp` / `-640.webp` with the reviewed chroma-compensated variant (corrected SC badge on the excavator cab). Diff vs previous files confined to the cab box (1280: x565–591, y196–219; 640: x282–296, y98–109) beyond re-encode noise. Dimensions unchanged (1280×466, 640×233).
