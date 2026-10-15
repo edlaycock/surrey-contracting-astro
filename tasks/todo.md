@@ -2089,3 +2089,8 @@ redirects; no /lp/* changes.
 - [x] `scripts/check-no-keys.mjs` in postbuild; `npm run test:ytq-relay` (25 checks, local stubs only)
 - [ ] Ed: put Surrey Contracting's YTQ secret key in `$DEPLOY_PATH/.env` as `YTQ_SECRET_KEY` (chmod 600), then `docker compose up -d`. Inert until set
 - [ ] Ed, after merge: view source on /, /contact and all nine /lp pages, no `ytq_live_`; first real enquiry shows in YTQ Enquiries with its sourceCampaign
+
+## Site Enabling hero and H&S supervision image, v3 swap (15 Oct 2026)
+- [x] site-enabling-hero (1920 + -1280 + -640) and health-safety-supervision (-1280 + -640) replaced with Ed's approved v3 exports. Same scenes (corr 0.9995 / 0.9967), dimensions unchanged, servicePages.ts untouched
+- [x] 1920 hero kept at q45 (the cc79938 setting for this file: 246 KB, q66 would be 316 KB, over the 250 KB hero budget); variants q72
+- [ ] health-safety-planning-cdm held back for another revision
