@@ -2102,3 +2102,6 @@ redirects; no /lp/* changes.
 
 ## H&S project planning image, corrected hard-hat logo (15 Oct 2026)
 - [x] health-safety-planning-cdm (-1280 + -640, no full-size file) replaced with the reviewed v4 helmet correction. Same scene (corr 0.9846), dimensions unchanged (1280x633 / 640x317), servicePages.ts untouched; q72 LANCZOS, metadata stripped
+
+## Demolition excavator and crusher images, SC monogram fix (15 Oct 2026)
+- [x] demolition-excavator-skip and demolition-crushing-recycling (-1280 + -640 each, no full-size file or other variant) replaced with the reviewed fixes: garbled monograms replaced with the brand mark by SVG compositing, nothing else changed. Dimensions unchanged (1280x517 / 640x259, 1280x499 / 640x249), servicePages.ts untouched. Also used on /lp/demolition and /lp/demolition-2
