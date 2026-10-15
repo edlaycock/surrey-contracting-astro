@@ -183,6 +183,8 @@ if (form) {
     try {
       const body = new FormData(form);
       body.append('page', location.pathname + location.search);
+      // Campaign label for YourTradeQuotes (the server relays it as sourceCampaign).
+      if (form.dataset.leadSource) body.append('leadSource', form.dataset.leadSource);
       const res = await fetch('/api/contact', { method: 'POST', body });
       const data = await res.json().catch(() => ({}));
       if (!res.ok || !data.ok) throw new Error(data.error || 'Send failed');

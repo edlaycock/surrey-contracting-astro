@@ -120,7 +120,7 @@ P0 and P1 shipped in PR #9, merged 14 Sep 08:57 UTC and live. Verified against t
 
 ## Manual (Ed, cannot be done in code)
 - [ ] GA4 542209922: mark `generate_lead` as key event, import as Ads conversion (launch blocker)
-- [ ] Check YTQ apiKey `ytq_live_demo_key_12345` is not a dead demo key on prod
+- [x] Check the YTQ apiKey in BaseLayout is not a dead demo key on prod (15 Oct 2026: it was the demo placeholder, refused by YTQ. The inline connector is removed; enquiries now go server to server, see the YTQ relay entry at the end)
 - [ ] Sandbox build hang: node_modules has iCloud-evicted files; run `npm ci` locally to restore (see lessons.md)
 
 ## Enquiry email: page attribution (2026-09-03) (merged, PR #8)
@@ -2081,3 +2081,11 @@ redirects; no /lp/* changes.
 - [x] Project pages: og:image is the Sanity heroImage at 1200x630 jpg with
       og:image:width/height; BaseLayout now passes absolute URLs through
       untouched (every other page's og/twitter tags are byte-identical).
+
+## YourTradeQuotes server relay (15 Oct 2026, PR ytq-server-relay)
+- [x] Removed the inline YTQ connector (and its demo key) from BaseLayout
+- [x] `/api/contact` copies every valid enquiry to YTQ via `src/lib/ytqRelay.ts`, not awaited, in both email outcomes
+- [x] app.js sends the form's `data-lead-source` as `leadSource` (YTQ `sourceCampaign`)
+- [x] `scripts/check-no-keys.mjs` in postbuild; `npm run test:ytq-relay` (25 checks, local stubs only)
+- [ ] Ed: put Surrey Contracting's YTQ secret key in `$DEPLOY_PATH/.env` as `YTQ_SECRET_KEY` (chmod 600), then `docker compose up -d`. Inert until set
+- [ ] Ed, after merge: view source on /, /contact and all nine /lp pages, no `ytq_live_`; first real enquiry shows in YTQ Enquiries with its sourceCampaign
