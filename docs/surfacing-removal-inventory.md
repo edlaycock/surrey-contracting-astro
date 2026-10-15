@@ -294,7 +294,7 @@ Also flagged for manual Sanity review (cannot be fixed from the repo): body text
 | CMS training manual | `public/training-manual/index.html` (13), `docs/sanity-training-manual.{md,html}` (10/13) | Tarmac/surfacing worked examples |
 | Legacy redirects | `astro.config.mjs:24–26` | `/project-tarmac-*` → `/projects/tarmac-*` (re-point to `/projects`) |
 | Forms email template | `src/pages/api/contact.ts:40, 60` | Renders submitted `svc` values verbatim — no hardcoded surfacing; no change needed beyond checkbox removal |
-| YTQ webhook payload | `src/layouts/BaseLayout.astro` (YourTradeQuotes connector) | Serialises form fields generically — no hardcoded surfacing |
+| YTQ webhook payload | `src/lib/ytqRelay.ts` (server relay from `/api/contact`; the BaseLayout connector was removed 15 Oct 2026) | Serialises form fields generically — no hardcoded surfacing |
 | Images | `public/assets/img/` | `surfacing.jpg`, `Commercial-Surfacing.png`, `Kerbing.jpg`, `services/surfacing-*.{jpg,webp}` (5), `img/projects/tarmac-*.jpg` (12) — delete once unreferenced |
 
 ## 5. Explicitly out of scope / retained

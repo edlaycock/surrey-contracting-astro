@@ -3,7 +3,7 @@
 Log each correction as: **Pattern** (what went wrong) + **Rule** (how to prevent it).
 
 ## Form JS binds only the first match
-- **Pattern:** The quote handler (`getElementById('quoteForm')`) and YTQ connector (`querySelector('form[data-ytq-form]')`) bind only the first matching element, so duplicating the full form on one page yields a dead second form and invalid duplicate IDs.
+- **Pattern:** The quote handler (`getElementById('quoteForm')`) and the former YTQ connector (`querySelector('form[data-ytq-form]')`, removed 15 Oct 2026) bind only the first matching element, so duplicating the full form on one page yields a dead second form and invalid duplicate IDs.
 - **Rule:** One functional `quoteForm` per page. Extra CTAs are anchor links to `#quoteForm`, never copies of the form.
 
 ## `npm run build` hangs in this sandbox (iCloud-evicted files + no network)
@@ -152,3 +152,14 @@ because an arrow on a card that does not link is a misleading affordance.
 Rule: when a design shows an arrow (or chevron) on a card, confirm whether
 that card links, and where, before shipping. Never ship an arrow without a
 link; if the card does not link, remove the arrow.
+
+## A key in page code is not a secret (15 Oct 2026)
+
+BaseLayout carried an inline YourTradeQuotes connector with a `ytq_live_`
+demo key in every page, sent by beacon on submit, before the site's own
+validation and regardless of whether the enquiry email went. YTQ refuses the
+demo key, so it never delivered a lead, and a real secret key in that spot
+would have been readable by anyone viewing source. Rule: third-party
+credentials stay on the server (`/api/contact` and `.env`), never in page
+HTML or client JS. `scripts/check-no-keys.mjs` fails the build if a YTQ key
+prefix or the endpoint shows up in `dist/client`.

@@ -34,6 +34,9 @@ progress.
    - `scripts/check-lp.mjs`: the v2 landing pages are `noindex,follow`, have
      one `<h1>` and one quote form with the right lead source, contain no em
      or en dashes or forbidden terms, and reference only assets that exist.
+   - `scripts/check-no-keys.mjs`: no file under `dist/client` contains
+     `ytq_live_`, `ytq_pub_` or `submitEnquiry`. YourTradeQuotes is reached
+     from the server only.
 2. **Rsync the source to the VPS** into the `DEPLOY_PATH` directory, with
    `--delete`. Excluded: `.git`, `node_modules`, `dist`, `.astro`, `studio`
    and `.env`, so the server's `.env` is never overwritten or deleted.
@@ -90,6 +93,7 @@ cat > "$DEPLOY_PATH/.env" <<'ENV'
 SMTP2GO_API_KEY=api-XXXXXXXXXXXXXXXX
 CONTACT_TO=info@surreycontracting.co.uk
 CONTACT_FROM=Surrey Contracting Website <website@surreycontracting.co.uk>
+YTQ_SECRET_KEY=<Surrey Contracting's YTQ secret key, from YTQ System Admin, Show key>
 ENV
 chmod 600 "$DEPLOY_PATH/.env"
 
@@ -102,6 +106,31 @@ sudo certbot --nginx -d surreycontracting.co.uk -d www.surreycontracting.co.uk
 sudo ufw allow OpenSSH && sudo ufw allow 'Nginx Full' && sudo ufw enable
 # SSH keys only (disable password auth), install fail2ban.
 ```
+
+`.env` names (values never in the repo or in page code):
+
+| Name | Purpose |
+|---|---|
+| `SMTP2GO_API_KEY` | sends the enquiry email |
+| `CONTACT_TO`, `CONTACT_FROM` | enquiry email recipient and sender |
+| `YTQ_SECRET_KEY` | server-only YourTradeQuotes secret key; `/api/contact` copies every valid enquiry to YTQ with it. Unset, the relay is skipped and logs one line |
+| `YTQ_ENDPOINT` | optional, local testing only: overrides the YTQ endpoint |
+| `SMTP2GO_ENDPOINT` | optional, local testing only: overrides the SMTP2GO API URL |
+
+After changing `.env`, run `docker compose up -d` in `DEPLOY_PATH` (or the
+next deploy) so the container picks it up.
+
+## Enquiries to YourTradeQuotes
+
+`/api/contact` validates the form, checks the honeypot, then hands the
+enquiry to `src/lib/ytqRelay.ts` without waiting for it, and sends the email
+as before. The relay posts JSON to YTQ's `submitEnquiry` with the secret in
+the `x-ytq-api-key` header and one `Idempotency-Key` per submission, retries
+429, 5xx, timeouts (5 s) and network errors up to 3 times with the same key,
+and never retries 400, 401, 403 or 413. It runs whether the email succeeds
+or fails (Ed, 15 Oct 2026: a lead is never lost to an email failure), and it
+never changes or delays the visitor's response. Logs carry the outcome and
+status only. Tests: `npm run test:ytq-relay` (local stubs only).
 
 certbot manages the TLS sections of the live nginx config; do not edit them
 by hand. The container has `restart: unless-stopped`, so it comes back after
