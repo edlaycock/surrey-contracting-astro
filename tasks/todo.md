@@ -2094,3 +2094,7 @@ redirects; no /lp/* changes.
 - [x] site-enabling-hero (1920 + -1280 + -640) and health-safety-supervision (-1280 + -640) replaced with Ed's approved v3 exports. Same scenes (corr 0.9995 / 0.9967), dimensions unchanged, servicePages.ts untouched
 - [x] 1920 hero kept at q45 (the cc79938 setting for this file: 246 KB, q66 would be 316 KB, over the 250 KB hero budget); variants q72
 - [ ] health-safety-planning-cdm held back for another revision
+
+## Demolition hero, SC monogram fix (15 Oct 2026)
+- [x] demolition-hero (1920 + -1280 + -640) replaced with the reviewed v3: same photo, only the two garbled SC marks (counterweight, boom) corrected; all diffs within 8 px of those boxes, dimensions unchanged, servicePages.ts untouched
+- [x] Re-encoded lossy, metadata stripped: 1920 at q66 (178 KB, marks clean vs q80), -1280 / -640 at q72 (123 / 49 KB). Also used on /services, /lp/demolition, /lp/demolition-2, /guides/demolition-cost-uk
