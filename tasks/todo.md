@@ -2099,3 +2099,6 @@ redirects; no /lp/* changes.
 - [x] demolition-hero (1920 + -1280 + -640) replaced with the reviewed v3: same photo, only the two garbled SC marks (counterweight, boom) corrected; all diffs within 8 px of those boxes, dimensions unchanged, servicePages.ts untouched
 - [x] Re-encoded lossy, metadata stripped: 1920 at q66 (178 KB, marks clean vs q80), -1280 / -640 at q72 (123 / 49 KB). Also used on /services, /lp/demolition, /lp/demolition-2, /guides/demolition-cost-uk
 - [x] 15 Oct 2026: the PR #35 deploy (run 38735539604) failed at rsync on an SSH timeout to the VPS (port 22; build passed); re-triggered by merging this change, as workflow re-run and workflow_dispatch were refused with 403
+
+## H&S project planning image, corrected hard-hat logo (15 Oct 2026)
+- [x] health-safety-planning-cdm (-1280 + -640, no full-size file) replaced with the reviewed v4 helmet correction. Same scene (corr 0.9846), dimensions unchanged (1280x633 / 640x317), servicePages.ts untouched; q72 LANCZOS, metadata stripped
