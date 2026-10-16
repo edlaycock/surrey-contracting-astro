@@ -3473,6 +3473,161 @@ a.contact-value:hover { color: var(--yellow-700); }
   .sp-core-card:hover, .sp-card-link:hover .sp-card-arrow, .sp-core-card:hover .sp-card-arrow { transform: none; }
 }
 
+/* ── Service-page section types added for the /about, /groundworks and
+   /earthworks mock-ups (16 Oct 2026). Same tokens as the .sp-* rules above. ── */
+
+/* About intro: portrait card in place of the intro image. */
+.sp-portrait {
+  justify-self: end;
+  width: 100%;
+  max-width: 440px;
+  margin: 0;
+  padding: 14px;
+  background: var(--grey-50);
+  border-radius: var(--radius);
+}
+.sp-portrait img { display: block; width: 100%; height: auto; border-radius: calc(var(--radius) - 4px); background: var(--grey-100); }
+.sp-portrait figcaption {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 4px 16px;
+  padding: 12px 2px 0;
+  font-size: 13px;
+  color: var(--text-mute);
+}
+.sp-portrait figcaption strong { font-size: 15px; font-weight: 800; color: var(--ink); }
+
+/* About: quote and four stats on a dark band. */
+.sp-quote { background: var(--grey-900); color: var(--white); padding: clamp(36px, 5vw, 52px) 0; }
+.sp-quote-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.5fr);
+  gap: clamp(28px, 4vw, 56px);
+  align-items: center;
+}
+.sp-quote-text { margin: 0; }
+.sp-quote-text p {
+  margin: 0;
+  font-size: clamp(18px, 1.7vw, 22px);
+  font-weight: 700;
+  line-height: 1.45;
+  color: var(--white);
+  text-wrap: pretty;
+}
+.sp-quote-text span { color: var(--yellow); }
+.sp-stats {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 20px;
+}
+.sp-stats li { display: flex; flex-direction: column; gap: 8px; min-width: 0; padding-left: 18px; border-left: 1px solid rgba(255,255,255,0.16); }
+.sp-stats strong { font-size: clamp(26px, 2.4vw, 32px); font-weight: 800; line-height: 1; color: var(--yellow); }
+.sp-stats span { font-size: 11px; font-weight: 600; letter-spacing: 0.08em; line-height: 1.5; text-transform: uppercase; color: var(--grey-300); overflow-wrap: anywhere; }
+
+/* Cards: heading row (About "What we do"), four columns, bordered cards. */
+.sp-cards-headed { padding-top: clamp(48px, 6vw, 72px); }
+.sp-cards-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 24px 48px;
+  margin-bottom: 32px;
+}
+.sp-cards-head .sp-h2 { margin: 0; max-width: 560px; }
+.sp-cards-head p { margin: 0; max-width: 520px; font-size: 15.5px; line-height: 1.65; color: var(--text-mute); text-wrap: pretty; }
+.sp-card-grid-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px; }
+.sp-card-grid-4 .sp-card-media { height: 170px; }
+.sp-card-grid-4 .sp-card h3 { font-size: 17px; }
+.sp-cards-boxed .sp-card { background: var(--white); border: 1px solid var(--grey-200); border-radius: var(--radius); overflow: hidden; }
+.sp-cards-boxed .sp-card-media { border-radius: 0; }
+.sp-cards-boxed .sp-card-body { padding: 18px 18px 20px; }
+.sp-cards-boxed .sp-card-link:hover { border-color: var(--grey-300); }
+
+/* Process, side layout: heading left, steps right, no circles round icons. */
+.sp-process-side .sp-process-inner {
+  display: grid;
+  grid-template-columns: minmax(0, 290px) minmax(0, 1fr);
+  gap: clamp(28px, 4vw, 56px);
+  align-items: start;
+}
+.sp-process-side .sp-h2 { margin: 0; font-size: clamp(26px, 2.3vw, 31px); text-wrap: pretty; }
+.sp-process-side .sp-steps { gap: 24px; }
+.sp-process-side .sp-steps li { flex-direction: column; gap: 14px; padding-left: 20px; border-left: 1px solid rgba(255,255,255,0.14); }
+.sp-process-side .sp-step-icon { width: 46px; height: 46px; border-width: 2px; border-radius: 8px; }
+.sp-process-side .sp-step-num { font-size: 15px; margin-bottom: 6px; }
+
+/* Split: two-column tick list (About). */
+.sp-ticks {
+  list-style: none;
+  margin: 4px 0 24px;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px 24px;
+}
+.sp-ticks li { display: flex; align-items: flex-start; gap: 10px; font-size: 14.5px; font-weight: 700; line-height: 1.4; color: var(--ink); }
+.sp-ticks svg { flex: none; margin-top: 1px; color: var(--yellow); }
+
+/* Text-only card trios: About "Who we work with", capability panels. */
+.sp-audience { background: var(--grey-50); padding: clamp(48px, 6vw, 72px) 0; }
+.sp-capability { padding: clamp(40px, 5vw, 56px) 0 clamp(16px, 2vw, 24px); }
+.sp-tcards-lede { margin: 0 0 28px; max-width: 680px; font-size: 16px; line-height: 1.65; color: var(--text-mute); text-wrap: pretty; }
+.sp-capability .sp-tcards-lede { max-width: none; }
+.sp-tcards {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+}
+.sp-tcard { background: var(--white); border: 1px solid var(--grey-200); border-radius: var(--radius); padding: 24px 24px 26px; }
+.sp-capability .sp-tcard { background: var(--grey-50); border-color: var(--grey-100); }
+.sp-tcard h3 { margin: 0 0 10px; font-size: 17px; font-weight: 800; line-height: 1.3; color: var(--ink); }
+.sp-tcard p { margin: 0; font-size: 14.5px; line-height: 1.6; color: var(--text-mute); text-wrap: pretty; }
+
+/* Groundworks: links to the town pages, between the FAQs and the CTA band. */
+.sp-towns { padding: 0 0 clamp(48px, 6vw, 72px); }
+.sp-towns p { margin: 0 0 18px; max-width: 72ch; font-size: 16px; line-height: 1.65; color: var(--text-mute); }
+.sp-towns p a,
+.sp-towns-list a { color: var(--yellow-700); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
+.sp-towns p a:hover,
+.sp-towns-list a:hover { color: var(--ink); }
+.sp-towns-list a { display: inline-block; padding: 4px 0; }
+.sp-towns-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 12px 24px;
+  font-size: 15.5px;
+}
+
+@media (max-width: 1100px) {
+  .sp-card-grid-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .sp-card-grid-4 .sp-card-media { height: 200px; }
+  .sp-process-side .sp-process-inner { grid-template-columns: minmax(0, 1fr); }
+  .sp-quote-grid { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 880px) {
+  .sp-portrait { justify-self: start; }
+  .sp-cards-head { flex-direction: column; align-items: flex-start; }
+  .sp-tcards { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 760px) {
+  .sp-card-grid-4 { grid-template-columns: minmax(0, 1fr); }
+  .sp-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px 16px; }
+}
+@media (max-width: 480px) {
+  .sp-ticks { grid-template-columns: minmax(0, 1fr); }
+}
+
 /* /services: text links from the Demolition block to its sub-pages. */
 .sp-related-links { margin: 16px 0 0; font-size: 14.5px; line-height: 1.6; color: var(--text-mute); }
 .sp-related-links a { color: var(--yellow-700); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }

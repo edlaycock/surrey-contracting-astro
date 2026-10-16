@@ -233,6 +233,8 @@ const projectSchema = {
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 16px;
     margin: 36px 0;
+    /* Lets .proj-thumb-lg ask how wide the grid is, not the viewport. */
+    container-type: inline-size;
   }
   .proj-thumb {
     position: relative;
@@ -241,7 +243,14 @@ const projectSchema = {
     background-position: center;
     border-radius: 12px;
   }
-  .proj-thumb-lg { grid-column: span 2; aspect-ratio: 16/9; }
+  /* Span two columns only when the grid has two or more (2 x 280px + 16px
+     gap = 576px). In a one-column grid a span of 2 adds an implicit second
+     column and the page scrolls sideways (6px at 375 wide). `auto` also
+     overrides the global span in public/styles.css. */
+  .proj-thumb-lg { grid-column: auto; aspect-ratio: 16/9; }
+  @container (min-width: 576px) {
+    .proj-thumb-lg { grid-column: span 2; }
+  }
   .ph-label {
     position: absolute;
     left: 12px;

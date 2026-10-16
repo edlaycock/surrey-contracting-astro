@@ -2123,3 +2123,15 @@ redirects; no /lp/* changes.
 - [ ] Ed: `cd studio && npm run deploy` so the schema change and the video fields appear
 - [ ] Optional: once the Esher `video` field is set in Studio, the projectVideos.ts entry can be removed
 - [ ] Not in scope: the existing "On site" gallery overflows by 6 px at 375 wide (`.proj-thumb-lg` spans 2 columns in a single-column grid). It predates this change
+
+## /about, /groundworks and /earthworks redesign from Ed's mock-ups (16 Oct 2026)
+- [x] Approach: extended `ServicePageContent` (src/data/servicePages.ts) with optional section types and rendered all three pages through ServicePage.astro: `introPortrait` (About portrait card), `quoteStats` (quote and 4-stat dark band), `cardsHead` + `cols: 4` + `boxed` (About "What we do"), `process.side` with optional step icons, `splits[].ticks` (2x2 tick list), `audience` (Who we work with), `capability` (3 text cards), `cta.btn`, and a `before-cta` slot. New CSS in public/styles.css only (`.sp-portrait`, `.sp-quote`, `.sp-stats`, `.sp-cards-head`, `.sp-card-grid-4`, `.sp-cards-boxed`, `.sp-process-side`, `.sp-ticks`, `.sp-tcards`, `.sp-audience`, `.sp-capability`, `.sp-towns`; prefixes checked free first)
+- [x] Copy verbatim from the PDFs. Titles, meta descriptions, paths, `active` state and ServiceSchema (groundworks, earthworks) unchanged. CTAs go to /contact and /projects
+- [x] /groundworks keeps the 3 visible FAQs (FAQPage JSON-LD now 3, matching the visible list; the other 3 questions were H2 sections the design drops) and "Groundworks by town" (4 links), after the design's sections and before the CTA band. /earthworks keeps its 7 FAQs verbatim. /about has no FAQ
+- [x] Images: Site Enabling originals (hero, excavator, demolition, site-clearance, service-trench, ground-preparation, cleared-site), sectors-service-groundworks, bulk-earthworks.jpg, groundworks-trench.jpg, Surface water drainage.jpg (URL-encoded so srcset parses), groundworks-agricultural.jpg, earthworks-excavations.jpg (all older JPGs already had -640.webp). Enhanced stand-ins copied to public/assets/img/about/about-jason-owner-portrait-{380,760}.webp, services/groundworks/groundworks-foundation-trenches-beside-house-{640,1280}.webp, services/earthworks/earthworks-stripped-levelled-site-{640,1280}.webp
+- [x] Accreditations: Constructionline Gold, CHAS, SSIP logos only
+- [x] /projects/[slug]: the first "On site" image spans 2 columns only when the gallery has 2+ columns (container query at 576px). 375 wide: scrollWidth 375 (was 381)
+- [x] Build exits 0, all postbuild guards pass; one h1 per page; every /assets/img URL exists in dist; no en/em dashes or SafeContractor; no horizontal scroll at 375
+- [ ] Ed: review the screenshots before merge (layout change). Branch pushed, no PR
+- [ ] Ed: the design shows arrows on the Groundworks and Earthworks service cards; they ship without arrows because the cards do not link (13 Oct rule). Say if they should link, and where
+- [ ] Ed: replace the three enhanced stand-ins (Jason portrait, trenches beside house, levelled field) with originals when available

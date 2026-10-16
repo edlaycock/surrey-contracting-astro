@@ -1,7 +1,10 @@
 /**
  * Content for the six service pages built from the design handoff
  * "service pages" (Oct 2026): /demolition, /soft-strip-out, /site-hoarding,
- * /site-enabling-works, /sectors and /health-safety.
+ * /site-enabling-works, /sectors and /health-safety, plus /about,
+ * /groundworks and /earthworks from Ed's updated mock-ups (16 Oct 2026).
+ * The groundworks and earthworks FAQs are the pages' previous, approved FAQ
+ * wording, carried over verbatim.
  *
  * All copy is taken verbatim from the PAGES object in the design file
  * (Surrey Contracting Service Pages.dc.html). The FAQ wording is
@@ -29,11 +32,15 @@ export type ServiceImage = {
 
 export type ProcessIcon = 'clip' | 'gear' | 'helmet' | 'truck' | 'shield' | 'digger' | 'search' | 'chart' | 'doc' | 'check';
 
+/** A text-only card (no image): the capability panel and "Who we work with". */
+export type TextCard = { t: string; d: string };
+
 export type ServicePageContent = {
   label: string;
   hero: {
     eyebrow: string;
     a: string;
+    /** Second line in yellow. Empty string for a one-line H1. */
     b: string;
     tag?: string;
     text: string;
@@ -42,10 +49,21 @@ export type ServicePageContent = {
     img: ServiceImage;
   };
   intro: { eyebrow: string; h: string; paras: string[]; img?: ServiceImage };
-  cols: 2 | 3;
+  /** About: portrait card in place of the intro image. */
+  introPortrait?: { img: ServiceImage; src2x: string; w2x: number; name: string; role: string };
+  /** About: dark band with a quote and four stats, after the intro. */
+  quoteStats?: { lead: string; em: string; stats: { v: string; l: string }[] };
+  /** Optional heading row above the cards (About "What we do"). */
+  cardsHead?: { eyebrow: string; h: string; text: string };
+  cols: 2 | 3 | 4;
   grey: boolean;
+  /** White cards with a border (About "What we do"). */
+  boxed?: boolean;
   cards: { t: string; d: string; img: ServiceImage; href?: string }[];
-  process?: { eyebrow: string; h: string; steps: { t: string; d: string; icon: ProcessIcon }[] };
+  /** `side`: heading in a left column, steps beside it (Oct 2026 About,
+   *  Groundworks and Earthworks designs). Steps without an icon show the
+   *  number only. */
+  process?: { eyebrow: string; h: string; side?: boolean; steps: { t: string; d: string; icon?: ProcessIcon }[] };
   accredStrip: boolean;
   splits: {
     eyebrow: string;
@@ -53,11 +71,18 @@ export type ServicePageContent = {
     paras: string[];
     img: ServiceImage;
     accred?: boolean;
+    /** Two-column tick list under the copy. */
+    ticks?: string[];
     btn?: { label: string; href: string };
   }[];
+  /** About "Who we work with": grey band, three text cards. */
+  audience?: { eyebrow: string; h: string; lede: string; cards: TextCard[] };
+  /** Groundworks / Earthworks capability panel: heading, lede, three text cards. */
+  capability?: { h: string; lede: string; cards: TextCard[] };
   faqIntro?: string;
   faqs: { q: string; a: string }[];
-  cta: { h: string; t: string };
+  /** `btn`: CTA band button label (defaults to "Request a quote"). */
+  cta: { h: string; t: string; btn?: string };
   asbestosImg?: ServiceImage;
 };
 
@@ -1142,6 +1167,656 @@ export const SERVICE_PAGES = {
       "w640": 640,
       "h640": 296,
       "alt": "Wrapped asbestos waste labelled Caution Asbestos Do Not Open"
+    }
+  },
+  "about": {
+    "label": "About Surrey Contracting",
+    "hero": {
+      "eyebrow": "About Us",
+      "a": "About Surrey",
+      "b": "Contracting",
+      "tag": "Experienced on site. Accountable from start to handover.",
+      "text": "A self-delivering contractor specialising in demolition, site enabling works, groundworks and bulk earthworks across Surrey, London and the South East.",
+      "cta": "Discuss Your Project",
+      "cta2": {
+        "label": "View Our Projects",
+        "href": "/projects"
+      },
+      "img": {
+        "src": "/assets/img/services/site-enabling-works/site-enabling-hero.webp",
+        "w": 1920,
+        "h": 994,
+        "src640": "/assets/img/services/site-enabling-works/site-enabling-hero-640.webp",
+        "w640": 640,
+        "h640": 331,
+        "alt": "Surrey Contracting excavator with the SC logo on its arm and cab, on a cleared site in front of a brick house"
+      }
+    },
+    "intro": {
+      "eyebrow": "Who we are",
+      "h": "Practical experience. Professional delivery.",
+      "paras": [
+        "Surrey Contracting Limited is built on more than 15 years of hands-on construction experience. We deliver demolition, site enabling, groundworks and bulk earthworks packages for developers, main contractors, commercial clients and substantial residential developments.",
+        "Our approach is straightforward: understand the site properly, plan the work before plant arrives, communicate clearly throughout and leave each phase ready for the next trade. Where disciplines overlap, we can combine them under one contractor to reduce interfaces and keep responsibility clear.",
+        "We self-deliver core works using our own plant and experienced operators, supported by specialist, accredited partners where a project requires additional expertise. Every package is managed around the approved design, programme, site constraints and project-specific health and safety requirements."
+      ]
+    },
+    "introPortrait": {
+      "img": {
+        "src": "/assets/img/about/about-jason-owner-portrait-380.webp",
+        "w": 380,
+        "h": 417,
+        "src640": "/assets/img/about/about-jason-owner-portrait-380.webp",
+        "w640": 380,
+        "h640": 417,
+        "alt": "Jason, Owner of Surrey Contracting Limited, in a black Surrey Contracting fleece"
+      },
+      "src2x": "/assets/img/about/about-jason-owner-portrait-760.webp",
+      "w2x": 760,
+      "name": "Jason",
+      "role": "Owner, Surrey Contracting Limited"
+    },
+    "quoteStats": {
+      "lead": "I started on site as a labourer. Surrey Contracting was built to be the kind of contractor I would want to work with - ",
+      "em": "organised, straightforward and accountable.",
+      "stats": [
+        {
+          "v": "15+",
+          "l": "Years of industry experience"
+        },
+        {
+          "v": "Gold",
+          "l": "Constructionline membership"
+        },
+        {
+          "v": "CHAS",
+          "l": "SSIP-accredited contractor"
+        },
+        {
+          "v": "Own",
+          "l": "Plant & experienced operators"
+        }
+      ]
+    },
+    "cardsHead": {
+      "eyebrow": "What we do",
+      "h": "Four core disciplines. One accountable team.",
+      "text": "We focus on the early and below-ground stages of construction. Packages can be delivered individually or combined to create a cleaner transition from demolition and enabling through earthworks and into groundworks."
+    },
+    "cols": 4,
+    "grey": false,
+    "boxed": true,
+    "cards": [
+      {
+        "t": "Demolition",
+        "d": "Planned structural and non-structural demolition, soft strip, site clearance, crushing and coordinated waste management.",
+        "href": "/demolition",
+        "img": {
+          "src": "/assets/img/services/site-enabling-works/site-enabling-demolition-1280.webp",
+          "w": 1280,
+          "h": 464,
+          "src640": "/assets/img/services/site-enabling-works/site-enabling-demolition-640.webp",
+          "w640": 640,
+          "h640": 232,
+          "alt": "Surrey Contracting excavator demolishing a brick house, with demolition rubble in the foreground"
+        }
+      },
+      {
+        "t": "Site Enabling Works",
+        "d": "Site clearance, hoarding, temporary access, service coordination, ground preparation and early works ahead of construction.",
+        "href": "/site-enabling-works",
+        "img": {
+          "src": "/assets/img/services/site-enabling-works/site-enabling-site-clearance-1280.webp",
+          "w": 1280,
+          "h": 463,
+          "src640": "/assets/img/services/site-enabling-works/site-enabling-site-clearance-640.webp",
+          "w640": 640,
+          "h640": 231,
+          "alt": "Cleared, level plot enclosed by timber posts and green mesh fencing"
+        }
+      },
+      {
+        "t": "Groundworks",
+        "d": "Foundations, drainage, service routes, concrete works and coordinated substructure packages through to DPC.",
+        "href": "/groundworks",
+        "img": {
+          "src": "/assets/img/services/groundworks/groundworks-foundation-trenches-beside-house-1280.webp",
+          "w": 1280,
+          "h": 947,
+          "src640": "/assets/img/services/groundworks/groundworks-foundation-trenches-beside-house-640.webp",
+          "w640": 640,
+          "h640": 474,
+          "alt": "Foundation trenches excavated alongside a brick house, with a conifer hedge and garden fence to the side"
+        }
+      },
+      {
+        "t": "Bulk Earthworks",
+        "d": "Bulk excavation, cut and fill, reduced-level digs, material management, capping and formation preparation.",
+        "href": "/earthworks",
+        "img": {
+          "src": "/assets/img/bulk-earthworks.jpg",
+          "w": 800,
+          "h": 533,
+          "src640": "/assets/img/bulk-earthworks-640.webp",
+          "w640": 640,
+          "h640": 426,
+          "alt": "Tracked excavator working on a mound of excavated soil in front of bare trees"
+        }
+      }
+    ],
+    "process": {
+      "eyebrow": "Our approach",
+      "h": "Built around the programme, not just the task.",
+      "side": true,
+      "steps": [
+        {
+          "t": "Plan properly",
+          "d": "Review drawings, access, services, logistics and package boundaries before work starts."
+        },
+        {
+          "t": "Work safely",
+          "d": "Project-specific RAMS, competent supervision, plant checks and clear site controls."
+        },
+        {
+          "t": "Communicate clearly",
+          "d": "Practical updates, early escalation of issues and clear coordination with the wider team."
+        },
+        {
+          "t": "Handover cleanly",
+          "d": "Complete the agreed scope, close out records and leave a workable condition for the next phase."
+        }
+      ]
+    },
+    "accredStrip": true,
+    "splits": [
+      {
+        "eyebrow": "One contractor, fewer interfaces",
+        "h": "From first clearance to build-ready ground.",
+        "paras": [
+          "Many of our projects involve more than one discipline. By coordinating demolition, enabling, earthworks and groundworks under one team, clients can reduce handover gaps, simplify communication and maintain better control of the early programme.",
+          "Our focus is deliberately concentrated on the early construction work we know well: preparing sites, moving ground, installing below-ground infrastructure and handing over a safe, organised platform for the next stage of construction."
+        ],
+        "ticks": [
+          "Developers & main contractors",
+          "Commercial project teams",
+          "Clear scope & programme control",
+          "Coordinated project handover"
+        ],
+        "btn": {
+          "label": "View Our Projects",
+          "href": "/projects"
+        },
+        "img": {
+          "src": "/assets/img/services/site-enabling-works/site-enabling-cleared-site-1280.webp",
+          "w": 1280,
+          "h": 466,
+          "src640": "/assets/img/services/site-enabling-works/site-enabling-cleared-site-640.webp",
+          "w640": 640,
+          "h640": 233,
+          "alt": "Yellow Surrey Contracting excavator on a cleared, fenced site with houses behind"
+        }
+      }
+    ],
+    "audience": {
+      "eyebrow": "Who we work with",
+      "h": "Built for professional project teams.",
+      "lede": "We support clients who value safe delivery, clear communication and a contractor that understands how early works affect the wider construction programme.",
+      "cards": [
+        {
+          "t": "Developers & Main Contractors",
+          "d": "Programmed demolition, enabling, earthworks and groundworks packages with clear interfaces and commercial accountability."
+        },
+        {
+          "t": "Commercial & Public Sector Clients",
+          "d": "Planned works in live, occupied or operational environments where logistics, compliance and communication matter."
+        },
+        {
+          "t": "High-End Residential Developments",
+          "d": "Substantial private residential schemes requiring professional site management, quality workmanship and coordinated delivery."
+        }
+      ]
+    },
+    "faqs": [],
+    "cta": {
+      "h": "Looking for a contractor you can rely on?",
+      "t": "Send us your drawings, site details and programme and our team can review the package.",
+      "btn": "Discuss Your Project"
+    }
+  },
+  "groundworks": {
+    "label": "Groundworks",
+    "hero": {
+      "eyebrow": "Groundworks",
+      "a": "Groundworks",
+      "b": "",
+      "tag": "Building the right foundations from the start.",
+      "text": "Foundations, drainage and substructure packages delivered for developers, main contractors and commercial clients across Surrey, London and the South East.",
+      "cta": "Request a Quote",
+      "cta2": {
+        "label": "View Our Projects",
+        "href": "/projects"
+      },
+      "img": {
+        "src": "/assets/img/services/site-enabling-works/site-enabling-excavator-1280.webp",
+        "w": 1280,
+        "h": 518,
+        "src640": "/assets/img/services/site-enabling-works/site-enabling-excavator-640.webp",
+        "w640": 640,
+        "h640": 259,
+        "alt": "Surrey Contracting excavator with the SC logo on its cab, on a cleared site with houses behind"
+      }
+    },
+    "intro": {
+      "eyebrow": "Groundworks, fully managed",
+      "h": "Accurate groundworks. Clear handover.",
+      "paras": [
+        "We deliver coordinated groundworks packages from setting out and excavation through drainage, foundations, concrete and build to DPC. Our team works closely with engineers, building control and the wider site team to keep works safe, sequenced and on programme.",
+        "Whether following demolition and enabling works or delivered as a standalone package, our focus is the same: accurate levels, compliant installation, clear communication and a clean handover into the next construction phase."
+      ],
+      "img": {
+        "src": "/assets/img/services/groundworks/groundworks-foundation-trenches-beside-house-1280.webp",
+        "w": 1280,
+        "h": 947,
+        "src640": "/assets/img/services/groundworks/groundworks-foundation-trenches-beside-house-640.webp",
+        "w640": 640,
+        "h640": 474,
+        "alt": "Foundation trenches excavated alongside a brick house, with a conifer hedge and garden fence to the side"
+      }
+    },
+    "cols": 3,
+    "grey": false,
+    "cards": [
+      {
+        "t": "Foundations & Build to DPC",
+        "d": "Strip, trench-fill and raft foundations, with associated substructure works through to DPC.",
+        "img": {
+          "src": "/assets/img/services/groundworks-trench.jpg",
+          "w": 1000,
+          "h": 667,
+          "src640": "/assets/img/services/groundworks-trench-640.webp",
+          "w640": 640,
+          "h640": 427,
+          "alt": "Orange mini excavator digging a narrow foundation trench beside a brick wall"
+        }
+      },
+      {
+        "t": "Drainage & Attenuation",
+        "d": "Foul and surface water drainage, chambers, soakaways and attenuation systems installed to the project design.",
+        "img": {
+          "src": "/assets/img/Surface%20water%20drainage.jpg",
+          "w": 768,
+          "h": 576,
+          "src640": "/assets/img/surface-water-drainage-640.webp",
+          "w640": 640,
+          "h640": 480,
+          "alt": "Perforated land drain bedded in gravel and wrapped in white geotextile membrane"
+        }
+      },
+      {
+        "t": "Service Ducting & Trenches",
+        "d": "Coordinated trenching and duct routes for water, power, telecoms and other site services.",
+        "img": {
+          "src": "/assets/img/services/site-enabling-works/site-enabling-service-trench-1280.webp",
+          "w": 1280,
+          "h": 475,
+          "src640": "/assets/img/services/site-enabling-works/site-enabling-service-trench-640.webp",
+          "w640": 640,
+          "h640": 238,
+          "alt": "Blue and black service ducts laid side by side in an open trench"
+        }
+      },
+      {
+        "t": "Concrete Works & Slabs",
+        "d": "Reinforced slabs, bases, formwork and associated concrete works for development and commercial projects.",
+        "img": {
+          "src": "/assets/img/services/sectors/sectors-service-groundworks.webp",
+          "w": 985,
+          "h": 456,
+          "src640": "/assets/img/services/sectors/sectors-service-groundworks-640.webp",
+          "w640": 640,
+          "h640": 296,
+          "alt": "Steel reinforcement fixed for a concrete slab inside a blockwork perimeter, with houses behind"
+        }
+      },
+      {
+        "t": "Substructure Works",
+        "d": "Beam-and-block floors, below-ground masonry and coordinated substructure packages.",
+        "img": {
+          "src": "/assets/img/services/groundworks/groundworks-foundation-trenches-beside-house-1280.webp",
+          "w": 1280,
+          "h": 947,
+          "src640": "/assets/img/services/groundworks/groundworks-foundation-trenches-beside-house-640.webp",
+          "w640": 640,
+          "h640": 474,
+          "alt": "Excavated foundation trenches for a substructure beside an existing brick house"
+        }
+      },
+      {
+        "t": "Site Preparation",
+        "d": "Reduced-level excavation, formation preparation and clean handover ready for the next phase of construction.",
+        "img": {
+          "src": "/assets/img/services/site-enabling-works/site-enabling-excavator-1280.webp",
+          "w": 1280,
+          "h": 518,
+          "src640": "/assets/img/services/site-enabling-works/site-enabling-excavator-640.webp",
+          "w640": 640,
+          "h640": 259,
+          "alt": "Surrey Contracting excavator on a cleared and levelled site ready for the next phase"
+        }
+      }
+    ],
+    "process": {
+      "eyebrow": "Our process",
+      "h": "A structured approach to groundworks.",
+      "side": true,
+      "steps": [
+        {
+          "t": "Survey & plan",
+          "d": "Review drawings, levels, specifications, programme and site interfaces before work begins.",
+          "icon": "clip"
+        },
+        {
+          "t": "Set out & excavate",
+          "d": "Set out accurately and excavate foundations, drainage runs and service routes.",
+          "icon": "digger"
+        },
+        {
+          "t": "Construct & install",
+          "d": "Install drainage, concrete and substructure works to the agreed specification.",
+          "icon": "gear"
+        },
+        {
+          "t": "Inspect & handover",
+          "d": "Coordinate inspections, complete records and hand over a clean site ready for the next construction phase.",
+          "icon": "check"
+        }
+      ]
+    },
+    "accredStrip": true,
+    "splits": [
+      {
+        "eyebrow": "Recent projects",
+        "h": "One contractor, from enabling to substructure.",
+        "paras": [
+          "Our groundworks packages can be delivered as standalone works or as part of a wider demolition and site-enabling package. Keeping these early works under one contractor reduces interfaces, clarifies responsibility and creates a smoother handover into the next stage of construction."
+        ],
+        "btn": {
+          "label": "View Our Projects",
+          "href": "/projects"
+        },
+        "img": {
+          "src": "/assets/img/services/groundworks/groundworks-foundation-trenches-beside-house-1280.webp",
+          "w": 1280,
+          "h": 947,
+          "src640": "/assets/img/services/groundworks/groundworks-foundation-trenches-beside-house-640.webp",
+          "w640": 640,
+          "h640": 474,
+          "alt": "Foundation trenches excavated alongside a brick house, with a conifer hedge and garden fence to the side"
+        }
+      }
+    ],
+    "capability": {
+      "h": "Groundworks capability",
+      "lede": "From foundations and drainage to service routes, concrete and substructure works, we deliver coordinated groundworks packages with clear programme control, site communication and handover.",
+      "cards": [
+        {
+          "t": "Typical package scope",
+          "d": "Foundations, drainage, slabs, service routes, substructure and site preparation."
+        },
+        {
+          "t": "Who we work for",
+          "d": "Developers, main contractors, commercial clients and high-end residential projects."
+        },
+        {
+          "t": "Coverage",
+          "d": "Surrey, London and the South East, with wider coverage for suitable projects."
+        }
+      ]
+    },
+    "faqs": [
+      {
+        "q": "How much do groundworks cost in Surrey?",
+        "a": "Groundworks in Surrey are priced per project rather than at a standard rate, because the cost is driven by ground conditions, access, excavation and muck-away volumes, and the foundation and drainage design. Surrey Contracting provides a free measured site visit and a fixed-price itemised quotation covering materials, plant, prelims and programme, so the price reflects the actual site rather than an estimate."
+      },
+      {
+        "q": "What do you need to provide a groundworks quote?",
+        "a": "A project postcode, a description of the works and any drawings, surveys or engineering information you already have are enough to start, along with details of site access. A free measured site visit within five working days captures levels, access, services and constraints, and the quotation that follows is fixed-price and itemised."
+      },
+      {
+        "q": "What is build to DPC?",
+        "a": "Build to DPC means constructing the substructure up to damp proof course level: excavation, foundations, concrete, and brickwork and blockwork to DPC, ready for the bricklayer or frame contractor to take over. It is a defined handover point between the groundworks and the superstructure, and Surrey Contracting delivers it as a complete package on extensions, new-build homes and development schemes."
+      }
+    ],
+    "cta": {
+      "h": "Planning a groundworks package?",
+      "t": "Send us your drawings and programme and our team can review the package.",
+      "btn": "Discuss your project"
+    }
+  },
+  "earthworks": {
+    "label": "Bulk Earthworks",
+    "hero": {
+      "eyebrow": "Bulk Earthworks",
+      "a": "Bulk",
+      "b": "Earthworks",
+      "tag": "Moving ground efficiently. Building the right platform.",
+      "text": "Bulk excavation, cut & fill, reduced-level excavation and site preparation delivered by experienced operators with modern plant and controlled site logistics.",
+      "cta": "Request a Quote",
+      "cta2": {
+        "label": "View Our Projects",
+        "href": "/projects"
+      },
+      "img": {
+        "src": "/assets/img/services/site-enabling-works/site-enabling-hero.webp",
+        "w": 1920,
+        "h": 994,
+        "src640": "/assets/img/services/site-enabling-works/site-enabling-hero-640.webp",
+        "w640": 640,
+        "h640": 331,
+        "alt": "Surrey Contracting excavator with the SC logo on its arm and cab, on a cleared site in front of a brick house"
+      }
+    },
+    "intro": {
+      "eyebrow": "Controlled earthworks, from cut to final level",
+      "h": "Right levels. Right material. Right programme.",
+      "paras": [
+        "We undertake bulk earthworks packages for developers, main contractors and commercial projects, coordinating excavation, cut and fill, material movement, stockpiling and formation preparation as one controlled operation.",
+        "Our approach is built around an efficient material strategy, safe plant movements and controlled haulage. Wherever practical, suitable site-won material is reused to reduce unnecessary import, disposal and disruption to the wider programme."
+      ],
+      "img": {
+        "src": "/assets/img/services/earthworks/earthworks-stripped-levelled-site-1280.webp",
+        "w": 1280,
+        "h": 597,
+        "src640": "/assets/img/services/earthworks/earthworks-stripped-levelled-site-640.webp",
+        "w640": 640,
+        "h640": 298,
+        "alt": "Large stripped and levelled site, with trees and a tall conifer along the far boundary"
+      }
+    },
+    "cols": 3,
+    "grey": false,
+    "cards": [
+      {
+        "t": "Bulk Excavation",
+        "d": "Bulk excavation and reduced-level excavation carried out to specified levels and programme requirements.",
+        "img": {
+          "src": "/assets/img/bulk-earthworks.jpg",
+          "w": 800,
+          "h": 533,
+          "src640": "/assets/img/bulk-earthworks-640.webp",
+          "w640": 640,
+          "h640": 426,
+          "alt": "Tracked excavator working on a mound of excavated soil in front of bare trees"
+        }
+      },
+      {
+        "t": "Cut & Fill",
+        "d": "Controlled cut and fill using suitable site-won material where specified, helping reduce unnecessary import and disposal.",
+        "img": {
+          "src": "/assets/img/services/site-enabling-works/site-enabling-ground-preparation-1280.webp",
+          "w": 1280,
+          "h": 476,
+          "src640": "/assets/img/services/site-enabling-works/site-enabling-ground-preparation-640.webp",
+          "w640": 640,
+          "h640": 238,
+          "alt": "Yellow roller compacting stripped ground on a fenced development site"
+        }
+      },
+      {
+        "t": "Site Levelling",
+        "d": "Formation of development platforms, gradients and finished levels ready for groundworks and construction.",
+        "img": {
+          "src": "/assets/img/services/groundworks-agricultural.jpg",
+          "w": 1000,
+          "h": 667,
+          "src640": "/assets/img/services/groundworks-agricultural-640.webp",
+          "w640": 640,
+          "h640": 427,
+          "alt": "Excavator with a grading beam forming a level stone track between paddocks"
+        }
+      },
+      {
+        "t": "Topsoil Management",
+        "d": "Stripping, segregating, stockpiling and reusing topsoil in line with the site programme.",
+        "img": {
+          "src": "/assets/img/services/earthworks/earthworks-stripped-levelled-site-1280.webp",
+          "w": 1280,
+          "h": 597,
+          "src640": "/assets/img/services/earthworks/earthworks-stripped-levelled-site-640.webp",
+          "w640": 640,
+          "h640": 298,
+          "alt": "Site stripped of topsoil and levelled, with mature trees along the boundary"
+        }
+      },
+      {
+        "t": "Muck Away & Waste Management",
+        "d": "Segregation, loading, haulage and responsible disposal, supported by appropriate waste documentation.",
+        "img": {
+          "src": "/assets/img/services/earthworks-excavations.jpg",
+          "w": 800,
+          "h": 400,
+          "src640": "/assets/img/services/earthworks-excavations-640.webp",
+          "w640": 640,
+          "h640": 320,
+          "alt": "Close-up of an excavator bucket full of excavated soil"
+        }
+      },
+      {
+        "t": "Engineered Fill & Capping",
+        "d": "Placement and compaction of suitable fill and capping materials to the project specification.",
+        "img": {
+          "src": "/assets/img/services/site-enabling-works/site-enabling-ground-preparation-1280.webp",
+          "w": 1280,
+          "h": 476,
+          "src640": "/assets/img/services/site-enabling-works/site-enabling-ground-preparation-640.webp",
+          "w640": 640,
+          "h640": 238,
+          "alt": "Roller compacting fill material across a stripped development site"
+        }
+      }
+    ],
+    "process": {
+      "eyebrow": "Our process",
+      "h": "A controlled approach to earthworks.",
+      "side": true,
+      "steps": [
+        {
+          "t": "Survey & levels",
+          "d": "Review topographical information, proposed levels, specifications, material strategy and site constraints.",
+          "icon": "chart"
+        },
+        {
+          "t": "Strip & segregate",
+          "d": "Strip topsoil and segregate suitable, unsuitable and reusable materials in line with the site strategy.",
+          "icon": "digger"
+        },
+        {
+          "t": "Excavate, move & compact",
+          "d": "Carry out cut, fill, placement and compaction in controlled phases to the required levels.",
+          "icon": "truck"
+        },
+        {
+          "t": "Trim & handover",
+          "d": "Trim formations to the required level and hand over ready for groundworks and construction.",
+          "icon": "check"
+        }
+      ]
+    },
+    "accredStrip": true,
+    "splits": [
+      {
+        "eyebrow": "Recent projects",
+        "h": "From bulk excavation to build-ready formation.",
+        "paras": [
+          "Our earthworks service can be delivered ahead of groundworks or as part of a wider enabling package. By coordinating excavation, material movement, crushing where appropriate, haulage and final levels, we keep responsibility clear and the programme easier to control."
+        ],
+        "btn": {
+          "label": "View Our Projects",
+          "href": "/projects"
+        },
+        "img": {
+          "src": "/assets/img/services/earthworks/earthworks-stripped-levelled-site-1280.webp",
+          "w": 1280,
+          "h": 597,
+          "src640": "/assets/img/services/earthworks/earthworks-stripped-levelled-site-640.webp",
+          "w640": 640,
+          "h640": 298,
+          "alt": "Large stripped and levelled site, with trees and a tall conifer along the far boundary"
+        }
+      }
+    ],
+    "capability": {
+      "h": "Earthworks capability",
+      "lede": "We deliver controlled earthworks packages from initial strip and bulk excavation through cut and fill, material management, capping and final formation, with clear site logistics and programme control.",
+      "cards": [
+        {
+          "t": "Typical package scope",
+          "d": "Bulk excavation, cut & fill, reduced-level excavation, material management, engineered fill, capping and formation preparation."
+        },
+        {
+          "t": "Commercial focus",
+          "d": "Developers, main contractors, enabling packages, commercial schemes and larger residential developments."
+        },
+        {
+          "t": "Project controls",
+          "d": "Plant planning, haulage coordination, waste documentation, level control and clear project updates."
+        }
+      ]
+    },
+    "faqs": [
+      {
+        "q": "What is bulk earthworks and what does it involve?",
+        "a": "Bulk earthworks, often called cut and fill, involves the excavation, movement and placement of large volumes of soil, stone or rock to prepare land for construction. Surrey Contracting delivers bulk excavation, site levelling, topsoil management, ground remediation and muck-away for residential and commercial projects across Surrey, London and the South East."
+      },
+      {
+        "q": "Does Surrey Contracting carry out cut and fill on development sites?",
+        "a": "Yes. Surrey Contracting delivers cut and fill earthworks for residential developments, commercial plots and private residential sites, working to approved drawings, site levels and programme requirements."
+      },
+      {
+        "q": "Can Surrey Contracting handle muck-away and waste disposal?",
+        "a": "Yes. Surrey Contracting manages surplus materials including excavated soil and demolition arisings, ensuring responsible disposal and recycling in line with current environmental and safety regulations. On-site concrete crushing is also available to reduce haulage and landfill costs."
+      },
+      {
+        "q": "What plant does Surrey Contracting use for bulk earthworks?",
+        "a": "Surrey Contracting operates a fleet of excavators and dumpers suitable for any scale of earthworks, from small domestic projects requiring 1.5-tonne mini diggers through to large commercial schemes requiring 30-tonne machines. All operators are fully trained, qualified and insured."
+      },
+      {
+        "q": "What areas does Surrey Contracting cover for bulk earthworks?",
+        "a": "Surrey Contracting covers Surrey, London and the South East for bulk earthworks, operating from its base at Send, near Woking. Areas include Guildford, Woking, Esher, Epsom, Weybridge, Reigate, Dorking, Kingston and the wider M25 corridor."
+      },
+      {
+        "q": "What is cut and fill?",
+        "a": "Cut and fill is the process of excavating material from the higher parts of a site (the cut) and reusing it to raise the lower areas (the fill), so the site reaches its design levels with as little material imported or removed as possible. A well-balanced cut and fill reduces muck-away, haulage and import costs, and it sits at the heart of most bulk earthworks packages."
+      },
+      {
+        "q": "How much does muck-away cost?",
+        "a": "Muck-away is typically priced per load or per tonne, and the cost depends on the classification of the material (clean inert soil costs less to dispose of than mixed or contaminated waste), haulage distance and site access. Reusing material on site through cut and fill, or crushing demolition arisings for reuse, reduces the volume taken away. Surrey Contracting itemises muck-away in its fixed-price quotations."
+      }
+    ],
+    "cta": {
+      "h": "Planning an earthworks package?",
+      "t": "Send us your drawings, levels and programme and our team can review the package.",
+      "btn": "Discuss your project"
     }
   }
 } satisfies Record<string, ServicePageContent>;
