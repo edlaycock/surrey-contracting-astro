@@ -73,12 +73,12 @@ export const LOCATIONS: LocationPage[] = [
     access:
       'Much of the older housing near the town centre has no side access, so plant and spoil go through the property or not at all. The streets running up from the High Street are steep and narrow, and several are in conservation areas with restrictions on what can be parked and when. We check access on the visit and size the machine to the entrance, not the dig.',
     milesFromYard: 6,
-    projectSlug: 'landscape-guildford',
+    projectSlug: 'foul-drainage-guildford',
     proofLocal: true,
     proofHeading: 'Work we have completed in Guildford',
     proofLead: 'A published case study from a job in the town.',
     projectNote:
-      'A residential re-landscape in Guildford: a 30 square metre porcelain patio and new sleeper borders, with the base preparation and levels underneath it done by the same team.',
+      'Foul drainage on a private home in Guildford: collapsed underground pipework replaced, new connections made and the affected areas reinstated, over three days.',
     faqs: [
       {
         q: 'How far is Guildford from your yard?',

@@ -1,6 +1,6 @@
 import { defineType, defineField, defineArrayMember } from 'sanity';
 
-const CATEGORY_OPTIONS = ['Drainage', 'Earthworks', 'Groundworks', 'Hard Landscaping', 'Demolition', 'Enabling Works'];
+const CATEGORY_OPTIONS = ['Drainage', 'Earthworks', 'Groundworks', 'Demolition', 'Enabling Works'];
 
 export default defineType({
   name: 'project',
@@ -95,6 +95,32 @@ export default defineType({
           ],
         }),
       ],
+    }),
+    defineField({
+      name: 'video',
+      title: 'Video',
+      type: 'string',
+      description:
+        'Optional. Enter the path of a video file on the website, like /assets/video/name.mp4. It is shown after the write-up with a play button and never plays on its own.',
+      validation: (r) =>
+        r.custom((value) => {
+          if (!value) return true;
+          return /^\/assets\/video\/.+\.mp4$/.test(value)
+            ? true
+            : 'Must start with /assets/video/ and end with .mp4';
+        }),
+    }),
+    defineField({
+      name: 'videoPoster',
+      title: 'Video poster image path',
+      type: 'string',
+      description: 'Optional. The still shown before the video plays, like /assets/video/name-poster.jpg.',
+    }),
+    defineField({
+      name: 'videoCaption',
+      title: 'Video caption',
+      type: 'string',
+      description: 'Optional. A short line shown under the video, e.g. "Aerial view of the works".',
     }),
     defineField({
       name: 'featured',
