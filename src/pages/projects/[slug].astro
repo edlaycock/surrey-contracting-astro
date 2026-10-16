@@ -2,6 +2,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getProjects, getProject, urlFor } from '../../lib/sanity';
 import { toHTML } from '@portabletext/to-html';
+import { projectVideos } from '../../data/projectVideos';
 
 export async function getStaticPaths() {
   const projects = await getProjects();
@@ -27,6 +28,16 @@ const gallery = (project.gallery ?? []).map((g) => ({
   src: urlFor(g.asset).width(900).height(700).fit('crop').url(),
   caption: g.caption,
 }));
+
+// Optional click-to-play video. The Sanity field wins; the code-side map is a
+// fallback for projects whose field has not been set in Studio yet.
+const videoFallback = projectVideos[project.slug];
+const video = project.video
+  ? { src: project.video, poster: project.videoPoster, caption: project.videoCaption }
+  : videoFallback
+    ? { src: videoFallback.video, poster: videoFallback.poster, caption: videoFallback.caption }
+    : null;
+const videoCaption = video?.caption || 'Aerial view of the works';
 
 const heroTag = [project.sector, project.categories?.[0]].filter(Boolean).join(' · ');
 
@@ -129,6 +140,29 @@ const projectSchema = {
     </div>
   </div>
 </section>
+
+{video && (
+  <section class="page-section proj-video-section">
+    <div class="container">
+      <figure class="proj-video">
+        <video
+          class="proj-video-player"
+          controls
+          muted
+          playsinline
+          preload="none"
+          poster={video.poster}
+          width="848"
+          height="480"
+          aria-label={`Video: ${videoCaption}`}
+        >
+          <source src={video.src} type="video/mp4" />
+        </video>
+        <figcaption class="proj-video-caption">{videoCaption}</figcaption>
+      </figure>
+    </div>
+  </section>
+)}
 
 {gallery.length > 0 && (
   <section class="page-section page-section-grey">

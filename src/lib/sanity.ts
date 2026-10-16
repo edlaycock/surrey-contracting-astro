@@ -39,6 +39,9 @@ export type Project = {
   gallery?: GalleryImage[];
   body?: unknown;
   featured?: boolean;
+  video?: string;
+  videoPoster?: string;
+  videoCaption?: string;
 };
 
 const PROJECT_FIELDS = `
@@ -53,12 +56,20 @@ const SURFACING_SLUGS = ['tarmac-driveway', 'tarmac-driveway-fetcham', 'tarmac-r
 const SURFACING_CATEGORIES = ['Surfacing', 'Driveways'];
 const SURFACING_TERMS = /surfacing|tarmac|resin/i;
 
+// Hard Landscaping has been retired from the business. The two case studies
+// are unpublished in Sanity by hand; this is the same code-side safety net.
+const RETIRED_SLUGS = ['landscape-guildford', 'complete-landscape'];
+const RETIRED_CATEGORIES = ['Hard Landscaping'];
+const EXCLUDED_SLUGS = [...SURFACING_SLUGS, ...RETIRED_SLUGS];
+const EXCLUDED_CATEGORIES = [...SURFACING_CATEGORIES, ...RETIRED_CATEGORIES];
+
 // Mixed projects (e.g. Southbank Centre) are retained but must not display
-// surfacing categories or service labels.
+// surfacing categories or service labels, or the retired Hard Landscaping
+// category.
 function stripSurfacing(p: Project): Project {
   return {
     ...p,
-    categories: p.categories?.filter((c) => !SURFACING_CATEGORIES.includes(c)),
+    categories: p.categories?.filter((c) => !EXCLUDED_CATEGORIES.includes(c)),
     services: p.services
       ?.split('·')
       .map((sv) => sv.trim())
@@ -77,9 +88,9 @@ export async function getProjects(): Promise<Project[]> {
   try {
     const projects: Project[] = await sanity.fetch(
       `*[_type == "project" && !(_id in path("drafts.**"))
-          && !(slug.current in $surfacingSlugs)]
+          && !(slug.current in $excludedSlugs)]
         | order(coalesce(order, 999) asc, _createdAt desc){${PROJECT_FIELDS}}`,
-      { surfacingSlugs: SURFACING_SLUGS },
+      { excludedSlugs: EXCLUDED_SLUGS },
       { signal: AbortSignal.timeout(FETCH_TIMEOUT_MS) },
     );
     return projects.map(stripSurfacing);
@@ -91,10 +102,10 @@ export async function getProjects(): Promise<Project[]> {
 
 export async function getProject(slug: string): Promise<Project | null> {
   if (process.env.SANITY_DISABLE === '1') return null;
-  if (SURFACING_SLUGS.includes(slug)) return null;
+  if (EXCLUDED_SLUGS.includes(slug)) return null;
   try {
     const project: Project | null = await sanity.fetch(
-      `*[_type == "project" && slug.current == $slug][0]{${PROJECT_FIELDS}, gallery, body}`,
+      `*[_type == "project" && slug.current == $slug][0]{${PROJECT_FIELDS}, gallery, body, video, videoPoster, videoCaption}`,
       { slug },
       { signal: AbortSignal.timeout(FETCH_TIMEOUT_MS) },
     );

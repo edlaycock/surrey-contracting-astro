@@ -3477,3 +3477,21 @@ a.contact-value:hover { color: var(--yellow-700); }
 .sp-related-links { margin: 16px 0 0; font-size: 14.5px; line-height: 1.6; color: var(--text-mute); }
 .sp-related-links a { color: var(--yellow-700); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
 .sp-related-links a:hover { color: var(--ink); }
+
+/* Case-study video (click to play, never autoplays) */
+.page-section.proj-video-section { padding-top: 0; }
+.proj-video { max-width: 848px; margin: 0 auto; }
+.proj-video-player {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 848 / 480;
+  background: var(--grey-900);
+  border-radius: var(--radius-lg);
+}
+.proj-video-caption {
+  margin-top: 10px;
+  font-size: 0.9rem;
+  color: var(--text-mute);
+  text-align: center;
+}

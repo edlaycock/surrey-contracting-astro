@@ -18,6 +18,9 @@ export default defineConfig({
     '/projects/tarmac-driveway': '/projects',
     '/projects/tarmac-driveway-fetcham': '/projects',
     '/projects/tarmac-repairs-sutton': '/projects',
+    // Hard Landscaping retired: former case studies go to /projects.
+    '/projects/landscape-guildford': '/projects',
+    '/projects/complete-landscape': '/projects',
     // Canonical sitemap entry point (the generated files keep their names).
     '/sitemap.xml': '/sitemap-index.xml',
     // Legacy pre-rebuild URLs. Former surfacing project URLs go straight to
@@ -29,8 +32,8 @@ export default defineConfig({
     '/project-site-clearance-earthworks': '/projects/site-clearance-earthworks',
     '/project-domestic-earthworks': '/projects/domestic-earthworks',
     '/project-drainage-ascot': '/projects/drainage-ascot',
-    '/project-landscape-guildford': '/projects/landscape-guildford',
+    '/project-landscape-guildford': '/projects',
     '/project-concrete-base-cobham': '/projects/concrete-base-cobham',
-    '/project-complete-landscape': '/projects/complete-landscape',
+    '/project-complete-landscape': '/projects',
   },
 });

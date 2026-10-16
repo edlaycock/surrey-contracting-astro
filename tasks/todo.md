@@ -2111,3 +2111,15 @@ redirects; no /lp/* changes.
 
 ## Site Enabling cleared-site image: cab badge correction (2026-10-15)
 - [x] Replaced `site-enabling-cleared-site-1280.webp` / `-640.webp` with the reviewed chroma-compensated variant (corrected SC badge on the excavator cab). Diff vs previous files confined to the cab box (1280: x565–591, y196–219; 640: x282–296, y98–109) beyond re-encode noise. Dimensions unchanged (1280×466, 640×233).
+
+## Hard Landscaping retired; optional case-study video (16 Oct 2026)
+- [x] /groundworks-guildford proof card now uses foul-drainage-guildford (proofLocal kept); projectNote rewritten from that project's live Sanity summary only
+- [x] `src/lib/sanity.ts`: RETIRED_SLUGS (landscape-guildford, complete-landscape) excluded in getProjects and getProject; 'Hard Landscaping' stripped from categories alongside the surfacing ones
+- [x] Redirects: /projects/landscape-guildford and /projects/complete-landscape to /projects; legacy /project-landscape-guildford and /project-complete-landscape retargeted straight to /projects (no chain)
+- [x] 'Hard Landscaping' removed from the Studio category list and the training manual (seed script and historical docs left alone)
+- [x] Optional `video`, `videoPoster`, `videoCaption` fields on the project schema; click-to-play section (muted, playsinline, preload="none", no autoplay) after the write-up on case-study pages
+- [x] Esher video in public/assets/video/ (copied unchanged) with an 848x480 poster from the 8.5 s frame; code-side fallback in `src/data/projectVideos.ts`, used only while the Sanity field is empty
+- [ ] Ed: unpublish the two Hard Landscaping documents in Studio
+- [ ] Ed: `cd studio && npm run deploy` so the schema change and the video fields appear
+- [ ] Optional: once the Esher `video` field is set in Studio, the projectVideos.ts entry can be removed
+- [ ] Not in scope: the existing "On site" gallery overflows by 6 px at 375 wide (`.proj-thumb-lg` spans 2 columns in a single-column grid). It predates this change
