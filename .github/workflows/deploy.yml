@@ -28,9 +28,10 @@ jobs:
     env:
       SSH_HOST: ${{ secrets.SSH_HOST }}
     steps:
-      # YourTradeQuotes claim code: read from the event payload (so it never
-      # appears in a step's env header), masked before any step that logs, and
-      # handed to the SSH step. Only manual runs can carry one.
+      # YourTradeQuotes claim code: read from the event payload rather than
+      # interpolated into this script, masked before any step that logs, and
+      # handed to the SSH step (whose env block shows it only as ***). The repo
+      # is public, so the mask is load-bearing. Only manual runs carry one.
       - name: Read the YourTradeQuotes claim code
         if: ${{ github.event_name == 'workflow_dispatch' }}
         run: |
@@ -71,6 +72,7 @@ jobs:
           remote_key: ${{ secrets.SSH_KEY }}
 
       - name: Build & (re)start the isolated container
+        id: restart
         if: ${{ env.SSH_HOST != '' }}
         uses: appleboy/ssh-action@0ff4204d59e8e51228ff73bce53f80d53301dee2 # v1.2.5
         env:
@@ -101,8 +103,11 @@ jobs:
 
       # Confirm the public site serves after the restart: key pages return 200 and an
       # unknown path returns the branded 404. Retries for ~90s while the container starts.
+      # Runs even when the SSH step failed (for example a failed YTQ ping after compose
+      # restarted the site), so the site's health is still reported; the job stays red.
+      # Skipped when the SSH step never ran (build failed, no SSH_HOST) or the run was cancelled.
       - name: Verify key pages are live
-        if: ${{ env.SSH_HOST != '' }}
+        if: ${{ !cancelled() && env.SSH_HOST != '' && steps.restart.outcome != 'skipped' }}
         env:
           BASE: https://surreycontracting.co.uk
           MISSING: /this-page-does-not-exist-${{ github.run_id }}

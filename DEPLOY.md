@@ -66,6 +66,8 @@ progress.
      wrong turn").
 
    If they still fail after the last attempt, the run fails.
+   They also run when step 3 failed after it ran (for example a failed
+   YTQ ping), so the site's health is still reported; the run stays red.
 
 Steps 2 to 4 only run when the `SSH_HOST` secret is set; without it a run is
 a build check only.
@@ -173,15 +175,26 @@ Rules:
 - `YTQ claim refused (status 404)` means the code was used, expired,
   mistyped or superseded. Ask for a new code. Do not loop on the same one:
   five attempts per address per ten minutes, then 429.
+- **A refused code means that run did not deploy.** `install` stops the SSH
+  step before `docker compose up`: rsync has already updated the source on
+  the server, but the old container keeps serving. Get a fresh code and
+  dispatch again (or push, for a deploy without the key).
+- If `ping` fails, the container has already restarted with whatever key is
+  in `.env`. The page checks still run and report the site's health; the
+  run stays red until a fresh code installs a key that pings.
 - **Never use Re-run on a run that carried a code**: it replays the old
   input. Dispatch a fresh run with a new code.
 - Do not merge to `main` while a claim-code run is in progress: the
   concurrency group cancels it. If that happens before the install line,
   the code is unspent and still usable inside its 15 minutes; after it, the
   key is already in `.env` and the next deploy starts the container with it.
-- Workflow inputs are readable by anyone who can see this repo's Actions
-  runs. That is accepted for a code that dies after one use or 15 minutes,
-  is audited, and emails the owner when used. It would not be for the key.
+- The repo is public. As far as we know GitHub does not show
+  `workflow_dispatch` input values in the run page or the runs API, the
+  first step masks the code so it never appears in a log, and the code is
+  spent within about 3 minutes of the run starting. That mask step is
+  load-bearing: do not remove it or echo the input anywhere else. The
+  approach is acceptable for a code that dies after one use or 15 minutes,
+  is audited, and emails the owner when used; it would not be for the key.
 - Rotation is the same flow with Also replace the key ticked; the old key
   keeps working for 7 days.
 
