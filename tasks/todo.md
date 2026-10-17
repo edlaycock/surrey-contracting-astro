@@ -2087,7 +2087,7 @@ redirects; no /lp/* changes.
 - [x] `/api/contact` copies every valid enquiry to YTQ via `src/lib/ytqRelay.ts`, not awaited, in both email outcomes
 - [x] app.js sends the form's `data-lead-source` as `leadSource` (YTQ `sourceCampaign`)
 - [x] `scripts/check-no-keys.mjs` in postbuild; `npm run test:ytq-relay` (25 checks, local stubs only)
-- [ ] Ed: put Surrey Contracting's YTQ secret key in `$DEPLOY_PATH/.env` as `YTQ_SECRET_KEY` (chmod 600), then `docker compose up -d`. Inert until set
+- [ ] Ed: put Surrey Contracting's YTQ secret key in `$DEPLOY_PATH/.env` as `YTQ_SECRET_KEY` (chmod 600), then `docker compose up -d`. Inert until set. 17 Oct 2026: superseded by the claim-code deploy below; the hand edit stays the fallback in DEPLOY.md
 - [ ] Ed, after merge: view source on /, /contact and all nine /lp pages, no `ytq_live_`; first real enquiry shows in YTQ Enquiries with its sourceCampaign
 
 ## Site Enabling hero and H&S supervision image, v3 swap (15 Oct 2026)
@@ -2123,3 +2123,14 @@ redirects; no /lp/* changes.
 - [ ] Ed: `cd studio && npm run deploy` so the schema change and the video fields appear
 - [ ] Optional: once the Esher `video` field is set in Studio, the projectVideos.ts entry can be removed
 - [ ] Not in scope: the existing "On site" gallery overflows by 6 px at 375 wide (`.proj-thumb-lg` spans 2 columns in a single-column grid). It predates this change
+
+## YourTradeQuotes claim-code connection (17 Oct 2026, PR claude/ytq-claim-connect)
+- [x] `scripts/ytq-connect.sh` copied unchanged from the YTQ client-site kit (v1.1.467): `install` exchanges a one-time claim code on the VPS and writes `YTQ_SECRET_KEY` into `.env` (mode 600, other lines kept); `ping` checks the key. Both no-ops without a code
+- [x] deploy.yml: `workflow_dispatch` input `ytq_claim_code`, read from the event payload and masked in a first step; SSH step runs `ytq-connect.sh install` first (after the rsync step that delivers it), then the existing compose flow, then `ytq-connect.sh ping`. Push and Sanity triggers unchanged
+- [x] Relay kept as Surrey's (the kit's differs only by a `siteOrigin` parameter and comments; neither sends Origin or Referer). `check-ytq-relay.mjs` now asserts no Origin or Referer, as the kit does
+- [x] Removed the dead `data-ytq-form` attribute from the 11 quote forms (nothing reads it since the inline connector went)
+- [x] DEPLOY.md and .env.example: the claim code is the standard path, hand edit over SSH the fallback
+- [ ] Ed: merge, then ask for a claim code (System Admin, Surrey Contracting, Website connection, Connect a website, label `surreycontracting.co.uk`) and run the deploy with it. Skip if the key was already set by hand and pings fine
+- [ ] Run log shows `YTQ key installed for <business>` and `YTQ ping: ok`. Date: ____
+- [ ] System Admin card: claim used, "Connected by YourTradeQuotes support on <date>". Date: ____
+- [ ] One real enquiry through the live form, agreed with Surrey Contracting first, "Website test, please ignore", seen in their YTQ Enquiries as via your server. Date: ____
