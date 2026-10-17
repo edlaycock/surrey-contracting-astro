@@ -61,6 +61,7 @@ jobs:
       # --exclude=.env protects the server-only secrets file from --delete.
       # This step also delivers scripts/ytq-connect.sh, which the next step runs.
       - name: Rsync source to VPS
+        id: rsync
         if: ${{ env.SSH_HOST != '' }}
         uses: burnett01/rsync-deployments@155b6d6c1219ab2224c20c58d423a3f1b850395f # v9
         with:
@@ -72,7 +73,6 @@ jobs:
           remote_key: ${{ secrets.SSH_KEY }}
 
       - name: Build & (re)start the isolated container
-        id: restart
         if: ${{ env.SSH_HOST != '' }}
         uses: appleboy/ssh-action@0ff4204d59e8e51228ff73bce53f80d53301dee2 # v1.2.5
         env:
@@ -103,11 +103,12 @@ jobs:
 
       # Confirm the public site serves after the restart: key pages return 200 and an
       # unknown path returns the branded 404. Retries for ~90s while the container starts.
-      # Runs even when the SSH step failed (for example a failed YTQ ping after compose
-      # restarted the site), so the site's health is still reported; the job stays red.
-      # Skipped when the SSH step never ran (build failed, no SSH_HOST) or the run was cancelled.
+      # Runs whenever the rsync reached the server, even when the SSH step then failed
+      # (for example a failed YTQ ping after compose restarted the site), so the site's
+      # health is still reported; the job stays red. Skipped when rsync did not succeed
+      # (build failed, no SSH_HOST, rsync error) or the run was cancelled.
       - name: Verify key pages are live
-        if: ${{ !cancelled() && env.SSH_HOST != '' && steps.restart.outcome != 'skipped' }}
+        if: ${{ !cancelled() && steps.rsync.outcome == 'success' }}
         env:
           BASE: https://surreycontracting.co.uk
           MISSING: /this-page-does-not-exist-${{ github.run_id }}
