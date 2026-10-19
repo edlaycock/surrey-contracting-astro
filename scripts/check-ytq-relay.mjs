@@ -134,7 +134,7 @@ await test('no key: one log line and no request', async () => {
   eq(logger.lines, ['YTQ relay skipped: YTQ_SECRET_KEY not set'], 'log');
 });
 
-await test('posts JSON with x-ytq-api-key and an Idempotency-Key', async () => {
+await test('posts JSON with x-ytq-api-key and an Idempotency-Key, and no Origin or Referer', async () => {
   ytq.reset(reply(200, { success: true, id: 'enq1' }));
   const logger = captureLogger();
   const payload = buildYtqPayload({ name: 'Jane', email: 'j@example.com', page: '/contact' });
@@ -145,6 +145,10 @@ await test('posts JSON with x-ytq-api-key and an Idempotency-Key', async () => {
   eq(q.method, 'POST', 'method');
   eq(q.headers['content-type'], 'application/json', 'content-type');
   eq(q.headers['x-ytq-api-key'], DUMMY_KEY, 'key header');
+  // A secret key arriving with a website Origin is how YTQ spots a leaked key;
+  // this is a server call and must never forward the visitor's headers.
+  assert(!('origin' in q.headers), 'an Origin header must never be sent');
+  assert(!('referer' in q.headers), 'a Referer header must never be sent');
   assert(/^[\x21-\x7e]{1,255}$/.test(q.headers['idempotency-key'] || ''), 'Idempotency-Key must be 1-255 visible ASCII');
   eq(JSON.parse(q.body), payload, 'body');
   assert(!q.url.includes(DUMMY_KEY), 'key must not be in the URL');
