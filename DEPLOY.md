@@ -10,14 +10,19 @@ GitHub Actions (`.github/workflows/deploy.yml`, "Build & deploy to VPS").
 - A push to `main`.
 - A Sanity publish: a Sanity webhook sends a `repository_dispatch` event of
   type `sanity-publish` (setup below).
-- A manual run (`workflow_dispatch`).
+- A manual run (`workflow_dispatch`). It takes one optional input,
+  `ytq_claim_code`, which also installs the YourTradeQuotes key (see
+  "Connecting YourTradeQuotes" below). Left empty, a manual run is an
+  ordinary deploy.
 
 Runs share a concurrency group per branch, so a new run cancels one still in
 progress.
 
 ## What a run does
 
-1. **Build check in Actions.** Checks out the repo, installs Node 22, runs
+1. **Build check in Actions.** On a manual run, first reads `ytq_claim_code`
+   from the event payload and masks it (nothing happens when it is empty).
+   Then checks out the repo, installs Node 22, runs
    `npm ci` and `npm run build` against the Sanity `production` dataset.
    `npm run build` also runs the `postbuild` guards, and any failure stops
    the run before anything reaches the server:
@@ -41,8 +46,11 @@ progress.
    `--delete`. Excluded: `.git`, `node_modules`, `dist`, `.astro`, `studio`
    and `.env`, so the server's `.env` is never overwritten or deleted.
 3. **Rebuild and restart the container** over SSH:
-   `cd "$DEPLOY_PATH"`, export a unique `BUILD_ID`, then
-   `docker compose up -d --build` and `docker compose ps`. The Docker build
+   `cd "$DEPLOY_PATH"`, `bash scripts/ytq-connect.sh install`, export a
+   unique `BUILD_ID`, then `docker compose up -d --build`,
+   `docker compose ps` and `bash scripts/ytq-connect.sh ping`. Both
+   `ytq-connect.sh` calls exit at once and change nothing unless a claim code
+   was supplied, so a push or a Sanity publish runs exactly as before. The Docker build
    runs `npm run build` again (guards included), fetching current Sanity
    content. `BUILD_ID` changes on every run so that layer is never served
    from cache; without it, a Sanity publish or manual run with no code
@@ -58,6 +66,8 @@ progress.
      wrong turn").
 
    If they still fail after the last attempt, the run fails.
+   They also run when step 3 failed after it ran (for example a failed
+   YTQ ping), so the site's health is still reported; the run stays red.
 
 Steps 2 to 4 only run when the `SSH_HOST` secret is set; without it a run is
 a build check only.
@@ -93,9 +103,10 @@ cat > "$DEPLOY_PATH/.env" <<'ENV'
 SMTP2GO_API_KEY=api-XXXXXXXXXXXXXXXX
 CONTACT_TO=info@surreycontracting.co.uk
 CONTACT_FROM=Surrey Contracting Website <website@surreycontracting.co.uk>
-YTQ_SECRET_KEY=<Surrey Contracting's YTQ secret key, from YTQ System Admin, Show key>
 ENV
 chmod 600 "$DEPLOY_PATH/.env"
+# YTQ_SECRET_KEY is added to this file by the claim-code deploy
+# ("Connecting YourTradeQuotes" below), not typed here.
 
 # 3. nginx vhost (deploy/nginx.conf proxies to 127.0.0.1:4321) + TLS
 sudo cp deploy/nginx.conf /etc/nginx/conf.d/surreycontracting.conf
@@ -113,7 +124,7 @@ sudo ufw allow OpenSSH && sudo ufw allow 'Nginx Full' && sudo ufw enable
 |---|---|
 | `SMTP2GO_API_KEY` | sends the enquiry email |
 | `CONTACT_TO`, `CONTACT_FROM` | enquiry email recipient and sender |
-| `YTQ_SECRET_KEY` | server-only YourTradeQuotes secret key; `/api/contact` copies every valid enquiry to YTQ with it. Unset, the relay is skipped and logs one line |
+| `YTQ_SECRET_KEY` | server-only YourTradeQuotes secret key; `/api/contact` copies every valid enquiry to YTQ with it. Written by `scripts/ytq-connect.sh` from a claim code. Unset, the relay is skipped and logs one line |
 | `YTQ_ENDPOINT` | optional, local testing only: overrides the YTQ endpoint |
 | `SMTP2GO_ENDPOINT` | optional, local testing only: overrides the SMTP2GO API URL |
 
@@ -131,6 +142,78 @@ and never retries 400, 401, 403 or 413. It runs whether the email succeeds
 or fails (Ed, 15 Oct 2026: a lead is never lost to an email failure), and it
 never changes or delays the visitor's response. Logs carry the outcome and
 status only. Tests: `npm run test:ytq-relay` (local stubs only).
+
+## Connecting YourTradeQuotes
+
+The secret key is never typed, pasted, printed or stored as a GitHub secret.
+The server fetches it itself with a one-time claim code (YourTradeQuotes
+`docs/ENQUIRY-CONNECTOR.md`, "Mode 3a"; checklist in that repo's
+`skills/connect-client-website.md`).
+
+**Standard path: a claim code through the deploy.**
+
+1. In YTQ System Admin, Surrey Contracting, Website connection, Connect a
+   website: label `surreycontracting.co.uk` (the owner sees it), tick Also
+   replace the key only to rotate, type the account's login email, Issue
+   claim code. The code starts `ytq_claim_`, works once and lasts 15 minutes.
+2. Straight away: Actions, "Build & deploy to VPS", Run workflow on `main`,
+   paste the code into `ytq_claim_code`. Or
+   `gh workflow run deploy.yml --ref main -f ytq_claim_code=<code>`.
+3. On the server, `scripts/ytq-connect.sh install` runs first in the SSH
+   step, before the image build: it exchanges the code at YTQ's
+   `claimWebsiteKey` and writes `YTQ_SECRET_KEY=` into `$DEPLOY_PATH/.env`
+   (mode 600). Every other line is kept; an existing `YTQ_SECRET_KEY` line is
+   replaced, and only when a code was supplied. The container then starts
+   with the key, and `scripts/ytq-connect.sh ping` checks it against YTQ.
+4. The run log must show both `YTQ key installed for <business>` and
+   `YTQ ping: ok`. The key itself never appears in the runner or the log.
+5. Then one real enquiry through the live form, agreed with Surrey
+   Contracting first, named "Website test, please ignore": it must arrive in
+   their YTQ Enquiries. A green ping proves the key, not the form.
+
+Rules:
+- `YTQ claim refused (status 404)` means the code was used, expired,
+  mistyped or superseded. Ask for a new code. Do not loop on the same one:
+  five attempts per address per ten minutes, then 429.
+- **A refused code means that run did not deploy.** `install` stops the SSH
+  step before `docker compose up`: rsync has already updated the source on
+  the server, but the old container keeps serving. Get a fresh code and
+  dispatch again (or push, for a deploy without the key).
+- If `ping` fails, the container has already restarted with whatever key is
+  in `.env`. The page checks still run and report the site's health; the
+  run stays red until a fresh code installs a key that pings.
+- **Never use Re-run on a run that carried a code**: it replays the old
+  input. Dispatch a fresh run with a new code.
+- Do not merge to `main` while a claim-code run is in progress: the
+  concurrency group cancels it. If that happens before the install line,
+  the code is unspent and still usable inside its 15 minutes; after it, the
+  key is already in `.env` and the next deploy starts the container with it.
+- The repo is public. As far as we know GitHub does not show
+  `workflow_dispatch` input values in the run page or the runs API, the
+  first step masks the code so it never appears in a log, and the code is
+  spent within about 3 minutes of the run starting. That mask step is
+  load-bearing: do not remove it or echo the input anywhere else. The
+  approach is acceptable for a code that dies after one use or 15 minutes,
+  is audited, and emails the owner when used; it would not be for the key.
+- Rotation is the same flow with Also replace the key ticked; the old key
+  keeps working for 7 days.
+
+**Fallback: by hand over SSH.** If the workflow cannot be run (Actions down,
+dispatch refused), the same script works on the server from a fresh code:
+
+```bash
+cd "$DEPLOY_PATH"
+read -rs YTQ_CLAIM_CODE && export YTQ_CLAIM_CODE   # paste the code; not echoed, not in shell history
+bash scripts/ytq-connect.sh install
+docker compose up -d
+bash scripts/ytq-connect.sh ping
+unset YTQ_CLAIM_CODE
+```
+
+Or, where the key itself is to hand in YTQ System Admin, edit `.env`
+directly: one line `YTQ_SECRET_KEY=<key>`, `chmod 600 .env`, then
+`docker compose up -d`. A key set this way is left alone by every later
+deploy that carries no claim code.
 
 certbot manages the TLS sections of the live nginx config; do not edit them
 by hand. The container has `restart: unless-stopped`, so it comes back after

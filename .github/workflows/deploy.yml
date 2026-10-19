@@ -6,7 +6,15 @@ on:
   # Sanity webhook -> repository_dispatch fires this so client publishes rebuild
   repository_dispatch:
     types: [sanity-publish]
+  # Manual run. With ytq_claim_code set it also installs the YourTradeQuotes
+  # secret key on the server (scripts/ytq-connect.sh, DEPLOY.md). Empty, it is
+  # an ordinary deploy, exactly as a push or a Sanity publish.
   workflow_dispatch:
+    inputs:
+      ytq_claim_code:
+        description: 'One-time YourTradeQuotes claim code from System Admin. Leave empty for a normal deploy.'
+        required: false
+        type: string
 
 concurrency:
   group: deploy-${{ github.ref }}
@@ -20,6 +28,20 @@ jobs:
     env:
       SSH_HOST: ${{ secrets.SSH_HOST }}
     steps:
+      # YourTradeQuotes claim code: read from the event payload rather than
+      # interpolated into this script, masked before any step that logs, and
+      # handed to the SSH step (whose env block shows it only as ***). The repo
+      # is public, so the mask is load-bearing. Only manual runs carry one.
+      - name: Read the YourTradeQuotes claim code
+        if: ${{ github.event_name == 'workflow_dispatch' }}
+        run: |
+          code="$(jq -r '.inputs.ytq_claim_code // ""' "$GITHUB_EVENT_PATH")"
+          if [ -n "$code" ]; then
+            echo "::add-mask::$code"
+            echo "YTQ_CLAIM_CODE=$code" >> "$GITHUB_ENV"
+            echo "A YourTradeQuotes claim code was supplied; the server will exchange it."
+          fi
+
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
@@ -37,7 +59,9 @@ jobs:
 
       # Ship source to the VPS; the Docker image is built there.
       # --exclude=.env protects the server-only secrets file from --delete.
+      # This step also delivers scripts/ytq-connect.sh, which the next step runs.
       - name: Rsync source to VPS
+        id: rsync
         if: ${{ env.SSH_HOST != '' }}
         uses: burnett01/rsync-deployments@155b6d6c1219ab2224c20c58d423a3f1b850395f # v9
         with:
@@ -51,13 +75,21 @@ jobs:
       - name: Build & (re)start the isolated container
         if: ${{ env.SSH_HOST != '' }}
         uses: appleboy/ssh-action@0ff4204d59e8e51228ff73bce53f80d53301dee2 # v1.2.5
+        env:
+          YTQ_CLAIM_CODE: ${{ env.YTQ_CLAIM_CODE }}
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
+          envs: YTQ_CLAIM_CODE
           script: |
             set -e
             cd "${{ secrets.DEPLOY_PATH }}"
+            # YourTradeQuotes: FIRST in the remote script, after the rsync step
+            # above has delivered the script. Spends the claim code before the
+            # long image build, while it is inside its 15 minutes, so the
+            # container starts with the new key. No code: exits 0, changes nothing.
+            bash scripts/ytq-connect.sh install
             # Passed through to the Dockerfile's BUILD_ID arg so the Astro build layer
             # is never served from cache — otherwise a deploy with no source change
             # rebuilds the container from a stale dist and CMS edits never appear.
@@ -66,11 +98,17 @@ jobs:
             export BUILD_ID="${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}"
             docker compose up -d --build
             docker compose ps
+            # Proves the installed key works; fails the step if not. No code: no-op.
+            bash scripts/ytq-connect.sh ping
 
       # Confirm the public site serves after the restart: key pages return 200 and an
       # unknown path returns the branded 404. Retries for ~90s while the container starts.
+      # Runs whenever the rsync reached the server, even when the SSH step then failed
+      # (for example a failed YTQ ping after compose restarted the site), so the site's
+      # health is still reported; the job stays red. Skipped when rsync did not succeed
+      # (build failed, no SSH_HOST, rsync error) or the run was cancelled.
       - name: Verify key pages are live
-        if: ${{ env.SSH_HOST != '' }}
+        if: ${{ !cancelled() && steps.rsync.outcome == 'success' }}
         env:
           BASE: https://surreycontracting.co.uk
           MISSING: /this-page-does-not-exist-${{ github.run_id }}
