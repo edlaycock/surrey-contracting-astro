@@ -3615,9 +3615,11 @@ a.contact-value:hover { color: var(--yellow-700); }
   .sp-process-side .sp-process-inner { grid-template-columns: minmax(0, 1fr); }
   .sp-quote-grid { grid-template-columns: minmax(0, 1fr); }
 }
+@media (max-width: 1000px) {
+  .sp-cards-head { flex-direction: column; align-items: flex-start; }
+}
 @media (max-width: 880px) {
   .sp-portrait { justify-self: start; }
-  .sp-cards-head { flex-direction: column; align-items: flex-start; }
   .sp-tcards { grid-template-columns: minmax(0, 1fr); }
 }
 @media (max-width: 760px) {

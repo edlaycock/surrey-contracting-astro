@@ -197,7 +197,7 @@ const breadcrumbOnly = service
         <img
           src={p.introPortrait.img.src}
           srcset={`${p.introPortrait.img.src} ${p.introPortrait.img.w}w, ${p.introPortrait.src2x} ${p.introPortrait.w2x}w`}
-          sizes="(max-width: 880px) calc(100vw - 72px), 380px"
+          sizes="(max-width: 880px) min(calc(100vw - 72px), 412px), 412px"
           alt={p.introPortrait.img.alt}
           width={p.introPortrait.img.w}
           height={p.introPortrait.img.h}

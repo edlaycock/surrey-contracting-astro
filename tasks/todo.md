@@ -2132,9 +2132,10 @@ redirects; no /lp/* changes.
 - [x] Accreditations: Constructionline Gold, CHAS, SSIP logos only
 - [x] /projects/[slug]: the first "On site" image spans 2 columns only when the gallery has 2+ columns (container query at 576px). 375 wide: scrollWidth 375 (was 381)
 - [x] Build exits 0, all postbuild guards pass; one h1 per page; every /assets/img URL exists in dist; no en/em dashes or SafeContractor; no horizontal scroll at 375
-- [ ] Ed: review the screenshots before merge (layout change). Branch pushed, no PR
-- [ ] Ed: the design shows arrows on the Groundworks and Earthworks service cards; they ship without arrows because the cards do not link (13 Oct rule). Say if they should link, and where
+- [x] Ed: review the screenshots before merge (layout change). Approved 19 Oct
+- [x] Ed: the design shows arrows on the Groundworks and Earthworks service cards; they ship without arrows because the cards do not link (13 Oct rule). Say if they should link, and where
 - [ ] Ed: replace the three enhanced stand-ins (Jason portrait, trenches beside house, levelled field) with originals when available
+- [x] 19 Oct: Ed approved going live. Merged origin/main (YTQ claim-code work; only tasks/todo.md conflicted, both sections kept). Review fixes: `.sp-cards-head` now stacks at 1000px (was 880px; at 900 the H2 had been squeezed to about 290px, now 560px stacked); About portrait `sizes` corrected to `(max-width: 880px) min(calc(100vw - 72px), 412px), 412px` (renders 412px at 1440: 440px card minus 2 x 14px padding). Groundworks and Earthworks service cards stay plain with no arrows (Ed confirmed). Build and guards pass; no horizontal scroll at 375
 
 ## YourTradeQuotes claim-code connection (17 Oct 2026, PR claude/ytq-claim-connect)
 - [x] `scripts/ytq-connect.sh` copied unchanged from the YTQ client-site kit (v1.1.467): `install` exchanges a one-time claim code on the VPS and writes `YTQ_SECRET_KEY` into `.env` (mode 600, other lines kept); `ping` checks the key. Both no-ops without a code
