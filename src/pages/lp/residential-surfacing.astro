@@ -1,0 +1,347 @@
+---
+/**
+ * /lp/residential-surfacing: paid-traffic landing page for residential
+ * surfacing (driveways, patios, paths, driveway drainage and repairs) for
+ * Surrey homeowners. Ads only.
+ *
+ * Ed, 20 Oct 2026: Jason now wants to advertise residential surfacing, and
+ * the page goes on Surrey Contracting's site. This supersedes, for this page
+ * only, the 1 Oct rule that residential surfacing belongs solely to Surrey
+ * Hills Surfacing. Surfacing still stays off the main site: no nav, footer,
+ * homepage, services or sitemap entry, and the /surfacing and /lp/surfacing
+ * redirects are unchanged. No link to or mention of the SHS site.
+ *
+ * Same skeleton and scoped .lp2 styles as /lp/commercial-surfacing.
+ * noindex, out of the sitemap (astro.config filter on "/lp/"), not linked
+ * from anywhere on the site. Guarded post-build by scripts/check-lp.mjs,
+ * which allows "surfacing", "tarmac" and "resin" on this page only.
+ *
+ * Copy is a draft for Ed and Jason to approve (tasks/todo.md, "Residential
+ * surfacing landing page", 20 Oct 2026). FAQS is the single source for both
+ * the visible FAQ and the FAQPage JSON-LD, so the two cannot drift.
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ServiceSchema from '../../components/ServiceSchema.astro';
+import { ACCREDITATION_LOGOS } from '../../data/homepage';
+
+const LEAD_SOURCE = 'lp_residential_surfacing';
+const PHONE_LABEL = 'Call 01483 323568';
+const PHONE_HREF = 'tel:01483323568';
+const QUOTE_LABEL = 'Get a free quote';
+
+// Ed's brief (20 Oct 2026): Constructionline Gold, CHAS and SSIP logos only.
+const LOGOS = ['constructionline-gold', 'chas', 'ssip'].map((key) => {
+  const logo = ACCREDITATION_LOGOS.find((l) => l.logo.endsWith(`/${key}.webp`));
+  if (!logo) throw new Error(`residential-surfacing: accreditation logo "${key}" missing`);
+  return logo;
+});
+
+// Images: the former tarmac case-study photos (deleted 18 Aug 2026 in
+// 900c56b, restored here as webp crops) plus existing repo photos. The resin
+// bound tile is a marked placeholder until a real photo is supplied.
+const SERVICES = [
+  {
+    title: 'Tarmac driveways',
+    img: '/assets/img/residential/tarmac-driveway-sett-edging-640.webp',
+    alt: 'New tarmac driveway leading to a double garage, edged with a row of setts',
+    text: 'New tarmac driveways and resurfacing, laid on a properly prepared sub-base with neat edging.',
+  },
+  {
+    title: 'Block paving',
+    img: '/assets/img/block-paving-640.webp',
+    alt: 'Block paving being laid against a kerb line',
+    text: 'Block paved driveways and parking areas, with kerbs and edgings to hold the blocks in place.',
+  },
+  {
+    title: 'Resin bound',
+    img: '/assets/img/residential/resin-bound-placeholder.svg',
+    alt: 'Placeholder: photo of a resin bound driveway needed',
+    text: 'Resin bound driveways and paths, laid over a suitable base for a smooth, even finish.',
+  },
+  {
+    title: 'Patios and paths',
+    img: '/assets/img/residential/patio-paving-640.webp',
+    alt: 'Paved patio running along the rear of a house beside a lawn',
+    text: 'Paved patios, garden paths and pathways to and around the house.',
+  },
+  {
+    title: 'Driveway drainage',
+    img: '/assets/img/residential/driveway-channel-drain-640.webp',
+    alt: 'Channel drain installed across a driveway entrance before surfacing, with a roller on site',
+    text: 'Channel drains, gullies and soakaways so surface water runs off the driveway and away from the house.',
+  },
+  {
+    title: 'Repairs and resurfacing',
+    img: '/assets/img/residential/tarmac-roller-640.webp',
+    alt: 'Roller compacting a freshly laid tarmac surface',
+    text: 'Patch repairs and resurfacing for worn or damaged driveways and paths.',
+  },
+];
+
+const WORK_TYPES = [
+  'New driveways and driveway replacements',
+  'Driveway extensions and extra parking',
+  'Patios, garden paths and pathways',
+  'Edging, kerbs and setts',
+  'Drainage on new and existing driveways',
+  'Repairs to worn or damaged surfaces',
+];
+
+const WHY = [
+  { fig: '15+ years', text: 'Delivering groundworks, drainage and external works across Surrey, London and the South East.' },
+  { fig: 'Accredited', text: 'Constructionline Gold, CHAS and SSIP schemes, with CSCS-carded operatives on site.' },
+  { fig: 'Groundworks in-house', text: 'Dig-out, sub-base and drainage carried out by our own team before the surface goes down.' },
+  { fig: 'One contact', text: 'One point of contact from the site visit to the finished driveway.' },
+];
+
+const STEPS = [
+  { title: 'Free site visit', text: 'We are in touch within one working day to arrange a visit and look at access, levels, drainage and how you use the space.' },
+  { title: 'Quotation', text: 'We price the job from what we saw on site and send you our quote.' },
+  { title: 'Start date agreed with you', text: 'We agree a start date and explain how access to the house and parking will work while we are on site.' },
+  { title: 'Groundworks, surfacing and handover', text: 'One point of contact runs the job from dig-out and sub-base through edging, drainage and surfacing to handover.' },
+];
+
+// Local cards, no links: the former tarmac case studies were unpublished in
+// Sanity and their /projects URLs redirect, so nothing here may link to them.
+const WORK = [
+  {
+    tag: 'Driveways',
+    title: 'Tarmac driveway, Fetcham',
+    img: '/assets/img/residential/tarmac-driveway-fetcham-640.webp',
+    alt: 'Finished tarmac driveway in front of a bungalow in Fetcham, edged against the lawn',
+    text: 'New tarmac driveway across the front of a bungalow, edged where it meets the lawn.',
+  },
+  {
+    tag: 'Driveways',
+    title: 'Driveway dig-out and sub-base',
+    img: '/assets/img/residential/driveway-sub-base-640.webp',
+    alt: 'Driveway with the sub-base laid, sett edging set and a gully in place, before surfacing',
+    text: 'Sub-base laid, sett edging set and a gully in place, ready for the tarmac to go down.',
+  },
+];
+
+const FAQS = [
+  {
+    q: 'What surfacing work do you do for homeowners?',
+    a: 'We lay tarmac, block paving and resin bound driveways, patios, garden paths and pathways, and carry out driveway drainage, repairs and resurfacing for homes across Surrey.',
+  },
+  {
+    q: 'Which surface is right for my driveway?',
+    a: 'It depends on how the driveway is used, the look you want, the levels and how surface water drains away. We work with tarmac, block paving and resin bound, and recommend a finish once we have seen the property.',
+  },
+  {
+    q: 'Do you deal with the base and drainage as well as the surface?',
+    a: 'Yes. Dig-out, sub-base, edging, drainage and the finished surface run as one job through one team, so the build-up below the surface is planned together with the finish above it.',
+  },
+  {
+    q: 'Can you repair or resurface an existing driveway?',
+    a: 'Yes. We carry out patch repairs and resurfacing on worn or damaged driveways and paths. At the site visit we will tell you whether a repair will do the job or whether the surface needs replacing.',
+  },
+  {
+    q: 'How do I get a quote for a new driveway?',
+    a: 'Call 01483 323568 or send the form on this page with your postcode and a description of the work. We will be in touch within one working day to arrange a free site visit.',
+  },
+];
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: FAQS.map(({ q, a }) => ({
+    '@type': 'Question',
+    name: q,
+    acceptedAnswer: { '@type': 'Answer', text: a },
+  })),
+};
+---
+<BaseLayout
+  title="Driveways and Residential Surfacing Surrey | Free Site Visit"
+  description="Tarmac, block paving and resin bound driveways, patios, paths, driveway drainage and repairs for homes across Surrey. Constructionline Gold, CHAS and SSIP accredited. Call 01483 323568."
+  path="/lp/residential-surfacing"
+>
+  <meta name="robots" content="noindex,follow" slot="head" />
+  <ServiceSchema slot="head" name="Residential surfacing" slug="lp/residential-surfacing" description="Tarmac, block paving and resin bound driveways, patios, paths, driveway drainage and repairs for homes across Surrey." />
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify(faqSchema)} />
+
+<section class="page-hero lp2-hero">
+  <div class="page-hero-bg" aria-hidden="true">
+    <div class="page-hero-img" style="background-image:url('/assets/img/residential/tarmac-driveway-fetcham-hero-1500.webp')"></div>
+    <div class="page-hero-vignette"></div>
+  </div>
+  <div class="container page-hero-inner">
+    <h1 class="page-title">Surrey driveways and surfacing</h1>
+    <p class="page-lede">Tarmac, block paving and resin bound driveways, patios, paths, drainage and repairs for Surrey homes. Free site visit, one working day response.</p>
+    <div class="hero-ctas">
+      <a href="#quoteForm" class="btn btn-yellow">{QUOTE_LABEL}</a>
+      <a href={PHONE_HREF} class="btn btn-ghost-light">{PHONE_LABEL}</a>
+    </div>
+  </div>
+</section>
+
+<section class="lp2-trust" aria-label="Accreditations">
+  <div class="container">
+    <ul class="lp2-trust-logos lp2-trust-logos-3">
+      {LOGOS.map(({ logo, alt }) => (
+        <li class="acc-badge lp2-badge"><img src={logo} alt={alt} width="160" height="80" decoding="async" /></li>
+      ))}
+    </ul>
+    <p class="lp2-trust-line">Constructionline Gold, CHAS and SSIP accredited. CSCS-carded operatives. Written risk assessments and method statements on every job.</p>
+  </div>
+</section>
+
+<section class="page-section lp2-services">
+  <div class="container">
+    <div class="section-head">
+      <h2 class="section-title">Our driveway and surfacing services</h2>
+      <p class="section-lede">Dig-out, sub-base, drainage and the finished surface, from one team and one point of contact.</p>
+    </div>
+    <ul class="lp2-tiles">
+      {SERVICES.map(({ title, img, alt, text }) => (
+        <li class="lp2-tile">
+          <img class="lp2-tile-img" src={img} alt={alt} width="320" height="240" loading="lazy" decoding="async" />
+          <div class="lp2-tile-body">
+            <h3>{title}</h3>
+            <p>{text}</p>
+          </div>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<section class="page-section page-section-grey lp2-sectors">
+  <div class="container">
+    <div class="section-head">
+      <h2 class="section-title">Work we carry out</h2>
+      <p class="section-lede">Domestic jobs across Surrey, scoped around your property, access, levels and drainage.</p>
+    </div>
+    <ul class="lp2-sector-list">
+      {WORK_TYPES.map((s) => <li>{s}</li>)}
+    </ul>
+  </div>
+</section>
+
+<section class="lp2-why">
+  <div class="container">
+    <div class="section-head">
+      <h2 class="section-title light">Why choose Surrey Contracting for your driveway</h2>
+    </div>
+    <ul class="lp2-why-grid">
+      {WHY.map(({ fig, text }) => (
+        <li><strong>{fig}</strong><p>{text}</p></li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<section class="page-section page-section-grey lp2-steps">
+  <div class="container">
+    <div class="section-head">
+      <h2 class="section-title">How a driveway job runs with us</h2>
+    </div>
+    <ol class="lp2-steps-row">
+      {STEPS.map(({ title, text }, i) => (
+        <li>
+          <span class="lp2-step-num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+          <h3>{title}</h3>
+          <p>{text}</p>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>
+
+<section class="page-section lp2-work">
+  <div class="container">
+    <div class="section-head">
+      <h2 class="section-title">Recent driveway work</h2>
+    </div>
+    <div class="lp2-proj-grid">
+      {WORK.map(({ tag, title, img, alt, text }) => (
+        <div class="proj">
+          <div class="proj-photo"><img src={img} alt={alt} width="640" height="480" loading="lazy" decoding="async" /></div>
+          <div class="proj-meta">
+            <span class="proj-tag">{tag}</span>
+            <h3>{title}</h3>
+            <p>{text}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<section class="page-section">
+  <div class="container">
+    <div class="section-head">
+      <h2 class="section-title">Driveway and surfacing FAQs</h2>
+    </div>
+    <div class="faq-list">
+      {FAQS.map(({ q, a }) => (
+        <details class="faq-item">
+          <summary>{q}</summary>
+          <p>{a}</p>
+        </details>
+      ))}
+    </div>
+  </div>
+</section>
+
+<section class="page-section page-section-grey">
+  <div class="container contact-grid">
+    <div class="contact-info">
+      <span class="eyebrow eyebrow-yellow">Get your driveway quote</span>
+      <h2 class="section-title">Planning a new driveway or patio?</h2>
+      <p>Send us the details and we will be in touch within one working day to arrange a free site visit. One point of contact from quote to handover.</p>
+      <div class="contact-cards">
+        <div class="contact-card">
+          <div class="contact-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.86 19.86 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.86 19.86 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div>
+          <div>
+            <span class="contact-label">Phone</span>
+            <a class="contact-value" href={PHONE_HREF}>01483 323568</a>
+          </div>
+        </div>
+        <div class="contact-card">
+          <div class="contact-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg></div>
+          <div>
+            <span class="contact-label">Response</span>
+            <span class="contact-value">Within one working day</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <form class="quote-form contact-form" id="quoteForm" data-lead-source={LEAD_SOURCE} novalidate>
+      <div style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden;" aria-hidden="true">
+        <label>Company website<input type="text" name="_honeypot" tabindex="-1" autocomplete="off"></label>
+      </div>
+      <h3 class="form-title">Get a free driveway quote</h3>
+      <div class="qf-row">
+        <label><span>Name</span><input required data-tc-masked name="name" type="text" placeholder="Your full name"></label>
+        <label><span>Phone</span><input required data-tc-masked name="phone" type="tel" placeholder="01483 323568"></label>
+      </div>
+      <label><span>Email</span><input required data-tc-masked name="email" type="email" placeholder="you@email.com"></label>
+      <label><span>Company (if applicable)</span><input data-tc-masked name="company" type="text" placeholder="Optional"></label>
+      <fieldset class="qf-checks">
+        <legend>What do you need?</legend>
+        <label class="check"><input type="checkbox" name="svc" value="Driveway"><span>Driveway</span></label>
+        <label class="check"><input type="checkbox" name="svc" value="Patio and Paths"><span>Patio and Paths</span></label>
+        <label class="check"><input type="checkbox" name="svc" value="Driveway Drainage"><span>Driveway Drainage</span></label>
+        <label class="check"><input type="checkbox" name="svc" value="Repairs"><span>Repairs</span></label>
+        <label class="check"><input type="checkbox" name="svc" value="Other"><span>Other</span></label>
+      </fieldset>
+      <label><span>Postcode</span><input data-tc-masked name="postcode" type="text" placeholder="GU1 1AA"></label>
+      <label><span>Tell us about the job</span><textarea data-tc-masked name="message" rows="5" placeholder="Type of surface, approximate area, access, target start date"></textarea></label>
+      <button type="submit" class="btn btn-yellow btn-block">Send enquiry</button>
+      <p class="qf-success" id="qfSuccess" hidden>Thanks, we've got it. A contracts manager will be in touch within one working day.</p>
+    </form>
+  </div>
+</section>
+
+<div class="lp-sticky-cta lp2-sticky">
+  <div class="container lp-sticky-cta-row">
+    <p class="lp-sticky-cta-text">New driveway or patio?<span>Free site visit, one working day response.</span></p>
+    <a href={PHONE_HREF} class="btn btn-ghost-light">{PHONE_LABEL}</a>
+    <a href="#quoteForm" class="btn btn-yellow">{QUOTE_LABEL}</a>
+  </div>
+</div>
+</BaseLayout>

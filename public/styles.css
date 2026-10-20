@@ -2850,6 +2850,12 @@ a.contact-value:hover { color: var(--yellow-700); }
   grid-template-columns: repeat(8, minmax(0, 1fr));
   gap: 12px;
 }
+/* Three logos only (/lp/residential-surfacing, Ed 20 Oct 2026): one centred
+   row at every width. Two classes, so it beats the media-query overrides. */
+.lp2-trust-logos.lp2-trust-logos-3 {
+  grid-template-columns: repeat(3, minmax(0, 180px));
+  justify-content: center;
+}
 .lp2-badge.acc-badge { height: 76px; padding: 10px; }
 .lp2-badge.acc-badge img { max-height: 52px; }
 .lp2-trust-line {

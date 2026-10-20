@@ -42,6 +42,18 @@
  * "surreyhillssurfacing" stays forbidden everywhere. That page also carries
  * extra forbidden terms so it cannot drift into residential or driveway
  * wording. Every other check applies to it unchanged.
+ *
+ * Residential exception (Ed, 20 Oct 2026): Jason now wants to advertise
+ * residential surfacing, on Surrey Contracting's site, through
+ * lp/residential-surfacing. This supersedes the 1 Oct "residential belongs
+ * to SHS only" rule for that page alone. It may use "surfacing", "tarmac"
+ * and "resin" (resin bound is one of the services Ed listed); residential,
+ * driveway, homeowner and patio were never in FORBIDDEN, so they need no
+ * lifting there and stay forbidden on lp/commercial-surfacing. "resin" may
+ * be lifted on that page only, and "surreyhillssurfacing" on none. The page
+ * also forbids guarantee, warranty and "£", so the draft copy cannot drift
+ * into promises or prices. The homepage ban (check-homepage.mjs), the nav,
+ * footer, sitemap filter and the /surfacing redirects are unchanged.
  */
 import { readFileSync, existsSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
@@ -61,10 +73,24 @@ const V2_PAGES = [
     // Commercial and public sector only; residential belongs to SHS.
     extraForbidden: ['driveway', 'residential', 'homeowner', 'patio'],
   },
+  {
+    slug: 'lp/residential-surfacing',
+    leadSource: 'lp_residential_surfacing',
+    // Ed, 20 Oct 2026: residential surfacing advertised on SC's site, this page only.
+    allowTerms: ['surfacing', 'tarmac', 'resin'],
+    // No guarantees or prices on the draft copy.
+    extraForbidden: ['guarantee', 'warranty', '£'],
+  },
 ];
 
 // Terms that no allowTerms entry may ever lift.
-const NEVER_ALLOWED = ['resin', 'surreyhillssurfacing'];
+const NEVER_ALLOWED = ['surreyhillssurfacing'];
+// The only pages that may carry allowTerms, and the most each may lift
+// (Ed, 1 Oct 2026 for commercial; Ed, 20 Oct 2026 for residential). Do not widen.
+const ALLOW_LIMITS = {
+  'lp/commercial-surfacing': ['surfacing', 'tarmac'],
+  'lp/residential-surfacing': ['surfacing', 'tarmac', 'resin'],
+};
 for (const { slug, allowTerms = [] } of V2_PAGES) {
   for (const t of allowTerms) {
     if (NEVER_ALLOWED.includes(t)) {
@@ -72,9 +98,15 @@ for (const { slug, allowTerms = [] } of V2_PAGES) {
       process.exit(1);
     }
   }
-  if (allowTerms.length && slug !== 'lp/commercial-surfacing') {
-    console.error(`check-lp: ${slug} has allowTerms; only lp/commercial-surfacing may (Ed, 1 Oct 2026)`);
+  if (allowTerms.length && !ALLOW_LIMITS[slug]) {
+    console.error(`check-lp: ${slug} has allowTerms; only ${Object.keys(ALLOW_LIMITS).join(' and ')} may`);
     process.exit(1);
+  }
+  for (const t of allowTerms) {
+    if (!ALLOW_LIMITS[slug].includes(t)) {
+      console.error(`check-lp: ${slug} tries to allow "${t}", beyond its limit (${ALLOW_LIMITS[slug].join(', ')})`);
+      process.exit(1);
+    }
   }
 }
 

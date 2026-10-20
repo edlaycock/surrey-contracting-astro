@@ -163,3 +163,20 @@ would have been readable by anyone viewing source. Rule: third-party
 credentials stay on the server (`/api/contact` and `.env`), never in page
 HTML or client JS. `scripts/check-no-keys.mjs` fails the build if a YTQ key
 prefix or the endpoint shows up in `dist/client`.
+
+## Residential surfacing is now advertised on Surrey Contracting's site (20 Oct 2026)
+
+Until today the rule (1 Oct, from Jason via Ed) was that Surrey Contracting
+advertises commercial and public-sector surfacing only, and residential
+surfacing belongs solely to Surrey Hills Surfacing. On 20 Oct Ed decided that
+Jason now wants to advertise residential surfacing and that the page goes on
+Surrey Contracting's site, as the ads-only landing page
+/lp/residential-surfacing.
+Rule: for that page only, this supersedes the SHS-only rule and the older
+notes in tasks/todo.md and tasks/shs-handover.md that say residential
+surfacing must not appear on the SC site. Everything else stands: surfacing
+stays off the nav, footer, homepage, services and sitemap; the /surfacing
+redirects are unchanged; lp/commercial-surfacing still forbids residential
+wording; no link to or mention of the SHS site anywhere. check-lp lets only
+that page use "surfacing", "tarmac" and "resin" (ALLOW_LIMITS). Do not widen
+it to another page without a new dated decision from Ed.
