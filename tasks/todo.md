@@ -2148,7 +2148,7 @@ redirects; no /lp/* changes.
 - [ ] System Admin card: claim used, "Connected by YourTradeQuotes support on <date>". Date: ____
 - [ ] One real enquiry through the live form, agreed with Surrey Contracting first, "Website test, please ignore", seen in their YTQ Enquiries as via your server. Date: ____
 
-## Residential surfacing landing page (20 Oct 2026, branch claude/confident-dijkstra-nd9hu3, no PR yet)
+## Residential surfacing landing page (20 Oct 2026, branch claude/confident-dijkstra-nd9hu3, PR opened 20 Oct 2026)
 Ed, 20 Oct 2026: Jason now wants to advertise residential surfacing on Surrey Contracting's site. Supersedes the 1 Oct SHS-only rule for this page only (tasks/lessons.md).
 - [x] `src/pages/lp/residential-surfacing.astro`: v2 LP mirroring /lp/commercial-surfacing (same skeleton, lp2 classes, section order). noindex,follow; one h1; one #quoteForm posting through app.js to /api/contact with `data-lead-source="lp_residential_surfacing"` (no data-ytq-form, as on every form since 17 Oct); data-tc-masked on all six fields; FAQPage JSON-LD from the FAQS array; no hero eyebrow; no dashes; phone 01483 323568
 - [x] Thanks page `/lp/residential-surfacing/thanks` built by the existing glob in `lp/[slug]/thanks.astro` (no list to edit)
@@ -2157,7 +2157,7 @@ Ed, 20 Oct 2026: Jason now wants to advertise residential surfacing on Surrey Co
 - [x] Recent work: two local cards with no links (the tarmac case studies are unpublished and their /projects URLs redirect)
 - [x] check-lp: lp/residential-surfacing added to V2_PAGES; may lift surfacing, tarmac and resin (ALLOW_LIMITS, no other page may lift resin); extra forbidden guarantee, warranty and £. Other pages' rules unchanged; check-homepage unchanged
 - [x] Not changed: nav, footer, homepage, sitemap filter, /surfacing redirects, /lp/commercial-surfacing
-- [ ] Ed and Jason: approve the copy (all of it is draft, see the report) and the layout screenshots before a PR is opened
+- [x] Ed approved merging and deploying (20 Oct 2026); the copy stays a draft for Jason to confirm (below)
 - [ ] Jason: confirm the service list (resin bound in particular), the areas covered (copy says Surrey), and that the Fetcham and sett-edged driveway photos are Surrey Contracting's own jobs
 - [ ] Jason: a resin bound driveway photo to replace the placeholder; ideally a 1600px+ landscape finished-driveway photo for the hero and finished block paving and patio photos
 - [ ] Google Ads: create the residential ad group pointing to https://surreycontracting.co.uk/lp/residential-surfacing once merged and live
