@@ -1,0 +1,27 @@
+---
+// One photo of a YTQ case study: whole, in its own proportions, with width and
+// height from the record so the page does not jump, srcset from the stored
+// copies, and the record's alt text (spec/rendering.md section 4).
+import type { ImageView } from '../lib/caseStudies/render.ts';
+
+interface Props {
+  image: ImageView;
+  sizes: string;
+  /** The top slot: not lazy, high fetch priority. Everything else is lazy. */
+  eager?: boolean;
+  class?: string;
+}
+const { image, sizes, eager = false, class: className } = Astro.props;
+---
+<img
+  class={className}
+  src={image.src}
+  srcset={image.srcset}
+  sizes={sizes}
+  width={image.width}
+  height={image.height}
+  alt={image.alt}
+  loading={eager ? 'eager' : 'lazy'}
+  decoding={eager ? undefined : 'async'}
+  fetchpriority={eager ? 'high' : undefined}
+/>

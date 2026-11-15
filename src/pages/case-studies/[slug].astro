@@ -1,0 +1,192 @@
+---
+// A YourTradeQuotes case study (Case Study Core spec/rendering.md, default
+// layout of section 9). Rendered at request time from the site's own store,
+// which the sync fills from YTQ's feed, so a publish, an edit or a removal
+// shows without a rebuild. A removed case study answers 410 Gone with nothing
+// from the record; an earlier slug of a live one redirects.
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CaseStudyImage from '../../components/CaseStudyImage.astro';
+import { readConfig } from '../../lib/caseStudies/config.ts';
+import { loadCore } from '../../lib/caseStudies/core.ts';
+import { readStateForPages } from '../../lib/caseStudies/store.ts';
+import { lookupSlug, metaLine, pageLayout, paragraphs, socialImage } from '../../lib/caseStudies/render.ts';
+import { siteContext } from '../../lib/caseStudies/siteContext.ts';
+
+export const prerender = false;
+
+const config = readConfig();
+const slug = String(Astro.params.slug || '');
+const found = lookupSlug(Object.values(readStateForPages(config.dataDir).entries), slug);
+Astro.response.headers.set('cache-control', 'no-cache');
+
+if (found.kind === 'moved') return Astro.redirect(`/case-studies/${found.slug}`, 301);
+if (found.kind === 'none') return new Response(null, { status: 404 });
+
+let page = null;
+if (found.kind === 'live') {
+  const entry = found.entry;
+  const record = entry.record;
+  let jsonLd = '';
+  try {
+    jsonLd = loadCore().buildJsonLdScriptTag(record, siteContext(entry, config));
+  } catch {
+    // The builder validates the record itself; one it refuses is not shown.
+    console.error(`[case-studies] ${record.id} refused by the JSON-LD builder; not rendered`);
+  }
+  if (jsonLd) {
+    page = { record, layout: pageLayout(entry), meta: metaLine(record), social: socialImage(entry), jsonLd };
+  }
+}
+if (found.kind === 'live' && !page) return new Response(null, { status: 404 });
+if (!page) Astro.response.status = 410;
+
+const pairSizes = '(max-width: 700px) 100vw, 620px';
+const heroSizes = '(max-width: 1280px) 100vw, 1200px';
+const gallerySizes = '(max-width: 700px) 100vw, (max-width: 1100px) 50vw, 400px';
+---
+{page ? (
+<BaseLayout
+  title={`${page.record.title} | Surrey Contracting Limited`}
+  description={page.record.excerpt}
+  path={`/case-studies/${page.record.slug}`}
+  ogTitle={page.record.title}
+  ogType="article"
+  ogImage={`${config.siteUrl}${page.social.url}`}
+  ogImageWidth={page.social.width}
+  ogImageHeight={page.social.height}
+  ogImageAlt={page.social.alt}
+  active="projects"
+>
+  <Fragment slot="head">
+    <meta property="article:published_time" content={page.record.published_at} />
+    <meta property="article:modified_time" content={page.record.modified_at} />
+    <meta name="twitter:image:alt" content={page.social.alt} />
+  </Fragment>
+
+  <article class="cs" lang="en-GB">
+    <section class="page-hero cs-band">
+      <div class="container page-hero-inner">
+        <nav class="crumbs" aria-label="Breadcrumb">
+          <a href="/">Home</a>
+          <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
+          <a href="/case-studies">Case studies</a>
+          <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
+          <span>{page.record.title}</span>
+        </nav>
+        <header class="cs-header">
+          <h1 class="page-title cs-title">{page.record.title}</h1>
+          <p class="cs-meta">
+            <span class="cs-meta-service">{page.meta.service}</span>
+            {page.meta.town && <span class="cs-meta-town">{page.meta.town}</span>}
+            <span class="cs-meta-month">{page.meta.month}</span>
+          </p>
+        </header>
+      </div>
+    </section>
+
+    <div class="container cs-body">
+      {page.layout.top.kind === 'pair' ? (
+        <figure class="cs-top cs-pair">
+          <div class="cs-pair-before">
+            <CaseStudyImage image={page.layout.top.pair.before} sizes={pairSizes} eager />
+            <span class="cs-pair-label">Before</span>
+          </div>
+          <div class="cs-pair-after">
+            <CaseStudyImage image={page.layout.top.pair.after} sizes={pairSizes} eager />
+            <span class="cs-pair-label">After</span>
+          </div>
+          {(page.layout.top.pair.before.caption || page.layout.top.pair.after.caption) && (
+            <figcaption>{[page.layout.top.pair.before.caption, page.layout.top.pair.after.caption].filter(Boolean).join(' ')}</figcaption>
+          )}
+        </figure>
+      ) : (
+        <figure class="cs-top cs-hero">
+          <CaseStudyImage image={page.layout.top.image} sizes={heroSizes} eager />
+          {page.layout.top.image.caption && <figcaption>{page.layout.top.image.caption}</figcaption>}
+        </figure>
+      )}
+
+      <div class="cs-story">
+        {page.record.sections.map((section) => (
+          <section class={`cs-section cs-section-${section.key}`}>
+            <h2>{section.question}</h2>
+            {paragraphs(section.answer).map((p) => <p>{p}</p>)}
+          </section>
+        ))}
+      </div>
+
+      {page.layout.pairs.length > 0 && (
+        <section class="cs-pairs" aria-label="More before and after photos">
+          {page.layout.pairs.map((pair) => (
+            <figure class="cs-pair">
+              <div class="cs-pair-before">
+                <CaseStudyImage image={pair.before} sizes={pairSizes} />
+                <span class="cs-pair-label">Before</span>
+              </div>
+              <div class="cs-pair-after">
+                <CaseStudyImage image={pair.after} sizes={pairSizes} />
+                <span class="cs-pair-label">After</span>
+              </div>
+              {(pair.before.caption || pair.after.caption) && (
+                <figcaption>{[pair.before.caption, pair.after.caption].filter(Boolean).join(' ')}</figcaption>
+              )}
+            </figure>
+          ))}
+        </section>
+      )}
+
+      {page.layout.gallery.length > 0 && (
+        <section class="cs-gallery" aria-label="More photos">
+          {page.layout.gallery.map((image) => (
+            <figure>
+              <CaseStudyImage image={image} sizes={gallerySizes} />
+              {image.role === 'before' && <span class="cs-pair-label">Before</span>}
+              {image.role === 'after' && <span class="cs-pair-label">After</span>}
+              {image.caption && <figcaption>{image.caption}</figcaption>}
+            </figure>
+          ))}
+        </section>
+      )}
+
+      {(page.record.faqs ?? []).length > 0 && (
+        <section class="cs-faqs">
+          <h2>Questions about this job</h2>
+          {(page.record.faqs ?? []).map((faq) => (
+            <>
+              <h3>{faq.question}</h3>
+              {paragraphs(faq.answer).map((p) => <p>{p}</p>)}
+            </>
+          ))}
+        </section>
+      )}
+
+      <aside class="cs-cta">
+        <div>
+          <h2>Planning something similar?</h2>
+          <p>Tell us about your site and we will come back to you with a clear, itemised quote.</p>
+        </div>
+        <div class="cs-cta-actions">
+          <a href="/contact" class="btn btn-yellow">Request a quote</a>
+          <a href="tel:01483323568" class="btn btn-outline-dark">Call 01483 323568</a>
+        </div>
+      </aside>
+    </div>
+
+    <Fragment set:html={page.jsonLd} />
+  </article>
+</BaseLayout>
+) : (
+<BaseLayout
+  title="Case study removed | Surrey Contracting Limited"
+  description="This case study is no longer published."
+  path="/case-studies"
+  active="projects"
+>
+  <section class="page-section">
+    <div class="container cs-gone">
+      <h1>This case study has been removed</h1>
+      <p>It is no longer published. You can see our other work on the <a href="/projects">projects page</a>, or <a href="/contact">get in touch</a> about your own job.</p>
+    </div>
+  </section>
+</BaseLayout>
+)}

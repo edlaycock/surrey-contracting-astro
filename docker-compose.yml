@@ -1,6 +1,8 @@
 # Surrey Contracting — isolated app container.
 # Binds ONLY to 127.0.0.1:4321 (nginx proxies the public domain to it).
 # Does not join any shared network, does not touch 80/443, no shared volumes.
+# One named volume of its own: the YourTradeQuotes case-study store, which
+# must survive a rebuild (the image is rebuilt on every deploy).
 services:
   surrey-contracting:
     build:
@@ -19,3 +21,9 @@ services:
       HOST: "0.0.0.0"
       PORT: "4321"
       NODE_ENV: "production"
+      YTQ_CASE_STUDY_DIR: "/data/ytq-case-studies"
+    volumes:
+      - ytq-case-studies:/data/ytq-case-studies
+
+volumes:
+  ytq-case-studies:

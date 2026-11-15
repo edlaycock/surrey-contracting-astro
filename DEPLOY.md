@@ -40,8 +40,10 @@ progress.
      one `<h1>` and one quote form with the right lead source, contain no em
      or en dashes or forbidden terms, and reference only assets that exist.
    - `scripts/check-no-keys.mjs`: no file under `dist/client` contains
-     `ytq_live_`, `ytq_pub_` or `submitEnquiry`. YourTradeQuotes is reached
-     from the server only.
+     `ytq_live_`, `ytq_pub_`, `submitEnquiry` or `caseStudyFeed`.
+     YourTradeQuotes is reached from the server only.
+   - `scripts/check-case-study-core.mjs`: the vendored Case Study Core matches
+     its pinned manifest file for file, and passes its own fixtures.
 2. **Rsync the source to the VPS** into the `DEPLOY_PATH` directory, with
    `--delete`. Excluded: `.git`, `node_modules`, `dist`, `.astro`, `studio`
    and `.env`, so the server's `.env` is never overwritten or deleted.
@@ -127,6 +129,7 @@ sudo ufw allow OpenSSH && sudo ufw allow 'Nginx Full' && sudo ufw enable
 | `YTQ_SECRET_KEY` | server-only YourTradeQuotes secret key; `/api/contact` copies every valid enquiry to YTQ with it. Written by `scripts/ytq-connect.sh` from a claim code. Unset, the relay is skipped and logs one line |
 | `YTQ_ENDPOINT` | optional, local testing only: overrides the YTQ endpoint |
 | `SMTP2GO_ENDPOINT` | optional, local testing only: overrides the SMTP2GO API URL |
+| `YTQ_CASE_STUDIES` | `on` switches on the YourTradeQuotes case-study kit (below). Unset: inert |
 
 After changing `.env`, run `docker compose up -d` in `DEPLOY_PATH` (or the
 next deploy) so the container picks it up.
@@ -218,6 +221,31 @@ deploy that carries no claim code.
 certbot manages the TLS sections of the live nginx config; do not edit them
 by hand. The container has `restart: unless-stopped`, so it comes back after
 a reboot once Docker starts.
+
+## YourTradeQuotes case studies (off until switched on)
+
+What the kit does is in README.md, "YourTradeQuotes case studies". It ships
+switched off: with `YTQ_CASE_STUDIES` unset the container makes no call to YTQ,
+whatever else is in `.env`.
+
+- **The deploy itself needs nothing new.** `docker-compose.yml` adds the named
+  volume `ytq-case-studies` (created by the first `docker compose up`, owned by
+  the container's `node` user) and sets `YTQ_CASE_STUDY_DIR`. The volume
+  survives every rebuild; `docker compose down -v` would delete it, and the
+  next sync would fetch everything again from YTQ.
+- **Do not switch it on** until YTQ PRs #287, #293 and #295 are released and
+  the case-study pilot switch is on for Surrey Contracting in YTQ.
+- **To switch on:** add `YTQ_CASE_STUDIES=on` to `$DEPLOY_PATH/.env` (it uses
+  the `YTQ_SECRET_KEY` already there) and run `docker compose up -d`. Then in
+  YTQ, Settings, Integrations, register the refresh URL
+  `https://surreycontracting.co.uk/api/ytq-refresh`, and check
+  `https://surreycontracting.co.uk` is on the account's allowed websites.
+- **No cron or extra process:** the hourly safety poll runs inside the
+  container. `docker compose logs surrey-contracting | grep case-studies`
+  shows each sync's outcome (ids, versions and statuses only).
+- **To switch off:** remove the line and `docker compose up -d`. Pages already
+  stored keep being served; to take them down as well, unpublish in YTQ first
+  (the tombstones remove them), then switch off.
 
 ## Rebuild when the client publishes in Sanity
 

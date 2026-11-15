@@ -7,7 +7,15 @@ import node from '@astrojs/node';
 export default defineConfig({
   site: 'https://surreycontracting.co.uk',
   trailingSlash: 'never',
-  integrations: [sitemap({ filter: (page) => !page.includes('/training-manual') && !page.includes('/lp/') })],
+  integrations: [
+    sitemap({
+      filter: (page) => !page.includes('/training-manual') && !page.includes('/lp/'),
+      // YourTradeQuotes case studies are rendered at request time, so their
+      // sitemap is too (src/pages/sitemap-case-studies.xml.ts): a publish
+      // appears and a removal disappears without a rebuild.
+      customSitemaps: ['https://surreycontracting.co.uk/sitemap-case-studies.xml'],
+    }),
+  ],
   // Static by default; only routes that opt out (api/contact) run server-side.
   adapter: node({ mode: 'standalone' }),
   security: { checkOrigin: false },

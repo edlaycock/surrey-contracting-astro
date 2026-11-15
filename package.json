@@ -8,10 +8,14 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
-    "postbuild": "node scripts/check-homepage.mjs && node scripts/check-locations.mjs && node scripts/check-guides.mjs && node scripts/check-lp.mjs && node scripts/check-no-keys.mjs",
+    "postbuild": "node scripts/check-homepage.mjs && node scripts/check-locations.mjs && node scripts/check-guides.mjs && node scripts/check-lp.mjs && node scripts/check-no-keys.mjs && node scripts/check-case-study-core.mjs",
     "test:ytq-relay": "node scripts/check-ytq-relay.mjs",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "test:case-study-core": "node scripts/check-case-study-core.mjs",
+    "test:case-studies": "node scripts/check-ytq-case-studies.mjs",
+    "test:case-study-pages": "node scripts/check-case-study-pages.mjs",
+    "test": "npm run test:ytq-relay && npm run test:case-study-core && npm run test:case-studies"
   },
   "dependencies": {
     "@astrojs/node": "^10.1.3",

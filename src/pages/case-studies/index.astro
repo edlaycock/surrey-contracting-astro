@@ -1,0 +1,76 @@
+---
+// The listing of YourTradeQuotes case studies (spec/rendering.md section 7):
+// a grid of cards, newest first, with a filter by service (plain links, no
+// JavaScript) once there are more than six. With none published it is a 404,
+// so nothing changes on the site until the first one arrives.
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CaseStudyImage from '../../components/CaseStudyImage.astro';
+import { readConfig } from '../../lib/caseStudies/config.ts';
+import { liveEntries, readStateForPages } from '../../lib/caseStudies/store.ts';
+import { listingView } from '../../lib/caseStudies/render.ts';
+
+export const prerender = false;
+
+const config = readConfig();
+const live = liveEntries(readStateForPages(config.dataDir));
+if (live.length === 0) return new Response(null, { status: 404 });
+Astro.response.headers.set('cache-control', 'no-cache');
+const view = listingView(live, Astro.url.searchParams.get('service'));
+---
+<BaseLayout
+  title="Case Studies | Surrey Contracting Limited"
+  description="Recent jobs by Surrey Contracting Limited, with before and after photos and what we did on site."
+  path="/case-studies"
+  ogTitle="Case Studies | Surrey Contracting Limited"
+  active="projects"
+>
+<section class="page-hero cs-band">
+  <div class="container page-hero-inner">
+    <nav class="crumbs" aria-label="Breadcrumb">
+      <a href="/">Home</a>
+      <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
+      <span>Case studies</span>
+    </nav>
+    <h1 class="page-title">Case studies</h1>
+    <p class="page-lede">Recent jobs across Surrey and the Home Counties: the problem, what we did, and how it turned out.</p>
+  </div>
+</section>
+
+<section class="page-section">
+  <div class="container">
+    {view.filters && (
+      <nav class="filter-bar cs-filter" aria-label="Filter by service">
+        <div class="filter-group">
+          <span class="filter-label">Service</span>
+          <a href={view.allHref} class={`chip${view.selected ? '' : ' is-active'}`} aria-current={view.selected ? undefined : 'page'}>All</a>
+          {view.filters.map((f) => (
+            <a href={f.href} class={`chip${f.current ? ' is-active' : ''}`} aria-current={f.current ? 'page' : undefined}>{f.service}</a>
+          ))}
+        </div>
+      </nav>
+    )}
+
+    <div class="gallery-grid cs-grid">
+      {view.cards.map((card) => (
+        <article class="gallery-card cs-card">
+          <a href={`/case-studies/${card.slug}`} class="gallery-link">
+            <div class="gallery-photo cs-card-photo">
+              <CaseStudyImage image={card.image} sizes="(max-width: 700px) 100vw, (max-width: 1100px) 50vw, 420px" />
+            </div>
+            <div class="gallery-body">
+              <p class="gallery-meta cs-meta">
+                <span class="cs-meta-service">{card.meta.service}</span>
+                {card.meta.town && <span class="cs-meta-town">{card.meta.town}</span>}
+                <span class="cs-meta-month">{card.meta.month}</span>
+              </p>
+              <h2 class="cs-card-title">{card.title}</h2>
+              <p class="cs-card-excerpt">{card.excerpt}</p>
+              <span class="gallery-cta">Read the case study →</span>
+            </div>
+          </a>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+</BaseLayout>

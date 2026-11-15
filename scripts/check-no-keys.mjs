@@ -7,7 +7,8 @@
  * /api/contact), with the secret key in the server's YTQ_SECRET_KEY. Until
  * then an inline connector in BaseLayout carried a key in every page. This
  * fails the build if any file under dist/client (pages, scripts, styles,
- * data) contains `ytq_live_`, `ytq_pub_` or `submitEnquiry`.
+ * data) contains `ytq_live_`, `ytq_pub_`, `submitEnquiry` or `caseStudyFeed`
+ * (the case-study feed is pulled by the server only, src/lib/caseStudies).
  *
  * dist/server is not scanned: the relay's endpoint URL lives there by design,
  * and the key never does (it is read from the environment at runtime).
@@ -18,7 +19,7 @@ import { readFileSync, readdirSync, existsSync } from 'node:fs';
 import { join, relative } from 'node:path';
 
 const DIST = process.argv[2] || 'dist/client';
-const PATTERNS = ['ytq_live_', 'ytq_pub_', 'submitEnquiry'];
+const PATTERNS = ['ytq_live_', 'ytq_pub_', 'submitEnquiry', 'caseStudyFeed'];
 const TEXT = /\.(html?|m?js|cjs|css|json|txt|xml|map|webmanifest|svg)$/i;
 
 if (!existsSync(DIST)) {
