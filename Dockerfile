@@ -28,8 +28,12 @@ COPY --from=build /app/package.json ./package.json
 # time (src/lib/caseStudies/core.ts), the same files the postbuild drift check
 # hashed. The store lives on a volume (docker-compose.yml), owned by "node".
 COPY --from=build /app/vendor/caseStudyCore ./vendor/caseStudyCore
+# server.mjs starts the Astro server and then the case-study safety poll, whose
+# code it loads from src/lib/caseStudies with Node's type stripping.
+COPY --from=build /app/server.mjs ./server.mjs
+COPY --from=build /app/src/lib/caseStudies ./src/lib/caseStudies
 RUN mkdir -p /data/ytq-case-studies && chown node:node /data/ytq-case-studies
 # Run as the image's unprivileged "node" user rather than root.
 USER node
 EXPOSE 4321
-CMD ["node", "dist/server/entry.mjs"]
+CMD ["node", "server.mjs"]

@@ -3,20 +3,19 @@
 // layout of section 9). Rendered at request time from the site's own store,
 // which the sync fills from YTQ's feed, so a publish, an edit or a removal
 // shows without a rebuild. A removed case study answers 410 Gone with nothing
-// from the record; an earlier slug of a live one redirects.
+// from the record; an earlier slug of a live one redirects. With the kit
+// switched off every slug is a 404 (store kept; see readPublishedState).
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import CaseStudyImage from '../../components/CaseStudyImage.astro';
 import { readConfig } from '../../lib/caseStudies/config.ts';
-import { loadCore } from '../../lib/caseStudies/core.ts';
-import { readStateForPages } from '../../lib/caseStudies/store.ts';
+import { readPublishedState } from '../../lib/caseStudies/store.ts';
 import { lookupSlug, metaLine, pageLayout, paragraphs, socialImage } from '../../lib/caseStudies/render.ts';
-import { siteContext } from '../../lib/caseStudies/siteContext.ts';
 
 export const prerender = false;
 
 const config = readConfig();
 const slug = String(Astro.params.slug || '');
-const found = lookupSlug(Object.values(readStateForPages(config.dataDir).entries), slug);
+const found = lookupSlug(Object.values(readPublishedState(config).entries), slug);
 Astro.response.headers.set('cache-control', 'no-cache');
 
 if (found.kind === 'moved') return Astro.redirect(`/case-studies/${found.slug}`, 301);
@@ -26,15 +25,10 @@ let page = null;
 if (found.kind === 'live') {
   const entry = found.entry;
   const record = entry.record;
-  let jsonLd = '';
-  try {
-    jsonLd = loadCore().buildJsonLdScriptTag(record, siteContext(entry, config));
-  } catch {
-    // The builder validates the record itself; one it refuses is not shown.
-    console.error(`[case-studies] ${record.id} refused by the JSON-LD builder; not rendered`);
-  }
-  if (jsonLd) {
-    page = { record, layout: pageLayout(entry), meta: metaLine(record), social: socialImage(entry), jsonLd };
+  // Built by the core builder from the full record when it was stored, and
+  // output exactly as it returned it.
+  if (entry.jsonLd) {
+    page = { record, layout: pageLayout(entry), meta: metaLine(record), social: socialImage(entry), jsonLd: entry.jsonLd };
   }
 }
 if (found.kind === 'live' && !page) return new Response(null, { status: 404 });

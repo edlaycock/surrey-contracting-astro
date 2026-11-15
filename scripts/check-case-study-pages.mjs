@@ -3,7 +3,8 @@
  * End-to-end test of the YourTradeQuotes case-study kit against the BUILT
  * site (run `npm run build` first). Run: npm run test:case-study-pages
  *
- * Starts dist/server/entry.mjs on 127.0.0.1 with a temporary store, and a
+ * Starts server.mjs (the container's entry: the built Astro server plus the
+ * case-study poll) on 127.0.0.1 with a temporary store, and a
  * stub of YTQ's caseStudyFeed on 127.0.0.1 (scripts/lib/case-study-fixtures.mjs).
  * Then, as YTQ would: a signed "fetch now" signal to /api/ytq-refresh, the
  * site pulls the feed and photos and acknowledges; the pages, photos and
@@ -29,8 +30,8 @@ const { siteContext } = await import('../src/lib/caseStudies/siteContext.ts');
 // the Docker runtime stage copies (node_modules, dist, package.json,
 // vendor/caseStudyCore), to prove that set is enough.
 const APP = process.env.CASE_STUDY_APP_DIR || ROOT;
-const entry = join(APP, 'dist', 'server', 'entry.mjs');
-if (!existsSync(entry)) {
+const entry = join(APP, 'server.mjs');
+if (!existsSync(join(APP, 'dist', 'server', 'entry.mjs'))) {
   console.error('check-case-study-pages: dist/server/entry.mjs not found (run npm run build first)');
   process.exit(1);
 }
@@ -78,19 +79,63 @@ const env = {
   YTQ_FEED_ENDPOINT: `http://127.0.0.1:${feedPort}/caseStudyFeed`,
   YTQ_CASE_STUDY_DIR: dataDir,
 };
-const server = spawn(process.execPath, [entry], { cwd: APP, env, stdio: ['ignore', 'pipe', 'pipe'] });
+/** Starts server.mjs and waits for its "listening" line, without sending it any request. */
+async function startSite(extraEnv = {}) {
+  const proc = spawn(process.execPath, [entry], { cwd: APP, env: { ...env, ...extraEnv }, stdio: ['ignore', 'pipe', 'pipe'] });
+  const site = { proc, log: '' };
+  proc.stdout.on('data', (d) => { site.log += d; });
+  proc.stderr.on('data', (d) => { site.log += d; });
+  for (let i = 0; i < 200 && !/Server listening/.test(site.log); i++) await sleep(50);
+  if (!/Server listening/.test(site.log)) throw new Error(`server did not start: ${site.log.slice(-500)}`);
+  return site;
+}
+
+// ---------- M4: the poll starts at server start, with no request at all ----------
+{
+  const pollFeed = createFeedStub();
+  const pollServer = http.createServer(async (req, res) => {
+    const out = await pollFeed.fetch(`http://127.0.0.1${req.url}`, { method: req.method, headers: req.headers });
+    res.writeHead(out.status, Object.fromEntries(out.headers));
+    res.end(Buffer.from(await out.arrayBuffer()));
+  });
+  await new Promise((r) => pollServer.listen(0, '127.0.0.1', r));
+  const pollDir = mkdtempSync(join(tmpdir(), 'ytq-cs-poll-'));
+  const common = { PORT: String(port + 2), YTQ_CASE_STUDY_DIR: pollDir, YTQ_FEED_ENDPOINT: `http://127.0.0.1:${pollServer.address().port}/caseStudyFeed`, YTQ_POLL_START_SECONDS: '1' };
+  await test('M4: switched on, the server calls the feed by itself after start, without any page request', async () => {
+    const site = await startSite(common);
+    try {
+      for (let i = 0; i < 100 && pollFeed.requests.length === 0; i++) await sleep(50);
+      assert(pollFeed.requests.length > 0, 'the stub feed was called');
+      for (let i = 0; i < 100 && !/sync \(startup\)/.test(site.log); i++) await sleep(50);
+      assert(/sync \(startup\): ok/.test(site.log), 'the startup sync ran and finished');
+    } finally {
+      site.proc.kill();
+    }
+  });
+  await test('M4: switched off, the server never calls the feed', async () => {
+    const before = pollFeed.requests.length;
+    const site = await startSite({ ...common, PORT: String(port + 3), YTQ_CASE_STUDIES: '' });
+    try {
+      await sleep(2500);
+      eq(pollFeed.requests.length, before, 'no feed call');
+    } finally {
+      site.proc.kill();
+    }
+  });
+  pollServer.close();
+  rmSync(pollDir, { recursive: true, force: true });
+}
+
+// The main site's own startup sync is pushed out of the test's way.
+const mainSite = await startSite({ YTQ_POLL_START_SECONDS: '600' });
+const server = mainSite.proc;
 let serverLog = '';
-server.stdout.on('data', (d) => { serverLog += d; });
-server.stderr.on('data', (d) => { serverLog += d; });
 const BASE = `http://127.0.0.1:${port}`;
 const get = async (path, init) => {
   const res = await fetch(BASE + path, { redirect: 'manual', ...init });
   const buf = Buffer.from(await res.arrayBuffer());
   return { status: res.status, headers: res.headers, buf, text: buf.toString('utf8') };
 };
-for (let i = 0; i < 100; i++) {
-  try { await get('/'); break; } catch { await sleep(100); }
-}
 const config = readConfig(env);
 
 const signal = (over = {}) => {
@@ -120,7 +165,9 @@ try {
     const sm = await get('/sitemap-case-studies.xml');
     eq(sm.status, 200, 'sitemap');
     assert(!sm.text.includes('<url>'), 'no urls');
-    assert(readFileSync(join(APP, 'dist', 'client', 'sitemap-index.xml'), 'utf8').includes('https://surreycontracting.co.uk/sitemap-case-studies.xml'), 'listed in sitemap-index');
+    // M1: the static sitemaps are as they were; the case-study sitemap is submitted in Search Console.
+    const index = readFileSync(join(APP, 'dist', 'client', 'sitemap-index.xml'), 'utf8');
+    assert(!index.includes('case-studies') && !readFileSync(join(APP, 'dist', 'client', 'sitemap-0.xml'), 'utf8').includes('case-studies'), 'static sitemaps name no case-study URL');
   });
 
   await test('refresh route: unsigned, malformed or GET answers a plain 401', async () => {
@@ -174,7 +221,7 @@ try {
     eq((a.slice(a.indexOf('cs-faqs')).match(/<h3>/g) || []).length, 3, 'three FAQ h3');
     assert(a.includes('posts &amp; gravel boards') && a.includes('&lt;2m'), 'FAQ text escaped');
     assert(a.includes('<span class="cs-meta-town">Hersham</span>') && a.includes('October 2026'), 'meta line');
-    const expectedTag = core.buildJsonLdScriptTag(fullEntry.record, siteContext(fullEntry, config));
+    const expectedTag = core.buildJsonLdScriptTag(full.record, siteContext(fullEntry.slug, fullEntry.photos, config));
     assert(html.includes(expectedTag), 'JSON-LD exactly as the core builder returns it');
     eq((html.match(/"@type": "Article"/g) || []).length, 1, 'one Article');
     assert(html.includes('<meta property="og:type" content="article">'), 'og:type article');
@@ -216,6 +263,11 @@ try {
       eq(sha256(res.buf), photo.sha256, `bytes of ${photo.ref}`);
       for (const part of attr(tag, 'srcset').split(', ')) eq((await get(part.split(' ')[0])).status, 200, 'srcset copy');
     }
+    const first = await get(attr(imgs[0], 'src'));
+    const etag = first.headers.get('etag');
+    assert(etag && etag.startsWith('"'), 'ETag sent');
+    const again = await get(attr(imgs[0], 'src'), { headers: { 'if-none-match': etag } });
+    eq([again.status, again.buf.length], [304, 0], 'If-None-Match answers 304');
     eq((await get('/case-studies/media/ph_nothere_01-aaaaaaaaaaaa.jpg')).status, 404, 'an unknown file');
     eq((await get('/case-studies/media/..%2Fstate.json')).status, 404, 'no path tricks');
   });
@@ -240,6 +292,26 @@ try {
     const sm = (await get('/sitemap-case-studies.xml')).text;
     for (const slug of [full.record.slug, minimal.record.slug]) assert(sm.includes(`https://surreycontracting.co.uk/case-studies/${slug}</loc>`), `sitemap has ${slug}`);
     assert(sm.includes('https://surreycontracting.co.uk/case-studies</loc>'), 'sitemap has the listing');
+  });
+
+  await test('M3: switched off with case studies stored: every case-study URL answers as if nothing were published; the store is kept; on again restores them', async () => {
+    const img = attr(imgTags(article((await get(`/case-studies/${full.record.slug}`)).text))[0], 'src');
+    const before = feed.requests.length;
+    const off = await startSite({ PORT: String(port + 1), YTQ_CASE_STUDIES: '' });
+    const OFF = `http://127.0.0.1:${port + 1}`;
+    try {
+      eq((await fetch(`${OFF}/case-studies/${full.record.slug}`, { redirect: 'manual' })).status, 404, 'detail 404');
+      eq((await fetch(`${OFF}/case-studies`)).status, 404, 'listing 404');
+      eq((await fetch(OFF + img)).status, 404, 'photo 404');
+      assert(!(await (await fetch(`${OFF}/sitemap-case-studies.xml`)).text()).includes('<url>'), 'sitemap empty');
+      eq((await fetch(`${OFF}/api/ytq-refresh`, signal())).status, 401, 'a good signal is 401');
+      await sleep(300);
+      eq(feed.requests.length, before, 'no feed call');
+    } finally {
+      off.proc.kill();
+    }
+    eq(Object.keys(store.loadState(dataDir).entries).length, 2, 'store kept');
+    eq((await get(`/case-studies/${full.record.slug}`)).status, 200, 'switched on again: served');
   });
 
   // ---------- remove ----------
@@ -270,27 +342,10 @@ try {
   });
 
   await test('server log carries no key and no record text', async () => {
+    serverLog = mainSite.log;
     assert(!serverLog.includes(DUMMY_KEY), 'no key');
     assert(!serverLog.includes(full.record.sections[0].answer.slice(0, 30)), 'no record text');
     assert(serverLog.includes('[case-studies]'), 'sync logged its outcome');
-  });
-  await test('switched off (YTQ_CASE_STUDIES unset, key present, as on the VPS today): a good signal is 401 and nothing calls the feed', async () => {
-    const offPort = port + 1;
-    const off = spawn(process.execPath, [entry], { cwd: APP, env: { ...env, PORT: String(offPort), YTQ_CASE_STUDIES: '' }, stdio: 'ignore' });
-    try {
-      let res = null;
-      for (let i = 0; i < 100 && !res; i++) {
-        try { res = await fetch(`http://127.0.0.1:${offPort}/`); } catch { await sleep(100); }
-      }
-      const before = feed.requests.length;
-      const r = await fetch(`http://127.0.0.1:${offPort}/api/ytq-refresh`, signal());
-      eq(r.status, 401, 'refused');
-      eq((await fetch(`http://127.0.0.1:${offPort}/case-studies`)).status, 404, 'no listing');
-      await sleep(300);
-      eq(feed.requests.length, before, 'no feed call');
-    } finally {
-      off.kill();
-    }
   });
 } finally {
   server.kill();
@@ -299,6 +354,6 @@ try {
 }
 console.log(`\n${passed} passed, ${failures.length} failed`);
 if (failures.length) {
-  console.error('--- server log ---\n' + serverLog.split('\n').slice(-30).join('\n'));
+  console.error('--- server log ---\n' + mainSite.log.split('\n').slice(-30).join('\n'));
   process.exit(1);
 }

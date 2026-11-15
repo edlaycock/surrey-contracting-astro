@@ -8,6 +8,7 @@ import { readConfig } from './config.ts';
 import type { CaseStudyConfig } from './config.ts';
 import { loadCore } from './core.ts';
 import { runSync } from './sync.ts';
+import { cleanUpAtStart } from './store.ts';
 import type { Resizer, SyncResult } from './sync.ts';
 
 interface PollerState {
@@ -64,13 +65,22 @@ export function requestSync(reason: string, config: CaseStudyConfig = readConfig
   return s.running;
 }
 
-/** Starts the safety poll once per process. Never during the build. */
+/**
+ * Starts the safety poll once per process. Called by server.mjs at process
+ * start; the build never calls it.
+ */
 export function ensurePoller(config: CaseStudyConfig = readConfig()): void {
   const s = pollerState();
   if (s.timer || !config.enabled || !config.secretKey) return;
+  try {
+    const cleaned = cleanUpAtStart(config.dataDir);
+    if (cleaned.lock || cleaned.tmp) console.log(`[case-studies] start: removed ${cleaned.lock ? 'a stale lock' : 'no lock'} and ${cleaned.tmp} stale temporary file(s)`);
+  } catch {
+    console.error('[case-studies] start: could not tidy the store');
+  }
   const minutes = config.pollMinutes;
   s.timer = setInterval(() => void requestSync('poll'), minutes * 60 * 1000);
   s.timer.unref?.();
   // A first run shortly after start, so a restart picks up anything missed.
-  setTimeout(() => void requestSync('startup'), 30 * 1000).unref?.();
+  setTimeout(() => void requestSync('startup'), config.startDelaySeconds * 1000).unref?.();
 }

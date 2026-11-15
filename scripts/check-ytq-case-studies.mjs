@@ -140,10 +140,13 @@ function setup(over = {}) {
   const feed = createFeedStub(over.feed);
   const logs = [];
   const logger = { log: (m) => logs.push(m), error: (m) => logs.push(m) };
-  const run = (extra = {}) => sync.runSync({ config, core, fetchImpl: feed.fetch, logger, resize: null, ...extra });
+  // A clock the tests can move, so backoff is tested without waiting.
+  const clock = { ms: Date.now() };
+  const advance = (minutes) => { clock.ms += minutes * 60 * 1000; };
+  const run = (extra = {}) => sync.runSync({ config, core, fetchImpl: feed.fetch, logger, resize: null, now: () => new Date(clock.ms), ...extra });
   const state = () => store.loadState(dir);
   const media = () => (existsSync(join(dir, 'media')) ? readdirSync(join(dir, 'media')).sort() : []);
-  return { dir, config, feed, logs, run, state, media };
+  return { dir, config, feed, logs, run, state, media, advance };
 }
 const lists = (feed) => feed.requests.filter((r) => r.method === 'GET' && !new URL(r.url).searchParams.has('photo'));
 const photosFetched = (feed) => feed.requests.filter((r) => new URL(r.url).searchParams.has('photo'));
@@ -180,7 +183,7 @@ await test('sync: stores a valid record, its photos verified, and acknowledges i
   assert(!t.logs.join('\n').includes(DUMMY_KEY), 'key never logged');
 });
 
-await test('sync: re-running is a no-op (same version: nothing fetched, nothing acknowledged twice)', async () => {
+await test('sync: re-running is a no-op for content (same version: nothing fetched) and re-acknowledges live (M6)', async () => {
   const t = setup();
   const { record, photos } = await fullRecord();
   t.feed.addRecord(record, photos);
@@ -190,8 +193,9 @@ await test('sync: re-running is a no-op (same version: nothing fetched, nothing 
   const s = t.state(); s.cursor = null; store.saveState(t.dir, s);
   await t.run();
   eq(photosFetched(t.feed).length, 6, 'no photo fetched again');
-  eq(t.feed.acks.length, 1, 'one acknowledgement');
-  eq(t.feed.requests.length - before, 1, 'one list request');
+  eq(t.feed.acks.length, 2, 'the re-served version is acknowledged live again');
+  eq(t.feed.acks[1], t.feed.acks[0], 'the same acknowledgement');
+  eq(t.feed.requests.filter((q) => q.method === 'GET').length - (before - 1), 1, 'one list request');
 });
 
 await test('sync: pages through has_more, sending the stored cursor', async () => {
@@ -332,27 +336,76 @@ await test('sync: partial failure keeps the cursor; the next run finishes withou
   eq(t.media().length, 1, 'only the first record\'s photo is public; staged photos of the second are not');
   eq(t.feed.acks.map((x) => `${x.id} ${x.state}`), ['cs_partialA001 live'], 'first acknowledged');
   broken = false;
+  t.advance(1);
   const aPhotoFetches = photosFetched(t.feed).filter((q) => new URL(q.url).searchParams.get('id') === a.record.id).length;
   const second = await t.run();
   eq(second.outcome, 'ok', 'ok');
   eq(photosFetched(t.feed).filter((q) => new URL(q.url).searchParams.get('id') === a.record.id).length, aPhotoFetches, 'first record not refetched');
   eq(t.state().entries[b.record.id].kind, 'live', 'second stored');
-  eq(t.feed.acks.length, 2, 'each acknowledged once');
+  eq(t.feed.acks.filter((x) => x.id === b.record.id).map((x) => x.state), ['live'], 'second acknowledged live once');
+  eq(t.feed.acks.filter((x) => x.state === 'failed'), [], 'no failed ack for a transient fault');
 });
 
-await test('sync: photo bytes that do not match the record sha256 are discarded; after repeated failures the record is refused', async () => {
+await test('sync: photo bytes that fail the sha256 are discarded; refused only after 3 mismatches in a row (M2)', async () => {
   const t = setup();
   const { record, photos } = await minimalRecord();
   t.feed.addRecord(record, photos);
   t.feed.fail = (kind) => (kind === 'photo' ? 'corrupt' : null);
-  for (let i = 1; i < sync.MAX_ITEM_ATTEMPTS; i++) {
+  for (let i = 1; i < sync.MAX_HASH_MISMATCHES; i++) {
     const r = await t.run();
     eq(r.outcome, 'partial', `attempt ${i} partial`);
     eq(t.media(), [], 'mismatched bytes never public');
+    eq(t.feed.acks, [], 'no ack yet');
+    t.advance(120);
   }
   const last = await t.run();
   eq(last.outcome, 'ok', 'feed moves on');
-  eq([t.feed.acks[0].state, t.feed.acks[0].error], ['failed', 'photo.unavailable'], 'refused after the limit');
+  eq([t.feed.acks[0].state, t.feed.acks[0].error], ['failed', 'photo.hash_mismatch'], 'refused on evidence about the item');
+});
+
+for (const [label, fault] of [['E1: 503 (YTQ outage)', 503], ['E1b: 403 account_inactive', 403], ['404', 404], ['429', 429], ['network error', 'throw']]) {
+  await test(`sync: ${label} on photos for many runs never refuses the item; it goes live when YTQ recovers (M2)`, async () => {
+    const t = setup();
+    const { record, photos } = await fullRecord();
+    t.feed.addRecord(record, photos);
+    const original = t.feed.fetch;
+    let down = true;
+    t.feed.fetch = async (input, init) => {
+      const url = new URL(String(input));
+      if (down && url.searchParams.has('photo')) {
+        if (fault === 'throw') throw new TypeError('fetch failed');
+        return new Response('{"error":"x"}', { status: fault });
+      }
+      return original(input, init);
+    };
+    for (let i = 0; i < 12; i++) {
+      eq((await t.run({ fetchImpl: t.feed.fetch })).outcome, 'partial', `run ${i + 1} partial`);
+      t.advance(61);
+    }
+    eq(t.state().failed[record.id], undefined, 'never written as failed');
+    eq(t.feed.acks.filter((a) => a.state === 'failed'), [], 'no failed ack sent to YTQ');
+    eq(t.state().cursor, null, 'cursor held');
+    down = false;
+    const r = await t.run({ fetchImpl: t.feed.fetch });
+    eq(r.outcome, 'ok', 'recovered');
+    eq([t.state().entries[record.id]?.kind, t.feed.acks.at(-1).state], ['live', 'live'], 'live and acknowledged');
+  });
+}
+
+await test('sync: backoff after a transient fault is capped and respected; no photo is fetched while it runs (M2)', async () => {
+  eq([1, 2, 3, 7, 8, 30].map((n) => sync.retryDelayMs(n) / 60000), [1, 2, 4, 60, 60, 60], 'delays in minutes');
+  const t = setup();
+  const { record, photos } = await minimalRecord();
+  t.feed.addRecord(record, photos);
+  t.feed.fail = (kind) => (kind === 'photo' ? 503 : null);
+  await t.run();
+  const fetched = photosFetched(t.feed).length;
+  t.feed.fail = null;
+  t.advance(0.5);
+  eq((await t.run()).outcome, 'partial', 'still waiting');
+  eq(photosFetched(t.feed).length, fetched, 'nothing fetched inside the backoff');
+  t.advance(1);
+  eq((await t.run()).outcome, 'ok', 'retried once the backoff passed');
 });
 
 await test('sync: an acknowledgement that cannot be delivered is kept and sent on the next run', async () => {
@@ -369,6 +422,22 @@ await test('sync: an acknowledgement that cannot be delivered is kept and sent o
   eq(t.feed.acks.map((a) => a.state), ['live'], 'delivered');
   eq(t.state().pendingAcks, [], 'cleared');
 });
+
+for (const status of [401, 403]) {
+  await test(`sync: an acknowledgement answered ${status} (key rotated, not yet on the server) is kept and sent later (M6)`, async () => {
+    const t = setup();
+    const { record, photos } = await minimalRecord();
+    t.feed.addRecord(record, photos);
+    let refusing = true;
+    t.feed.fail = (kind) => (kind === 'ack' && refusing ? status : null);
+    await t.run();
+    eq(t.state().pendingAcks.map((a) => a.state), ['live'], 'kept');
+    refusing = false;
+    await t.run();
+    eq(t.feed.acks.map((a) => [a.id, a.state]), [[record.id, 'live']], 'delivered');
+    eq(t.state().pendingAcks, [], 'cleared');
+  });
+}
 
 await test('sync: an acknowledgement YTQ refuses (422 url not allowed) is dropped, not retried', async () => {
   const t = setup();
@@ -500,15 +569,16 @@ await test('render: listing is newest first, with a service filter only above si
 });
 
 await test('render: JSON-LD from the vendored builder with the site context; nothing private in it', async () => {
-  const { entry, t } = await entryFor(await fullRecord());
-  const ctx = siteContext(entry, t.config);
-  const tag = core.buildJsonLdScriptTag(entry.record, ctx);
+  const full = await fullRecord();
+  const { entry, t } = await entryFor(full);
+  const tag = entry.jsonLd;
+  eq(tag, core.buildJsonLdScriptTag(full.record, siteContext(entry.slug, entry.photos, t.config)), 'stored JSON-LD is exactly the builder output for the full record');
   assert(tag.startsWith('<script type="application/ld+json">'), 'script tag');
   const graph = JSON.parse(tag.replace(/^<script[^>]*>/, '').replace(/<\/script>$/, ''));
   const business = graph['@graph'][1];
   eq([business['@id'], business['@type'], business.address.postalCode], ['https://surreycontracting.co.uk/#business', 'HomeAndConstructionBusiness', 'GU23 7EF'], 'the business is Surrey Contracting, the same @id as BaseLayout');
   eq(graph['@graph'][0].url, `https://surreycontracting.co.uk/case-studies/${entry.slug}`, 'page url');
-  for (const bad of ['withheld', 'consent', entry.record.id, 'confirmed', ...entry.record.photos.map((p) => p.sha256)]) {
+  for (const bad of ['withheld', 'consent', entry.record.id, 'confirmed', ...full.record.photos.map((p) => p.sha256)]) {
     assert(!tag.includes(bad), `JSON-LD must not contain ${bad.slice(0, 20)}`);
   }
 });
@@ -520,6 +590,88 @@ await test('render: the business details match the LocalBusiness block BaseLayou
   }
   assert(layout.includes(`logo: \`\${SITE}${BUSINESS.logoPath}\``), 'same logo');
   assert(layout.includes("'@id': `${SITE}/#business`"), 'same @id');
+});
+
+// ---------- review round: M5, data minimisation, ids, start-up tidy ----------
+
+await test('sync: no call carrying the key follows a redirect to another origin (M5)', async () => {
+  const http = await import('node:http');
+  const seen = [];
+  const other = http.createServer((req, res) => { seen.push(req.headers['x-ytq-api-key'] || '(none)'); res.end('{}'); });
+  await new Promise((r) => other.listen(0, '127.0.0.1', r));
+  const target = `http://127.0.0.1:${other.address().port}/elsewhere`;
+  const feedSrv = http.createServer((req, res) => { res.writeHead(302, { location: target }); res.end(); });
+  await new Promise((r) => feedSrv.listen(0, '127.0.0.1', r));
+  try {
+    const dir = mkdtempSync(join(tmpdir(), 'ytq-cs-'));
+    tmpDirs.push(dir);
+    const config = readConfig({ YTQ_CASE_STUDIES: 'on', YTQ_SECRET_KEY: DUMMY_KEY, YTQ_CASE_STUDY_DIR: dir, YTQ_FEED_ENDPOINT: `http://127.0.0.1:${feedSrv.address().port}/caseStudyFeed` });
+    const s = store.emptyState();
+    s.pendingAcks.push({ id: 'cs_redirect0001', version: 1, state: 'removed' });
+    store.saveState(dir, s);
+    const r = await sync.runSync({ config, core, logger: { log() {}, error() {} } });
+    eq(r.outcome, 'feed_error', 'list refused');
+    eq(seen, [], 'the other origin received nothing (list and ack)');
+    eq(store.loadState(dir).pendingAcks.length, 1, 'ack kept for later');
+  } finally {
+    other.close();
+    feedSrv.close();
+  }
+});
+
+await test('store: state.json keeps only what a page shows: no consent, ticks, hashes, social or hidden town', async () => {
+  const t = setup();
+  const full = await fullRecord();
+  const minimal = await minimalRecord();
+  t.feed.addRecord(full.record, full.photos);
+  t.feed.addRecord(minimal.record, minimal.photos);
+  await t.run();
+  const text = readFileSync(join(t.dir, 'state.json'), 'utf8');
+  const entriesText = JSON.stringify(t.state().entries, (k, v) => (k === 'jsonLd' ? undefined : v));
+  for (const bad of ['consent', 'withheld', 'confirmed', 'wording_version', 'customer_permission', 'social', 'caption":"A storm', 'source', ...full.record.photos.map((p) => p.sha256)]) {
+    assert(!text.includes(bad), `state.json contains ${bad.slice(0, 24)}`);
+  }
+  assert(!entriesText.includes(minimal.record.location.town), 'a hidden town is not stored');
+  eq(t.state().entries[minimal.record.id].record.location, { show_town: false }, 'location without the town');
+});
+
+await test('store: id-keyed maps have no prototype, so ids like "constructor" are ordinary keys (E2)', async () => {
+  const t = setup();
+  const s = t.state();
+  for (const map of [s.entries, s.failed, s.retries]) eq(Object.getPrototypeOf(map), null, 'null prototype');
+  eq('constructor' in s.entries, false, 'nothing inherited');
+  eq(sync.recordDecision(s, 'constructor', 1), 'store', 'decision');
+  const { record, photos } = await minimalRecord({ id: 'constructor' });
+  t.feed.addRecord(record, photos);
+  t.feed.addTombstone(tombstoneFor({ id: 'toString', version: 1 }));
+  await t.run();
+  eq(Object.keys(t.state().entries).sort(), ['constructor', 'toString'], 'both stored as plain ids');
+  eq(Object.getPrototypeOf(t.state().entries), null, 'still null after a reload');
+});
+
+await test('store: at start a stale lock and stale temporary files are removed', async () => {
+  const t = setup();
+  const { writeFileSync } = await import('node:fs');
+  store.saveState(t.dir, store.emptyState());
+  writeFileSync(join(t.dir, 'sync.lock'), '1');
+  writeFileSync(join(t.dir, 'state.json.1.1700000000000.tmp'), '{');
+  eq((await t.run()).outcome, 'busy', 'a stale lock blocks a run');
+  eq(store.cleanUpAtStart(t.dir), { lock: true, tmp: 1 }, 'cleaned');
+  eq(readdirSync(t.dir).sort(), ['state.json'], 'only the state left');
+  eq((await t.run()).outcome, 'ok', 'runs again');
+});
+
+await test('pages read nothing while the kit is switched off; the store is kept (M3)', async () => {
+  const t = setup();
+  const { record, photos } = await minimalRecord();
+  t.feed.addRecord(record, photos);
+  await t.run();
+  eq(store.liveEntries(store.readPublishedState(t.config)).length, 1, 'on: published');
+  for (const env of [{ YTQ_CASE_STUDIES: '' }, { YTQ_SECRET_KEY: '' }]) {
+    const off = readConfig({ YTQ_CASE_STUDIES: 'on', YTQ_SECRET_KEY: DUMMY_KEY, YTQ_CASE_STUDY_DIR: t.dir, ...env });
+    eq(store.liveEntries(store.readPublishedState(off)).length, 0, 'off: nothing published');
+  }
+  eq(store.liveEntries(t.state()).length, 1, 'store kept on disk');
 });
 
 for (const dir of tmpDirs) rmSync(dir, { recursive: true, force: true });

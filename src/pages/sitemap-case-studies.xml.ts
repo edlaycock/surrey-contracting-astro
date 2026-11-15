@@ -1,19 +1,20 @@
 import type { APIRoute } from 'astro';
 import { readConfig } from '../lib/caseStudies/config.ts';
-import { liveEntries, readStateForPages } from '../lib/caseStudies/store.ts';
+import { liveEntries, readPublishedState } from '../lib/caseStudies/store.ts';
 import { pageUrl } from '../lib/caseStudies/sync.ts';
 
 // Published YTQ case studies, read from the store at request time, so a
-// publish appears and a tombstone disappears without a rebuild. Listed in
-// sitemap-index.xml through astro.config.mjs (customSitemaps). With no case
-// studies it is a valid, empty urlset.
+// publish appears and a tombstone disappears without a rebuild. Not named in
+// the static sitemap-index.xml (astro.config.mjs): submitted in Search Console
+// when the kit is switched on. With no case studies, or the kit switched off,
+// it is a valid, empty urlset.
 export const prerender = false;
 
 const xml = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
 export const GET: APIRoute = () => {
   const config = readConfig();
-  const live = liveEntries(readStateForPages(config.dataDir));
+  const live = liveEntries(readPublishedState(config));
   const urls: string[] = [];
   if (live.length) {
     const newest = live.map((e) => e.record.modified_at).sort().at(-1) as string;

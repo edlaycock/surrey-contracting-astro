@@ -1,18 +1,18 @@
 ---
 // The listing of YourTradeQuotes case studies (spec/rendering.md section 7):
 // a grid of cards, newest first, with a filter by service (plain links, no
-// JavaScript) once there are more than six. With none published it is a 404,
-// so nothing changes on the site until the first one arrives.
+// JavaScript) once there are more than six. With none published, or the kit
+// switched off, it is a 404.
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import CaseStudyImage from '../../components/CaseStudyImage.astro';
 import { readConfig } from '../../lib/caseStudies/config.ts';
-import { liveEntries, readStateForPages } from '../../lib/caseStudies/store.ts';
+import { liveEntries, readPublishedState } from '../../lib/caseStudies/store.ts';
 import { listingView } from '../../lib/caseStudies/render.ts';
 
 export const prerender = false;
 
 const config = readConfig();
-const live = liveEntries(readStateForPages(config.dataDir));
+const live = liveEntries(readPublishedState(config));
 if (live.length === 0) return new Response(null, { status: 404 });
 Astro.response.headers.set('cache-control', 'no-cache');
 const view = listingView(live, Astro.url.searchParams.get('service'));

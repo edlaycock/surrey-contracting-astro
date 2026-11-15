@@ -29,6 +29,8 @@ export interface CaseStudyConfig {
   refreshHost: string;
   refreshPath: string;
   pollMinutes: number;
+  /** Seconds after server start before the first sync (YTQ_POLL_START_SECONDS, default 30). */
+  startDelaySeconds: number;
   /** Optional YTQ_ACCOUNT_ID; otherwise the account the feed reported. */
   accountId: string;
 }
@@ -66,6 +68,7 @@ export function readConfig(env: Env = processEnv()): CaseStudyConfig {
     // An unparseable refresh URL leaves host and path empty: no signature can match.
   }
   const minutes = Number(env.YTQ_POLL_MINUTES);
+  const startDelay = Number(env.YTQ_POLL_START_SECONDS);
   const dataDir =
     (env.YTQ_CASE_STUDY_DIR || '').trim() ||
     (env.NODE_ENV === 'production' ? '/data/ytq-case-studies' : join(process.cwd(), '.ytq-case-studies'));
@@ -79,6 +82,7 @@ export function readConfig(env: Env = processEnv()): CaseStudyConfig {
     refreshHost,
     refreshPath,
     pollMinutes: Number.isFinite(minutes) && minutes >= 5 ? Math.floor(minutes) : 60,
+    startDelaySeconds: env.YTQ_POLL_START_SECONDS && Number.isFinite(startDelay) && startDelay >= 0 && startDelay <= 600 ? Math.floor(startDelay) : 30,
     accountId: (env.YTQ_ACCOUNT_ID || '').trim(),
   };
 }

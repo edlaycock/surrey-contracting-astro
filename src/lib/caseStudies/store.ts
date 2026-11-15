@@ -16,7 +16,39 @@ import {
   rmSync, statSync, unlinkSync, writeSync,
 } from 'node:fs';
 import { join } from 'node:path';
-import type { CaseRecord } from './core.ts';
+import type { CaseStudyConfig } from './config.ts';
+
+/**
+ * What the site keeps of a record: only what a page shows. The consent block,
+ * the photo ticks and hashes, the social text and the source never reach
+ * state.json, and a hidden town is not kept at all. The JSON-LD is built from
+ * the full record at sync time and kept as the exact string to output.
+ */
+export interface StoredPhotoMeta {
+  ref: string;
+  role: 'hero' | 'before' | 'after' | 'other';
+  alt: string;
+  caption?: string;
+  order: number;
+  pair?: number;
+  width: number;
+  height: number;
+}
+export interface StoredRecord {
+  id: string;
+  version: number;
+  title: string;
+  slug: string;
+  excerpt: string;
+  service_category: string;
+  location: { show_town: boolean; town?: string };
+  completed_month: string;
+  sections: { key: string; question: string; answer: string }[];
+  faqs: { question: string; answer: string }[];
+  photos: StoredPhotoMeta[];
+  published_at: string;
+  modified_at: string;
+}
 
 export interface PhotoVariant { width: number; file: string }
 export interface StoredPhoto {
@@ -34,8 +66,10 @@ export interface LiveEntry {
   slug: string;
   /** Earlier slugs of this case study, redirected to the current one. */
   priorSlugs: string[];
-  record: CaseRecord;
+  record: StoredRecord;
   photos: Record<string, StoredPhoto>;
+  /** The <script type="application/ld+json"> element, exactly as the core builder returned it. */
+  jsonLd: string;
   storedAt: string;
 }
 /** feed.md section 2: kept while connected, so a stale record cannot bring a page back. */
@@ -64,19 +98,30 @@ export interface State {
   entries: Record<string, Entry>;
   /** A version this site refused; the same or a lower version is not tried again. */
   failed: Record<string, { version: number; error: string; at: string }>;
-  /** Transient failures per id@version; after a few the item is refused, so one item cannot block the feed. */
-  attempts: Record<string, number>;
+  /** Transient failures per id@version: when to try again. Never turns into a refusal on its own. */
+  retries: Record<string, { attempts: number; mismatches: number; nextAt: string }>;
   pendingAcks: Ack[];
   lastSync: { at: string; outcome: string } | null;
+}
+
+/**
+ * Id-keyed maps have no prototype, so an id such as "constructor" or
+ * "toString" (both allowed by the id pattern) is an ordinary key, never an
+ * inherited function.
+ */
+export function dict<T>(from?: Record<string, T> | null): Record<string, T> {
+  const out = Object.create(null) as Record<string, T>;
+  if (from && typeof from === 'object') for (const key of Object.keys(from)) out[key] = from[key];
+  return out;
 }
 
 export const emptyState = (): State => ({
   format: 1,
   cursor: null,
   account: null,
-  entries: {},
-  failed: {},
-  attempts: {},
+  entries: dict(),
+  failed: dict(),
+  retries: dict(),
   pendingAcks: [],
   lastSync: null,
 });
@@ -90,27 +135,45 @@ export function loadState(dataDir: string): State {
   if (!existsSync(file)) return emptyState();
   const parsed = JSON.parse(readFileSync(file, 'utf8')) as Partial<State>;
   if (!parsed || parsed.format !== 1) throw new Error('case study state has an unknown format');
-  return { ...emptyState(), ...parsed } as State;
+  const state = { ...emptyState(), ...parsed } as State;
+  state.entries = dict(parsed.entries);
+  state.failed = dict(parsed.failed);
+  state.retries = dict(parsed.retries);
+  return state;
 }
 
-// Readers (the pages) cache by modification time, so a page view does not
-// parse the file each time and always sees the latest committed state.
-let readCache: { dir: string; mtimeMs: number; size: number; state: State } | null = null;
+// Readers (the pages) cache by inode, modification time and size, so a page
+// view does not parse the file each time and always sees the latest committed
+// state (every save is a rename, so the inode changes on every save).
+let readCache: { dir: string; ino: number; mtimeMs: number; size: number; state: State } | null = null;
 
 export function readStateForPages(dataDir: string): State {
   const file = statePath(dataDir);
   try {
     const st = statSync(file);
-    if (readCache && readCache.dir === dataDir && readCache.mtimeMs === st.mtimeMs && readCache.size === st.size) {
+    if (readCache && readCache.dir === dataDir && readCache.ino === st.ino && readCache.mtimeMs === st.mtimeMs && readCache.size === st.size) {
       return readCache.state;
     }
     const state = loadState(dataDir);
-    readCache = { dir: dataDir, mtimeMs: st.mtimeMs, size: st.size, state };
+    readCache = { dir: dataDir, ino: st.ino, mtimeMs: st.mtimeMs, size: st.size, state };
     return state;
   } catch (err) {
     if ((err as NodeJS.ErrnoException)?.code !== 'ENOENT') console.error('[case-studies] state unreadable, serving none');
     return emptyState();
   }
+}
+
+/**
+ * What the public pages, the media route and the case-study sitemap read.
+ * With the kit switched off (YTQ_CASE_STUDIES not on, or no key) the site
+ * answers as if nothing were published: switching off takes the pages down
+ * at once, without waiting for a sync that can no longer run. The store on
+ * disk is kept, so switching back on restores the pages and the next sync
+ * applies any tombstones that arrived meanwhile.
+ */
+export function readPublishedState(config: CaseStudyConfig): State {
+  if (!config.enabled || !config.secretKey) return emptyState();
+  return readStateForPages(config.dataDir);
 }
 
 export function saveState(dataDir: string, state: State): void {
@@ -167,6 +230,32 @@ export function collectGarbage(dataDir: string, state: State): number {
 
 export function clearStaging(dataDir: string): void {
   rmSync(stagingDir(dataDir), { recursive: true, force: true });
+  removeStaleTempFiles(dataDir);
+}
+
+/** state.json.<pid>.<time>.tmp left by a crash between write and rename. Only saveState writes them, under the lock. */
+export function removeStaleTempFiles(dataDir: string): number {
+  if (!existsSync(dataDir)) return 0;
+  let removed = 0;
+  for (const name of readdirSync(dataDir)) {
+    if (!/^state\.json\..+\.tmp$/.test(name)) continue;
+    rmSync(join(dataDir, name), { force: true });
+    removed++;
+  }
+  return removed;
+}
+
+/**
+ * At server start nothing in this process is syncing, and only one server
+ * process uses the store, so a lock left behind is a container killed
+ * mid-sync: remove it rather than report busy for ten minutes.
+ */
+export function cleanUpAtStart(dataDir: string): { lock: boolean; tmp: number } {
+  if (!existsSync(dataDir)) return { lock: false, tmp: 0 };
+  const lockFile = join(dataDir, 'sync.lock');
+  const lock = existsSync(lockFile);
+  rmSync(lockFile, { force: true });
+  return { lock, tmp: removeStaleTempFiles(dataDir) };
 }
 
 /** A lock file, so two processes (or a stuck run) never sync at once. Stale after 10 minutes. */

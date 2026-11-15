@@ -5,8 +5,7 @@
 // with the hero when a pair took the top slot. Pure, so it is tested without
 // a server. The .astro pages only lay this out with the site's own styles.
 
-import type { CasePhoto, CaseRecord } from './core.ts';
-import type { Entry, LiveEntry, StoredPhoto } from './store.ts';
+import type { Entry, LiveEntry, StoredPhoto, StoredPhotoMeta as CasePhoto, StoredRecord } from './store.ts';
 import { mediaUrlPath } from './sync.ts';
 
 const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
@@ -29,10 +28,10 @@ export function paragraphs(text: string): string[] {
 
 export interface MetaLine { service: string; town: string | null; month: string }
 
-export function metaLine(record: CaseRecord): MetaLine {
+export function metaLine(record: StoredRecord): MetaLine {
   return {
     service: record.service_category,
-    town: record.location?.show_town ? record.location.town : null,
+    town: record.location?.show_town && record.location.town ? record.location.town : null,
     month: monthInWords(record.completed_month),
   };
 }

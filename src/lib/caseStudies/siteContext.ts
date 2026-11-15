@@ -5,7 +5,7 @@
 // same node BaseLayout emits, so the page carries one business, not two.
 
 import type { CaseStudyConfig } from './config.ts';
-import type { LiveEntry } from './store.ts';
+import type { StoredPhoto } from './store.ts';
 import { mediaUrlPath, pageUrl } from './sync.ts';
 
 export const BUSINESS = {
@@ -21,13 +21,14 @@ export const BUSINESS = {
   },
 } as const;
 
-export function siteContext(entry: LiveEntry, config: CaseStudyConfig) {
+/** For a record about to be stored at `slug`, with its photos already placed. */
+export function siteContext(slug: string, photos: Record<string, StoredPhoto>, config: CaseStudyConfig) {
   const images: Record<string, string> = {};
-  for (const photo of entry.record.photos) {
-    images[photo.ref] = `${config.siteUrl}${mediaUrlPath(entry.photos[photo.ref].file)}`;
+  for (const [ref, photo] of Object.entries(photos)) {
+    images[ref] = `${config.siteUrl}${mediaUrlPath(photo.file)}`;
   }
   return {
-    page_url: pageUrl(config, entry.slug),
+    page_url: pageUrl(config, slug),
     language: 'en-GB',
     business: {
       name: BUSINESS.name,

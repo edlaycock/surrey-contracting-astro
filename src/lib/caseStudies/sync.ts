@@ -26,7 +26,8 @@ import type { CaseRecord, Core } from './core.ts';
 import {
   acquireLock, clearStaging, collectGarbage, loadState, mediaDir, saveState, stagingDir,
 } from './store.ts';
-import type { Ack, LiveEntry, State, StoredPhoto } from './store.ts';
+import type { Ack, LiveEntry, State, StoredPhoto, StoredRecord } from './store.ts';
+import { siteContext } from './siteContext.ts';
 
 type FetchLike = (url: string, init: RequestInit) => Promise<Response>;
 type Logger = { log: (msg: string) => void; error: (msg: string) => void };
@@ -59,14 +60,27 @@ const ERROR_CODE_PATTERN = /^[a-z0-9_.]{1,64}$/;
 export const VARIANT_WIDTHS = [480, 800, 1200, 1600];
 const MAX_PHOTO_BYTES = 16 * 1024 * 1024;
 const MAX_FEED_BYTES = 8 * 1024 * 1024;
-/** Transient failures on one item before it is refused, so one item cannot hold the feed up for ever. */
-export const MAX_ITEM_ATTEMPTS = 5;
+/**
+ * An item is refused only on evidence about the item itself: a photo YTQ says
+ * is gone (410), a type the site cannot serve, or bytes that fail the
+ * record's sha256 this many times in a row. Anything that is YTQ's or the
+ * network's trouble (403 account_inactive, 404, 429, 5xx, a timeout, a full
+ * disk) is retried for as long as it takes, with a capped backoff, and is
+ * never acknowledged as failed.
+ */
+export const MAX_HASH_MISMATCHES = 3;
+/** Backoff before retrying an item: 1, 2, 4 ... minutes, capped at 60. */
+export const RETRY_BASE_MS = 60 * 1000;
+export const RETRY_CAP_MS = 60 * 60 * 1000;
+export const retryDelayMs = (attempts: number) => Math.min(RETRY_CAP_MS, RETRY_BASE_MS * 2 ** Math.max(0, attempts - 1));
 
 class Transient extends Error {
   status?: number;
-  constructor(message: string, status?: number) {
+  mismatch: boolean;
+  constructor(message: string, status?: number, mismatch = false) {
     super(message);
     this.status = status;
+    this.mismatch = mismatch;
   }
 }
 class Refused extends Error {
@@ -120,7 +134,10 @@ async function timedFetch(fetchImpl: FetchLike, url: string, init: RequestInit, 
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), timeoutMs);
   try {
-    return await fetchImpl(url, { ...init, signal: controller.signal });
+    // Every call carries the secret key in a header, and fetch forwards custom
+    // headers across a redirect to another origin. YTQ's feed never redirects,
+    // so a redirect is refused rather than followed.
+    return await fetchImpl(url, { ...init, redirect: 'error', signal: controller.signal });
   } finally {
     clearTimeout(timer);
   }
@@ -167,7 +184,9 @@ export async function sendAcks(state: State, deps: SyncDeps): Promise<number> {
       logger.error(`[case-studies] acknowledgement not delivered (${ack.id} v${ack.version} ${ack.state}): network, kept for the next sync`);
       break;
     }
-    if (status === 429 || status >= 500) {
+    // 401 and 403 too: a key just rotated in YTQ and not yet on this server
+    // is fixed by the owner, after which these must still arrive.
+    if (status === 429 || status >= 500 || status === 401 || status === 403) {
       logger.error(`[case-studies] acknowledgement not delivered (${ack.id} v${ack.version} ${ack.state}): status ${status}, kept for the next sync`);
       break;
     }
@@ -176,7 +195,7 @@ export async function sendAcks(state: State, deps: SyncDeps): Promise<number> {
       sent++;
       logger.log(`[case-studies] acknowledged ${ack.id} v${ack.version} ${ack.state}`);
     } else {
-      // 400, 401, 404, 409, 422: the same every time. 422 means the page URL
+      // 400, 404, 409, 422: the same every time. 422 means the page URL
       // is not on the account's allowed websites in YTQ.
       logger.error(`[case-studies] acknowledgement refused (${ack.id} v${ack.version} ${ack.state}): status ${status}, not retried`);
     }
@@ -247,7 +266,7 @@ async function fetchPhoto(record: CaseRecord, photo: CaseRecord['photos'][number
     throw new Refused('photo.unsupported_type');
   }
   const bytes = await readCapped(res, MAX_PHOTO_BYTES);
-  if (createHash('sha256').update(bytes).digest('hex') !== photo.sha256) throw new Transient('photo hash mismatch');
+  if (createHash('sha256').update(bytes).digest('hex') !== photo.sha256) throw new Transient('photo hash mismatch', undefined, true);
   return { bytes, ext, contentType: ext === 'png' ? 'image/png' : 'image/jpeg' };
 }
 
@@ -297,18 +316,50 @@ async function storeRecord(state: State, record: CaseRecord, deps: SyncDeps, sta
     }
     photos[photo.ref] = { ref: photo.ref, file, contentType, width: photo.width, height: photo.height, variants };
   }
+  // The JSON-LD is built now, from the full record, and kept as the string to
+  // output; the stored record itself keeps only what the page shows.
+  let jsonLd: string;
+  try {
+    jsonLd = deps.core.buildJsonLdScriptTag(record, siteContext(record.slug, photos, config));
+  } catch (err) {
+    const code = String((err as { code?: unknown })?.code || '');
+    throw new Refused(/^[a-z0-9_.]{1,64}$/.test(code) ? code : 'jsonld.refused');
+  }
   // Every photo verified: only now do any of them move under the public media
   // directory, and they are served only once the state below is committed.
   for (const item of staged) renameSync(item.from, join(media, item.name));
   const priorSlugs = previousLive
     ? [...new Set([previousLive.slug, ...previousLive.priorSlugs])].filter((s) => s !== record.slug)
     : [];
-  return { kind: 'live', id: record.id, version: record.version, slug: record.slug, priorSlugs, record, photos, storedAt: now.toISOString() };
+  return { kind: 'live', id: record.id, version: record.version, slug: record.slug, priorSlugs, record: toStoredRecord(record), photos, jsonLd, storedAt: now.toISOString() };
+}
+
+/** The part of a validated record a page shows; see StoredRecord. */
+export function toStoredRecord(record: CaseRecord): StoredRecord {
+  const showTown = record.location?.show_town === true;
+  return {
+    id: record.id,
+    version: record.version,
+    title: record.title,
+    slug: record.slug,
+    excerpt: record.excerpt,
+    service_category: record.service_category,
+    location: showTown ? { show_town: true, town: record.location.town } : { show_town: false },
+    completed_month: record.completed_month,
+    sections: record.sections.map(({ key, question, answer }) => ({ key, question, answer })),
+    faqs: (record.faqs ?? []).map(({ question, answer }) => ({ question, answer })),
+    photos: record.photos.map((p) => ({
+      ref: p.ref, role: p.role, alt: p.alt, ...(p.caption !== undefined ? { caption: p.caption } : {}),
+      order: p.order, ...(p.pair !== undefined ? { pair: p.pair } : {}), width: p.width, height: p.height,
+    })),
+    published_at: record.published_at,
+    modified_at: record.modified_at,
+  };
 }
 
 function refuse(state: State, id: string, version: number, code: string, now: Date, logger: Logger): void {
   state.failed[id] = { version, error: code, at: now.toISOString() };
-  delete state.attempts[`${id}@${version}`];
+  delete state.retries[`${id}@${version}`];
   queueAck(state, { id, version, state: 'failed', error: code });
   logger.error(`[case-studies] ${id} v${version} not stored: ${code}`);
 }
@@ -391,7 +442,24 @@ export async function runSync(deps: SyncDeps): Promise<SyncResult> {
           logger.error('[case-studies] feed item without a usable id and version skipped');
           continue;
         }
-        if (recordDecision(state, record.id, record.version) === 'skip') continue;
+        if (recordDecision(state, record.id, record.version) === 'skip') {
+          // The feed served a version this site already has live: say so again.
+          // A live ack lost earlier (a key rotated mid-way, say) would otherwise
+          // never be sent, and YTQ's planAck is idempotent for the same version.
+          const held = state.entries[record.id];
+          if (held?.kind === 'live' && held.version === record.version) {
+            queueAck(state, { id: record.id, version: record.version, state: 'live', url: pageUrl(config, held.slug) });
+          }
+          continue;
+        }
+        const attemptKey = `${record.id}@${record.version}`;
+        const retry = state.retries[attemptKey];
+        if (retry && now().getTime() < Date.parse(retry.nextAt)) {
+          // Backing off: the cursor stays and nothing is fetched until nextAt.
+          logger.log(`[case-studies] ${record.id} v${record.version} waiting to retry; the cursor stays`);
+          stopped = true;
+          break;
+        }
         let gate;
         try {
           gate = core.assertPublishable(record);
@@ -402,12 +470,11 @@ export async function runSync(deps: SyncDeps): Promise<SyncResult> {
           refuse(state, record.id, record.version, gate.errors[0]?.code || 'record.invalid', now(), logger);
           continue;
         }
-        const attemptKey = `${record.id}@${record.version}`;
         try {
           const entry = await storeRecord(state, record, deps, join(stagingDir(config.dataDir), randomUUID()));
           state.entries[record.id] = entry;
           delete state.failed[record.id];
-          delete state.attempts[attemptKey];
+          delete state.retries[attemptKey];
           queueAck(state, { id: record.id, version: record.version, state: 'live', url: pageUrl(config, record.slug) });
           result.applied++;
           logger.log(`[case-studies] ${record.id} v${record.version} live`);
@@ -416,14 +483,18 @@ export async function runSync(deps: SyncDeps): Promise<SyncResult> {
             refuse(state, record.id, record.version, err.code, now(), logger);
             continue;
           }
-          const attempts = (state.attempts[attemptKey] || 0) + 1;
-          state.attempts[attemptKey] = attempts;
-          const status = err instanceof Transient && err.status ? ` (status ${err.status})` : '';
-          if (attempts >= MAX_ITEM_ATTEMPTS) {
-            refuse(state, record.id, record.version, 'photo.unavailable', now(), logger);
+          const previous = state.retries[attemptKey];
+          const mismatch = err instanceof Transient && err.mismatch;
+          const attempts = (previous?.attempts || 0) + 1;
+          const mismatches = mismatch ? (previous?.mismatches || 0) + 1 : 0;
+          if (mismatches >= MAX_HASH_MISMATCHES) {
+            refuse(state, record.id, record.version, 'photo.hash_mismatch', now(), logger);
             continue;
           }
-          logger.error(`[case-studies] ${record.id} v${record.version} not stored yet${status}, attempt ${attempts}; the cursor stays`);
+          const nextAt = new Date(now().getTime() + retryDelayMs(attempts)).toISOString();
+          state.retries[attemptKey] = { attempts, mismatches, nextAt };
+          const status = err instanceof Transient && err.status ? ` (status ${err.status})` : '';
+          logger.error(`[case-studies] ${record.id} v${record.version} not stored yet${status}, attempt ${attempts}, retry after ${nextAt}; the cursor stays`);
           stopped = true;
           break;
         }

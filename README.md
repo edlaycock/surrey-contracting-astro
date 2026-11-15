@@ -66,13 +66,34 @@ are unchanged). The contract is Case Study Core v1 (`vendor/caseStudyCore/spec`,
    acknowledged to YTQ (`live` with the page URL, `removed`, or `failed` with an
    error code). Idempotent by id and version; a transient failure keeps the
    cursor, so the next run repeats the page safely.
+   - An item is refused (`failed`) only on evidence about the item: a photo YTQ
+     answers 410 for, a type the site cannot serve, or bytes that fail the
+     sha256 three times in a row. A 403, 404, 429, 5xx, timeout or network error
+     is YTQ's or the network's trouble: the item is retried with a backoff of
+     1, 2, 4 ... minutes capped at 60, for as long as it takes, and never
+     acknowledged as failed.
+   - No call that carries the key follows a redirect.
+   - Acknowledgements answered 401, 403, 429 or 5xx are kept and sent later,
+     and a version the feed serves again is acknowledged `live` again.
+   - `state.json` keeps only what a page shows: no consent block, photo ticks,
+     hashes, social text or hidden town. The JSON-LD is built from the full
+     record at sync time and kept as the exact string the page outputs.
 3. A timer in the server process repeats the sync hourly (`YTQ_POLL_MINUTES`), in
-   case a signal is missed (`src/lib/caseStudies/poller.ts`, started by
-   `src/middleware.ts`).
-4. The pages and `/sitemap-case-studies.xml` (listed in `sitemap-index.xml`) are
-   rendered at request time from the store, so a publish or a removal shows
-   without a rebuild. A removed case study answers 410 Gone. With none
-   published, `/case-studies` is a 404 and the sitemap is empty.
+   case a signal is missed, with a first run 30 s after start
+   (`YTQ_POLL_START_SECONDS`). It is started at process start by `server.mjs`,
+   the container's entry point, which starts the Astro server and then the poll
+   (`src/lib/caseStudies/poller.ts`, loaded with Node's type stripping). It is
+   not started by `astro dev`, `astro preview` or the build.
+4. The pages and `/sitemap-case-studies.xml` are rendered at request time from
+   the store, so a publish or a removal shows without a rebuild. A removed case
+   study answers 410 Gone. With none published, `/case-studies` is a 404 and
+   the sitemap is empty. Neither appears in the static sitemaps: the static
+   build output is the same as before this kit, apart from `styles.css`.
+5. **Switched off** (`YTQ_CASE_STUDIES` not `on`, or no `YTQ_SECRET_KEY`), every
+   case-study URL answers as if nothing were published (404, empty sitemap,
+   photos 404) and no call goes to YTQ. The store is kept on disk: switching on
+   again restores the pages, and the next sync applies any removals made in YTQ
+   meanwhile.
 
 The store is `YTQ_CASE_STUDY_DIR` (on the VPS the Docker volume
 `ytq-case-studies` at `/data/ytq-case-studies`, outside the web root):
@@ -87,6 +108,7 @@ The store is `YTQ_CASE_STUDY_DIR` (on the VPS the Docker volume
 | `YTQ_CASE_STUDY_DIR` | the store. Set by `docker-compose.yml`; defaults to `.ytq-case-studies/` in dev |
 | `YTQ_REFRESH_URL` | optional, default `https://surreycontracting.co.uk/api/ytq-refresh`. Its host and path are what the signature is checked against, so it must be exactly the URL registered in YTQ |
 | `YTQ_POLL_MINUTES` | optional, default 60 (minimum 5) |
+| `YTQ_POLL_START_SECONDS` | optional, default 30: delay before the first sync after start |
 | `YTQ_ACCOUNT_ID` | optional; otherwise the account the feed reports is stored and then required |
 | `YTQ_FEED_ENDPOINT` | local testing against a stub only |
 
@@ -106,7 +128,8 @@ the folder with the new tagged copy and the pin file, nothing else.
 - `npm run test:case-study-core`: the drift check and the core fixtures.
 - `npm run test:case-studies`: signature, paging, held-back cursor, tombstones,
   validation failures, acknowledgements, partial failure, rendering.
-- `npm run test:case-study-pages`: after `npm run build`, runs the built server
-  on 127.0.0.1 with a stub feed and checks the pages, photos, sitemap, 410 and
+- `npm run test:case-study-pages`: after `npm run build`, runs `server.mjs`
+  on 127.0.0.1 with a stub feed and checks that the poll starts with no request,
+  the pages, photos (with ETag), sitemap, 410, the switched-off behaviour, and
   that no customer detail, consent data, id or hash reaches the output.
 - `npm test` runs the first two with the enquiry relay tests.
