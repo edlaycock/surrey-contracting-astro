@@ -138,6 +138,10 @@ export async function forwardToYtq(payload: YtqPayload, opts: ForwardOptions = {
           'idempotency-key': idempotencyKey,
         },
         body,
+        // The key travels in a custom header, which fetch forwards across a
+        // redirect to another origin. submitEnquiry never redirects, so a
+        // redirect is refused (it then counts as a network error).
+        redirect: 'error',
         signal: controller.signal,
       });
       lastStatus = res.status;

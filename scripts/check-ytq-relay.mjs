@@ -376,6 +376,26 @@ await test('contact: nothing logged carries the YTQ key', () => {
   assert(consoleLines.every((l) => !l.includes(DUMMY_KEY)), 'a log line carried the key');
 });
 
+// ---------- redirects (PR #45 review M5) ----------
+await test('a redirect from the endpoint is never followed: the key never reaches another origin', async () => {
+  const other = await startStub();
+  other.reset(reply(200, { success: true, id: 'stolen' }));
+  ytq.reset((req, res) => {
+    res.writeHead(307, { location: other.url });
+    res.end();
+  });
+  try {
+    const logger = captureLogger();
+    const r = await forwardToYtq({ source: 'Website', name: 'A' }, { key: DUMMY_KEY, endpoint: ytq.url, logger, ...fast });
+    eq(other.requests.length, 0, 'the other origin received nothing');
+    eq(r.delivered, false, 'not delivered');
+    eq(ytq.requests.length, 4, 'treated as a network error: the usual 3 retries, same as before');
+    assert(logger.lines.every((l) => !l.includes(DUMMY_KEY)), 'key never logged');
+  } finally {
+    await other.close();
+  }
+});
+
 // ---------- build guard ----------
 await test('check-no-keys fails on a planted key prefix and passes on a clean tree', () => {
   const dir = mkdtempSync(join(tmpdir(), 'ytq-guard-'));
