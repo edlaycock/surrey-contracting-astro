@@ -1,0 +1,13 @@
+{
+  "name": "case-study-core",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Case Study Core v1: reference validator and JSON-LD builder (Node, CommonJS, no dependencies).",
+  "type": "commonjs",
+  "main": "index.js",
+  "engines": { "node": ">=18" },
+  "scripts": {
+    "test": "node --test test/run.js",
+    "manifest": "node tools/update-manifest.js"
+  }
+}

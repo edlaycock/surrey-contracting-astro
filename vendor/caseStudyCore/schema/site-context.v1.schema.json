@@ -1,0 +1,116 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:cumulus:case-study-core:site-context:v1",
+  "title": "Site context for rendering, version 1",
+  "description": "What the rendering site supplies to the JSON-LD builder: where the page lives, who the business is, and the public URL of each photo derivative on that site. None of it is part of the case study record. See core/spec/jsonld.md.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "page_url",
+    "business",
+    "images"
+  ],
+  "properties": {
+    "page_url": {
+      "description": "Canonical URL of the case study page. No user part, no query string and no fragment.",
+      "type": "string",
+      "maxLength": 500,
+      "pattern": "^https://[A-Za-z0-9._~:/!$&'()*+,;=%-]+$"
+    },
+    "language": {
+      "type": "string",
+      "pattern": "^[a-z]{2}(-[A-Z]{2})?$"
+    },
+    "business": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "url"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 120
+        },
+        "url": {
+          "description": "The business's home page. No user part, no query string and no fragment: #business is appended to make its @id.",
+          "type": "string",
+          "maxLength": 500,
+          "pattern": "^https://[A-Za-z0-9._~:/!$&'()*+,;=%-]+$"
+        },
+        "logo_url": {
+          "$ref": "#/$defs/url"
+        },
+        "type": {
+          "description": "Optional, more specific schema.org type for the business, from this list of organisation types only. Without it the type is LocalBusiness when an address is given and Organization when not.",
+          "enum": [
+            "Organization",
+            "LocalBusiness",
+            "HomeAndConstructionBusiness",
+            "Electrician",
+            "GeneralContractor",
+            "HVACBusiness",
+            "HousePainter",
+            "Locksmith",
+            "MovingCompany",
+            "Plumber",
+            "RoofingContractor",
+            "ProfessionalService"
+          ]
+        },
+        "address": {
+          "description": "The business's own public address, as on its website. Never the customer's.",
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "locality",
+            "postal_code",
+            "country"
+          ],
+          "properties": {
+            "street_address": {
+              "type": "string",
+              "minLength": 2,
+              "maxLength": 120
+            },
+            "locality": {
+              "type": "string",
+              "minLength": 2,
+              "maxLength": 60
+            },
+            "region": {
+              "type": "string",
+              "minLength": 2,
+              "maxLength": 60
+            },
+            "postal_code": {
+              "type": "string",
+              "minLength": 2,
+              "maxLength": 12
+            },
+            "country": {
+              "type": "string",
+              "pattern": "^[A-Z]{2}$"
+            }
+          }
+        }
+      }
+    },
+    "images": {
+      "description": "Photo ref to the public URL of its derivative on this site.",
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/$defs/url"
+      }
+    }
+  },
+  "$defs": {
+    "url": {
+      "type": "string",
+      "maxLength": 500,
+      "pattern": "^https://[A-Za-z0-9._~:/?#@!$&'()*+,;=%-]+$"
+    }
+  }
+}

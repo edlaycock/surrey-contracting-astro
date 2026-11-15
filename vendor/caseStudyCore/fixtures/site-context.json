@@ -1,0 +1,25 @@
+{
+  "page_url": "https://www.example-fencing.co.uk/case-studies/closeboard-garden-fencing-hersham-october-2026/",
+  "language": "en-GB",
+  "business": {
+    "name": "Example Fencing Ltd",
+    "url": "https://www.example-fencing.co.uk/",
+    "logo_url": "https://www.example-fencing.co.uk/assets/logo.png",
+    "address": {
+      "street_address": "Unit 4, Example Trading Estate",
+      "locality": "Walton-on-Thames",
+      "region": "Surrey",
+      "postal_code": "KT12 9ZZ",
+      "country": "GB"
+    }
+  },
+  "images": {
+    "ph_after_wide_01": "https://www.example-fencing.co.uk/media/case-studies/ph_after_wide_01.jpg",
+    "ph_before_left_02": "https://www.example-fencing.co.uk/media/case-studies/ph_before_left_02.jpg",
+    "ph_after_left_03": "https://www.example-fencing.co.uk/media/case-studies/ph_after_left_03.jpg",
+    "ph_before_end_04": "https://www.example-fencing.co.uk/media/case-studies/ph_before_end_04.jpg",
+    "ph_after_end_05": "https://www.example-fencing.co.uk/media/case-studies/ph_after_end_05.jpg",
+    "ph_detail_cap_06": "https://www.example-fencing.co.uk/media/case-studies/ph_detail_cap_06.jpg",
+    "wp-att-000412": "https://www.example-fencing.co.uk/media/case-studies/wp-att-000412.jpg"
+  }
+}

@@ -1,0 +1,201 @@
+{
+  "description": "The customer's email address in an FAQ answer and in the private consent note, and her surname in a section. The caller supplied her surname and email as forbidden terms, so each is caught that way too.",
+  "forbidden_terms": [
+    {
+      "label": "customer surname",
+      "value": "Raman"
+    },
+    {
+      "label": "customer email",
+      "value": "priya.raman@example.co.uk"
+    }
+  ],
+  "record": {
+    "schema_version": 1,
+    "id": "cs_7Hq2mXw9LpA4",
+    "version": 2,
+    "source": "ytq",
+    "status": "published",
+    "title": "Closeboard garden fencing in Hersham, October 2026",
+    "slug": "closeboard-garden-fencing-hersham-october-2026",
+    "excerpt": "Storm-damaged panel fencing along a rear garden in Hersham replaced with closeboard on concrete posts, finished in three days.",
+    "service_category": "Garden fencing",
+    "location": {
+      "town": "Hersham",
+      "show_town": true
+    },
+    "completed_month": "2026-10",
+    "sections": [
+      {
+        "key": "need",
+        "question": "What did the customer in Hersham need?",
+        "answer": "A storm had brought down most of the old panel fencing along the back garden. The customer wanted a boundary that would stand up to wind and keep the dog in."
+      },
+      {
+        "key": "challenge",
+        "question": "What made this fence difficult?",
+        "answer": "The garden slopes away from the house and the old timber posts had rotted below ground, so nothing could be reused. Access was through a narrow side passage."
+      },
+      {
+        "key": "solution",
+        "question": "How did we solve it?",
+        "answer": "We stepped the fence down the slope in even bays and used concrete posts with concrete gravel boards, so no timber sits in the wet ground."
+      },
+      {
+        "key": "work",
+        "question": "What work was carried out?",
+        "answer": "We removed and recycled the old panels and posts, dug and concreted fourteen new posts, fitted gravel boards and built closeboard bays on site with capping rails."
+      },
+      {
+        "key": "result",
+        "question": "How did it turn out?",
+        "answer": "Mrs Raman was delighted with the straight, solid boundary. The work took three days."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "How long does a closeboard fence last?",
+        "answer": "Typically fifteen years or more. Ask Priya.Raman+fence@example.co.uk how hers is doing."
+      },
+      {
+        "question": "Did this fence need planning permission?",
+        "answer": "No. The posts & gravel boards are concrete and every bay is <2m tall, which is within the usual limit for a rear garden."
+      },
+      {
+        "question": "Can a fence follow a sloping garden?",
+        "answer": "Yes. Here it was stepped down the slope in equal bays so the top line looks even from the house."
+      }
+    ],
+    "photos": [
+      {
+        "ref": "ph_after_wide_01",
+        "role": "hero",
+        "alt": "New closeboard fence stepping down a sloping lawn",
+        "caption": "The finished fence from the patio.",
+        "order": 1,
+        "width": 1600,
+        "height": 1200,
+        "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "checked": {
+          "confirmed": true,
+          "confirmed_by": "Sam Carter",
+          "confirmed_at": "2026-10-28T09:12:05Z"
+        }
+      },
+      {
+        "ref": "ph_before_left_02",
+        "role": "before",
+        "alt": "Old fence panels leaning after the storm",
+        "order": 2,
+        "pair": 1,
+        "width": 1600,
+        "height": 1200,
+        "sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "checked": {
+          "confirmed": true,
+          "confirmed_by": "Sam Carter",
+          "confirmed_at": "2026-10-28T09:12:11Z"
+        }
+      },
+      {
+        "ref": "ph_after_left_03",
+        "role": "after",
+        "alt": "The same boundary with new closeboard bays",
+        "order": 3,
+        "pair": 1,
+        "width": 1600,
+        "height": 1200,
+        "sha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+        "checked": {
+          "confirmed": true,
+          "confirmed_by": "Sam Carter",
+          "confirmed_at": "2026-10-28T09:12:17Z"
+        }
+      },
+      {
+        "ref": "ph_before_end_04",
+        "role": "before",
+        "alt": "Rotten timber post at the end of the garden",
+        "order": 4,
+        "pair": 2,
+        "width": 1200,
+        "height": 1600,
+        "sha256": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+        "checked": {
+          "confirmed": true,
+          "confirmed_by": "Sam Carter",
+          "confirmed_at": "2026-10-28T09:12:24Z"
+        }
+      },
+      {
+        "ref": "ph_after_end_05",
+        "role": "after",
+        "alt": "New concrete post and gravel board at the end of the garden",
+        "order": 5,
+        "pair": 2,
+        "width": 1200,
+        "height": 1600,
+        "sha256": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+        "checked": {
+          "confirmed": true,
+          "confirmed_by": "Sam Carter",
+          "confirmed_at": "2026-10-28T09:12:30Z"
+        }
+      },
+      {
+        "ref": "ph_detail_cap_06",
+        "role": "other",
+        "alt": "Close-up of the capping rail and feather-edge boards",
+        "caption": "Capping rail detail.",
+        "order": 6,
+        "width": 1600,
+        "height": 1200,
+        "sha256": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+        "checked": {
+          "confirmed": true,
+          "confirmed_by": "Sam Carter",
+          "confirmed_at": "2026-10-28T09:12:36Z"
+        }
+      }
+    ],
+    "consent": {
+      "customer_permission": "yes_written",
+      "confirmed_by": "Sam Carter",
+      "confirmed_at": "2026-11-02T14:03:40Z",
+      "wording_version": "v1",
+      "note": "Agreed by email from priya.raman@example.co.uk."
+    },
+    "social": {
+      "caption": "A storm took down this back garden fence in Hersham. We replaced it with closeboard on concrete posts, stepped neatly down the slope. Three days from start to finish.",
+      "link_label": "See the full case study"
+    },
+    "published_at": "2026-10-28T10:00:00Z",
+    "modified_at": "2026-11-02T14:05:00Z"
+  },
+  "expected": {
+    "valid": false,
+    "errors": [
+      {
+        "code": "privacy.email",
+        "path": "/consent/note"
+      },
+      {
+        "code": "privacy.forbidden_term",
+        "path": "/consent/note"
+      },
+      {
+        "code": "privacy.email",
+        "path": "/faqs/0/answer"
+      },
+      {
+        "code": "privacy.forbidden_term",
+        "path": "/faqs/0/answer"
+      },
+      {
+        "code": "privacy.forbidden_term",
+        "path": "/sections/4/answer"
+      }
+    ],
+    "warnings": []
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "wording_version": "v1",
+  "status": "pending_legal_review",
+  "language": "en-GB",
+  "question": "Has the customer agreed to this work being shown?",
+  "options": {
+    "yes_verbal": "Yes, they told me in person or on the phone.",
+    "yes_written": "Yes, they agreed in writing (text, email or a signed note).",
+    "yes_link": "Yes, they confirmed through the link we sent them.",
+    "not_identifiable": "Permission was not asked: no photo shows a house number, a number plate, a person or the front of the property, and nothing in the words identifies the customer."
+  },
+  "statement": "I confirm that the answer above is true. The customer knows that a description and photos of this work will appear on our website and may be shared on our social media, that their name, address and contact details will not be shown, and that they can ask us to take it down at any time.",
+  "statement_not_identifiable": "I confirm that I have checked every photo and none shows a house number, a number plate, a person or the front of the property, and that nothing in the words identifies the customer or their home. If the customer asks us to take this down, we will.",
+  "photo_check": "I have looked at this photo. It shows no faces, number plates, house numbers or documents.",
+  "publish_rule": "Pending legal review. Until the review is done, only the pilot client may publish under this wording. The core validators do not enforce that: each track does, from its own list of pilot accounts or sites."
+}

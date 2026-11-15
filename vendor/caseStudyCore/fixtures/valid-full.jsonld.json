@@ -1,0 +1,137 @@
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@id": "https://www.example-fencing.co.uk/case-studies/closeboard-garden-fencing-hersham-october-2026/#article",
+      "@type": "Article",
+      "about": {
+        "@type": "Service",
+        "areaServed": {
+          "@type": "Place",
+          "name": "Hersham"
+        },
+        "name": "Garden fencing",
+        "provider": {
+          "@id": "https://www.example-fencing.co.uk/#business"
+        }
+      },
+      "articleSection": "Garden fencing",
+      "author": {
+        "@id": "https://www.example-fencing.co.uk/#business"
+      },
+      "contentLocation": {
+        "@type": "Place",
+        "name": "Hersham"
+      },
+      "dateModified": "2026-11-02T14:05:00Z",
+      "datePublished": "2026-10-28T10:00:00Z",
+      "description": "Storm-damaged panel fencing along a rear garden in Hersham replaced with closeboard on concrete posts, finished in three days.",
+      "headline": "Closeboard garden fencing in Hersham, October 2026",
+      "image": [
+        {
+          "@type": "ImageObject",
+          "caption": "New closeboard fence stepping down a sloping lawn",
+          "height": 1200,
+          "url": "https://www.example-fencing.co.uk/media/case-studies/ph_after_wide_01.jpg",
+          "width": 1600
+        },
+        {
+          "@type": "ImageObject",
+          "caption": "Old fence panels leaning after the storm",
+          "height": 1200,
+          "url": "https://www.example-fencing.co.uk/media/case-studies/ph_before_left_02.jpg",
+          "width": 1600
+        },
+        {
+          "@type": "ImageObject",
+          "caption": "The same boundary with new closeboard bays",
+          "height": 1200,
+          "url": "https://www.example-fencing.co.uk/media/case-studies/ph_after_left_03.jpg",
+          "width": 1600
+        },
+        {
+          "@type": "ImageObject",
+          "caption": "Rotten timber post at the end of the garden",
+          "height": 1600,
+          "url": "https://www.example-fencing.co.uk/media/case-studies/ph_before_end_04.jpg",
+          "width": 1200
+        },
+        {
+          "@type": "ImageObject",
+          "caption": "New concrete post and gravel board at the end of the garden",
+          "height": 1600,
+          "url": "https://www.example-fencing.co.uk/media/case-studies/ph_after_end_05.jpg",
+          "width": 1200
+        },
+        {
+          "@type": "ImageObject",
+          "caption": "Close-up of the capping rail and feather-edge boards",
+          "height": 1200,
+          "url": "https://www.example-fencing.co.uk/media/case-studies/ph_detail_cap_06.jpg",
+          "width": 1600
+        }
+      ],
+      "inLanguage": "en-GB",
+      "mainEntityOfPage": {
+        "@id": "https://www.example-fencing.co.uk/case-studies/closeboard-garden-fencing-hersham-october-2026/",
+        "@type": "WebPage"
+      },
+      "publisher": {
+        "@id": "https://www.example-fencing.co.uk/#business"
+      },
+      "url": "https://www.example-fencing.co.uk/case-studies/closeboard-garden-fencing-hersham-october-2026/"
+    },
+    {
+      "@id": "https://www.example-fencing.co.uk/#business",
+      "@type": "LocalBusiness",
+      "address": {
+        "@type": "PostalAddress",
+        "addressCountry": "GB",
+        "addressLocality": "Walton-on-Thames",
+        "addressRegion": "Surrey",
+        "postalCode": "KT12 9ZZ",
+        "streetAddress": "Unit 4, Example Trading Estate"
+      },
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://www.example-fencing.co.uk/assets/logo.png"
+      },
+      "name": "Example Fencing Ltd",
+      "url": "https://www.example-fencing.co.uk/"
+    },
+    {
+      "@id": "https://www.example-fencing.co.uk/case-studies/closeboard-garden-fencing-hersham-october-2026/#faq",
+      "@type": "FAQPage",
+      "inLanguage": "en-GB",
+      "isPartOf": {
+        "@id": "https://www.example-fencing.co.uk/case-studies/closeboard-garden-fencing-hersham-october-2026/"
+      },
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "With concrete posts and gravel boards the timber stays off the ground, so fifteen years or more is typical with basic care."
+          },
+          "name": "How long does a closeboard fence last?"
+        },
+        {
+          "@type": "Question",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. The posts & gravel boards are concrete and every bay is <2m tall, which is within the usual limit for a rear garden."
+          },
+          "name": "Did this fence need planning permission?"
+        },
+        {
+          "@type": "Question",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Here it was stepped down the slope in equal bays so the top line looks even from the house."
+          },
+          "name": "Can a fence follow a sloping garden?"
+        }
+      ]
+    }
+  ]
+}

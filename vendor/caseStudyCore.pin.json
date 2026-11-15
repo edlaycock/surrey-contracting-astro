@@ -1,0 +1,8 @@
+{
+  "core_version": "1.0.0",
+  "schema_version": 1,
+  "tree_sha256": "65e54a66485ecfac4c1a7a4e75f08c33dba9ec4de80a77ee9274b7837de03934",
+  "source_repository": "edlaycock/job-completion-agent",
+  "source_commit": "a557e7d3a2f9003ebc497e0317b2d0bbded07cde",
+  "copied_from": "edlaycock/yourtradequotes-rebuild functions/caseStudyCore at d98b030 (PR #295), byte for byte"
+}

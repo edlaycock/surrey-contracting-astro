@@ -1,0 +1,861 @@
+{
+  "description": "Small cases run through both implementations in exactly the same way, mostly the reproductions from the independent review of core v1. expected is the outcome as a string: an error code, ok, throw, true or false, a count, or the canonical text.",
+  "probes": [
+    {
+      "name": "H1 hyphenated term",
+      "mode": "term",
+      "text": "x Smith-Jones y",
+      "term": "Smith-Jones",
+      "expected": "true"
+    },
+    {
+      "name": "H1 hyphenated phone term",
+      "mode": "term",
+      "text": "ring 07700 900123",
+      "term": "07700-900123",
+      "expected": "true"
+    },
+    {
+      "name": "term matches across hyphen and space",
+      "mode": "term",
+      "text": "Sam-Carter was pleased",
+      "term": "Sam Carter",
+      "expected": "true"
+    },
+    {
+      "name": "term matches curly apostrophe",
+      "mode": "term",
+      "text": "Mr O\u2019Brien",
+      "term": "O'Brien",
+      "expected": "true"
+    },
+    {
+      "name": "term matches combining accent",
+      "mode": "term",
+      "text": "Zoe\u0308 said",
+      "term": "Zo\u00eb",
+      "expected": "true"
+    },
+    {
+      "name": "term matches fullwidth letters",
+      "mode": "term",
+      "text": "\uff33\uff41\uff4d Carter",
+      "term": "Sam Carter",
+      "expected": "true"
+    },
+    {
+      "name": "term does not match inside a word",
+      "mode": "term",
+      "text": "A framanded gate",
+      "term": "Raman",
+      "expected": "false"
+    },
+    {
+      "name": "phone term is not built from unrelated numbers",
+      "mode": "term",
+      "text": "2026, 1.8m, 30 posts, 7700 x 900 and 123",
+      "term": "07700 900123",
+      "expected": "false"
+    },
+    {
+      "name": "phone term in international form",
+      "mode": "term",
+      "text": "Ring +44 7700 900123 today",
+      "term": "07700 900123",
+      "expected": "true"
+    },
+    {
+      "name": "L12 town with full stop",
+      "mode": "term",
+      "text": "A job in St Albans",
+      "term": "St. Albans",
+      "expected": "true"
+    },
+    {
+      "name": "L12 common-word town still matches (documented)",
+      "mode": "term",
+      "text": "Bath and shower room refit",
+      "term": "Bath",
+      "expected": "true"
+    },
+    {
+      "name": "one character term ignored",
+      "mode": "term",
+      "text": "Any text at all",
+      "term": "x",
+      "expected": "false"
+    },
+    {
+      "name": "M2 bare string term",
+      "mode": "options",
+      "options": "{\"forbiddenTerms\":[\"Sam Carter\"]}",
+      "expected": "throw"
+    },
+    {
+      "name": "M2 term with wrong key",
+      "mode": "options",
+      "options": "{\"forbiddenTerms\":[{\"label\":\"name\",\"name\":\"Sam Carter\"}]}",
+      "expected": "throw"
+    },
+    {
+      "name": "M2 option spelt as in the fixtures",
+      "mode": "options",
+      "options": "{\"forbidden_terms\":[{\"label\":\"name\",\"value\":\"Sam Carter\"}]}",
+      "expected": "throw"
+    },
+    {
+      "name": "M2 well-formed terms",
+      "mode": "options",
+      "options": "{\"forbiddenTerms\":[{\"label\":\"name\",\"value\":\"Sam Carter\"}]}",
+      "expected": "ok"
+    },
+    {
+      "name": "M3 builder refuses unvalidated text",
+      "mode": "jsonld",
+      "fixture": "valid-full",
+      "context": "site-context.json",
+      "set_record": [
+        [
+          [
+            "title"
+          ],
+          "Sam Carter, 14 Acacia Road KT12 4RG, 07700 900123, \u00a34500"
+        ]
+      ],
+      "set_context": [],
+      "expected": "jsonld.record_invalid"
+    },
+    {
+      "name": "M8 no address is an Organization",
+      "mode": "jsonld",
+      "fixture": "valid-full",
+      "context": "site-context.json",
+      "set_record": [],
+      "set_context": [
+        [
+          [
+            "business",
+            "address"
+          ],
+          null
+        ]
+      ],
+      "expected": "Organization"
+    },
+    {
+      "name": "M8 address is a LocalBusiness",
+      "mode": "jsonld",
+      "fixture": "valid-full",
+      "context": "site-context.json",
+      "set_record": [],
+      "set_context": [],
+      "expected": "LocalBusiness"
+    },
+    {
+      "name": "M8 site may name a more specific type",
+      "mode": "jsonld",
+      "fixture": "valid-full",
+      "context": "site-context.json",
+      "set_record": [],
+      "set_context": [
+        [
+          [
+            "business",
+            "type"
+          ],
+          "RoofingContractor"
+        ]
+      ],
+      "expected": "RoofingContractor"
+    },
+    {
+      "name": "L13 user part in page_url",
+      "mode": "jsonld",
+      "fixture": "valid-full",
+      "context": "site-context.json",
+      "set_record": [],
+      "set_context": [
+        [
+          [
+            "page_url"
+          ],
+          "https://evil@x.co/p"
+        ]
+      ],
+      "expected": "jsonld.context_invalid"
+    },
+    {
+      "name": "L13 fragment in business url",
+      "mode": "jsonld",
+      "fixture": "valid-full",
+      "context": "site-context.json",
+      "set_record": [],
+      "set_context": [
+        [
+          [
+            "business",
+            "url"
+          ],
+          "https://x.co/#a"
+        ]
+      ],
+      "expected": "jsonld.context_invalid"
+    },
+    {
+      "name": "L1 keys sorted by code point",
+      "mode": "canon",
+      "raw": "{\"\ud83d\ude00\":2,\"\uff5e\":1}",
+      "expected": "{\n  \"\uff5e\": 1,\n  \"\ud83d\ude00\": 2\n}"
+    },
+    {
+      "name": "L2 integer beyond 2^53 refused in canonical JSON",
+      "mode": "canon",
+      "raw": "9007199254740993",
+      "expected": "throw"
+    },
+    {
+      "name": "L2 largest safe integer",
+      "mode": "canon",
+      "raw": "9007199254740991",
+      "expected": "9007199254740991"
+    },
+    {
+      "name": "L2 number out of range in a schema check",
+      "mode": "schema",
+      "schema": "{\"maximum\":9007199254740992}",
+      "raw": "9007199254740993",
+      "expected": "schema.number_out_of_range"
+    },
+    {
+      "name": "L3 lone surrogate",
+      "mode": "decode",
+      "raw": "{\"title\":\"\\ud800 x\"}",
+      "expected": "throw"
+    },
+    {
+      "name": "L3 key starting with NUL",
+      "mode": "decode",
+      "raw": "{\"\\u0000a\":1}",
+      "expected": "throw"
+    },
+    {
+      "name": "L3 63 levels",
+      "mode": "decode",
+      "raw": "[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]",
+      "expected": "ok"
+    },
+    {
+      "name": "L3 64 levels",
+      "mode": "decode",
+      "raw": "[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]",
+      "expected": "throw"
+    },
+    {
+      "name": "L4 pattern with backslash d",
+      "mode": "schema",
+      "schema": "{\"pattern\":\"^\\\\d$\"}",
+      "raw": "\"1\"",
+      "expected": "throw"
+    },
+    {
+      "name": "L4 pattern with a bare dot",
+      "mode": "schema",
+      "schema": "{\"pattern\":\"^a.b$\"}",
+      "raw": "\"a b\"",
+      "expected": "throw"
+    },
+    {
+      "name": "L4 pattern with an inline flag",
+      "mode": "schema",
+      "schema": "{\"pattern\":\"(?i)a\"}",
+      "raw": "\"A\"",
+      "expected": "throw"
+    },
+    {
+      "name": "L4 pattern with a possessive quantifier",
+      "mode": "schema",
+      "schema": "{\"pattern\":\"a++\"}",
+      "raw": "\"aa\"",
+      "expected": "throw"
+    },
+    {
+      "name": "L4 type as a list",
+      "mode": "schema",
+      "schema": "{\"type\":[\"string\",\"null\"]}",
+      "raw": "\"a\"",
+      "expected": "throw"
+    },
+    {
+      "name": "L5 $ref cycle",
+      "mode": "schema",
+      "schema": "{\"$ref\":\"#/$defs/a\",\"$defs\":{\"a\":{\"$ref\":\"#/$defs/a\"}}}",
+      "raw": "1",
+      "expected": "throw"
+    },
+    {
+      "name": "unsupported keyword",
+      "mode": "schema",
+      "schema": "{\"type\":\"string\",\"format\":\"email\"}",
+      "raw": "\"x\"",
+      "expected": "throw"
+    },
+    {
+      "name": "M5 minLength counts visible text",
+      "mode": "schema",
+      "schema": "{\"type\":\"string\",\"minLength\":3}",
+      "raw": "\"  a   \\n \"",
+      "expected": "schema.min_length"
+    },
+    {
+      "name": "1 and 1.0 are the same number",
+      "mode": "schema",
+      "schema": "{\"const\":1}",
+      "raw": "1.0",
+      "expected": "ok"
+    },
+    {
+      "name": "L9 run-together sentences",
+      "mode": "sentences",
+      "text": "One.Two.Three.Four.",
+      "expected": "4"
+    },
+    {
+      "name": "three sentences",
+      "mode": "sentences",
+      "text": "A storm took it down. We rebuilt it! Done in three days",
+      "expected": "3"
+    },
+    {
+      "name": "an abbreviation with a full stop and a space counts as a sentence end (documented)",
+      "mode": "sentences",
+      "text": "It took approx. 3 days",
+      "expected": "2"
+    },
+    {
+      "name": "N1 possessive of a term",
+      "mode": "term",
+      "text": "Mrs Raman's garden",
+      "term": "Raman",
+      "expected": "true"
+    },
+    {
+      "name": "N1 plural possessive of a term",
+      "mode": "term",
+      "text": "the Smiths' drive",
+      "term": "Smith",
+      "expected": "true"
+    },
+    {
+      "name": "N1 possessive of a term with an apostrophe",
+      "mode": "term",
+      "text": "O'Brien's wall",
+      "term": "O'Brien",
+      "expected": "true"
+    },
+    {
+      "name": "N1 possessive of a hidden town, curly apostrophe",
+      "mode": "term",
+      "text": "New driveway in Guildford\u2019s centre",
+      "term": "Guildford",
+      "expected": "true"
+    },
+    {
+      "name": "N1 term in single quotes",
+      "mode": "term",
+      "text": "known as 'Raman' locally",
+      "term": "Raman",
+      "expected": "true"
+    },
+    {
+      "name": "term with apostrophe matches text without",
+      "mode": "term",
+      "text": "Mr OBrien",
+      "term": "O'Brien",
+      "expected": "true"
+    },
+    {
+      "name": "town with apostrophe matches hyphenated spelling",
+      "mode": "term",
+      "text": "Kings-Lynn",
+      "term": "King's Lynn",
+      "expected": "true"
+    },
+    {
+      "name": "N8 can't is not Cant",
+      "mode": "term",
+      "text": "we can't see it",
+      "term": "Cant",
+      "expected": "false"
+    },
+    {
+      "name": "N8 he'll is not Hell",
+      "mode": "term",
+      "text": "he'll be back",
+      "term": "Hell",
+      "expected": "false"
+    },
+    {
+      "name": "N8 she'd is not Shed",
+      "mode": "term",
+      "text": "she'd asked",
+      "term": "Shed",
+      "expected": "false"
+    },
+    {
+      "name": "a plain plural is not a possessive",
+      "mode": "term",
+      "text": "climbing roses",
+      "term": "Rose",
+      "expected": "false"
+    },
+    {
+      "name": "N9 S with comma below",
+      "mode": "term",
+      "text": "\u0218tefan fitted it",
+      "term": "Stefan",
+      "expected": "true"
+    },
+    {
+      "name": "N9 Vietnamese vowels",
+      "mode": "term",
+      "text": "Nguy\u1ec5n",
+      "term": "Nguyen",
+      "expected": "true"
+    },
+    {
+      "name": "N6 combining mark added in a recent Unicode version",
+      "mode": "term",
+      "text": "Car\u1acfter",
+      "term": "Carter",
+      "expected": "true"
+    },
+    {
+      "name": "N2 CR LF, bare CR and tab in an answer",
+      "mode": "validate",
+      "fixture": "valid-minimal",
+      "set_record": [
+        [
+          [
+            "sections",
+            0,
+            "answer"
+          ],
+          "Line one of the answer here.\r\nLine two of the answer.\rLine three,\twith a tab."
+        ]
+      ],
+      "expected": "VALID"
+    },
+    {
+      "name": "N13 line break in a title",
+      "mode": "validate",
+      "fixture": "valid-minimal",
+      "set_record": [
+        [
+          [
+            "title"
+          ],
+          "Block paving\ndriveway relaid"
+        ]
+      ],
+      "expected": "text.line_break /title"
+    },
+    {
+      "name": "N2 NUL is still refused",
+      "mode": "validate",
+      "fixture": "valid-minimal",
+      "set_record": [
+        [
+          [
+            "title"
+          ],
+          "Block paving\u0000 driveway relaid"
+        ]
+      ],
+      "expected": "text.control_character /title"
+    },
+    {
+      "name": "N6 postcode with a recent combining mark",
+      "mode": "validate",
+      "fixture": "valid-minimal",
+      "set_record": [
+        [
+          [
+            "title"
+          ],
+          "Driveway relaid KT12 4R\u1acfG"
+        ]
+      ],
+      "expected": "privacy.postcode /title"
+    },
+    {
+      "name": "N6 postcode with a recent format character",
+      "mode": "validate",
+      "fixture": "valid-minimal",
+      "set_record": [
+        [
+          [
+            "title"
+          ],
+          "Driveway relaid KT12\u0897 4RG"
+        ]
+      ],
+      "expected": "privacy.postcode /title"
+    },
+    {
+      "name": "N7 ohm sign",
+      "mode": "validate",
+      "fixture": "valid-minimal",
+      "set_record": [
+        [
+          [
+            "title"
+          ],
+          "Fitted a 10 k\u2126 resistor"
+        ]
+      ],
+      "expected": "VALID"
+    },
+    {
+      "name": "N7 angstrom sign",
+      "mode": "validate",
+      "fixture": "valid-minimal",
+      "set_record": [
+        [
+          [
+            "title"
+          ],
+          "A coating 50 \u212b thick"
+        ]
+      ],
+      "expected": "VALID"
+    },
+    {
+      "name": "N7 circled digit is still refused",
+      "mode": "validate",
+      "fixture": "valid-minimal",
+      "set_record": [
+        [
+          [
+            "title"
+          ],
+          "Step \u2460 of the driveway"
+        ]
+      ],
+      "expected": "text.unsupported_character /title"
+    },
+    {
+      "name": "N4c consent dated before a photo tick",
+      "mode": "validate",
+      "fixture": "valid-minimal",
+      "set_record": [
+        [
+          [
+            "consent",
+            "confirmed_at"
+          ],
+          "2026-09-30T16:10:00Z"
+        ],
+        [
+          [
+            "consent",
+            "not_identifiable_statement",
+            "ticked_at"
+          ],
+          "2026-09-30T16:10:00Z"
+        ]
+      ],
+      "expected": "consent.confirmed_before_photo_tick /photos/0/checked/confirmed_at"
+    },
+    {
+      "name": "N14 business type outside the allow-list",
+      "mode": "jsonld",
+      "fixture": "valid-full",
+      "context": "site-context.json",
+      "set_record": [],
+      "set_context": [
+        [
+          [
+            "business",
+            "type"
+          ],
+          "Person"
+        ]
+      ],
+      "expected": "jsonld.context_invalid"
+    },
+    {
+      "name": "N5 feed projection of an unpublished record",
+      "mode": "feed",
+      "fixture": "valid-unpublished-withdrawn",
+      "set_record": [],
+      "expected": "feed.record_not_publishable"
+    },
+    {
+      "name": "N5 feed projection of a draft",
+      "mode": "feed",
+      "fixture": "valid-draft",
+      "set_record": [],
+      "expected": "feed.record_not_publishable"
+    },
+    {
+      "name": "N5 feed projection of a record with an extra field",
+      "mode": "feed",
+      "fixture": "valid-full",
+      "set_record": [
+        [
+          [
+            "customer_name"
+          ],
+          "Priya Raman"
+        ]
+      ],
+      "expected": "feed.record_not_publishable"
+    },
+    {
+      "name": "N5 feed projection of a valid published record",
+      "mode": "feed",
+      "fixture": "valid-full",
+      "set_record": [],
+      "expected": "ok"
+    },
+    {
+      "name": "N5 tombstone of a published record",
+      "mode": "tombstone",
+      "fixture": "valid-full",
+      "set_record": [],
+      "expected": "feed.record_not_unpublished"
+    },
+    {
+      "name": "N10 id that looks like a postcode",
+      "mode": "identifier",
+      "value": "abcd_M1-1AE_xyz9",
+      "expected": "false"
+    },
+    {
+      "name": "N10 id that looks like a reference",
+      "mode": "identifier",
+      "value": "a1b2c3d4-e5f6-4a7b-8c9d-ref-1234",
+      "expected": "false"
+    },
+    {
+      "name": "N10 id with a quote prefix",
+      "mode": "identifier",
+      "value": "QUO_55218xyz",
+      "expected": "false"
+    },
+    {
+      "name": "N10 ordinary generated id",
+      "mode": "identifier",
+      "value": "cs_7Hq2mXw9LpA4",
+      "expected": "true"
+    },
+    {
+      "name": "N10 UUID",
+      "mode": "identifier",
+      "value": "0f8b6c1e-52a7-4d0c-9f6e-3b1a7c2d4e5f",
+      "expected": "true"
+    },
+    {
+      "name": "N10 too short to be an id",
+      "mode": "identifier",
+      "value": "abc",
+      "expected": "false"
+    },
+    {
+      "name": "term without an apostrophe matches the text's possessive spelling",
+      "mode": "term",
+      "text": "We worked on St John's Road",
+      "term": "St Johns Road",
+      "expected": "true"
+    },
+    {
+      "name": "a one-word term ending in s does not match a contraction spelt the same way",
+      "mode": "term",
+      "text": "it's fine",
+      "term": "Its",
+      "expected": "false"
+    },
+    {
+      "name": "P1 one-word term ending in s does not match a possessive of the word without it",
+      "mode": "term",
+      "text": "the well's cover was replaced",
+      "term": "Wells",
+      "expected": "false"
+    },
+    {
+      "name": "P1 Banks is not the bank's edge",
+      "mode": "term",
+      "text": "the bank's edge",
+      "term": "Banks",
+      "expected": "false"
+    },
+    {
+      "name": "P1 Gates is not the gate's hinges",
+      "mode": "term",
+      "text": "the gate's hinges",
+      "term": "Gates",
+      "expected": "false"
+    },
+    {
+      "name": "P1 Waters is not the water's edge",
+      "mode": "term",
+      "text": "the water's edge",
+      "term": "Waters",
+      "expected": "false"
+    },
+    {
+      "name": "P1 Woods is not the wood's grain",
+      "mode": "term",
+      "text": "the wood's grain",
+      "term": "Woods",
+      "expected": "false"
+    },
+    {
+      "name": "P1 Williams is not William's van",
+      "mode": "term",
+      "text": "William's van",
+      "term": "Williams",
+      "expected": "false"
+    },
+    {
+      "name": "P1 a one-word term still catches its own possessive",
+      "mode": "term",
+      "text": "Mr Wells's van",
+      "term": "Wells",
+      "expected": "true"
+    },
+    {
+      "name": "P1 a one-word term still catches its plural possessive",
+      "mode": "term",
+      "text": "the Wells' garden",
+      "term": "Wells",
+      "expected": "true"
+    },
+    {
+      "name": "P1 two-word town ending in s catches the possessive spelling",
+      "mode": "term",
+      "text": "near St Alban's Cathedral",
+      "term": "St Albans",
+      "expected": "true"
+    },
+    {
+      "name": "P2 a plain plural of a surname is not caught (documented)",
+      "mode": "term",
+      "text": "the Smiths were pleased",
+      "term": "Smith",
+      "expected": "false"
+    },
+    {
+      "name": "P2 a plain plural of a surname is not caught, second name (documented)",
+      "mode": "term",
+      "text": "the Ramans were pleased",
+      "term": "Raman",
+      "expected": "false"
+    },
+    {
+      "name": "P2 the plural passed as its own term is caught",
+      "mode": "term",
+      "text": "the Smiths were pleased",
+      "term": "Smiths",
+      "expected": "true"
+    },
+    {
+      "name": "P2 the -es plural passed as its own term is caught",
+      "mode": "term",
+      "text": "the Joneses",
+      "term": "Joneses",
+      "expected": "true"
+    },
+    {
+      "name": "P2 the -es plural is not caught from the surname (documented)",
+      "mode": "term",
+      "text": "the Joneses",
+      "term": "Jones",
+      "expected": "false"
+    },
+    {
+      "name": "P2 a term without an apostrophe does not catch the spelling with one (documented)",
+      "mode": "term",
+      "text": "O\u2019Brien",
+      "term": "OBrien",
+      "expected": "false"
+    },
+    {
+      "name": "P2 a term without an apostrophe does not catch the spelling with one, possessive (documented)",
+      "mode": "term",
+      "text": "D\u2019Arcy\u2019s",
+      "term": "Darcy",
+      "expected": "false"
+    },
+    {
+      "name": "P2 the spelling with the apostrophe passed as the term is caught",
+      "mode": "term",
+      "text": "D\u2019Arcy\u2019s",
+      "term": "D'Arcy",
+      "expected": "true"
+    },
+    {
+      "name": "P1 hidden one-word town ending in s does not catch a possessive of the word",
+      "mode": "validate",
+      "fixture": "valid-minimal",
+      "set_record": [
+        [
+          [
+            "location",
+            "town"
+          ],
+          "Wells"
+        ],
+        [
+          [
+            "title"
+          ],
+          "The old well\u2019s brick cap rebuilt"
+        ]
+      ],
+      "expected": "VALID"
+    },
+    {
+      "name": "P1 hidden two-word town ending in s catches the possessive spelling",
+      "mode": "validate",
+      "fixture": "valid-minimal",
+      "set_record": [
+        [
+          [
+            "location",
+            "town"
+          ],
+          "St Albans"
+        ],
+        [
+          [
+            "title"
+          ],
+          "Driveway relaid near St Alban\u2019s Cathedral"
+        ]
+      ],
+      "expected": "privacy.hidden_town /title"
+    },
+    {
+      "name": "P1 hidden one-word town ending in s still catches its own possessive",
+      "mode": "validate",
+      "fixture": "valid-minimal",
+      "set_record": [
+        [
+          [
+            "location",
+            "town"
+          ],
+          "Wells"
+        ],
+        [
+          [
+            "title"
+          ],
+          "New paving for Wells\u2019 market square"
+        ]
+      ],
+      "expected": "privacy.hidden_town /title"
+    }
+  ]
+}
