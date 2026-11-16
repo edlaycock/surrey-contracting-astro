@@ -1,0 +1,195 @@
+{
+  "description": "Phone numbers, an exact date in two forms, a price in two forms, a job reference and a house number with street.",
+  "record": {
+    "schema_version": 1,
+    "id": "cs_7Hq2mXw9LpA4",
+    "version": 2,
+    "source": "ytq",
+    "status": "published",
+    "title": "Closeboard garden fencing in Hersham, October 2026",
+    "slug": "closeboard-garden-fencing-hersham-october-2026",
+    "excerpt": "Storm-damaged fencing at 14 Orchard Road replaced with closeboard on concrete posts, all for under 3k pounds.",
+    "service_category": "Garden fencing",
+    "location": {
+      "town": "Hersham",
+      "show_town": true
+    },
+    "completed_month": "2026-10",
+    "sections": [
+      {
+        "key": "need",
+        "question": "What did the customer in Hersham need?",
+        "answer": "A storm had brought down most of the old panel fencing along the back garden. The customer wanted a boundary that would stand up to wind and keep the dog in."
+      },
+      {
+        "key": "challenge",
+        "question": "What made this fence difficult?",
+        "answer": "Access was through a narrow side passage. Call the office on 01632 960123 or +44 (0)7700 900123 to ask how we managed it."
+      },
+      {
+        "key": "solution",
+        "question": "How did we solve it?",
+        "answer": "We stepped the fence down the slope in even bays and used concrete posts with concrete gravel boards, so no timber sits in the wet ground."
+      },
+      {
+        "key": "work",
+        "question": "What work was carried out?",
+        "answer": "We removed the old panels on 14th October and finished on 16/10/2026. The whole job came to \u00a32,450 including waste removal."
+      },
+      {
+        "key": "result",
+        "question": "How did it turn out?",
+        "answer": "The garden has a straight, solid boundary that follows the slope neatly. The work took three days and the dog is safely back in the garden."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "How long does a closeboard fence last?",
+        "answer": "With concrete posts and gravel boards the timber stays off the ground, so fifteen years or more is typical with basic care."
+      },
+      {
+        "question": "Did this fence need planning permission?",
+        "answer": "No. The posts & gravel boards are concrete and every bay is <2m tall, which is within the usual limit for a rear garden."
+      },
+      {
+        "question": "Can a fence follow a sloping garden?",
+        "answer": "Yes. Here it was stepped down the slope in equal bays so the top line looks even from the house."
+      }
+    ],
+    "photos": [
+      {
+        "ref": "ph_after_wide_01",
+        "role": "hero",
+        "alt": "New closeboard fence stepping down a sloping lawn",
+        "caption": "The finished fence from the patio.",
+        "order": 1,
+        "width": 1600,
+        "height": 1200,
+        "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "checked": {
+          "confirmed": true,
+          "confirmed_by": "Sam Carter",
+          "confirmed_at": "2026-10-28T09:12:05Z"
+        }
+      },
+      {
+        "ref": "ph_before_left_02",
+        "role": "before",
+        "alt": "Old fence panels leaning after the storm",
+        "order": 2,
+        "pair": 1,
+        "width": 1600,
+        "height": 1200,
+        "sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "checked": {
+          "confirmed": true,
+          "confirmed_by": "Sam Carter",
+          "confirmed_at": "2026-10-28T09:12:11Z"
+        }
+      },
+      {
+        "ref": "ph_after_left_03",
+        "role": "after",
+        "alt": "The same boundary with new closeboard bays",
+        "order": 3,
+        "pair": 1,
+        "width": 1600,
+        "height": 1200,
+        "sha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+        "checked": {
+          "confirmed": true,
+          "confirmed_by": "Sam Carter",
+          "confirmed_at": "2026-10-28T09:12:17Z"
+        }
+      },
+      {
+        "ref": "ph_before_end_04",
+        "role": "before",
+        "alt": "Rotten timber post at the end of the garden",
+        "order": 4,
+        "pair": 2,
+        "width": 1200,
+        "height": 1600,
+        "sha256": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+        "checked": {
+          "confirmed": true,
+          "confirmed_by": "Sam Carter",
+          "confirmed_at": "2026-10-28T09:12:24Z"
+        }
+      },
+      {
+        "ref": "ph_after_end_05",
+        "role": "after",
+        "alt": "New concrete post and gravel board at the end of the garden",
+        "order": 5,
+        "pair": 2,
+        "width": 1200,
+        "height": 1600,
+        "sha256": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+        "checked": {
+          "confirmed": true,
+          "confirmed_by": "Sam Carter",
+          "confirmed_at": "2026-10-28T09:12:30Z"
+        }
+      },
+      {
+        "ref": "ph_detail_cap_06",
+        "role": "other",
+        "alt": "Close-up of the capping rail and feather-edge boards",
+        "caption": "Capping rail detail, job ref JOB-0412.",
+        "order": 6,
+        "width": 1600,
+        "height": 1200,
+        "sha256": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+        "checked": {
+          "confirmed": true,
+          "confirmed_by": "Sam Carter",
+          "confirmed_at": "2026-10-28T09:12:36Z"
+        }
+      }
+    ],
+    "consent": {
+      "customer_permission": "yes_written",
+      "confirmed_by": "Sam Carter",
+      "confirmed_at": "2026-11-02T14:03:40Z",
+      "wording_version": "v1",
+      "note": "Agreed by text message."
+    },
+    "social": {
+      "caption": "A storm took down this back garden fence in Hersham. We replaced it with closeboard on concrete posts, stepped neatly down the slope. Three days from start to finish.",
+      "link_label": "See the full case study"
+    },
+    "published_at": "2026-10-28T10:00:00Z",
+    "modified_at": "2026-11-02T14:05:00Z"
+  },
+  "expected": {
+    "valid": false,
+    "errors": [
+      {
+        "code": "privacy.price",
+        "path": "/excerpt"
+      },
+      {
+        "code": "privacy.street_address",
+        "path": "/excerpt"
+      },
+      {
+        "code": "privacy.reference",
+        "path": "/photos/5/caption"
+      },
+      {
+        "code": "privacy.phone",
+        "path": "/sections/1/answer"
+      },
+      {
+        "code": "privacy.exact_date",
+        "path": "/sections/3/answer"
+      },
+      {
+        "code": "privacy.price",
+        "path": "/sections/3/answer"
+      }
+    ],
+    "warnings": []
+  }
+}

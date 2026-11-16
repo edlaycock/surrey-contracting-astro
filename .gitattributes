@@ -1,0 +1,3 @@
+# Case Study Core is vendored and pinned by hash (scripts/check-case-study-core.mjs).
+# A checkout that converted line endings would change the hashes.
+vendor/caseStudyCore/** text eol=lf

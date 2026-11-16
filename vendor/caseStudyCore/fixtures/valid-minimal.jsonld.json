@@ -1,0 +1,48 @@
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@id": "https://www.example-paving.co.uk/our-work/block-paving-driveway-relaid-september-2026/#article",
+      "@type": "Article",
+      "about": {
+        "@type": "Service",
+        "name": "Driveways",
+        "provider": {
+          "@id": "https://www.example-paving.co.uk/#business"
+        }
+      },
+      "articleSection": "Driveways",
+      "author": {
+        "@id": "https://www.example-paving.co.uk/#business"
+      },
+      "dateModified": "2026-09-30T16:25:00Z",
+      "datePublished": "2026-09-30T16:25:00Z",
+      "description": "A sunken block paving driveway lifted, re-based and relaid with the original blocks.",
+      "headline": "Block paving driveway relaid, September 2026",
+      "image": [
+        {
+          "@type": "ImageObject",
+          "caption": "Level block paving driveway after relaying",
+          "height": 900,
+          "url": "https://www.example-paving.co.uk/media/wp-att-000412.jpg",
+          "width": 1200
+        }
+      ],
+      "inLanguage": "en-GB",
+      "mainEntityOfPage": {
+        "@id": "https://www.example-paving.co.uk/our-work/block-paving-driveway-relaid-september-2026/",
+        "@type": "WebPage"
+      },
+      "publisher": {
+        "@id": "https://www.example-paving.co.uk/#business"
+      },
+      "url": "https://www.example-paving.co.uk/our-work/block-paving-driveway-relaid-september-2026/"
+    },
+    {
+      "@id": "https://www.example-paving.co.uk/#business",
+      "@type": "Organization",
+      "name": "Example Paving",
+      "url": "https://www.example-paving.co.uk/"
+    }
+  ]
+}

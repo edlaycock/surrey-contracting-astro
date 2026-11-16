@@ -22,3 +22,6 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# local YourTradeQuotes case-study store (dev only; on the VPS it is a Docker volume)
+.ytq-case-studies/

@@ -40,8 +40,13 @@ progress.
      one `<h1>` and one quote form with the right lead source, contain no em
      or en dashes or forbidden terms, and reference only assets that exist.
    - `scripts/check-no-keys.mjs`: no file under `dist/client` contains
-     `ytq_live_`, `ytq_pub_` or `submitEnquiry`. YourTradeQuotes is reached
-     from the server only.
+     `ytq_live_`, `ytq_pub_`, `submitEnquiry` or `caseStudyFeed`.
+     YourTradeQuotes is reached from the server only.
+   - `scripts/check-sitemap-static.mjs`: no static sitemap file names a
+     case-study URL (they are listed only by the on-demand
+     `/sitemap-case-studies.xml`).
+   - `scripts/check-case-study-core.mjs`: the vendored Case Study Core matches
+     its pinned manifest file for file, and passes its own fixtures.
 2. **Rsync the source to the VPS** into the `DEPLOY_PATH` directory, with
    `--delete`. Excluded: `.git`, `node_modules`, `dist`, `.astro`, `studio`
    and `.env`, so the server's `.env` is never overwritten or deleted.
@@ -127,6 +132,7 @@ sudo ufw allow OpenSSH && sudo ufw allow 'Nginx Full' && sudo ufw enable
 | `YTQ_SECRET_KEY` | server-only YourTradeQuotes secret key; `/api/contact` copies every valid enquiry to YTQ with it. Written by `scripts/ytq-connect.sh` from a claim code. Unset, the relay is skipped and logs one line |
 | `YTQ_ENDPOINT` | optional, local testing only: overrides the YTQ endpoint |
 | `SMTP2GO_ENDPOINT` | optional, local testing only: overrides the SMTP2GO API URL |
+| `YTQ_CASE_STUDIES` | `on` switches on the YourTradeQuotes case-study kit (below). Unset: inert |
 
 After changing `.env`, run `docker compose up -d` in `DEPLOY_PATH` (or the
 next deploy) so the container picks it up.
@@ -218,6 +224,64 @@ deploy that carries no claim code.
 certbot manages the TLS sections of the live nginx config; do not edit them
 by hand. The container has `restart: unless-stopped`, so it comes back after
 a reboot once Docker starts.
+
+## YourTradeQuotes case studies (off until switched on)
+
+What the kit does is in README.md, "YourTradeQuotes case studies". It ships
+switched off: with `YTQ_CASE_STUDIES` unset the container makes no call to YTQ,
+whatever else is in `.env`.
+
+- **What the merge changes, switched off.** The static pages and sitemaps are
+  byte for byte what they were (only `styles.css` gains the case-study rules).
+  The container now starts with `node server.mjs`, which starts the same Astro
+  server. `docker-compose.yml` adds the named volume `ytq-case-studies`
+  (created by the first `docker compose up`) and sets `YTQ_CASE_STUDY_DIR`.
+  The volume survives every rebuild; `docker compose down -v` would delete it,
+  and the next sync would fetch everything again from YTQ.
+- **The image needs Node 22.18 or later** (the poll is loaded with Node's type
+  stripping). `docker compose up -d --build` reuses whatever `node:22-slim` the
+  VPS has cached, so before switching on run `docker compose build --pull`
+  then `docker compose up -d`, and check
+  `docker compose exec surrey-contracting node -v` shows v22.18 or later. On an
+  older Node the site serves normally but the log says
+  `[case-studies] poller did not start: ERR_UNKNOWN_FILE_EXTENSION`.
+- **After the first deploy, check the volume belongs to `node`:**
+  `docker compose exec surrey-contracting ls -ld /data/ytq-case-studies`
+  should show `node node`. If not, the sync cannot write and logs it; fix with
+  `docker compose exec -u root surrey-contracting chown node:node /data/ytq-case-studies`.
+- **Do not switch it on** until YTQ PRs #287, #293 and #295 are released and
+  the case-study pilot switch is on for Surrey Contracting in YTQ.
+- **To switch on:** add `YTQ_CASE_STUDIES=on` to `$DEPLOY_PATH/.env` (it uses
+  the `YTQ_SECRET_KEY` already there) and run `docker compose up -d`. Then in
+  YTQ, Settings, Integrations, register the refresh URL
+  `https://surreycontracting.co.uk/api/ytq-refresh`, and check
+  `https://surreycontracting.co.uk` is on the account's allowed websites.
+  Then, in Search Console, submit
+  `https://surreycontracting.co.uk/sitemap-case-studies.xml` (it is not named in
+  `sitemap-index.xml`).
+- **No cron or extra process:** the safety poll runs inside the container from
+  the moment it starts (first sync after about 30 s, then hourly).
+- **After switching on, confirm the first sync.** About a minute after
+  `docker compose up -d`, `docker compose logs surrey-contracting | grep case-studies`
+  must show `sync (startup): ok` (or `partial`: an item is waiting to retry).
+  If it shows `unauthorized`, the key on the server is not the account's: switch
+  off again and install a fresh key (Connecting YourTradeQuotes, above).
+  `storage_error` names the reason the store could not be written.
+- **The pages are held until a sync succeeds.** Case-study pages, photos and
+  the case-study sitemap are shown only while a sync has read the feed within
+  the last three poll intervals (three hours by default). After switching on,
+  or a restart after a long stop, they appear with the first good sync; if
+  syncs keep failing (YTQ down, a rotated key) for three hours, they come down
+  until the next good one. A missing case study is always safer than one whose
+  removal could not be checked.
+- **Switching off takes the pages down.** Remove the line and run
+  `docker compose up -d`: every `/case-studies` URL answers 404, the photos and
+  the case-study sitemap go with them, and no call is made to YTQ. Nothing is
+  deleted from the store. **Switching back on restores the pages**, and the
+  next sync (about 30 s after start) applies any unpublish or permission
+  withdrawal made in YTQ meanwhile; nothing stored is shown before that sync
+  has succeeded. While off, YTQ cannot reach the site, so
+  YTQ will report removals as unconfirmed until it is switched on again.
 
 ## Rebuild when the client publishes in Sanity
 

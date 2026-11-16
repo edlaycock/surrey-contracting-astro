@@ -1,0 +1,1110 @@
+{
+  "description": "Text samples for the forbidden content checks, each scanned as public text. codes is the exact set of privacy codes expected (without the privacy. prefix). An empty list with no flag is ordinary trade wording that must keep passing: the checks have no override, so these are a condition of that rule. An empty list with known_limit true is a form the checks do not catch; core/spec/privacy.md section 2.7 lists them, and a test fails if one starts being caught without this file changing.",
+  "samples": [
+    {
+      "text": "The fence runs behind KT12 4RG.",
+      "codes": [
+        "postcode"
+      ]
+    },
+    {
+      "text": "sw1a1aa",
+      "codes": [
+        "postcode"
+      ]
+    },
+    {
+      "text": "Postcode: m1  1ae",
+      "codes": [
+        "postcode"
+      ]
+    },
+    {
+      "text": "Near GIR 0AA",
+      "codes": [
+        "postcode"
+      ]
+    },
+    {
+      "text": "Non-breaking space: KT12\u00a04RG",
+      "codes": [
+        "postcode"
+      ]
+    },
+    {
+      "text": "Zero width space: KT12 4\u200bRG",
+      "codes": [
+        "postcode"
+      ]
+    },
+    {
+      "text": "KT12-4RG",
+      "codes": [
+        "postcode"
+      ]
+    },
+    {
+      "text": "KT12.4RG",
+      "codes": [
+        "postcode"
+      ]
+    },
+    {
+      "text": "KT12, 4RG",
+      "codes": [
+        "postcode"
+      ]
+    },
+    {
+      "text": "KT12/4RG",
+      "codes": [
+        "postcode"
+      ]
+    },
+    {
+      "text": "KT12\u200e4RG",
+      "codes": [
+        "postcode"
+      ]
+    },
+    {
+      "text": "KT12\u180e4RG",
+      "codes": [
+        "postcode"
+      ]
+    },
+    {
+      "text": "KT12\u20634RG",
+      "codes": [
+        "postcode"
+      ]
+    },
+    {
+      "text": "KT12\u034f4RG",
+      "codes": [
+        "postcode"
+      ]
+    },
+    {
+      "text": "KT12\ufe0f4RG",
+      "codes": [
+        "postcode"
+      ]
+    },
+    {
+      "text": "KT12\u202c4RG",
+      "codes": [
+        "postcode"
+      ]
+    },
+    {
+      "text": "\uff2b\uff3412 4RG",
+      "codes": [
+        "postcode"
+      ]
+    },
+    {
+      "text": "KT12 4ST",
+      "codes": [
+        "postcode"
+      ]
+    },
+    {
+      "text": "Email jo.bloggs@example.com today",
+      "codes": [
+        "email"
+      ]
+    },
+    {
+      "text": "JO@EXAMPLE.CO.UK",
+      "codes": [
+        "email"
+      ]
+    },
+    {
+      "text": "j\u00f6@example.com",
+      "codes": [
+        "email"
+      ]
+    },
+    {
+      "text": "jo@ex\u00e4mple.com",
+      "codes": [
+        "email"
+      ]
+    },
+    {
+      "text": "jo @ example.com",
+      "codes": [
+        "email"
+      ]
+    },
+    {
+      "text": "jo\uff20example.com",
+      "codes": [
+        "email"
+      ]
+    },
+    {
+      "text": "Ring 07700 900123",
+      "codes": [
+        "phone"
+      ]
+    },
+    {
+      "text": "Ring 07700900123.",
+      "codes": [
+        "phone"
+      ]
+    },
+    {
+      "text": "Ring (01632) 960-123",
+      "codes": [
+        "phone"
+      ]
+    },
+    {
+      "text": "Ring 020 7946 0018",
+      "codes": [
+        "phone"
+      ]
+    },
+    {
+      "text": "Ring +44 7700 900123",
+      "codes": [
+        "phone"
+      ]
+    },
+    {
+      "text": "Ring 0044 7700 900123",
+      "codes": [
+        "phone"
+      ]
+    },
+    {
+      "text": "Ring +44 (0) 20 7946 0018",
+      "codes": [
+        "phone"
+      ]
+    },
+    {
+      "text": "0 7700 900123",
+      "codes": [
+        "phone"
+      ]
+    },
+    {
+      "text": "44 7700 900123",
+      "codes": [
+        "phone"
+      ]
+    },
+    {
+      "text": "447700900123",
+      "codes": [
+        "phone"
+      ]
+    },
+    {
+      "text": "07700_900123",
+      "codes": [
+        "phone"
+      ]
+    },
+    {
+      "text": "07700/900123",
+      "codes": [
+        "phone"
+      ]
+    },
+    {
+      "text": "07700\u2013900123",
+      "codes": [
+        "phone"
+      ]
+    },
+    {
+      "text": "07700 - 900 - 123",
+      "codes": [
+        "phone"
+      ]
+    },
+    {
+      "text": "07700...900123",
+      "codes": [
+        "phone"
+      ]
+    },
+    {
+      "text": "\uff10\uff17\uff17\uff10\uff10 \uff19\uff10\uff10\uff11\uff12\uff13",
+      "codes": [
+        "phone"
+      ]
+    },
+    {
+      "text": "my number 07700 900123",
+      "codes": [
+        "phone"
+      ]
+    },
+    {
+      "text": "We worked at 14 Orchard Road for a week",
+      "codes": [
+        "street_address"
+      ]
+    },
+    {
+      "text": "Flat at 2b Upper High Street",
+      "codes": [
+        "street_address"
+      ]
+    },
+    {
+      "text": "14 ACACIA ROAD",
+      "codes": [
+        "street_address"
+      ]
+    },
+    {
+      "text": "14, Acacia Road",
+      "codes": [
+        "street_address"
+      ]
+    },
+    {
+      "text": "14 Ac\u00e1cia Road",
+      "codes": [
+        "street_address"
+      ]
+    },
+    {
+      "text": "14 Acacia St",
+      "codes": [
+        "street_address"
+      ]
+    },
+    {
+      "text": "14 St John\u2019s Road",
+      "codes": [
+        "street_address"
+      ]
+    },
+    {
+      "text": "It cost \u00a3850",
+      "codes": [
+        "price"
+      ]
+    },
+    {
+      "text": "It cost \u00a3 850",
+      "codes": [
+        "price"
+      ]
+    },
+    {
+      "text": "about 2,400 pounds all in",
+      "codes": [
+        "price"
+      ]
+    },
+    {
+      "text": "roughly 3k GBP",
+      "codes": [
+        "price"
+      ]
+    },
+    {
+      "text": "GBP 500 deposit",
+      "codes": [
+        "price"
+      ]
+    },
+    {
+      "text": "500 pound",
+      "codes": [
+        "price"
+      ]
+    },
+    {
+      "text": "5 grand",
+      "codes": [
+        "price"
+      ]
+    },
+    {
+      "text": "\u20ac500",
+      "codes": [
+        "price"
+      ]
+    },
+    {
+      "text": "$500",
+      "codes": [
+        "price"
+      ]
+    },
+    {
+      "text": "\u20a4500",
+      "codes": [
+        "price"
+      ]
+    },
+    {
+      "text": "\uffe1500",
+      "codes": [
+        "price"
+      ]
+    },
+    {
+      "text": "\u00a3\uff15\uff10\uff10",
+      "codes": [
+        "price"
+      ]
+    },
+    {
+      "text": "\u00a3\u200e500",
+      "codes": [
+        "price"
+      ]
+    },
+    {
+      "text": "cost about 5k",
+      "codes": [
+        "price"
+      ]
+    },
+    {
+      "text": "paid 1.2k",
+      "codes": [
+        "price"
+      ]
+    },
+    {
+      "text": "cost 4500",
+      "codes": [
+        "price"
+      ]
+    },
+    {
+      "text": "cost: 4500 + VAT",
+      "codes": [
+        "price"
+      ]
+    },
+    {
+      "text": "priced 1200 inc VAT",
+      "codes": [
+        "price"
+      ]
+    },
+    {
+      "text": "charged 850",
+      "codes": [
+        "price"
+      ]
+    },
+    {
+      "text": "The job cost 4,500.",
+      "codes": [
+        "price"
+      ]
+    },
+    {
+      "text": "quoted 2400 all in",
+      "codes": [
+        "price"
+      ]
+    },
+    {
+      "text": "quoted 100.",
+      "codes": [
+        "price"
+      ]
+    },
+    {
+      "text": "charged 1999 + VAT",
+      "codes": [
+        "price"
+      ]
+    },
+    {
+      "text": "costs 2026.50",
+      "codes": [
+        "price"
+      ]
+    },
+    {
+      "text": "It cost 4500, which was fair",
+      "codes": [
+        "price"
+      ]
+    },
+    {
+      "text": "price 2025,000 all in",
+      "codes": [
+        "price"
+      ]
+    },
+    {
+      "text": "quoted 1200, 1500 and 1800 for the three options",
+      "codes": [
+        "price"
+      ]
+    },
+    {
+      "text": "priced 4500, 5200 with gravel boards",
+      "codes": [
+        "price"
+      ]
+    },
+    {
+      "text": "cost 4500, 2 days work",
+      "codes": [
+        "price"
+      ]
+    },
+    {
+      "text": "cost 4500, 50% up front",
+      "codes": [
+        "price"
+      ]
+    },
+    {
+      "text": "paid 300, 400 and 500.",
+      "codes": [
+        "price"
+      ]
+    },
+    {
+      "text": "The job cost 2000",
+      "codes": [
+        "price"
+      ]
+    },
+    {
+      "text": "cost 2000, which was fair",
+      "codes": [
+        "price"
+      ]
+    },
+    {
+      "text": "(cost 2000)",
+      "codes": [
+        "price"
+      ]
+    },
+    {
+      "text": "paid 1950.",
+      "codes": [
+        "price"
+      ]
+    },
+    {
+      "text": "cost: 2000.",
+      "codes": [
+        "price"
+      ]
+    },
+    {
+      "text": "charged 2000.",
+      "codes": [
+        "price"
+      ]
+    },
+    {
+      "text": "Finished on 3 November",
+      "codes": [
+        "exact_date"
+      ]
+    },
+    {
+      "text": "Finished on the 3rd of November 2026",
+      "codes": [
+        "exact_date"
+      ]
+    },
+    {
+      "text": "Finished on November 3rd",
+      "codes": [
+        "exact_date"
+      ]
+    },
+    {
+      "text": "Finished 03/11/2026",
+      "codes": [
+        "exact_date"
+      ]
+    },
+    {
+      "text": "Finished 03-11-26",
+      "codes": [
+        "exact_date"
+      ]
+    },
+    {
+      "text": "Finished 2026-11-03",
+      "codes": [
+        "exact_date"
+      ]
+    },
+    {
+      "text": "October 3",
+      "codes": [
+        "exact_date"
+      ]
+    },
+    {
+      "text": "October 3, 2026",
+      "codes": [
+        "exact_date"
+      ]
+    },
+    {
+      "text": "on Oct 3",
+      "codes": [
+        "exact_date"
+      ]
+    },
+    {
+      "text": "Oct. 3rd",
+      "codes": [
+        "exact_date"
+      ]
+    },
+    {
+      "text": "3.10.2026",
+      "codes": [
+        "exact_date"
+      ]
+    },
+    {
+      "text": "2026/10/03",
+      "codes": [
+        "exact_date"
+      ]
+    },
+    {
+      "text": "October the 3rd",
+      "codes": [
+        "exact_date"
+      ]
+    },
+    {
+      "text": "3 november",
+      "codes": [
+        "exact_date"
+      ]
+    },
+    {
+      "text": "14 MAY",
+      "codes": [
+        "exact_date"
+      ]
+    },
+    {
+      "text": "Quote QUO-0042 accepted",
+      "codes": [
+        "reference"
+      ]
+    },
+    {
+      "text": "See ENQ-001",
+      "codes": [
+        "reference"
+      ]
+    },
+    {
+      "text": "job ref: AB-123",
+      "codes": [
+        "reference"
+      ]
+    },
+    {
+      "text": "Invoice number 2291",
+      "codes": [
+        "reference"
+      ]
+    },
+    {
+      "text": "Quote no. 12",
+      "codes": [
+        "reference"
+      ]
+    },
+    {
+      "text": "Ref: 12345",
+      "codes": [
+        "reference"
+      ]
+    },
+    {
+      "text": "ref 12345",
+      "codes": [
+        "reference"
+      ]
+    },
+    {
+      "text": "Reference: 12345",
+      "codes": [
+        "reference"
+      ]
+    },
+    {
+      "text": "our ref: ABC123",
+      "codes": [
+        "reference"
+      ]
+    },
+    {
+      "text": "Invoice 1234",
+      "codes": [
+        "reference"
+      ]
+    },
+    {
+      "text": "Job 1234",
+      "codes": [
+        "reference"
+      ]
+    },
+    {
+      "text": "job-1234",
+      "codes": [
+        "reference"
+      ]
+    },
+    {
+      "text": "enq-001",
+      "codes": [
+        "reference"
+      ]
+    },
+    {
+      "text": "quote 5521",
+      "codes": [
+        "reference"
+      ]
+    },
+    {
+      "text": "order 12345",
+      "codes": [
+        "reference"
+      ]
+    },
+    {
+      "text": "PO 12345",
+      "codes": [
+        "reference"
+      ]
+    },
+    {
+      "text": "JOB \u2013 1234",
+      "codes": [
+        "reference"
+      ]
+    },
+    {
+      "text": "reference number 12345",
+      "codes": [
+        "reference"
+      ]
+    },
+    {
+      "text": "Reference number: 12345",
+      "codes": [
+        "reference"
+      ]
+    },
+    {
+      "text": "ref no. 12345",
+      "codes": [
+        "reference"
+      ]
+    },
+    {
+      "text": "ref number 12345",
+      "codes": [
+        "reference"
+      ]
+    },
+    {
+      "text": "ref #4471",
+      "codes": [
+        "reference"
+      ]
+    },
+    {
+      "text": "Call 07700 900123 or email a@b.co about KT12 4RG",
+      "codes": [
+        "email",
+        "phone",
+        "postcode"
+      ]
+    },
+    {
+      "text": "6 Foot Close Board fencing on concrete posts",
+      "codes": []
+    },
+    {
+      "text": "A new 40 Metre Drive in tarmac",
+      "codes": []
+    },
+    {
+      "text": "Completed in November 2026",
+      "codes": []
+    },
+    {
+      "text": "The work took 3 days in May",
+      "codes": []
+    },
+    {
+      "text": "In March 12 metres of fencing blew down",
+      "codes": []
+    },
+    {
+      "text": "We finished the job 10 days early",
+      "codes": []
+    },
+    {
+      "text": "C24 treated timber, 2.4m rails and 0.5 tonnes of ballast",
+      "codes": []
+    },
+    {
+      "text": "Just off the M25 near the A3",
+      "codes": []
+    },
+    {
+      "text": "We used 100 x 100 posts at 1.8m centres",
+      "codes": []
+    },
+    {
+      "text": "It may 3 times out of 4 need a second coat",
+      "codes": []
+    },
+    {
+      "text": "Over 20 years of fencing in Surrey",
+      "codes": []
+    },
+    {
+      "text": "No job is too small, order of work: 1 dig, 2 set, 3 hang",
+      "codes": []
+    },
+    {
+      "text": "The gate is 900 wide and 1800 high",
+      "codes": []
+    },
+    {
+      "text": "Rated 5 stars, 100% recommended",
+      "codes": []
+    },
+    {
+      "text": "C24 8ft lengths",
+      "codes": []
+    },
+    {
+      "text": "C16 4ft timber",
+      "codes": []
+    },
+    {
+      "text": "T8 6ft tubes",
+      "codes": []
+    },
+    {
+      "text": "IP65 5ft LED batten",
+      "codes": []
+    },
+    {
+      "text": "M10 6ft studding",
+      "codes": []
+    },
+    {
+      "text": "C24 2nd fix",
+      "codes": []
+    },
+    {
+      "text": "M8 1st fix",
+      "codes": []
+    },
+    {
+      "text": "Part L1 2nd edition",
+      "codes": []
+    },
+    {
+      "text": "12 may be required",
+      "codes": []
+    },
+    {
+      "text": "all 3 may need replacing",
+      "codes": []
+    },
+    {
+      "text": "4/10/20 mm aggregate",
+      "codes": []
+    },
+    {
+      "text": "10-12-14 mm",
+      "codes": []
+    },
+    {
+      "text": "3 Japanese Gardens",
+      "codes": []
+    },
+    {
+      "text": "2 Raised Gardens",
+      "codes": []
+    },
+    {
+      "text": "part number 0123456789",
+      "codes": []
+    },
+    {
+      "text": "posts@1.8m centres",
+      "codes": []
+    },
+    {
+      "text": "weighs 20 pounds",
+      "codes": []
+    },
+    {
+      "text": "2.4m panels",
+      "codes": []
+    },
+    {
+      "text": "Built to BS 1722",
+      "codes": []
+    },
+    {
+      "text": "6ft",
+      "codes": []
+    },
+    {
+      "text": "6ft x 6ft panels",
+      "codes": []
+    },
+    {
+      "text": "10 year guarantee",
+      "codes": []
+    },
+    {
+      "text": "24 hour call out",
+      "codes": []
+    },
+    {
+      "text": "RAL 7016 anthracite",
+      "codes": []
+    },
+    {
+      "text": "BS 5837:2012",
+      "codes": []
+    },
+    {
+      "text": "September 2026",
+      "codes": []
+    },
+    {
+      "text": "M25 junction 10",
+      "codes": []
+    },
+    {
+      "text": "1/2 inch",
+      "codes": []
+    },
+    {
+      "text": "3/4/5 triangle",
+      "codes": []
+    },
+    {
+      "text": "Fitted an E10 5Ah battery pack and a P4 3yd skip",
+      "codes": []
+    },
+    {
+      "text": "18mm ply, 47 x 100 C16 joists at 400 centres",
+      "codes": []
+    },
+    {
+      "text": "Type 1 MOT sub-base, 150mm deep",
+      "codes": []
+    },
+    {
+      "text": "A 4 pound lump hammer",
+      "codes": []
+    },
+    {
+      "text": "Model no 0123456789 gate motor",
+      "codes": []
+    },
+    {
+      "text": "Rails @ 600mm centres",
+      "codes": []
+    },
+    {
+      "text": "2026, 1.8m, 30 posts, 7700 x 900 and 123",
+      "codes": []
+    },
+    {
+      "text": "20m\u00b2 of Indian sandstone \u2013 riven finish",
+      "codes": []
+    },
+    {
+      "text": "Caf\u00e9-style bi-fold doors \ud83d\udc4d",
+      "codes": []
+    },
+    {
+      "text": "Done in 2 days \u2014 3 fitters",
+      "codes": []
+    },
+    {
+      "text": "total of 4500 blocks",
+      "codes": []
+    },
+    {
+      "text": "cost 200 hours of labour",
+      "codes": []
+    },
+    {
+      "text": "paid 120 per metre",
+      "codes": []
+    },
+    {
+      "text": "price 150, 200 and 250mm sizes",
+      "codes": []
+    },
+    {
+      "text": "costs 2026.",
+      "codes": []
+    },
+    {
+      "text": "price 2025: held",
+      "codes": []
+    },
+    {
+      "text": "priced 900, 1200 or 1800mm wide",
+      "codes": []
+    },
+    {
+      "text": "price 150, 200 x 100 slabs",
+      "codes": []
+    },
+    {
+      "text": "cost 4500 blocks",
+      "codes": []
+    },
+    {
+      "text": "cost 120 per metre",
+      "codes": []
+    },
+    {
+      "text": "priced 1200x600 slabs",
+      "codes": []
+    },
+    {
+      "text": "paid 100% upfront",
+      "codes": []
+    },
+    {
+      "text": "budget 3000mm",
+      "codes": []
+    },
+    {
+      "text": "budget of 5000 was tight",
+      "codes": []
+    },
+    {
+      "text": "A 10 k\u2126 resistor on the gate sensor",
+      "codes": []
+    },
+    {
+      "text": "We can\u2019t fault it, and he\u2019ll be back",
+      "codes": []
+    },
+    {
+      "text": "Ros\u00e9 pink render, \u00d8 110 pipe",
+      "codes": []
+    },
+    {
+      "text": "KT12 4 RG",
+      "codes": [],
+      "known_limit": true
+    },
+    {
+      "text": "xKT12 4RG",
+      "codes": [],
+      "known_limit": true
+    },
+    {
+      "text": "kt12 4st",
+      "codes": [],
+      "known_limit": true
+    },
+    {
+      "text": "o7700 900123",
+      "codes": [],
+      "known_limit": true
+    },
+    {
+      "text": "part no 01632960123",
+      "codes": [],
+      "known_limit": true
+    },
+    {
+      "text": "5k",
+      "codes": [],
+      "known_limit": true
+    },
+    {
+      "text": "1.2k",
+      "codes": [],
+      "known_limit": true
+    },
+    {
+      "text": "14 acacia road",
+      "codes": [],
+      "known_limit": true
+    },
+    {
+      "text": "14 Acacia Dr",
+      "codes": [],
+      "known_limit": true
+    },
+    {
+      "text": "14 Acacia Close",
+      "codes": [],
+      "known_limit": true
+    },
+    {
+      "text": "October 3 we started",
+      "codes": [],
+      "known_limit": true
+    },
+    {
+      "text": "Finished 3-11-26",
+      "codes": [],
+      "known_limit": true
+    },
+    {
+      "text": "our office is at KT12",
+      "codes": [],
+      "known_limit": true
+    },
+    {
+      "text": "seven seven double zero",
+      "codes": [],
+      "known_limit": true
+    },
+    {
+      "text": "jo at example dot com",
+      "codes": [],
+      "known_limit": true
+    },
+    {
+      "text": "It was charged 2030.",
+      "codes": [],
+      "known_limit": true
+    },
+    {
+      "text": "cost 4500, 600x600 slabs",
+      "codes": [],
+      "known_limit": true
+    }
+  ]
+}

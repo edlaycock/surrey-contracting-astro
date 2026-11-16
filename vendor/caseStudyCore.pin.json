@@ -1,0 +1,8 @@
+{
+  "core_version": "1.0.0",
+  "schema_version": 1,
+  "tree_sha256": "3cbd79a17fe367b2ec832821b9158f7bb3e67161d4384fee7140a9b492d94329",
+  "source_repository": "edlaycock/job-completion-agent",
+  "source_commit": "3edd2708fde32ae6704ccbfd5875c9ad9346b3a1",
+  "copied_from": "edlaycock/job-completion-agent core/ at 3edd270 (branch core/v1-schema), byte for byte, dotfiles left out"
+}

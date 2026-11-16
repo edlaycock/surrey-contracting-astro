@@ -1,0 +1,75 @@
+{
+  "description": "The smallest publishable record: Track 1 (WordPress), three sections, one hero photo, no FAQs, no social text, town hidden, permission recorded as not identifiable with its ticked statement. The site gives no address, so the business is an Organization.",
+  "record": {
+    "schema_version": 1,
+    "id": "0f8b6c1e-52a7-4d0c-9f6e-3b1a7c2d4e5f",
+    "version": 1,
+    "source": "wordpress",
+    "status": "published",
+    "title": "Block paving driveway relaid, September 2026",
+    "slug": "block-paving-driveway-relaid-september-2026",
+    "excerpt": "A sunken block paving driveway lifted, re-based and relaid with the original blocks.",
+    "service_category": "Driveways",
+    "location": {
+      "town": "Guildford",
+      "show_town": false
+    },
+    "completed_month": "2026-09",
+    "sections": [
+      {
+        "key": "need",
+        "question": "What did the customer need?",
+        "answer": "The driveway had sunk in two wheel tracks and held water after rain."
+      },
+      {
+        "key": "work",
+        "question": "What work was carried out?",
+        "answer": "Blocks lifted and cleaned, base rebuilt, blocks relaid and jointed with kiln-dried sand."
+      },
+      {
+        "key": "result",
+        "question": "How did it turn out?",
+        "answer": "The driveway is level again and drains to the channel as it should."
+      }
+    ],
+    "faqs": [],
+    "photos": [
+      {
+        "ref": "wp-att-000412",
+        "role": "hero",
+        "alt": "Level block paving driveway after relaying",
+        "order": 1,
+        "width": 1200,
+        "height": 900,
+        "sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+        "checked": {
+          "confirmed": true,
+          "confirmed_by": "Office",
+          "confirmed_at": "2026-09-30T16:20:00Z"
+        }
+      }
+    ],
+    "consent": {
+      "customer_permission": "not_identifiable",
+      "confirmed_by": "Office",
+      "confirmed_at": "2026-09-30T16:21:10Z",
+      "wording_version": "v1",
+      "not_identifiable_statement": {
+        "ticked_by": "Office",
+        "ticked_at": "2026-09-30T16:21:05Z"
+      }
+    },
+    "published_at": "2026-09-30T16:25:00Z",
+    "modified_at": "2026-09-30T16:25:00Z"
+  },
+  "expected": {
+    "valid": true,
+    "errors": [],
+    "warnings": []
+  },
+  "jsonld": {
+    "context": "site-context-no-address.json",
+    "file": "valid-minimal.jsonld.json",
+    "script_file": "valid-minimal.script.html"
+  }
+}

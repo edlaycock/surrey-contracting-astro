@@ -7,7 +7,18 @@ import node from '@astrojs/node';
 export default defineConfig({
   site: 'https://surreycontracting.co.uk',
   trailingSlash: 'never',
-  integrations: [sitemap({ filter: (page) => !page.includes('/training-manual') && !page.includes('/lp/') })],
+  integrations: [
+    sitemap({
+      // /case-studies is left out: YourTradeQuotes case studies are rendered at
+      // request time and listed by their own sitemap,
+      // /sitemap-case-studies.xml (src/pages/sitemap-case-studies.xml.ts), so a
+      // publish appears and a removal disappears without a rebuild. That
+      // sitemap is not named in sitemap-index.xml either: the static sitemap
+      // files stay exactly as they were, and the owner submits it in Search
+      // Console when the kit is switched on (DEPLOY.md).
+      filter: (page) => !page.includes('/training-manual') && !page.includes('/lp/') && !page.includes('/case-studies'),
+    }),
+  ],
   // Static by default; only routes that opt out (api/contact) run server-side.
   adapter: node({ mode: 'standalone' }),
   security: { checkOrigin: false },

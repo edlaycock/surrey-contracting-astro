@@ -1,0 +1,107 @@
+{
+  "description": "A hidden town and customer names written with a curly apostrophe, a hyphen, no apostrophe, and a combining accent. Names and places are compared with punctuation, accents and case folded away.",
+  "forbidden_terms": [
+    {
+      "label": "customer surname",
+      "value": "Smith-Jones"
+    },
+    {
+      "label": "customer name",
+      "value": "Zo\u00eb O'Brien"
+    }
+  ],
+  "record": {
+    "schema_version": 1,
+    "id": "0f8b6c1e-52a7-4d0c-9f6e-3b1a7c2d4e5f",
+    "version": 1,
+    "source": "wordpress",
+    "status": "published",
+    "title": "Block paving driveway relaid in King\u2019s Lynn, September 2026",
+    "slug": "block-paving-driveway-relaid-september-2026",
+    "excerpt": "A sunken driveway in Kings-Lynn lifted, re-based and relaid with the original blocks for the Smith Jones family.",
+    "service_category": "Driveways",
+    "location": {
+      "town": "King's Lynn",
+      "show_town": false
+    },
+    "completed_month": "2026-09",
+    "sections": [
+      {
+        "key": "need",
+        "question": "What did the customer need?",
+        "answer": "The driveway had sunk in two wheel tracks and held water after rain."
+      },
+      {
+        "key": "challenge",
+        "question": "What made it difficult?",
+        "answer": "The original base was too thin for the weight of two cars."
+      },
+      {
+        "key": "solution",
+        "question": "How did we solve it?",
+        "answer": "We dug out the soft areas for Zoe\u0308 O\u2019Brien and laid a deeper compacted base."
+      },
+      {
+        "key": "work",
+        "question": "What work was carried out?",
+        "answer": "Blocks lifted and cleaned, base rebuilt, blocks relaid and jointed with kiln-dried sand."
+      },
+      {
+        "key": "result",
+        "question": "How did it turn out?",
+        "answer": "The driveway is level again and drains to the channel as it should."
+      }
+    ],
+    "faqs": [],
+    "photos": [
+      {
+        "ref": "wp-att-000412",
+        "role": "hero",
+        "alt": "Level block paving driveway after relaying",
+        "order": 1,
+        "width": 1200,
+        "height": 900,
+        "sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+        "checked": {
+          "confirmed": true,
+          "confirmed_by": "Office",
+          "confirmed_at": "2026-09-30T16:20:00Z"
+        }
+      }
+    ],
+    "consent": {
+      "customer_permission": "not_identifiable",
+      "confirmed_by": "Office",
+      "confirmed_at": "2026-09-30T16:21:10Z",
+      "wording_version": "v1",
+      "not_identifiable_statement": {
+        "ticked_by": "Office",
+        "ticked_at": "2026-09-30T16:21:05Z"
+      }
+    },
+    "published_at": "2026-09-30T16:25:00Z",
+    "modified_at": "2026-09-30T16:25:00Z"
+  },
+  "expected": {
+    "valid": false,
+    "errors": [
+      {
+        "code": "privacy.forbidden_term",
+        "path": "/excerpt"
+      },
+      {
+        "code": "privacy.hidden_town",
+        "path": "/excerpt"
+      },
+      {
+        "code": "privacy.forbidden_term",
+        "path": "/sections/2/answer"
+      },
+      {
+        "code": "privacy.hidden_town",
+        "path": "/title"
+      }
+    ],
+    "warnings": []
+  }
+}
