@@ -115,11 +115,16 @@ function scanRecord(record, forbiddenTerms) {
     const isIdentifier = config.identifier_keys.includes(key);
     const isPrivate = config.private_keys.includes(key);
     const text = foldText(config.hyphenated_keys.includes(key) ? value.replace(/[-_]/gu, ' ') : value);
+    // Folding turns a line break into a space, so a string with line breaks is
+    // also checked one line at a time: a line break ends a clause ("It cost
+    // 4500" at the end of a paragraph is a price). Terms are checked on the
+    // whole text only.
+    const pieces = hasLineBreak(value) ? [text].concat(value.split(/\r\n|\r|\n/u).map(foldText)) : [text];
     for (const entry of compiled) {
       if (isIdentifier && entry.identifiers === false) continue;
       if (isIdentifier && entry.identifiers === 'separated' && !/[-_]/u.test(value)) continue;
       if (isPrivate && entry.scope !== 'everywhere') continue;
-      if (entry.regex.test(text)) errors.push({ code: 'privacy.' + entry.code, path });
+      if (pieces.some((piece) => entry.regex.test(piece))) errors.push({ code: 'privacy.' + entry.code, path });
     }
     for (const term of terms) {
       if (containsTerm(text, term.value)) errors.push({ code: 'privacy.forbidden_term', path });

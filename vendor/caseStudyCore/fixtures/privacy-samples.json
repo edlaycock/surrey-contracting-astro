@@ -446,6 +446,72 @@
       ]
     },
     {
+      "text": "quoted 1200, 1500 and 1800 for the three options",
+      "codes": [
+        "price"
+      ]
+    },
+    {
+      "text": "priced 4500, 5200 with gravel boards",
+      "codes": [
+        "price"
+      ]
+    },
+    {
+      "text": "cost 4500, 2 days work",
+      "codes": [
+        "price"
+      ]
+    },
+    {
+      "text": "cost 4500, 50% up front",
+      "codes": [
+        "price"
+      ]
+    },
+    {
+      "text": "paid 300, 400 and 500.",
+      "codes": [
+        "price"
+      ]
+    },
+    {
+      "text": "The job cost 2000",
+      "codes": [
+        "price"
+      ]
+    },
+    {
+      "text": "cost 2000, which was fair",
+      "codes": [
+        "price"
+      ]
+    },
+    {
+      "text": "(cost 2000)",
+      "codes": [
+        "price"
+      ]
+    },
+    {
+      "text": "paid 1950.",
+      "codes": [
+        "price"
+      ]
+    },
+    {
+      "text": "cost: 2000.",
+      "codes": [
+        "price"
+      ]
+    },
+    {
+      "text": "charged 2000.",
+      "codes": [
+        "price"
+      ]
+    },
+    {
       "text": "Finished on 3 November",
       "codes": [
         "exact_date"
@@ -912,6 +978,14 @@
       "codes": []
     },
     {
+      "text": "priced 900, 1200 or 1800mm wide",
+      "codes": []
+    },
+    {
+      "text": "price 150, 200 x 100 slabs",
+      "codes": []
+    },
+    {
       "text": "cost 4500 blocks",
       "codes": []
     },
@@ -1023,7 +1097,12 @@
       "known_limit": true
     },
     {
-      "text": "It was charged 2000.",
+      "text": "It was charged 2030.",
+      "codes": [],
+      "known_limit": true
+    },
+    {
+      "text": "cost 4500, 600x600 slabs",
       "codes": [],
       "known_limit": true
     }

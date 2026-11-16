@@ -125,9 +125,9 @@ The store is `YTQ_CASE_STUDY_DIR` (on the VPS the Docker volume
 redirects, and `https://surreycontracting.co.uk` must be on the account's allowed
 websites in YTQ, or YTQ refuses the URL and the acknowledgements).
 
-**Vendored core.** `vendor/caseStudyCore` is a byte-for-byte copy of YTQ's
-`functions/caseStudyCore`, pinned by `vendor/caseStudyCore.pin.json` (tree hash
-`65e54a66…`). `npm run test:case-study-core` (also in `postbuild`) fails on any
+**Vendored core.** `vendor/caseStudyCore` is a byte-for-byte copy of the core
+repository's `core/` (edlaycock/job-completion-agent at 3edd270, dotfiles left
+out), pinned by `vendor/caseStudyCore.pin.json` (tree hash `3cbd79a1…`). `npm run test:case-study-core` (also in `postbuild`) fails on any
 changed, added or missing file, then runs every core fixture. To update: replace
 the folder with the new tagged copy and the pin file, nothing else.
 

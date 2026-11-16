@@ -186,6 +186,20 @@ final class Privacy
             $isIdentifier = in_array($key, $config->identifier_keys, true);
             $isPrivate = in_array($key, $config->private_keys, true);
             $text = Text::foldText(in_array($key, $config->hyphenated_keys, true) ? str_replace(array('-', '_'), ' ', $value) : $value);
+            // Folding turns a line break into a space, so a string with line
+            // breaks is also checked one line at a time: a line break ends a
+            // clause ("It cost 4500" at the end of a paragraph is a price).
+            // Terms are checked on the whole text only.
+            $pieces = array($text);
+            if (Text::hasLineBreak($value)) {
+                $lines = preg_split('~\r\n|\r|\n~', $value);
+                if ($lines === false) {
+                    throw new \RuntimeException('pattern could not be run');
+                }
+                foreach ($lines as $line) {
+                    $pieces[] = Text::foldText($line);
+                }
+            }
             foreach ($compiled as $entry) {
                 if ($isIdentifier && $entry['identifiers'] === false) {
                     continue;
@@ -196,8 +210,11 @@ final class Privacy
                 if ($isPrivate && $entry['scope'] !== 'everywhere') {
                     continue;
                 }
-                if (Text::matches($entry['regex'], $text)) {
-                    $errors[] = array('code' => 'privacy.' . $entry['code'], 'path' => $path);
+                foreach ($pieces as $piece) {
+                    if (Text::matches($entry['regex'], $piece)) {
+                        $errors[] = array('code' => 'privacy.' . $entry['code'], 'path' => $path);
+                        break;
+                    }
                 }
             }
             foreach ($terms as $term) {

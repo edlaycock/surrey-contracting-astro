@@ -856,6 +856,75 @@
         ]
       ],
       "expected": "privacy.hidden_town /title"
+    },
+    {
+      "name": "B1 the misplaced-apostrophe form passed as its own term is caught",
+      "mode": "term",
+      "text": "Mr Jone's driveway",
+      "term": "Jone's",
+      "expected": "true"
+    },
+    {
+      "name": "B1 the misplaced-apostrophe form is not caught from the surname (documented)",
+      "mode": "term",
+      "text": "Mr Jone's driveway",
+      "term": "Jones",
+      "expected": "false"
+    },
+    {
+      "name": "B1 the misplaced-apostrophe form passed as its own term is caught, second name",
+      "mode": "term",
+      "text": "Mrs William\u2019s patio",
+      "term": "William's",
+      "expected": "true"
+    },
+    {
+      "name": "B4 an amount that ends a paragraph is a price",
+      "mode": "validate",
+      "fixture": "valid-minimal",
+      "set_record": [
+        [
+          [
+            "sections",
+            0,
+            "answer"
+          ],
+          "It cost 4500\n\nNext paragraph"
+        ]
+      ],
+      "expected": "privacy.price /sections/0/answer"
+    },
+    {
+      "name": "B4 an amount that ends a line is a price",
+      "mode": "validate",
+      "fixture": "valid-minimal",
+      "set_record": [
+        [
+          [
+            "sections",
+            0,
+            "answer"
+          ],
+          "It cost 4500\r\nNext line."
+        ]
+      ],
+      "expected": "privacy.price /sections/0/answer"
+    },
+    {
+      "name": "B4 a paragraph break after trade wording still passes",
+      "mode": "validate",
+      "fixture": "valid-minimal",
+      "set_record": [
+        [
+          [
+            "sections",
+            0,
+            "answer"
+          ],
+          "The total of 4500 blocks\n\nwere relaid by hand."
+        ]
+      ],
+      "expected": "VALID"
     }
   ]
 }

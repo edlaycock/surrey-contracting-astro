@@ -132,8 +132,8 @@ Fixtures:
 | `invalid-text-hygiene` | A title of spaces, a control character, digits in mathematical bold |
 | `invalid-enums-and-formats` | Unknown values and bad formats |
 | `transitions.json` | 42 status machine cases |
-| `privacy-samples.json` | 196 text samples: what must be caught, 68 pieces of trade wording that must pass, and the known limits |
-| `probes.json` | 99 small cases run identically through both implementations, mostly reproductions from the independent reviews |
+| `privacy-samples.json` | 210 text samples: what must be caught, 70 pieces of trade wording that must pass, and the known limits |
+| `probes.json` | 105 small cases run identically through both implementations, mostly reproductions from the independent reviews |
 
 Each record fixture carries its own `expected` result, written by hand. The valid published ones name a site context, a golden JSON-LD file and a golden script tag file.
 
