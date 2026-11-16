@@ -20,6 +20,8 @@ await import('./dist/server/entry.mjs');
 try {
   const { ensurePoller } = await import('./src/lib/caseStudies/poller.ts');
   ensurePoller();
-} catch {
-  console.error('[case-studies] poller did not start');
+} catch (err) {
+  // The code says why (ERR_UNKNOWN_FILE_EXTENSION: a Node without type
+  // stripping, older than 22.18; ERR_MODULE_NOT_FOUND: files missing from the image).
+  console.error(`[case-studies] poller did not start: ${err?.code || err?.name || 'error'}`);
 }

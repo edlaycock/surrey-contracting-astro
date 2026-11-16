@@ -238,6 +238,13 @@ whatever else is in `.env`.
   (created by the first `docker compose up`) and sets `YTQ_CASE_STUDY_DIR`.
   The volume survives every rebuild; `docker compose down -v` would delete it,
   and the next sync would fetch everything again from YTQ.
+- **The image needs Node 22.18 or later** (the poll is loaded with Node's type
+  stripping). `docker compose up -d --build` reuses whatever `node:22-slim` the
+  VPS has cached, so before switching on run `docker compose build --pull`
+  then `docker compose up -d`, and check
+  `docker compose exec surrey-contracting node -v` shows v22.18 or later. On an
+  older Node the site serves normally but the log says
+  `[case-studies] poller did not start: ERR_UNKNOWN_FILE_EXTENSION`.
 - **After the first deploy, check the volume belongs to `node`:**
   `docker compose exec surrey-contracting ls -ld /data/ytq-case-studies`
   should show `node node`. If not, the sync cannot write and logs it; fix with
@@ -253,16 +260,27 @@ whatever else is in `.env`.
   `https://surreycontracting.co.uk/sitemap-case-studies.xml` (it is not named in
   `sitemap-index.xml`).
 - **No cron or extra process:** the safety poll runs inside the container from
-  the moment it starts (first sync after about 30 s, then hourly). About a
-  minute after `docker compose up -d`,
-  `docker compose logs surrey-contracting | grep case-studies` should show
-  `sync (startup): ok` (ids, versions and statuses only).
+  the moment it starts (first sync after about 30 s, then hourly).
+- **After switching on, confirm the first sync.** About a minute after
+  `docker compose up -d`, `docker compose logs surrey-contracting | grep case-studies`
+  must show `sync (startup): ok` (or `partial`: an item is waiting to retry).
+  If it shows `unauthorized`, the key on the server is not the account's: switch
+  off again and install a fresh key (Connecting YourTradeQuotes, above).
+  `storage_error` names the reason the store could not be written.
+- **The pages are held until a sync succeeds.** Case-study pages, photos and
+  the case-study sitemap are shown only while a sync has read the feed within
+  the last three poll intervals (three hours by default). After switching on,
+  or a restart after a long stop, they appear with the first good sync; if
+  syncs keep failing (YTQ down, a rotated key) for three hours, they come down
+  until the next good one. A missing case study is always safer than one whose
+  removal could not be checked.
 - **Switching off takes the pages down.** Remove the line and run
   `docker compose up -d`: every `/case-studies` URL answers 404, the photos and
   the case-study sitemap go with them, and no call is made to YTQ. Nothing is
   deleted from the store. **Switching back on restores the pages**, and the
   next sync (about 30 s after start) applies any unpublish or permission
-  withdrawal made in YTQ meanwhile. While off, YTQ cannot reach the site, so
+  withdrawal made in YTQ meanwhile; nothing stored is shown before that sync
+  has succeeded. While off, YTQ cannot reach the site, so
   YTQ will report removals as unconfirmed until it is switched on again.
 
 ## Rebuild when the client publishes in Sanity

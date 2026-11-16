@@ -1,6 +1,8 @@
 // Pulls the YTQ case-study feed into the site's store (Case Study Core
 // spec/feed.md, matched to YTQ's caseStudyFeed in functions/caseStudyPublishing.js
-// and functions/index.js, PR #295 at d98b030):
+// and functions/index.js, PR #295, checked at d98b030 and 934fbf3; since
+// 934fbf3 YTQ sends a tombstone for a stored record its core now refuses,
+// which this kit applies like any other):
 //
 //   GET  <feed>?core=1.0[&since=<cursor>]   x-ytq-api-key   records + tombstones
 //   GET  <feed>?photo=<ref>&id=<id>         x-ytq-api-key   one photo, consent re-checked
@@ -10,9 +12,11 @@
 // photos are verified against the record's sha256 in a staging directory and
 // moved into the media directory only once all of them passed, and only then
 // is the state committed. Tombstones delete the page, its photos and resized
-// copies. Idempotent by id and version, so any part can be re-run: a
-// transient failure keeps the cursor where it was and the next run repeats the
-// page, which changes nothing for the items already applied.
+// copies. Idempotent by id and version, so any part can be re-run. An item
+// that cannot be stored yet is skipped and retried later; it never holds up
+// the items after it, but the stored cursor stays just before the page that
+// held it, so the feed serves it again, and the items already applied are
+// no-ops.
 //
 // Logs carry ids, versions, statuses and error codes only: never the key,
 // never record text.
@@ -43,10 +47,12 @@ export interface SyncDeps {
   resize?: Resizer | null;
   timeoutMs?: number;
   maxPages?: number;
+  /** Writes a staged file; a test can make it fail as a full disk would. */
+  writeFile?: (path: string, bytes: Buffer) => void;
 }
 
 export interface SyncResult {
-  outcome: 'ok' | 'partial' | 'disabled' | 'busy' | 'feed_error' | 'unauthorized' | 'account_mismatch';
+  outcome: 'ok' | 'partial' | 'disabled' | 'busy' | 'feed_error' | 'unauthorized' | 'account_mismatch' | 'storage_error';
   pages: number;
   applied: number;
   acksSent: number;
@@ -69,9 +75,9 @@ const MAX_FEED_BYTES = 8 * 1024 * 1024;
  * never acknowledged as failed.
  */
 export const MAX_HASH_MISMATCHES = 3;
-/** Backoff before retrying an item: 1, 2, 4 ... minutes, capped at 60. */
+/** Backoff before retrying an item: 1, 2, 4 ... minutes, capped at 30 (half the poll interval, so a retry is never just missed by a tick). */
 export const RETRY_BASE_MS = 60 * 1000;
-export const RETRY_CAP_MS = 60 * 60 * 1000;
+export const RETRY_CAP_MS = 30 * 60 * 1000;
 export const retryDelayMs = (attempts: number) => Math.min(RETRY_CAP_MS, RETRY_BASE_MS * 2 ** Math.max(0, attempts - 1));
 
 class Transient extends Error {
@@ -165,11 +171,19 @@ export function feedPhotoUrl(endpoint: string, ref: string, id: string): string 
   return url.toString();
 }
 
+/** F2: an acknowledgement answered 422 (the page's site not on the account's allowed websites yet) is kept this long. */
+export const ACK_422_KEEP_MS = 7 * 24 * 60 * 60 * 1000;
+
 export async function sendAcks(state: State, deps: SyncDeps): Promise<number> {
   const { config, core } = deps;
   const fetchImpl = deps.fetchImpl ?? ((u, i) => fetch(u, i));
   const logger = deps.logger ?? console;
+  const now = deps.now ?? (() => new Date());
   let sent = 0;
+  const settle = (ack: Ack) => {
+    state.pendingAcks = state.pendingAcks.filter((a) => a !== ack);
+    state.ackSettled[ack.id] = `${ack.state}@${ack.version}`;
+  };
   for (const ack of [...state.pendingAcks]) {
     let status: number | undefined;
     try {
@@ -190,15 +204,29 @@ export async function sendAcks(state: State, deps: SyncDeps): Promise<number> {
       logger.error(`[case-studies] acknowledgement not delivered (${ack.id} v${ack.version} ${ack.state}): status ${status}, kept for the next sync`);
       break;
     }
-    state.pendingAcks = state.pendingAcks.filter((a) => a !== ack);
     if (status >= 200 && status < 300) {
+      settle(ack);
       sent++;
       logger.log(`[case-studies] acknowledged ${ack.id} v${ack.version} ${ack.state}`);
-    } else {
-      // 400, 404, 409, 422: the same every time. 422 means the page URL
-      // is not on the account's allowed websites in YTQ.
-      logger.error(`[case-studies] acknowledgement refused (${ack.id} v${ack.version} ${ack.state}): status ${status}, not retried`);
+      continue;
     }
+    if (status === 422) {
+      // The page URL is not on the account's allowed websites in YTQ: the
+      // owner can fix that, and the feed will never serve this record again
+      // once the cursor has passed it, so the acknowledgement is kept.
+      const first = ack.firstRefusedAt ?? now().toISOString();
+      if (now().getTime() - Date.parse(first) > ACK_422_KEEP_MS) {
+        settle(ack);
+        logger.error(`[case-studies] acknowledgement dropped after 7 days of 422 (${ack.id} v${ack.version} ${ack.state}): add the site to the account's allowed websites in YTQ`);
+      } else {
+        ack.firstRefusedAt = first;
+        logger.error(`[case-studies] acknowledgement refused (${ack.id} v${ack.version} ${ack.state}): status 422, kept; add the site to the account's allowed websites in YTQ`);
+      }
+      continue;
+    }
+    // 400, 404, 409: the same every time.
+    settle(ack);
+    logger.error(`[case-studies] acknowledgement refused (${ack.id} v${ack.version} ${ack.state}): status ${status}, not retried`);
   }
   return sent;
 }
@@ -212,15 +240,22 @@ function isTombstone(item: unknown): item is Tombstone {
 }
 
 /** feed.md section 2, the table: what a tombstone does. Pure on the state. */
-export function applyTombstone(state: State, t: Tombstone): 'removed' | 'stale' {
+export function applyTombstone(state: State, t: Tombstone): 'removed' | 'stale' | 'already' {
   const entry = state.entries[t.id];
   if (entry?.kind === 'live' && entry.version > t.version) return 'stale';
+  dropRetries(state, t.id, t.version);
+  if (state.failed[t.id] && state.failed[t.id].version <= t.version) delete state.failed[t.id];
+  // F6: already removed at this version or later, and that removal was
+  // acknowledged (or settled): a re-served tombstone changes nothing and
+  // costs no acknowledgement.
+  const settled = /^removed@(\d+)$/.exec(state.ackSettled[t.id] || '');
+  if (entry?.kind === 'removed' && entry.version >= t.version && settled && Number(settled[1]) >= t.version) return 'already';
   const slugs = entry?.kind === 'live' ? [entry.slug, ...entry.priorSlugs] : entry?.kind === 'removed' ? entry.slugs : [];
   const version = entry?.kind === 'removed' ? Math.max(entry.version, t.version) : t.version;
-  state.entries[t.id] = { kind: 'removed', id: t.id, version, removed_at: t.removed_at, slugs: [...new Set(slugs)] };
-  if (state.failed[t.id] && state.failed[t.id].version <= t.version) delete state.failed[t.id];
+  const already = entry?.kind === 'removed' && entry.version >= t.version;
+  state.entries[t.id] = { kind: 'removed', id: t.id, version, removed_at: already ? entry.removed_at : t.removed_at, slugs: [...new Set(slugs)] };
   queueAck(state, { id: t.id, version: t.version, state: 'removed' });
-  return 'removed';
+  return already ? 'already' : 'removed';
 }
 
 /** feed.md section 2, the table: whether a record should be stored at all. */
@@ -265,7 +300,15 @@ async function fetchPhoto(record: CaseRecord, photo: CaseRecord['photos'][number
     await res.arrayBuffer().catch(() => undefined);
     throw new Refused('photo.unsupported_type');
   }
-  const bytes = await readCapped(res, MAX_PHOTO_BYTES);
+  // Over the cap is evidence about the item (a derivative is at most 2,560
+  // pixels on its longest edge), not a fault that clears by itself.
+  const declared = Number(res.headers.get('content-length') || 0);
+  if (declared > MAX_PHOTO_BYTES) {
+    await res.body?.cancel().catch(() => undefined);
+    throw new Refused('photo.too_large');
+  }
+  const bytes = Buffer.from(await res.arrayBuffer());
+  if (bytes.length > MAX_PHOTO_BYTES) throw new Refused('photo.too_large');
   if (createHash('sha256').update(bytes).digest('hex') !== photo.sha256) throw new Transient('photo hash mismatch', undefined, true);
   return { bytes, ext, contentType: ext === 'png' ? 'image/png' : 'image/jpeg' };
 }
@@ -282,6 +325,7 @@ async function storeRecord(state: State, record: CaseRecord, deps: SyncDeps, sta
       throw new Refused('site.slug_taken');
     }
   }
+  const write = deps.writeFile ?? ((path: string, bytes: Buffer) => writeFileSync(path, bytes));
   const media = mediaDir(config.dataDir);
   mkdirSync(media, { recursive: true });
   mkdirSync(staging, { recursive: true });
@@ -297,7 +341,7 @@ async function storeRecord(state: State, record: CaseRecord, deps: SyncDeps, sta
     }
     const { bytes, ext, contentType } = await fetchPhoto(record, photo, deps);
     const file = mediaFileName(photo.ref, photo.sha256, ext);
-    writeFileSync(join(staging, file), bytes);
+    write(join(staging, file), bytes);
     staged.push({ from: join(staging, file), name: file });
     const variants: { width: number; file: string }[] = [];
     const widths = variantWidths(photo.width);
@@ -305,7 +349,7 @@ async function storeRecord(state: State, record: CaseRecord, deps: SyncDeps, sta
       try {
         for (const copy of await deps.resize(bytes, ext, widths)) {
           const name = mediaFileName(photo.ref, photo.sha256, ext, copy.width);
-          writeFileSync(join(staging, name), copy.bytes);
+          write(join(staging, name), copy.bytes);
           staged.push({ from: join(staging, name), name });
           variants.push({ width: copy.width, file: name });
         }
@@ -357,9 +401,17 @@ export function toStoredRecord(record: CaseRecord): StoredRecord {
   };
 }
 
+/** F5: a retry entry for this id at or below `version` is superseded. */
+export function dropRetries(state: State, id: string, version: number): void {
+  for (const key of Object.keys(state.retries)) {
+    const at = key.lastIndexOf('@');
+    if (key.slice(0, at) === id && Number(key.slice(at + 1)) <= version) delete state.retries[key];
+  }
+}
+
 function refuse(state: State, id: string, version: number, code: string, now: Date, logger: Logger): void {
   state.failed[id] = { version, error: code, at: now.toISOString() };
-  delete state.retries[`${id}@${version}`];
+  dropRetries(state, id, version);
   queueAck(state, { id, version, state: 'failed', error: code });
   logger.error(`[case-studies] ${id} v${version} not stored: ${code}`);
 }
@@ -372,7 +424,14 @@ export async function runSync(deps: SyncDeps): Promise<SyncResult> {
   const fetchImpl = deps.fetchImpl ?? ((u, i) => fetch(u, i));
   const result: SyncResult = { outcome: 'ok', pages: 0, applied: 0, acksSent: 0 };
   if (!config.enabled || !config.secretKey) return { ...result, outcome: 'disabled' };
-  const release = acquireLock(config.dataDir, now().getTime());
+  let release: (() => void) | null = null;
+  try {
+    release = acquireLock(config.dataDir, now().getTime());
+  } catch (err) {
+    // An unwritable or missing volume: say why, every time.
+    logger.error(`[case-studies] sync could not take its lock in ${config.dataDir}: ${(err as NodeJS.ErrnoException)?.code || 'error'}`);
+    return { ...result, outcome: 'storage_error' };
+  }
   if (!release) return { ...result, outcome: 'busy' };
   let state: State | null = null;
   try {
@@ -382,9 +441,18 @@ export async function runSync(deps: SyncDeps): Promise<SyncResult> {
     result.acksSent += await sendAcks(state, deps);
     saveState(config.dataDir, state);
 
+    // The cursor to store. Every item in every page fetched is applied, but
+    // once an item has to be skipped for now (its photos cannot be fetched or
+    // written yet), the stored cursor stays at the start of the page that held
+    // it, so the next run is served it again. Items after it, tombstones above
+    // all, are never held up by it (YTQ's buildFeedPage holds its own cursor
+    // the same way). Re-served items are no-ops by id and version.
     const maxPages = deps.maxPages ?? 50;
+    let pageCursor = state.cursor;
+    let heldCursor: string | null | undefined;
+    let feedRead = false;
     while (result.pages < maxPages) {
-      const sentCursor = state.cursor;
+      const sentCursor = pageCursor;
       let res: Response;
       try {
         res = await timedFetch(fetchImpl, feedListUrl(config.feedEndpoint, sentCursor), {
@@ -426,13 +494,19 @@ export async function runSync(deps: SyncDeps): Promise<SyncResult> {
         state.account = body.account;
       }
       result.pages++;
+      feedRead = true;
 
-      let stopped = false;
+      let skippedHere = false;
       for (const item of body.items as unknown[]) {
         if (isTombstone(item)) {
-          if (applyTombstone(state, item) === 'removed') {
+          const outcome = applyTombstone(state, item);
+          if (outcome === 'removed') {
             result.applied++;
             logger.log(`[case-studies] ${item.id} removed (v${item.version})`);
+            // A removal is committed at once: a withdrawn permission must not
+            // wait for the rest of the page.
+            saveState(config.dataDir, state);
+            collectGarbage(config.dataDir, state);
           }
           continue;
         }
@@ -443,11 +517,14 @@ export async function runSync(deps: SyncDeps): Promise<SyncResult> {
           continue;
         }
         if (recordDecision(state, record.id, record.version) === 'skip') {
-          // The feed served a version this site already has live: say so again.
-          // A live ack lost earlier (a key rotated mid-way, say) would otherwise
-          // never be sent, and YTQ's planAck is idempotent for the same version.
+          // Already live at this version: if its live acknowledgement was
+          // never settled (delivered, or refused for good) and none is
+          // waiting, owe it again. Otherwise nothing: a re-served page costs
+          // no acknowledgement.
           const held = state.entries[record.id];
-          if (held?.kind === 'live' && held.version === record.version) {
+          if (held?.kind === 'live' && held.version === record.version
+            && state.ackSettled[record.id] !== `live@${record.version}`
+            && !state.pendingAcks.some((a) => a.id === record.id)) {
             queueAck(state, { id: record.id, version: record.version, state: 'live', url: pageUrl(config, held.slug) });
           }
           continue;
@@ -455,10 +532,10 @@ export async function runSync(deps: SyncDeps): Promise<SyncResult> {
         const attemptKey = `${record.id}@${record.version}`;
         const retry = state.retries[attemptKey];
         if (retry && now().getTime() < Date.parse(retry.nextAt)) {
-          // Backing off: the cursor stays and nothing is fetched until nextAt.
-          logger.log(`[case-studies] ${record.id} v${record.version} waiting to retry; the cursor stays`);
-          stopped = true;
-          break;
+          // Backing off: skipped for now, nothing fetched, the rest goes on.
+          logger.log(`[case-studies] ${record.id} v${record.version} waiting to retry; later items go ahead`);
+          skippedHere = true;
+          continue;
         }
         let gate;
         try {
@@ -474,7 +551,7 @@ export async function runSync(deps: SyncDeps): Promise<SyncResult> {
           const entry = await storeRecord(state, record, deps, join(stagingDir(config.dataDir), randomUUID()));
           state.entries[record.id] = entry;
           delete state.failed[record.id];
-          delete state.retries[attemptKey];
+          dropRetries(state, record.id, record.version);
           queueAck(state, { id: record.id, version: record.version, state: 'live', url: pageUrl(config, record.slug) });
           result.applied++;
           logger.log(`[case-studies] ${record.id} v${record.version} live`);
@@ -493,19 +570,15 @@ export async function runSync(deps: SyncDeps): Promise<SyncResult> {
           }
           const nextAt = new Date(now().getTime() + retryDelayMs(attempts)).toISOString();
           state.retries[attemptKey] = { attempts, mismatches, nextAt };
-          const status = err instanceof Transient && err.status ? ` (status ${err.status})` : '';
-          logger.error(`[case-studies] ${record.id} v${record.version} not stored yet${status}, attempt ${attempts}, retry after ${nextAt}; the cursor stays`);
-          stopped = true;
-          break;
+          const status = err instanceof Transient && err.status ? ` (status ${err.status})`
+            : (err as NodeJS.ErrnoException)?.code ? ` (${(err as NodeJS.ErrnoException).code})` : '';
+          logger.error(`[case-studies] ${record.id} v${record.version} not stored yet${status}, attempt ${attempts}, retry after ${nextAt}; later items go ahead`);
+          skippedHere = true;
         }
       }
-      if (stopped) {
-        // The cursor stays, so the next sync repeats this page; the items
-        // already applied are skipped by version.
-        result.outcome = 'partial';
-        break;
-      }
-      state.cursor = body.cursor;
+      if (skippedHere && heldCursor === undefined) heldCursor = sentCursor;
+      pageCursor = body.cursor;
+      state.cursor = heldCursor !== undefined ? heldCursor : pageCursor;
       saveState(config.dataDir, state);
       collectGarbage(config.dataDir, state);
       // has_more false while YTQ holds a record back: its cursor does not move
@@ -513,13 +586,17 @@ export async function runSync(deps: SyncDeps): Promise<SyncResult> {
       // not move also ends the run, so a misbehaving feed cannot loop.
       if (body.has_more !== true || body.cursor === sentCursor) break;
     }
+    if (heldCursor !== undefined && result.outcome === 'ok') result.outcome = 'partial';
+    // A sync that read the feed through counts as a success for the page
+    // hold (readPublishedState), even if some item is still waiting.
+    if (feedRead && (result.outcome === 'ok' || result.outcome === 'partial')) state.lastOkAt = now().toISOString();
     state.lastSync = { at: now().toISOString(), outcome: result.outcome };
     saveState(config.dataDir, state);
     collectGarbage(config.dataDir, state);
     result.acksSent += await sendAcks(state, deps);
     saveState(config.dataDir, state);
   } catch (err) {
-    logger.error(`[case-studies] sync failed: ${(err as Error)?.name || 'error'}`);
+    logger.error(`[case-studies] sync failed: ${(err as NodeJS.ErrnoException)?.code || (err as Error)?.name || 'error'}`);
     result.outcome = 'partial';
     if (state) {
       try {
@@ -534,7 +611,7 @@ export async function runSync(deps: SyncDeps): Promise<SyncResult> {
     } catch {
       // Emptied at the next sync.
     }
-    release();
+    release?.();
   }
   return result;
 }

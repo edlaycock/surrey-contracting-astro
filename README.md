@@ -67,14 +67,22 @@ are unchanged). The contract is Case Study Core v1 (`vendor/caseStudyCore/spec`,
    error code). Idempotent by id and version; a transient failure keeps the
    cursor, so the next run repeats the page safely.
    - An item is refused (`failed`) only on evidence about the item: a photo YTQ
-     answers 410 for, a type the site cannot serve, or bytes that fail the
-     sha256 three times in a row. A 403, 404, 429, 5xx, timeout or network error
-     is YTQ's or the network's trouble: the item is retried with a backoff of
-     1, 2, 4 ... minutes capped at 60, for as long as it takes, and never
-     acknowledged as failed.
+     answers 410 for, a type the site cannot serve, a photo over 16 MB
+     (`photo.too_large`), or bytes that fail the sha256 three times in a row. A
+     403, 404, 429, 5xx, timeout, network error or full disk is retried with a
+     backoff of 1, 2, 4 ... minutes capped at 30, for as long as it takes, and
+     never acknowledged as failed.
+   - An item that has to wait never holds up the ones after it: the rest of
+     the page and the following pages are applied (tombstones are saved the
+     moment they are applied), and the stored cursor stays just before the
+     page that held the waiting item, so the feed serves it again.
+   - Acknowledgements answered 422 (site not on the account's allowed
+     websites) are kept for seven days; 400, 404 and 409 are dropped. A
+     re-served item costs no acknowledgement once its last one was settled.
+   - The pages are held until a sync has read the feed within the last three
+     poll intervals (`readPublishedState`).
    - No call that carries the key follows a redirect.
-   - Acknowledgements answered 401, 403, 429 or 5xx are kept and sent later,
-     and a version the feed serves again is acknowledged `live` again.
+   - Acknowledgements answered 401, 403, 429 or 5xx are kept and sent later.
    - `state.json` keeps only what a page shows: no consent block, photo ticks,
      hashes, social text or hidden town. The JSON-LD is built from the full
      record at sync time and kept as the exact string the page outputs.

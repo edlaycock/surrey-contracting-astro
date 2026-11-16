@@ -89,6 +89,8 @@ export interface Ack {
   state: 'live' | 'removed' | 'failed';
   url?: string;
   error?: string;
+  /** When YTQ first answered 422 to it (kept for seven days from then). */
+  firstRefusedAt?: string;
 }
 
 export interface State {
@@ -101,7 +103,11 @@ export interface State {
   /** Transient failures per id@version: when to try again. Never turns into a refusal on its own. */
   retries: Record<string, { attempts: number; mismatches: number; nextAt: string }>;
   pendingAcks: Ack[];
+  /** id -> "state@version" of the last acknowledgement YTQ accepted or refused for good. */
+  ackSettled: Record<string, string>;
   lastSync: { at: string; outcome: string } | null;
+  /** When a sync last read the feed through. The pages are held until this is recent (readPublishedState). */
+  lastOkAt: string | null;
 }
 
 /**
@@ -123,7 +129,9 @@ export const emptyState = (): State => ({
   failed: dict(),
   retries: dict(),
   pendingAcks: [],
+  ackSettled: dict(),
   lastSync: null,
+  lastOkAt: null,
 });
 
 export const statePath = (dataDir: string) => join(dataDir, 'state.json');
@@ -139,6 +147,7 @@ export function loadState(dataDir: string): State {
   state.entries = dict(parsed.entries);
   state.failed = dict(parsed.failed);
   state.retries = dict(parsed.retries);
+  state.ackSettled = dict(parsed.ackSettled);
   return state;
 }
 
@@ -165,15 +174,23 @@ export function readStateForPages(dataDir: string): State {
 
 /**
  * What the public pages, the media route and the case-study sitemap read.
- * With the kit switched off (YTQ_CASE_STUDIES not on, or no key) the site
+ * Held (empty) until a recent sync succeeded; see below. With the kit switched off (YTQ_CASE_STUDIES not on, or no key) the site
  * answers as if nothing were published: switching off takes the pages down
  * at once, without waiting for a sync that can no longer run. The store on
  * disk is kept, so switching back on restores the pages and the next sync
  * applies any tombstones that arrived meanwhile.
  */
-export function readPublishedState(config: CaseStudyConfig): State {
+export function readPublishedState(config: CaseStudyConfig, nowMs: number = Date.now()): State {
   if (!config.enabled || !config.secretKey) return emptyState();
-  return readStateForPages(config.dataDir);
+  const state = readStateForPages(config.dataDir);
+  // F3: the pages are held until a sync has read the feed within the last
+  // three poll intervals. After switching back on, or a restart after a long
+  // stop, nothing stored is shown until the first sync has applied whatever
+  // was unpublished meanwhile; and if syncs keep failing (a rotated key, YTQ
+  // down) for three intervals, the pages come down rather than go stale.
+  const okAt = state.lastOkAt ? Date.parse(state.lastOkAt) : NaN;
+  if (!Number.isFinite(okAt) || nowMs - okAt > 3 * config.pollMinutes * 60 * 1000) return emptyState();
+  return state;
 }
 
 export function saveState(dataDir: string, state: State): void {

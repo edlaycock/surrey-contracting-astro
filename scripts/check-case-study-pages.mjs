@@ -13,7 +13,7 @@
  */
 import http from 'node:http';
 import { spawn } from 'node:child_process';
-import { mkdtempSync, rmSync, existsSync, readFileSync, readdirSync } from 'node:fs';
+import { mkdtempSync, rmSync, existsSync, readFileSync, readdirSync, symlinkSync, copyFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { createHash, randomBytes } from 'node:crypto';
@@ -120,6 +120,28 @@ async function startSite(extraEnv = {}) {
       eq(pollFeed.requests.length, before, 'no feed call');
     } finally {
       site.proc.kill();
+    }
+  });
+  await test('F4: if the poll cannot load, the site still serves and the log says why', async () => {
+    const bare = mkdtempSync(join(tmpdir(), 'ytq-cs-bare-'));
+    try {
+      // server.mjs copied, not linked (Node would resolve a link back to this
+      // repository and find src/); no src/lib/caseStudies beside it.
+      for (const name of ['dist', 'package.json', 'vendor', 'node_modules']) symlinkSync(join(APP, name), join(bare, name));
+      copyFileSync(join(APP, 'server.mjs'), join(bare, 'server.mjs'));
+      const proc = spawn(process.execPath, [join(bare, 'server.mjs')], { cwd: bare, env: { ...env, ...common, PORT: String(port + 4) }, stdio: ['ignore', 'pipe', 'pipe'] });
+      let log = '';
+      proc.stdout.on('data', (d) => { log += d; });
+      proc.stderr.on('data', (d) => { log += d; });
+      try {
+        for (let i = 0; i < 200 && !/poller did not start/.test(log); i++) await sleep(50);
+        assert(/poller did not start: ERR_MODULE_NOT_FOUND/.test(log), `logged with its code: ${log.slice(-300)}`);
+        eq((await fetch(`http://127.0.0.1:${port + 4}/`)).status, 200, 'site serves');
+      } finally {
+        proc.kill();
+      }
+    } finally {
+      rmSync(bare, { recursive: true, force: true });
     }
   });
   pollServer.close();
@@ -312,6 +334,20 @@ try {
     }
     eq(Object.keys(store.loadState(dataDir).entries).length, 2, 'store kept');
     eq((await get(`/case-studies/${full.record.slug}`)).status, 200, 'switched on again: served');
+  });
+
+  await test('F3: with no successful sync in the last three poll intervals the stored pages are held (404)', async () => {
+    const s = store.loadState(dataDir);
+    const okAt = s.lastOkAt;
+    assert(okAt, 'the signal sync recorded a success');
+    s.lastOkAt = new Date(Date.now() - 3 * 60 * 60 * 1000 - 60 * 1000).toISOString();
+    store.saveState(dataDir, s);
+    eq((await get(`/case-studies/${full.record.slug}`)).status, 404, 'held');
+    eq((await get('/case-studies')).status, 404, 'listing held');
+    // A good signal: the sync succeeds and the pages come back.
+    eq((await get('/api/ytq-refresh', signal())).status, 202, 'signal');
+    await waitFor(() => Date.parse(store.loadState(dataDir).lastOkAt) > Date.now() - 60 * 1000, 'a fresh sync');
+    eq((await get(`/case-studies/${full.record.slug}`)).status, 200, 'served again');
   });
 
   // ---------- remove ----------

@@ -183,7 +183,7 @@ await test('sync: stores a valid record, its photos verified, and acknowledges i
   assert(!t.logs.join('\n').includes(DUMMY_KEY), 'key never logged');
 });
 
-await test('sync: re-running is a no-op for content (same version: nothing fetched) and re-acknowledges live (M6)', async () => {
+await test('sync: a re-served version fetches nothing and costs no acknowledgement once settled; an unsettled one is acknowledged again (M6, F1)', async () => {
   const t = setup();
   const { record, photos } = await fullRecord();
   t.feed.addRecord(record, photos);
@@ -193,9 +193,13 @@ await test('sync: re-running is a no-op for content (same version: nothing fetch
   const s = t.state(); s.cursor = null; store.saveState(t.dir, s);
   await t.run();
   eq(photosFetched(t.feed).length, 6, 'no photo fetched again');
-  eq(t.feed.acks.length, 2, 'the re-served version is acknowledged live again');
-  eq(t.feed.acks[1], t.feed.acks[0], 'the same acknowledgement');
+  eq(t.feed.acks.length, 1, 'settled: no second acknowledgement');
   eq(t.feed.requests.filter((q) => q.method === 'GET').length - (before - 1), 1, 'one list request');
+  // An acknowledgement that was never settled (state from before this field) is owed again.
+  const u = t.state(); u.cursor = null; delete u.ackSettled[record.id]; store.saveState(t.dir, u);
+  await t.run();
+  eq(t.feed.acks.length, 2, 'unsettled: acknowledged live again');
+  eq(t.feed.acks[1], t.feed.acks[0], 'the same acknowledgement');
 });
 
 await test('sync: pages through has_more, sending the stored cursor', async () => {
@@ -392,8 +396,8 @@ for (const [label, fault] of [['E1: 503 (YTQ outage)', 503], ['E1b: 403 account_
   });
 }
 
-await test('sync: backoff after a transient fault is capped and respected; no photo is fetched while it runs (M2)', async () => {
-  eq([1, 2, 3, 7, 8, 30].map((n) => sync.retryDelayMs(n) / 60000), [1, 2, 4, 60, 60, 60], 'delays in minutes');
+await test('sync: backoff after a transient fault is capped at 30 minutes and respected; no photo is fetched while it runs (M2, F7)', async () => {
+  eq([1, 2, 3, 6, 7, 30].map((n) => sync.retryDelayMs(n) / 60000), [1, 2, 4, 30, 30, 30], 'delays in minutes');
   const t = setup();
   const { record, photos } = await minimalRecord();
   t.feed.addRecord(record, photos);
@@ -439,15 +443,50 @@ for (const status of [401, 403]) {
   });
 }
 
-await test('sync: an acknowledgement YTQ refuses (422 url not allowed) is dropped, not retried', async () => {
+await test('sync: X2: an acknowledgement answered 422 is kept, and delivered once YTQ accepts it (F2)', async () => {
+  const t = setup();
+  const { record, photos } = await minimalRecord({ id: 'cs_ackLost00001', slug: 'ack-lost' });
+  t.feed.addRecord(record, photos);
+  t.feed.fail = (kind) => (kind === 'ack' ? 422 : null);
+  await t.run();
+  eq(t.state().pendingAcks.map((a) => a.state), ['live'], 'kept after 422');
+  assert(t.logs.some((l) => l.includes('status 422, kept')), 'logged');
+  t.feed.fail = null;
+  for (let i = 0; i < 5; i++) { t.advance(60); await t.run(); }
+  eq(t.feed.acks.map((a) => [a.id, a.state]), [[record.id, 'live']], 'YTQ received the live ack once');
+  eq(t.state().pendingAcks, [], 'cleared');
+});
+
+await test('sync: a 422 acknowledgement is dropped with a log line after seven days (F2)', async () => {
   const t = setup();
   const { record, photos } = await minimalRecord();
   t.feed.addRecord(record, photos);
   t.feed.fail = (kind) => (kind === 'ack' ? 422 : null);
   await t.run();
-  eq(t.state().pendingAcks, [], 'dropped');
-  assert(t.logs.some((l) => l.includes('status 422')), 'logged');
+  t.advance(6 * 24 * 60);
+  await t.run();
+  eq(t.state().pendingAcks.length, 1, 'still kept after six days');
+  t.advance(24 * 60 + 1);
+  await t.run();
+  eq(t.state().pendingAcks, [], 'dropped after seven');
+  assert(t.logs.some((l) => l.includes('dropped after 7 days of 422')), 'logged');
 });
+
+for (const status of [400, 404, 409]) {
+  await test(`sync: an acknowledgement answered ${status} is dropped, not retried`, async () => {
+    const t = setup();
+    const { record, photos } = await minimalRecord();
+    t.feed.addRecord(record, photos);
+    t.feed.fail = (kind) => (kind === 'ack' ? status : null);
+    await t.run();
+    eq(t.state().pendingAcks, [], 'dropped');
+    assert(t.logs.some((l) => l.includes(`status ${status}, not retried`)), 'logged');
+    t.feed.fail = null;
+    const s = t.state(); s.cursor = null; store.saveState(t.dir, s);
+    await t.run();
+    eq(t.feed.acks.length, 0, 'not resent when the record is served again');
+  });
+}
 
 await test('sync: a newer version replaces the page at the same URL and deletes the replaced photo', async () => {
   const t = setup();
@@ -672,6 +711,168 @@ await test('pages read nothing while the kit is switched off; the store is kept 
     eq(store.liveEntries(store.readPublishedState(off)).length, 0, 'off: nothing published');
   }
   eq(store.liveEntries(t.state()).length, 1, 'store kept on disk');
+});
+
+// ---------- second review round (Fable): F1 to F9 ----------
+
+for (const pageSize of [25, 1]) {
+  await test(`sync: X1 (page size ${pageSize}): a tombstone behind a record that cannot be stored is applied at once; the stuck record is retried and later stored (F1)`, async () => {
+    const t = setup({ feed: { pageSize } });
+    const b = await minimalRecord({ id: 'cs_withdrawn0001', slug: 'withdrawn-job' });
+    t.feed.addRecord(b.record, b.photos);
+    await t.run();
+    const cursorBefore = t.state().cursor;
+    const a = await minimalRecord({ id: 'cs_stuckRec0002', slug: 'stuck-job' });
+    const c = await minimalRecord({ id: 'cs_afterRec0003', slug: 'after-job' });
+    t.feed.addRecord(a.record, a.photos);
+    t.feed.addTombstone(tombstoneFor({ id: b.record.id, version: 1 }));
+    t.feed.addRecord(c.record, c.photos);
+    let stuck = true;
+    t.feed.fail = (kind, url) => (stuck && kind === 'photo' && url.searchParams.get('id') === a.record.id ? 503 : null);
+    const first = await t.run();
+    eq(first.outcome, 'partial', 'partial');
+    const s1 = t.state();
+    eq([s1.entries[b.record.id].kind, s1.entries[c.record.id]?.kind, s1.entries[a.record.id]], ['removed', 'live', undefined], 'tombstone and the later record applied on the first run');
+    eq(s1.cursor, cursorBefore, 'cursor held just before the page with the stuck record');
+    eq(t.feed.acks.filter((x) => x.state === 'removed').length, 1, 'removed acknowledged');
+    for (let i = 0; i < 10; i++) { t.advance(60); await t.run(); }
+    eq(t.feed.acks.filter((x) => x.state === 'removed').length, 1, 'no repeated removed ack (F6)');
+    eq(t.feed.acks.filter((x) => x.id === c.record.id).length, 1, 'no repeated live ack for the later record');
+    eq(t.feed.acks.filter((x) => x.state === 'failed'), [], 'no failed ack');
+    stuck = false;
+    t.advance(60);
+    eq((await t.run()).outcome, 'ok', 'ok once the photo arrives');
+    const s2 = t.state();
+    eq(s2.entries[a.record.id].kind, 'live', 'stuck record stored');
+    assert(s2.cursor !== cursorBefore, 'cursor moves on');
+    eq(s2.retries, {}, 'retry entry cleared');
+    eq(t.feed.acks.map((x) => `${x.id} ${x.state}`).sort(), [`${a.record.id} live`, `${b.record.id} live`, `${b.record.id} removed`, `${c.record.id} live`].sort(), 'each acknowledged once');
+  });
+}
+
+await test('sync: X3: a photo over the 16 MB cap is refused as photo.too_large; the record after it is stored (F1)', async () => {
+  const t = setup();
+  const a = await minimalRecord({ id: 'cs_bigPhoto0001', slug: 'big-photo' });
+  const c = await minimalRecord({ id: 'cs_afterBig0002', slug: 'after-big' });
+  t.feed.addRecord(a.record, a.photos);
+  t.feed.addRecord(c.record, c.photos);
+  const inner = t.feed.fetch;
+  const fetchImpl = async (u, i) => {
+    const url = new URL(String(u));
+    if (url.searchParams.has('photo') && url.searchParams.get('id') === a.record.id) {
+      return new Response('x', { status: 200, headers: { 'content-type': 'image/jpeg', 'content-length': String(17 * 1024 * 1024) } });
+    }
+    return inner(u, i);
+  };
+  eq((await t.run({ fetchImpl })).outcome, 'ok', 'ok');
+  eq([t.state().failed[a.record.id]?.error, t.state().entries[c.record.id]?.kind], ['photo.too_large', 'live'], 'refused, next stored');
+  eq(t.feed.acks.filter((x) => x.state === 'failed').map((x) => x.error), ['photo.too_large'], 'failed ack with the code');
+  // Without a content-length, the bytes themselves are measured.
+  const t2 = setup();
+  const d = await minimalRecord({ id: 'cs_bigPhoto0003', slug: 'big-photo-two' });
+  t2.feed.addRecord(d.record, d.photos);
+  const big = Buffer.alloc(16 * 1024 * 1024 + 1);
+  const fetch2 = async (u, i) => (new URL(String(u)).searchParams.has('photo')
+    ? new Response(new ReadableStream({ start(cn) { cn.enqueue(big); cn.close(); } }), { status: 200, headers: { 'content-type': 'image/jpeg' } })
+    : t2.feed.fetch(u, i));
+  await t2.run({ fetchImpl: fetch2 });
+  eq(t2.state().failed[d.record.id]?.error, 'photo.too_large', 'measured');
+});
+
+await test('sync: a full disk while staging a record does not hold up the tombstone behind it; the record is stored once space returns (F1)', async () => {
+  const t = setup();
+  const b = await minimalRecord({ id: 'cs_withdrawn0009', slug: 'withdrawn-nine' });
+  t.feed.addRecord(b.record, b.photos);
+  await t.run();
+  const a = await minimalRecord({ id: 'cs_diskFull00001', slug: 'disk-full' });
+  t.feed.addRecord(a.record, a.photos);
+  t.feed.addTombstone(tombstoneFor(b.record));
+  let full = true;
+  const { writeFileSync } = await import('node:fs');
+  const writeFile = (path, bytes) => {
+    if (full) { const e = new Error('no space left on device'); e.code = 'ENOSPC'; throw e; }
+    writeFileSync(path, bytes);
+  };
+  eq((await t.run({ writeFile })).outcome, 'partial', 'partial');
+  eq(t.state().entries[b.record.id].kind, 'removed', 'tombstone applied');
+  eq(t.media().length, 0, 'the removed page\'s photo is deleted');
+  assert(t.logs.some((l) => l.includes('(ENOSPC)')), 'the reason is logged');
+  eq(t.feed.acks.filter((x) => x.state === 'failed'), [], 'no failed ack for a full disk');
+  full = false;
+  t.advance(2);
+  eq((await t.run({ writeFile })).outcome, 'ok', 'ok');
+  eq(t.state().entries[a.record.id].kind, 'live', 'stored');
+});
+
+await test('store: X6: a retry entry superseded by a newer version or a tombstone is dropped (F5)', async () => {
+  const t = setup();
+  const a = await minimalRecord({ id: 'cs_superSed0001', slug: 'superseded' });
+  t.feed.addRecord(a.record, a.photos);
+  t.feed.fail = (kind) => (kind === 'photo' ? 503 : null);
+  await t.run();
+  eq(Object.keys(t.state().retries), [`${a.record.id}@1`], 'backing off');
+  t.feed.fail = null;
+  t.feed.addRecord({ ...a.record, version: 2, modified_at: '2026-10-01T10:00:00Z' }, a.photos);
+  await t.run();
+  eq([t.state().entries[a.record.id].version, Object.keys(t.state().retries)], [2, []], 'superseded by version 2');
+  const t2 = setup();
+  const b = await minimalRecord({ id: 'cs_superSed0002', slug: 'superseded-two' });
+  t2.feed.addRecord(b.record, b.photos);
+  t2.feed.fail = (kind) => (kind === 'photo' ? 503 : null);
+  t2.feed.addTombstone(tombstoneFor(b.record));
+  await t2.run();
+  eq(Object.keys(t2.state().retries), [], 'superseded by the tombstone');
+});
+
+await test('sync: X5: a tombstone the feed keeps serving is acknowledged once (F6)', async () => {
+  const t = setup();
+  const a = await minimalRecord({ id: 'cs_liveFirst001', slug: 'live-first' });
+  t.feed.addRecord(a.record, a.photos);
+  await t.run();
+  t.feed.addRecord(await (async () => (await minimalRecord({ id: 'cs_heldBack0002', slug: 'held-back' })).record)(), new Map());
+  t.feed.addTombstone(tombstoneFor({ id: a.record.id, version: 1 }));
+  t.feed.holdBackFrom = 2;
+  for (let i = 0; i < 24; i++) { await t.run(); t.advance(60); }
+  eq(t.state().entries[a.record.id].kind, 'removed', 'removed');
+  eq(t.feed.acks.filter((x) => x.state === 'removed').length, 1, 'one removed ack in 24 polls');
+});
+
+await test('sync: an unwritable store is reported with its reason, never thrown (F9)', async () => {
+  const { writeFileSync } = await import('node:fs');
+  const parent = mkdtempSync(join(tmpdir(), 'ytq-cs-'));
+  tmpDirs.push(parent);
+  const asFile = join(parent, 'not-a-dir');
+  writeFileSync(asFile, 'x');
+  const config = readConfig({ YTQ_CASE_STUDIES: 'on', YTQ_SECRET_KEY: DUMMY_KEY, YTQ_CASE_STUDY_DIR: join(asFile, 'store'), YTQ_FEED_ENDPOINT: 'https://feed.invalid/caseStudyFeed' });
+  const logs = [];
+  const r = await sync.runSync({ config, core, fetchImpl: createFeedStub().fetch, logger: { log: (m) => logs.push(m), error: (m) => logs.push(m) } });
+  eq(r.outcome, 'storage_error', 'outcome');
+  assert(logs.some((l) => /could not take its lock .*: (ENOTDIR|EEXIST)/.test(l)), `reason logged: ${logs.join(' | ')}`);
+});
+
+await test('pages are held until a sync has read the feed within the last three poll intervals (F3)', async () => {
+  const t = setup();
+  const { record, photos } = await minimalRecord();
+  t.feed.addRecord(record, photos);
+  const s0 = store.emptyState(); store.saveState(t.dir, s0);
+  eq(store.liveEntries(store.readPublishedState(t.config)).length, 0, 'no successful sync yet: held');
+  await t.run();
+  const okAt = Date.parse(t.state().lastOkAt);
+  eq(store.liveEntries(store.readPublishedState(t.config, okAt + 1000)).length, 1, 'just synced: published');
+  eq(store.liveEntries(store.readPublishedState(t.config, okAt + 3 * 60 * 60 * 1000)).length, 1, 'three intervals: still published');
+  eq(store.liveEntries(store.readPublishedState(t.config, okAt + 3 * 60 * 60 * 1000 + 1)).length, 0, 'past three intervals: held');
+  // A failing sync (401) does not renew it.
+  const bad = readConfig({ YTQ_CASE_STUDIES: 'on', YTQ_SECRET_KEY: 'wrong-dummy-key', YTQ_CASE_STUDY_DIR: t.dir, YTQ_FEED_ENDPOINT: 'https://feed.invalid/caseStudyFeed' });
+  t.advance(120);
+  eq((await sync.runSync({ config: bad, core, fetchImpl: t.feed.fetch, logger: { log() {}, error() {} }, now: () => new Date(okAt + 120 * 60000) })).outcome, 'unauthorized', '401');
+  eq(Date.parse(t.state().lastOkAt), okAt, 'lastOkAt unchanged by a failed sync');
+});
+
+await test('package.json requires Node 22.18 or later (type stripping, F4)', () => {
+  const pkg = JSON.parse(readFileSync(join(ROOT, 'package.json'), 'utf8'));
+  eq(pkg.engines.node, '>=22.18.0', 'engines');
+  const server = readFileSync(join(ROOT, 'server.mjs'), 'utf8');
+  assert(/poller did not start: \$\{/.test(server), 'server.mjs logs why the poller did not start');
 });
 
 for (const dir of tmpDirs) rmSync(dir, { recursive: true, force: true });
